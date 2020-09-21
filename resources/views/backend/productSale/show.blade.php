@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item" style="margin-left: 90%"> <a href="{!! route('productSales-invoice',$productSale->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Page</a></li>
+                    <li class="breadcrumb-item" style="margin-left: 88%"> <a href="{!! route('productSales-invoice',$productSale->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Page</a></li>
                 </ul>
                 <h3 class="tile-title">Product Sales</h3>
                 <table class="table table-striped">
@@ -106,6 +106,9 @@
                     </tbody>
                 </table>
                 <div class="tile-footer">
+                    <ul class="app-breadcrumb breadcrumb">
+                        <li class="breadcrumb-item" style="margin-left: 83%"> <a href="{!! route('productSales-invoice-edit',$productSale->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Edit Page</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

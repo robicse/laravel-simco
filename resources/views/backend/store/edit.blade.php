@@ -92,7 +92,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Party</button>
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Store</button>
                             </div>
                         </div>
                     </form>

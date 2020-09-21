@@ -13,7 +13,7 @@
     <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
     <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
     <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <title>Smart Corporation</title>
+    <title>Simco</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +38,7 @@
 </head>
 <body class="app sidebar-mini rtl">
 <!-- Navbar-->
-<header class="app-header"><a class="app-header__logo" href="{!! URL::to('/home') !!}"><img src="{{asset('uploads/smart-corporation.png')}}" alt="logo" height="60px" width="200px"></a>
+<header class="app-header"><a class="app-header__logo" href="{!! URL::to('/home') !!}"><img src="{{asset('uploads/logo.png')}}" alt="logo" height="65px" width="230px"></a>
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
     <!-- Navbar Right Menu-->
     <ul class="app-nav">

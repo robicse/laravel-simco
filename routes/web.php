@@ -62,6 +62,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('productPurchases-invoice-print','ProductPurchaseController@invoicePrint')->name('productPurchases-invoice-print');
     Route::get('productSales-invoice/{id}','ProductSaleController@invoice')->name('productSales-invoice');
     Route::get('productSales-invoice-print/{id}','ProductSaleController@invoicePrint')->name('productSales-invoice-print');
+    Route::get('productSales-invoice-edit/{id}','ProductSaleController@invoiceEdit')->name('productSales-invoice-edit');
+    Route::post('productSales-invoice-update/{id}','ProductSaleController@updateInvoice')->name('productSales.invoiceUpdate');
     Route::get('sub-category-list','ProductController@subCategoryList');
     Route::get('product-relation-data','ProductPurchaseController@productRelationData');
     Route::get('product-sale-relation-data','ProductSaleController@productSaleRelationData');

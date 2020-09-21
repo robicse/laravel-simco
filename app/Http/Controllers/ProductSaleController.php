@@ -406,6 +406,120 @@ class ProductSaleController extends Controller
         return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party'));return view('backend.productSale.invoice-print');
     }
 
+    public function invoiceEdit($id)
+    {
+        $productSale = ProductSale::find($id);
+        $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
+        $transaction = Transaction::where('ref_id',$id)->get();
+        $store_id = $productSale->store_id;
+        $party_id = $productSale->party_id;
+        $store = Store::find($store_id);
+        $party = Party::find($party_id);
+
+        $productCategories = ProductCategory::all();
+        $productSubCategories = ProductSubCategory::all();
+        $productBrands = ProductBrand::all();
+        $products = Product::all();
+
+        return view('backend.productSale.invoice-edit', compact('productSale','productSaleDetails','transaction','store','party','productCategories','productSubCategories','productBrands','products'));
+    }
+
+    public function updateInvoice(Request $request, $id){
+        //dd($id);
+        //dd($request->all());
+
+        $row_count = count($request->product_id);
+        $total_amount = $request->current_total_amount;
+//        $total_amount = 0;
+//        for($i=0; $i<$row_count;$i++)
+//        {
+//            $total_amount += $request->sub_total[$i];
+//        }
+//        $discount_type = $request->discount_type;
+//        if($discount_type == 'flat'){
+//            $total_amount -= $request->discount_amount;
+//        }else{
+//            $total_amount = ($total_amount*$request->discount_amount)/100;
+//        }
+
+        for($i=0; $i<$row_count;$i++)
+        {
+            // product sale detail insert
+            $purchase_sale_detail = new ProductSaleDetail();
+            $purchase_sale_detail->product_sale_id = $id;
+            $purchase_sale_detail->return_type = $request->return_type[$i];
+            $purchase_sale_detail->product_category_id = $request->product_category_id[$i];
+            $purchase_sale_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+            $purchase_sale_detail->product_brand_id = $request->product_brand_id[$i];
+            $purchase_sale_detail->product_id = $request->product_id[$i];
+            $purchase_sale_detail->qty = $request->qty[$i];
+            $purchase_sale_detail->price = $request->price[$i];
+            $purchase_sale_detail->sub_total = $request->qty[$i]*$request->price[$i];
+            $purchase_sale_detail->save();
+
+            $product_id = $request->product_id[$i];
+            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+            if(!empty($check_previous_stock)){
+                $previous_stock = $check_previous_stock;
+            }else{
+                $previous_stock = 0;
+            }
+            // product stock insert
+            $stock = new Stock();
+            $stock->user_id = Auth::id();
+            $stock->ref_id = $id;
+            $stock->store_id = $request->store_id;
+            $stock->product_id = $request->product_id[$i];
+            $stock->stock_type = 'sale';
+            $stock->previous_stock = $previous_stock;
+            $stock->stock_in = 0;
+            $stock->stock_out = $request->qty[$i];
+            $stock->current_stock = $previous_stock - $request->qty[$i];
+            $stock->save();
+        }
+
+        // product sale update
+        $productSale = ProductSale::find($id);
+        $productSale->user_id = Auth::id();
+        //$productSale->party_id = $request->party_id;
+        $productSale->store_id = $request->store_id;
+        //$productSale->payment_type = $request->payment_type;
+        //$productSale->delivery_service = $request->delivery_service;
+        //$productSale->delivery_service_charge = $request->delivery_service_charge;
+        $productSale->discount_type = $request->discount_type;
+        $productSale->discount_amount = $request->discount_amount;
+        $productSale->total_amount = $total_amount;
+        $productSale->paid_amount = $request->paid_amount;
+        $productSale->due_amount = $request->due_amount;
+        $productSale->update();
+
+
+
+        // due update
+        $due = Due::where('ref_id',$id)->first();;
+        $due->user_id = Auth::id();
+        $due->store_id = $request->store_id;
+        //$due->party_id = $request->party_id;
+        //$due->payment_type = $request->payment_type;
+        $due->total_amount = $total_amount;
+        $due->paid_amount = $request->paid_amount;
+        $due->due_amount = $request->due_amount;
+        $due->update();
+
+        // transaction update
+        $transaction = Transaction::where('ref_id',$id)->where('transaction_type','sale')->first();
+        $transaction->user_id = Auth::id();
+        $transaction->store_id = $request->store_id;
+        //$transaction->party_id = $request->party_id;
+        //$transaction->payment_type = $request->payment_type;
+        $transaction->amount = $total_amount;
+        $transaction->update();
+
+
+        Toastr::success('Invoice Updated Successfully', 'Success');
+        return redirect()->route('productSales.index');
+    }
+
     public function newParty(Request $request){
         //dd($request->all());
         $this->validate($request, [
