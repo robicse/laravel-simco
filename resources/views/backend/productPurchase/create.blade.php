@@ -45,7 +45,7 @@
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="store_id" id="store_id" class="form-control" >
-                                    <option value="">Select One</option>
+{{--                                    <option value="">Select One</option>--}}
                                     @foreach($stores as $store)
                                         <option value="{{$store->id}}">{{$store->name}} </option>
                                     @endforeach
@@ -74,6 +74,7 @@
                                 <th>Brand</th>
                                 <th>Qty <small class="requiredCustom">*</small></th>
                                 <th>Price <small class="requiredCustom">*</small></th>
+                                <th>MRP Price <small class="requiredCustom">*</small></th>
                                 <th>Sub Total</th>
                                 <th>Action</th>
 
@@ -125,6 +126,9 @@
                                 </td>
                                 <td>
                                     <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                </td>
+                                <td>
+                                    <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="" required >
                                 </td>
                                 <td>
                                     <input type="text" class="amount form-control" name="sub_total[]">
@@ -256,6 +260,7 @@
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
+                    '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';

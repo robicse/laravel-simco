@@ -22,6 +22,7 @@ class CreateProductPurchaseDetailsTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->integer('qty');
             $table->float('price',8,2);
+            $table->float('mrp_price',8,2);
             $table->float('sub_total',8,2);
             $table->string('expired_date')->nullable();
             $table->timestamps();
