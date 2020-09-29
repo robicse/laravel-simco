@@ -131,36 +131,31 @@
                                 <td>{{$productSale->paid_amount}}</td>
                             </tr>
                             <tr>
-                                <th>Current Due Amount:</th>
+                                <th>Due Amount:</th>
                                 <td>{{$productSale->due_amount}}</td>
                             </tr>
-                            <tr>
-                                <th>Previous Due Amount:</th>
-                                <td>
-                                    @php
-                                        $product_sale_dues = \App\ProductSale::query()
-                                        ->select(DB::raw('SUM(due_amount) as due_amount'))
-                                        //->where('id','!=',$productSale->id)
-                                        ->where('id','<',$productSale->id)
-                                        //->groupBy('product_id')
-                                        ->first();
+{{--                            <tr>--}}
+{{--                                <th>Previous Due Amount:</th>--}}
+{{--                                <td>--}}
+{{--                                    @php--}}
+{{--                                        $product_sale_dues = \App\ProductSale::query()--}}
+{{--                                        ->select(DB::raw('SUM(due_amount) as due_amount'))--}}
+{{--                                        ->where('id','<',$productSale->id)--}}
+{{--                                        ->first();--}}
 
-                                        //$sum_previous_due_amount = $product_sale_dues->due_amount;
-
-                                    //dd($product_sale_dues->due_amount);
-                                    $previous_due_amount = $product_sale_dues->due_amount;
-                                    if(!empty($previous_due_amount)){
-                                        echo $previous_due_amount;
-                                    }else{
-                                        echo $previous_due_amount = 0;
-                                    }
-                                    @endphp
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Final Due Amount:</th>
-                                <td>{{$productSale->due_amount+$previous_due_amount}}</td>
-                            </tr>
+{{--                                        $previous_due_amount = $product_sale_dues->due_amount;--}}
+{{--                                        if(!empty($previous_due_amount)){--}}
+{{--                                            echo $previous_due_amount;--}}
+{{--                                        }else{--}}
+{{--                                            echo $previous_due_amount = 0;--}}
+{{--                                        }--}}
+{{--                                    @endphp--}}
+{{--                                </td>--}}
+{{--                            </tr>--}}
+{{--                            <tr>--}}
+{{--                                <th>Final Due Amount:</th>--}}
+{{--                                <td>{{$productSale->due_amount+$previous_due_amount}}</td>--}}
+{{--                            </tr>--}}
                         </table>
                     </div>
                 </div>

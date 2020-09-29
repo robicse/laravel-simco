@@ -6,6 +6,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
@@ -71,7 +72,12 @@ class UserController extends Controller
     {
         $user = User::find($id);
         //$roles = Role::pluck('name','name')->all();
-        $roles = Role::where('name','!=','Admin')->pluck('name','name')->all();
+        $auth_user = Auth::user()->roles[0]->name;
+        if($auth_user == "Admin") {
+            $roles = Role::pluck('name','name')->all();
+        }else{
+            $roles = Role::where('name', '!=', 'Admin')->pluck('name', 'name')->all();
+        }
         $userRole = $user->roles->pluck('name','name')->all();
 
 
