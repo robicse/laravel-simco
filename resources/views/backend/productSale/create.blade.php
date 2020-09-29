@@ -32,7 +32,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
                             <div class="col-md-5">
-                                <select name="party_id" id="customer" class="form-control select2">
+                                <select name="party_id" id="customer" class="form-control select2" required>
                                     <option value="">Select One</option>
                                     @foreach($parties as $party)
                                         <option value="{{$party->id}}">{{$party->name}} </option>
@@ -45,7 +45,7 @@
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="store_id" id="store_id" class="form-control" >
-                                    <option value="">Select One</option>
+{{--                                    <option value="">Select One</option>--}}
                                     @foreach($stores as $store)
                                         <option value="{{$store->id}}" {{Auth::user()->roles[0]->name == 'User' ? 'selected':''}}>{{$store->name}} </option>
                                     @endforeach
@@ -55,7 +55,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="payment_type" id="payment_type" class="form-control" >
+                                <select name="payment_type" id="payment_type" class="form-control" required>
                                     <option value="">Select One</option>
                                     <option value="cash">cash</option>
                                     <option value="online">online</option>
@@ -63,23 +63,23 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-8">
-                                <select name="delivery_service" id="delivery_service" class="form-control" >
-                                    <option value="">Select One</option>
-                                    <option value="Sundorban Kuriar Service">Sundorban Kuriar Service</option>
-                                    <option value="SA Paribahan">SA Paribahan</option>
-                                </select>
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                                <select name="delivery_service" id="delivery_service" class="form-control" >--}}
+{{--                                    <option value="">Select One</option>--}}
+{{--                                    <option value="Sundorban Kuriar Service">Sundorban Kuriar Service</option>--}}
+{{--                                    <option value="SA Paribahan">SA Paribahan</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>
-                            <div class="col-md-8">
-                                <input type="number" class="form-control" name="delivery_service_charge" value="" />
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                                <input type="number" class="form-control" name="delivery_service_charge" value="" />--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
                         <table class="table table-striped">
@@ -153,7 +153,7 @@
                                     <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                 </td>
                                 <td>
-                                    <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                    <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" required >
                                 </td>
                                 <td>
                                     <input type="text" class="amount form-control" name="sub_total[]">
@@ -174,7 +174,7 @@
                                 </th>
                                 <th colspan="2">
                                     Discount Amount:
-                                    <input type="text" id="discount_amount" class="form-control" name="discount_amount">
+                                    <input type="text" id="discount_amount" class="form-control" name="discount_amount" value="0">
                                 </th>
                                 <th colspan="2">
                                     Total:
@@ -182,7 +182,7 @@
                                 </th>
                                 <th colspan="2">
                                     Paid Amount:
-                                    <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount">
+                                    <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount" value="0">
                                 </th>
                                 <th colspan="2">
                                     Due Amount:
@@ -320,7 +320,7 @@
                     '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
                     '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
-                    '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
+                    '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
@@ -412,6 +412,7 @@
                         $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                         $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                         $("#stock_qty_"+current_row).val(res.data.current_stock);
+                        $("#price_"+current_row).val(res.data.mrp_price);
                     },
                     error : function (err){
                         console.log(err)

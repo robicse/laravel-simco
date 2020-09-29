@@ -20,8 +20,8 @@ class CreateProductSalesTable extends Migration
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('party_id')->unsigned();
             $table->enum('payment_type', ['cash','online']);
-            $table->string('delivery_service');
-            $table->string('delivery_service_charge');
+            $table->string('delivery_service')->nullable();
+            $table->string('delivery_service_charge')->nullable();
             $table->enum('discount_type',['flat','percentage']);
             $table->float('discount_amount', 8,2);
             $table->float('total_amount', 8,2);

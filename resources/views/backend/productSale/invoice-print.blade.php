@@ -45,7 +45,7 @@
                     <br>
                     {{--                                        <b>Order ID:</b> 4F3S8J<br>--}}
                     {{--                                        <b>Payment Type:</b> {{$productSale->payment_type}}<br>--}}
-                    <b>Delivery Service:</b> {{$productSale->delivery_service}}
+{{--                    <b>Delivery Service:</b> {{$productSale->delivery_service}}--}}
                 </div>
                 <!-- /.col -->
             </div>

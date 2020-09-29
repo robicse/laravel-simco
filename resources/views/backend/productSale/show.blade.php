@@ -38,10 +38,10 @@
                         <th>Payment Type</th>
                         <td>{{$productSale->payment_type}}</td>
                     </tr>
-                    <tr>
-                        <th>Delivery Service</th>
-                        <td>{{$productSale->delivery_service}}</td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>Delivery Service</th>--}}
+{{--                        <td>{{$productSale->delivery_service}}</td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>Discount Type</th>
                         <td>{{$productSale->discount_type}}</td>
