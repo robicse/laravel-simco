@@ -38,6 +38,12 @@
                         <th>Payment Type</th>
                         <td>{{$productSale->payment_type}}</td>
                     </tr>
+                    @if($productSale->payment_type == 'check')
+                        <tr>
+                            <th>Check Number</th>
+                            <td>{{$productSale->check_number}}</td>
+                        </tr>
+                    @endif
 {{--                    <tr>--}}
 {{--                        <th>Delivery Service</th>--}}
 {{--                        <td>{{$productSale->delivery_service}}</td>--}}

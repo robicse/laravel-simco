@@ -102,6 +102,9 @@
                     <p class="lead">Payment Type:</p>
                     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                         {{$productSale->payment_type}}
+                        @if($productSale->payment_type == 'check')
+                            ( Check Number: {{$productSale->check_number}} )
+                        @endif
                     </p>
                 </div>
                 <!-- /.col -->

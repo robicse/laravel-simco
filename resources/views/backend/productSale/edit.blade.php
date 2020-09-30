@@ -52,8 +52,10 @@
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
                                     <option value="cash" {{'cash' == $productSale->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="online" {{'online' == $productSale->payment_type ? 'selected' : ''}}>online</option>
+                                    <option value="check" {{'check' == $productSale->payment_type ? 'selected' : ''}}>check</option>
                                 </select>
+                                <span>&nbsp;</span>
+                                <input type="text" name="check_number" id="check_number" class="form-control" value="{{$productSale->check_number}}" placeholder="Check Number">
                             </div>
                         </div>
 {{--                        <div class="form-group row">--}}
@@ -331,6 +333,21 @@
                 }
             })
         }
+
+        $(function() {
+            <?php
+            if($productSale->payment_type == 'cash'){
+            ?>
+            $('#check_number').hide();
+            <?php } ?>
+            $('#payment_type').change(function(){
+                if($('#payment_type').val() == 'check') {
+                    $('#check_number').show();
+                } else {
+                    $('#check_number').hide();
+                }
+            });
+        });
     </script>
 @endpush
 

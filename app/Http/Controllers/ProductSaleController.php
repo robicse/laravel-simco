@@ -100,6 +100,7 @@ class ProductSaleController extends Controller
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
         $productSale->payment_type = $request->payment_type;
+        $productSale->check_number = $request->check_number ? $request->check_number : '';
         $productSale->delivery_service = $request->delivery_service;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
@@ -155,6 +156,7 @@ class ProductSaleController extends Controller
             $due->store_id = $request->store_id;
             $due->party_id = $request->party_id;
             $due->payment_type = $request->payment_type;
+            $due->check_number = $request->check_number ? $request->check_number : '';
             $due->total_amount = $total_amount;
             $due->paid_amount = $request->paid_amount;
             $due->due_amount = $request->due_amount;
@@ -169,6 +171,7 @@ class ProductSaleController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $request->payment_type;
+            $transaction->check_number = $request->check_number ? $request->check_number : '';
             $transaction->amount = $total_amount;
             $transaction->save();
         }
@@ -237,6 +240,7 @@ class ProductSaleController extends Controller
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
         $productSale->payment_type = $request->payment_type;
+        $productSale->check_number = $request->check_number ? $request->check_number : '';
         $productSale->delivery_service = $request->delivery_service;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
@@ -289,6 +293,7 @@ class ProductSaleController extends Controller
         $due->store_id = $request->store_id;
         $due->party_id = $request->party_id;
         $due->payment_type = $request->payment_type;
+        $due->check_number = $request->check_number ? $request->check_number : '';
         $due->total_amount = $total_amount;
         $due->paid_amount = $request->paid_amount;
         $due->due_amount = $request->due_amount;
@@ -300,6 +305,7 @@ class ProductSaleController extends Controller
         $transaction->store_id = $request->store_id;
         $transaction->party_id = $request->party_id;
         $transaction->payment_type = $request->payment_type;
+        $transaction->check_number = $request->check_number ? $request->check_number : '';
         $transaction->amount = $total_amount;
         $transaction->update();
 
