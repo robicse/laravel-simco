@@ -51,11 +51,11 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="cash" {{'cash' == $productSale->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="check" {{'check' == $productSale->payment_type ? 'selected' : ''}}>check</option>
+                                    <option value="cash" {{'cash' == $transaction->payment_type ? 'selected' : ''}}>cash</option>
+                                    <option value="check" {{'check' == $transaction->payment_type ? 'selected' : ''}}>check</option>
                                 </select>
                                 <span>&nbsp;</span>
-                                <input type="text" name="check_number" id="check_number" class="form-control" value="{{$productSale->check_number}}" placeholder="Check Number">
+                                <input type="text" name="check_number" id="check_number" class="form-control" value="{{$transaction->check_number}}" placeholder="Check Number">
                             </div>
                         </div>
 {{--                        <div class="form-group row">--}}
@@ -336,7 +336,7 @@
 
         $(function() {
             <?php
-            if($productSale->payment_type == 'cash'){
+            if($transaction->payment_type == 'cash'){
             ?>
             $('#check_number').hide();
             <?php } ?>

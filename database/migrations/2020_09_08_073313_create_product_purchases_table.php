@@ -19,7 +19,7 @@ class CreateProductPurchasesTable extends Migration
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('party_id')->unsigned();
             //$table->enum('payment_type', ['cash','check']);
-            //$table->string('check_number');
+            //$table->string('check_number')->nullable;
             $table->float('total_amount', 8,2);
             $table->timestamps();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');

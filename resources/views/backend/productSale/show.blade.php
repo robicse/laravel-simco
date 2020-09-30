@@ -36,12 +36,12 @@
                     </tr>
                     <tr>
                         <th>Payment Type</th>
-                        <td>{{$productSale->payment_type}}</td>
+                        <td>{{$transaction->payment_type}}</td>
                     </tr>
-                    @if($productSale->payment_type == 'check')
+                    @if($transaction->payment_type == 'check')
                         <tr>
                             <th>Check Number</th>
-                            <td>{{$productSale->check_number}}</td>
+                            <td>{{$transaction->check_number}}</td>
                         </tr>
                     @endif
 {{--                    <tr>--}}

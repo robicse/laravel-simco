@@ -19,10 +19,10 @@
                     <thead>
                     <tr>
                         <th width="5%">#Id</th>
-                        <th>User</th>
+                        <th>Sale User</th>
                         <th>Store</th>
-                        <th>Party</th>
-                        <th>Payment Type</th>
+                        <th>Customer</th>
+{{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
                         <th>Paid Amount</th>
                         <th>Due Amount</th>
@@ -36,7 +36,7 @@
                         <td>{{ $productSale->user->name}}</td>
                         <td>{{ $productSale->store->name}}</td>
                         <td>{{ $productSale->party->name}}</td>
-                        <td>{{ $productSale->payment_type}}</td>
+{{--                        <td>{{ $productSale->payment_type}}</td>--}}
                         <td>{{ $productSale->total_amount}}</td>
                         <td>{{ $productSale->paid_amount}}</td>
                         <td>
