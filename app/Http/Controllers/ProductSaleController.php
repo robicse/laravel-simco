@@ -594,4 +594,16 @@ class ProductSaleController extends Controller
         return redirect()->back();
 
     }
+
+    public function customerDue()
+    {
+        $auth_user_id = Auth::user()->id;
+        $auth_user = Auth::user()->roles[0]->name;
+        if($auth_user == "Admin"){
+            $productSales = ProductSale::where('due_amount','>',0)->latest()->get();
+        }else{
+            $productSales = ProductSale::where('user_id',$auth_user_id)->where('due_amount','>',0)->get();
+        }
+        return view('backend.productSale.customer_due',compact('productSales'));
+    }
 }
