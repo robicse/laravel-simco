@@ -17,10 +17,10 @@
                     <thead>
                     <tr>
                         <th width="5%">#Id</th>
-                        <th>User</th>
+                        <th>Purchase User</th>
                         <th>Store</th>
-                        <th>Party</th>
-                        <th>Payment Type</th>
+                        <th>Supplier</th>
+{{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
                         <th>Action</th>
                     </tr>
@@ -32,7 +32,7 @@
                         <td>{{ $productPurches->user->name}}</td>
                         <td>{{ $productPurches->store->name}}</td>
                         <td>{{ $productPurches->party->name}}</td>
-                        <td>{{ $productPurches->payment_type}}</td>
+{{--                        <td>{{ $productPurches->payment_type}}</td>--}}
                         <td>{{ $productPurches->total_amount}}</td>
                         <td>
                             <a href="{{ route('productPurchases.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left">Show</a>

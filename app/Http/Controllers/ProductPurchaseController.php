@@ -76,8 +76,8 @@ class ProductPurchaseController extends Controller
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
-        $productPurchase ->payment_type = $request->payment_type;
-        $productPurchase->check_number = $request->check_number ? $request->check_number : '';
+        //$productPurchase ->payment_type = $request->payment_type;
+        //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase->save();
         $insert_id = $productPurchase->id;
@@ -128,6 +128,7 @@ class ProductPurchaseController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
+            $transaction->check_number = $request->check_number ? $request->check_number : '';
             $transaction->amount = $total_amount;
             $transaction->save();
         }
@@ -142,8 +143,9 @@ class ProductPurchaseController extends Controller
     {
         $productPurchase = ProductPurchase::find($id);
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
+        $transaction = Transaction::where('ref_id',$id)->first();
 
-        return view('backend.productPurchase.show', compact('productPurchase','productPurchaseDetails'));
+        return view('backend.productPurchase.show', compact('productPurchase','productPurchaseDetails','transaction'));
     }
 
 
@@ -162,8 +164,9 @@ class ProductPurchaseController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
+        $transaction = Transaction::where('ref_id',$id)->first();
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
-        return view('backend.productPurchase.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands'));
+        return view('backend.productPurchase.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction'));
     }
 
 
@@ -188,8 +191,8 @@ class ProductPurchaseController extends Controller
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
-        $productPurchase ->payment_type = $request->payment_type;
-        $productPurchase->check_number = $request->check_number ? $request->check_number : '';
+        //$productPurchase ->payment_type = $request->payment_type;
+        //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase->update();
 
