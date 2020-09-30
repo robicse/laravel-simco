@@ -39,6 +39,12 @@
                         <th>Payment Type</th>
                         <td>{{$productPurchase->payment_type}}</td>
                     </tr>
+                    @if($productPurchase->payment_type == 'check')
+                        <tr>
+                            <th>Check Number</th>
+                            <td>{{$productPurchase->check_number}}</td>
+                        </tr>
+                    @endif
                     <tr>
                         <th>Amount</th>
                         <td>{{$productPurchase->total_amount}}</td>

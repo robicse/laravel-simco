@@ -77,6 +77,7 @@ class ProductPurchaseController extends Controller
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->payment_type = $request->payment_type;
+        $productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase->save();
         $insert_id = $productPurchase->id;
@@ -188,6 +189,7 @@ class ProductPurchaseController extends Controller
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->payment_type = $request->payment_type;
+        $productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase->update();
 
@@ -233,6 +235,7 @@ class ProductPurchaseController extends Controller
         $transaction->store_id = $request->store_id;
         $transaction->party_id = $request->party_id;
         $transaction->payment_type = $request->payment_type;
+        $transaction->check_number = $request->check_number ? $request->check_number : '';
         $transaction->amount = $total_amount;
         $transaction->update();
 

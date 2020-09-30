@@ -478,6 +478,7 @@
                 if($('#payment_type').val() == 'check') {
                     $('#check_number').show();
                 } else {
+                    $('#check_number').val('');
                     $('#check_number').hide();
                 }
             });
