@@ -44,7 +44,12 @@
                                         <td>{{ $transaction->store->name}}</td>
                                         <td>{{ $transaction->party->name}}</td>
                                         <td>{{ $transaction->transaction_type}}</td>
-                                        <td>{{ $transaction->payment_type}}</td>
+                                        <td>
+                                            {{ $transaction->payment_type}}
+                                            @if($transaction->payment_type == 'check')
+                                                ( {{$transaction->check_number}} )
+                                            @endif
+                                        </td>
                                         <td>{{ $transaction->amount}}</td>
                                     </tr>
                                 @endforeach
