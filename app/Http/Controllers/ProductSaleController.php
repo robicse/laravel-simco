@@ -586,11 +586,24 @@ class ProductSaleController extends Controller
         $due->user_id=$product_sale->user_id;
         $due->store_id=$product_sale->store_id;
         $due->party_id=$product_sale->party_id;
-        $due->payment_type=$product_sale->payment_type;
+        //$due->payment_type=$product_sale->payment_type;
         $due->total_amount=$product_sale->total_amount;
         $due->paid_amount=$request->new_paid;
         $due->due_amount=$total_amount-($paid_amount+$request->new_paid);
         $due->save();
+
+        // transaction
+        $transaction = new Transaction();
+        $transaction->invoice_no = $product_sale->invoice_no;
+        $transaction->user_id = Auth::id();
+        $transaction->store_id = $product_sale->store_id;
+        $transaction->party_id = $product_sale->party_id;
+        $transaction->ref_id = $product_sale->id;
+        $transaction->transaction_type = 'due';
+        $transaction->payment_type = $request->payment_type;
+        $transaction->check_number = $request->check_number ? $request->check_number : '';
+        $transaction->amount = $request->new_paid;
+        $transaction->save();
 
         Toastr::success('Due Pay Successfully', 'Success');
         return redirect()->back();

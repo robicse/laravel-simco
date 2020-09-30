@@ -62,11 +62,36 @@
                                             <input type="number" class="form-control" id="due" aria-describedby="emailHelp" name="new_paid" min="" max="{{$productSale->due_amount}}" placeholder="Enter Amount">
                                         </div>
                                         <div class="form-group">
+                                            <label for="payment_type">Payment Type</label>
+                                            <select name="payment_type" id="payment_type" class="form-control" required>
+                                                <option value="">Select One</option>
+                                                <option value="cash">cash</option>
+                                                <option value="check">check</option>
+                                            </select>
+                                            <span>&nbsp;</span>
+                                            <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
+                                        </div>
+                                        <div class="form-group">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
+                            @push('js')
+                                <script>
+                                    $(function() {
+                                        $('#check_number').hide();
+                                        $('#payment_type').change(function(){
+                                            if($('#payment_type').val() == 'check') {
+                                                $('#check_number').show();
+                                            } else {
+                                                $('#check_number').val('');
+                                                $('#check_number').hide();
+                                            }
+                                        });
+                                    });
+                                </script>
+                            @endpush
                         </div>
                     </div>
                         @endforeach
