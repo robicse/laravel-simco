@@ -42,7 +42,7 @@
                                         <td>{{ $key+1 }}</td>
                                         <td>{{ $transaction->user->name}}</td>
                                         <td>{{ $transaction->store->name}}</td>
-                                        <td>{{ $transaction->party->name}}</td>
+                                        <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
                                         <td>{{ $transaction->transaction_type}}</td>
                                         <td>
                                             {{ $transaction->payment_type}}

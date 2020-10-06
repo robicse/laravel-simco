@@ -42,8 +42,9 @@ class TransactionController extends Controller
 //        ->get();
 
         //dd($productPurchaseDetails);
+        $total_expense = Transaction::where('transaction_type','expense')->sum('amount');
         $stores = Store::all();
-        return view('backend.transaction.loss_profit', compact('stores'));
+        return view('backend.transaction.loss_profit', compact('stores','total_expense'));
     }
 
     public function deliveryList(){

@@ -162,12 +162,28 @@
                             <table>
                                 <thead>
                                 <tr>
-                                    <th colspan="10">Sum Loss/Profit: </th>
+                                    <th colspan="10">Sum Product Based Loss/Profit: </th>
                                     <th>
                                         @if($sum_loss_or_profit > 0)
                                             Profit: {{$sum_loss_or_profit}}
                                         @else
                                             Loss: {{$sum_loss_or_profit}}
+                                        @endif
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan="10">Expense:</th>
+                                    <th>
+                                        {{$total_expense}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan="10">Final Loss/Profit:</th>
+                                    <th>
+                                        @if($sum_loss_or_profit > 0)
+                                            Profit: {{$sum_loss_or_profit - $total_expense}}
+                                        @else
+                                            Loss: {{$sum_loss_or_profit - $total_expense}}
                                         @endif
                                     </th>
                                 </tr>

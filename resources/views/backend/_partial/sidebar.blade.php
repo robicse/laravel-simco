@@ -59,9 +59,10 @@
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('stock.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Stock List</span></a></li>
             </ul>
         </li>
-        <li class="treeview{{Request::is('officeCostingCategory*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Office Costing </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('officeCostingCategory*') || Request::is('expenses*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Office Costing </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li  style="background-color: gray"><a class="app-menu__item" href="{{ route('officeCostingCategory.index') }}"><i class="app-menu__icon fas fa-users"></i><span class="app-menu__label">Office Costing Category</span></a></li>
+                <li  style="background-color: gray"><a class="app-menu__item" href="{{ route('expenses.index') }}"><i class="app-menu__icon fas fa-users"></i><span class="app-menu__label">Expense</span></a></li>
             </ul>
         </li>
         <li class="treeview{{Request::is('transaction*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Transaction </span><i class="treeview-indicator fa fa-angle-right"></i></a>
