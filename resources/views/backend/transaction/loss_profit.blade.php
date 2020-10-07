@@ -13,13 +13,44 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">Loss Profit Table</h3>
+                <form class="form-inline" action="{{ route('transaction.lossProfit') }}">
+                    <div class="form-group col-md-4">
+                        <label for="start_date">Start Date:</label>
+                        <input type="text" name="start_date" class="datepicker form-control" value="">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="end_date">End Date:</label>
+                        <input type="text" name="end_date" class="datepicker form-control" value="">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <a href="{!! route('expenses.index') !!}" class="btn btn-primary" type="button">Reset</a>
+                    </div>
+                </form>
+                <div>&nbsp;</div>
                 @if(!empty($stores))
                     @foreach($stores as $store)
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
 
                             @php
-                                $productPurchaseDetails = DB::table('product_purchase_details')
+                                $custom_start_date = $start_date.' 00:00:00';
+                                $custom_end_date = $end_date.' 00:00:00';
+
+                                if($start_date != '' && $end_date != ''){
+                                    $productPurchaseDetails = DB::table('product_purchase_details')
+                                    ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+                                    ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+                                    ->where('product_purchases.store_id',$store->id)
+                                    ->where('product_purchases.created_at','>=',$custom_start_date)
+                                    ->where('product_purchases.created_at','<=',$custom_end_date)
+                                    ->groupBy('product_id')
+                                    ->groupBy('product_category_id')
+                                    ->groupBy('product_sub_category_id')
+                                    ->groupBy('product_brand_id')
+                                    ->get();
+                                }else{
+                                    $productPurchaseDetails = DB::table('product_purchase_details')
                                     ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
                                     ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
                                     ->where('product_purchases.store_id',$store->id)
@@ -28,6 +59,7 @@
                                     ->groupBy('product_sub_category_id')
                                     ->groupBy('product_brand_id')
                                     ->get();
+                                }
 
 
                                 $sum_loss_or_profit = 0;
@@ -231,9 +263,9 @@
                                     <th colspan="10">Sum Product Based Loss/Profit: </th>
                                     <th>
                                         @if($sum_loss_or_profit > 0)
-                                            Profit: {{$sum_loss_or_profit}}
+                                            Profit: {{number_format($sum_loss_or_profit, 2, '.', '')}}
                                         @else
-                                            Loss: {{$sum_loss_or_profit}}
+                                            Loss: {{number_format($sum_loss_or_profit, 2, '.', '')}}
                                         @endif
                                     </th>
                                 </tr>
@@ -241,18 +273,22 @@
                                     <th colspan="10">Expense:</th>
                                     <th>
                                         @php
-                                            $total_expense = \App\Transaction::where('store_id',$store->id)->where('transaction_type','expense')->sum('amount');
+                                            if($start_date != '' && $end_date != ''){
+                                                $total_expense = \App\Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('store_id',$store->id)->sum('amount');
+                                            }else{
+                                                $total_expense = \App\Expense::where('store_id',$store->id)->sum('amount');
+                                            }
                                         @endphp
-                                        {{$total_expense}}
+                                        {{number_format($total_expense, 2, '.', '')}}
                                     </th>
                                 </tr>
                                 <tr>
                                     <th colspan="10">Final Loss/Profit:</th>
                                     <th>
                                         @if($sum_loss_or_profit > 0)
-                                            Profit: {{$sum_loss_or_profit - $total_expense}}
+                                            Profit: {{number_format($sum_loss_or_profit - $total_expense, 2, '.', '')}}
                                         @else
-                                            Loss: {{$sum_loss_or_profit - $total_expense}}
+                                            Loss: {{number_format($sum_loss_or_profit + $total_expense, 2, '.', '')}}
                                         @endif
                                     </th>
                                 </tr>

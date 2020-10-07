@@ -93,13 +93,16 @@
                                     }
                                 }
                             }
+
+                        $total_expense = \App\Transaction::where('store_id',$store->id)->where('transaction_type','expense')->sum('amount');
+                        $final_loss_or_profit = $sum_loss_or_profit - $total_expense;
                         @endphp
 
                         <div class="col-md-3 ">
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
                                     <h4>Total Purchase</h4>
-                                    <p><b>{{$sum_purchase_price}}</b></p>
+                                    <p><b>{{number_format($sum_purchase_price, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>
@@ -107,34 +110,36 @@
                             <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                 <div class="info">
                                     <h4>Total Sell</h4>
-                                    <p><b>{{$sum_sale_price}}</b></p>
+                                    <p><b>{{number_format($sum_sale_price, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                            <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
                                 <div class="info">
                                     <h4>Total Sell Return</h4>
-                                    <p><b>{{$sum_sale_return_price}}</b></p>
+                                    <p><b>{{number_format($sum_sale_return_price, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="widget-small info coloured-icon"><i class="icon fab fa-paypal " ></i><div class="info">
-                                    <h4>Loss/Profit</h4>
-                                    <p><b>{{$sum_loss_or_profit}}</b></p>
-                                </div>
-                            </div>
-                        </div>
-                        {{--<div class="col-md-3">
                             <div class="widget-small warning coloured-icon"><i class="icon fas fa-file-invoice-dollar"></i>
                                 <div class="info">
-                                    <h4>Today Due</h4>
-                                    <p><b></b></p>
+                                    <h4>Total Expense</h4>
+                                    <p><b>{{number_format($total_expense, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
+                            <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                                <div class="info">
+                                    <h4>Final Loss/Profit</h4>
+                                    <p><b>{{number_format($final_loss_or_profit, 2, '.', '')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{--<div class="col-md-3">
                             <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i> <div class="info">
                                     <h4>Today Invoice</h4>
                                     <p><b></b></p>

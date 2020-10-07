@@ -26,7 +26,7 @@ class TransactionController extends Controller
         return view('backend.transaction.index', compact('stores'));
     }
 
-    public function lossProfit(){
+    public function lossProfit(Request $request){
 //       $productPurchaseDetails = DB::table('product_purchase_details')
 //            ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
 //            ->groupBy('product_id')
@@ -42,9 +42,10 @@ class TransactionController extends Controller
 //        ->get();
 
         //dd($productPurchaseDetails);
-        $total_expense = Transaction::where('transaction_type','expense')->sum('amount');
+        $start_date = $request->start_date ? $request->start_date : '';
+        $end_date = $request->end_date ? $request->end_date : '';
         $stores = Store::all();
-        return view('backend.transaction.loss_profit', compact('stores','total_expense'));
+        return view('backend.transaction.loss_profit', compact('stores','start_date','end_date'));
     }
 
     public function deliveryList(){
