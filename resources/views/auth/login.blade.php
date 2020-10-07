@@ -50,14 +50,14 @@
                 @endif
             </div>
             <div class="form-group">
-{{--                <div class="utility">--}}
-{{--                    <div class="animated-checkbox">--}}
-{{--                        <label>--}}
-{{--                            <input type="checkbox"><span class="label-text">Stay Signed in</span>--}}
-{{--                        </label>--}}
-{{--                    </div>--}}
-{{--                    <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>--}}
-{{--                </div>--}}
+                <div class="utility">
+                    <div class="animated-checkbox">
+                        <label>
+                            <input type="checkbox"><span class="label-text">Stay Signed in</span>
+                        </label>
+                    </div>
+                    <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
+                </div>
             </div>
             <div class="form-group btn-container">
                 <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
