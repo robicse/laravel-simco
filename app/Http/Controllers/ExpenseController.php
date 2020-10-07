@@ -12,14 +12,24 @@ use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
-        if($auth_user == "Admin"){
-            $expenses = Expense::latest()->get();
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        if($start_date && $end_date){
+            if($auth_user == "Admin"){
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->latest()->get();
+            }else{
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('user_id',$auth_user_id)->get();
+            }
         }else{
-            $expenses = Expense::where('user_id',$auth_user_id)->get();
+            if($auth_user == "Admin"){
+                $expenses = Expense::latest()->get();
+            }else{
+                $expenses = Expense::where('user_id',$auth_user_id)->get();
+            }
         }
         return view('backend.expense.index',compact('expenses'));
     }
