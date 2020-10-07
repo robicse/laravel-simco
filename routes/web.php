@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('party/supplier/new-party','ProductPurchaseController@newParty')->name('parties.supplier.store.new');
     Route::post('pay-due','ProductSaleController@payDue')->name('pay.due');
     Route::get('productSales-customer-due','ProductSaleController@customerDue')->name('productSales.customer.due');
+    Route::post('party/new-office-costing-category','ExpenseController@newOfficeCostingCategory')->name('office.costing.category.new');
 
     //excel
     Route::get('export', 'UserController@export')->name('export');

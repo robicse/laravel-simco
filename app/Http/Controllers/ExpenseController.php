@@ -9,6 +9,7 @@ use App\Transaction;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ExpenseController extends Controller
 {
@@ -134,5 +135,29 @@ class ExpenseController extends Controller
         Expense::destroy($id);
         Toastr::success('Expense Updated Successfully', 'Success');
         return redirect()->route('expenses.index');
+    }
+
+    public function newOfficeCostingCategory(Request $request){
+        //dd($request->all());
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+        $officeCostingCategory = new OfficeCostingCategory();
+        $officeCostingCategory->name = $request->name;
+        $officeCostingCategory->slug = Str::slug($request->name);
+        $officeCostingCategory->save();
+        $insert_id = $officeCostingCategory->id;
+
+        if ($insert_id){
+            $sdata['id'] = $insert_id;
+            $sdata['name'] = $officeCostingCategory->name;
+            echo json_encode($sdata);
+
+        }
+        else {
+            $data['exception'] = 'Some thing mistake !';
+            echo json_encode($data);
+
+        }
     }
 }

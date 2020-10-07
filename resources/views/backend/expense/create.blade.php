@@ -93,7 +93,7 @@
         </div>
 
         <!-- Credit Sale -->
-        <div id="customar_modal" class="modal fade" role="dialog">
+        <div id="category_modal" class="modal fade" role="dialog">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color:green; color: white">
@@ -105,47 +105,18 @@
                             <div class="col-sm-12 col-md-12">
                                 <div class="panel panel-bd lobidrag">
                                     <div class="panel-body">
-                                        <form action="{{ route('parties.store.new') }}" id="customer_insert" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                                        <form action="{{ route('office.costing.category.new') }}" id="customer_insert" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                                             @csrf
                                             <div class="form-group row">
                                                 <label class="control-label col-md-3 text-right">Name <small class="requiredCustom">*</small></label>
                                                 <div class="col-md-8">
-                                                    <input class="form-control" type="hidden" name="type" value="customer">
-                                                    <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="Customer Name" name="name">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Phone <small class="requiredCustom">*</small></label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" type="text" placeholder="Customer Phone" name="phone">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Email <small class="requiredCustom">*</small></label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" type="email" placeholder="Customer Email" name="email">
-                                                    @if ($errors->has('email'))
-                                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Address <small class="requiredCustom">*</small></label>
-                                                <div class="col-md-8">
-                                                    <textarea rows="5" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" type="text" placeholder="Customer Address" name="address"></textarea>
-                                                    @if ($errors->has('address'))
-                                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('address') }}</strong>
-                                        </span>
-                                                    @endif
+                                                    <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="costing category name" name="name">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
                                                 <label class="control-label col-md-3"></label>
                                                 <div class="col-md-8">
-                                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Party</button>
+                                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -165,7 +136,7 @@
     <script>
 
         function modal_customer(){
-            $('#customar_modal').modal('show');
+            $('#category_modal').modal('show');
         }
 
         //new customer insert
@@ -191,7 +162,7 @@
                     }else{
                         $('#customer').append('<option value = "' + data.id + '"  selected> '+ data.name + ' </option>');
                         console.log(data.id);
-                        $("#customar_modal").modal('hide');
+                        $("#category_modal").modal('hide');
                     }
                 },
                 error: function(xhr)
@@ -202,7 +173,7 @@
         });
 
         function hidemodal() {
-            var x = document.getElementById("customar_modal");
+            var x = document.getElementById("category_modal");
             x.style.display = "none";
         }
 
