@@ -53,7 +53,7 @@ class ExpenseController extends Controller
         $expense->payment_type = $request->payment_type;
         $expense->check_number = $request->check_number ? $request->check_number : NULL;
         $expense->amount = $request->amount;
-        $expense->date = date('d-m-Y');
+        $expense->date = $request->date;
         $expense->save();
 
         $insert_id = $expense->id;

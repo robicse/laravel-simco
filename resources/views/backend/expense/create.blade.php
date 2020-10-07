@@ -73,6 +73,13 @@
                         </div>
 
                         <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Date  <small class="requiredCustom">*</small></label>
+                            <div class="col-md-8">
+                                <input type="text" name="date" class="datepicker form-control" value="{{date('Y-m-d')}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label class="control-label col-md-3"></label>
                             <div class="col-md-8">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Expense</button>
