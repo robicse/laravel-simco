@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\DeliveryExport;
 use App\Exports\LossProfitExport;
+use App\Exports\LossProfitExportFilter;
 use App\Exports\TransactionExport;
 use App\Store;
 use Illuminate\Http\Request;
@@ -67,5 +68,11 @@ class TransactionController extends Controller
     public function lossProfitExport()
     {
         return Excel::download(new LossProfitExport, 'loss_profit.xlsx');
+    }
+
+    public function lossProfitExportFilter(Request $request, $start_date, $end_date)
+    {
+        //dd('okk1');
+        return Excel::download(new LossProfitExportFilter, 'loss_profit.xlsx');
     }
 }

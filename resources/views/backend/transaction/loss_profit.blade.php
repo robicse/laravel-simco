@@ -7,7 +7,13 @@
                 <h1><i class=""></i>Loss Profit</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
-                <li class="breadcrumb-item"><a class="btn btn-warning" href="{{ route('loss.profit.export') }}">Export Data</a></li>
+                <li class="breadcrumb-item">
+                    @if($start_date != '' && $end_date != '')
+                        <a class="btn btn-warning" href="{{ url('loss-profit-filter-export/'.$start_date."/".$end_date) }}">Export Data</a>
+                    @else
+                        <a class="btn btn-warning" href="{{ route('loss.profit.export') }}">Export Data</a>
+                    @endif
+                </li>
             </ul>
         </div>
         <div class="col-md-12">
@@ -24,7 +30,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <button type="submit" class="btn btn-success">Submit</button>
-                        <a href="{!! route('expenses.index') !!}" class="btn btn-primary" type="button">Reset</a>
+                        <a href="{!! route('transaction.lossProfit') !!}" class="btn btn-primary" type="button">Reset</a>
                     </div>
                 </form>
                 <div>&nbsp;</div>

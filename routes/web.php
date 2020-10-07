@@ -89,6 +89,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('transaction/export/', 'TransactionController@export')->name('transaction.export');
     Route::get('delivery/export/', 'TransactionController@deliveryExport')->name('delivery.export');
     Route::get('loss-profit/export/', 'TransactionController@lossProfitExport')->name('loss.profit.export');
+    Route::get('loss-profit-filter-export/{start_date}/{end_date}','TransactionController@lossProfitExportFilter')->name('loss.profit.filter.export');
     Route::get('stock/export/', 'StockController@export')->name('stock.export');
 
     // custom start
