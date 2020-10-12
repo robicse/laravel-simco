@@ -22,6 +22,7 @@
                         <th>Supplier</th>
 {{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
+                        <th>Date</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -34,6 +35,7 @@
                         <td>{{ $productPurches->party->name}}</td>
 {{--                        <td>{{ $productPurches->payment_type}}</td>--}}
                         <td>{{ $productPurches->total_amount}}</td>
+                        <td>{{ $productPurches->date}}</td>
                         <td>
                             <a href="{{ route('productPurchases.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productPurchases.edit',$productPurches->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>

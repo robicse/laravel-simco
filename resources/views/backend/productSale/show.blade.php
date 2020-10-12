@@ -114,7 +114,7 @@
                 </table>
                 <div class="tile-footer">
                     <ul class="app-breadcrumb breadcrumb">
-                        <li class="breadcrumb-item" style="margin-left: 83%"> <a href="{!! route('productSales-invoice-edit',$productSale->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Edit Page</a></li>
+                        <li class="breadcrumb-item" style="margin-left: 83%"> <a href="{!! route('productSales-invoice-edit',$productSale->id) !!}" class="btn btn-sm btn-success"  type="button">Print Invoice Edit Page</a></li>
                     </ul>
                 </div>
             </div>

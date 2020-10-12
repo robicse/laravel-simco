@@ -24,11 +24,12 @@
                                 <th width="5%">#Id</th>
                                 <th width="10%">Store</th>
                                 <th width="15%">Stock Type</th>
-                                <th width="15%">Product</th>
-                                <th width="15%">Previous Stock</th>
-                                <th width="15%">Stock In</th>
-                                <th width="15%">Stock Out</th>
-                                <th width="15%">Current Stock</th>
+                                <th width="12%">Product</th>
+                                <th width="12%">Previous Stock</th>
+                                <th width="12%">Stock In</th>
+                                <th width="12%">Stock Out</th>
+                                <th width="12%">Current Stock</th>
+                                <th width="12%">Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -45,6 +46,7 @@
                                     <td>{{ $stock->stock_in}}</td>
                                     <td>{{ $stock->stock_out}}</td>
                                     <td>{{ $stock->current_stock}}</td>
+                                    <td>{{ $stock->date}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

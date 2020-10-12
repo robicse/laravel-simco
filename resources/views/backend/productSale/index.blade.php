@@ -25,6 +25,7 @@
 {{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
                         <th>Paid Amount</th>
+                        <th>Date</th>
                         <th>Due Amount</th>
                         <th>Action</th>
                     </tr>
@@ -39,6 +40,7 @@
 {{--                        <td>{{ $productSale->payment_type}}</td>--}}
                         <td>{{ $productSale->total_amount}}</td>
                         <td>{{ $productSale->paid_amount}}</td>
+                        <td>{{ $productSale->date}}</td>
                         <td>
                             {{ $productSale->due_amount}}
                             @if($productSale->total_amount != $productSale->paid_amount)

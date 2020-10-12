@@ -30,6 +30,7 @@
                                 <th width="15%">Transaction Type</th>
                                 <th width="15%">Payment Type</th>
                                 <th width="15%">Amount</th>
+                                <th width="15%">Date</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,6 +52,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $transaction->amount}}</td>
+                                        <td>{{ $transaction->date}}</td>
                                     </tr>
                                 @endforeach
                             @endif
