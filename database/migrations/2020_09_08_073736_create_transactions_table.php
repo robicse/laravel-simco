@@ -23,6 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->enum('transaction_type', ['purchase','sale','delivery charge','sale return','expense']);
             $table->enum('payment_type',['cash','online']);
             $table->float('amount', 8,2);
+            $table->string('date');
             $table->timestamps();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');

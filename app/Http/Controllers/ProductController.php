@@ -52,7 +52,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
-        $product->sku = $request->sku;
+        $product->description = $request->description;
         $product->model = $request->model;
         $product->status = $request->status;
         $image = $request->file('image');
@@ -106,7 +106,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
-        $product->sku = $request->sku;
+        $product->description = $request->description;
         $product->model = $request->model;
         $product->status = $request->status;
         $image = $request->file('image');

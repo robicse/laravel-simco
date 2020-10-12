@@ -99,6 +99,7 @@ class ProductSaleController extends Controller
         $productSale->user_id = Auth::id();
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
+        $productSale->date = $request->date;
         //$productSale->payment_type = $request->payment_type;
         //$productSale->check_number = $request->check_number ? $request->check_number : '';
         $productSale->delivery_service = $request->delivery_service;
@@ -139,6 +140,7 @@ class ProductSaleController extends Controller
                 $stock->user_id = Auth::id();
                 $stock->ref_id = $insert_id;
                 $stock->store_id = $request->store_id;
+                $stock->date = $request->date;
                 $stock->product_id = $request->product_id[$i];
                 $stock->stock_type = 'sale';
                 $stock->previous_stock = $previous_stock;
@@ -168,6 +170,7 @@ class ProductSaleController extends Controller
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
+            $transaction->date = $request->date;
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $request->payment_type;
@@ -241,6 +244,7 @@ class ProductSaleController extends Controller
         $productSale->user_id = Auth::id();
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
+        $productSale->date = $request->date;
         //$productSale->payment_type = $request->payment_type;
         //$productSale->check_number = $request->check_number ? $request->check_number : '';
         $productSale->delivery_service = $request->delivery_service;
@@ -281,6 +285,7 @@ class ProductSaleController extends Controller
             $stock = Stock::where('ref_id',$id)->where('stock_type','sale')->first();
             $stock->user_id = Auth::id();
             $stock->store_id = $request->store_id;
+            $stock->date = $request->date;
             $stock->product_id = $request->product_id[$i];
             $stock->previous_stock = $previous_stock;
             $stock->stock_in = 0;
@@ -306,6 +311,7 @@ class ProductSaleController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->store_id = $request->store_id;
         $transaction->party_id = $request->party_id;
+        $transaction->date = $request->date;
         $transaction->payment_type = $request->payment_type;
         $transaction->check_number = $request->check_number ? $request->check_number : '';
         $transaction->amount = $total_amount;

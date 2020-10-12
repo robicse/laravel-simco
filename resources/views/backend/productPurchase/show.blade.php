@@ -36,6 +36,10 @@
                         <td>{{$productPurchase->party->name}}</td>
                     </tr>
                     <tr>
+                        <th>Date</th>
+                        <td>{{$productPurchase->date}}</td>
+                    </tr>
+                    <tr>
                         <th>Payment Type</th>
                         <td>{{$transaction->payment_type}}</td>
                     </tr>

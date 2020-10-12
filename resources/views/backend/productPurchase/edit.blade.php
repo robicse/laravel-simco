@@ -63,6 +63,12 @@
                                 <input type="text" name="check_number" id="check_number" class="form-control" value="{{$transaction->check_number}}" placeholder="Check Number">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Date  <small class="requiredCustom">*</small></label>
+                            <div class="col-md-8">
+                                <input type="text" name="date" class="datepicker form-control" value="{{date('Y-m-d')}}">
+                            </div>
+                        </div>
 
                         {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                         <table class="table table-striped">

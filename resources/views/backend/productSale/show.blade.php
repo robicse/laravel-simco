@@ -34,9 +34,10 @@
                         <th>Party</th>
                         <td>{{$productSale->party->name}}</td>
                     </tr>
+
                     <tr>
-                        <th>Payment Type</th>
-                        <td>{{$transaction->payment_type}}</td>
+                        <th>Date</th>
+                        <td>{{$productSale->date}}</td>
                     </tr>
                     @if($transaction->payment_type == 'check')
                         <tr>

@@ -83,17 +83,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">SKU</label>
-                            <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('sku') ? ' is-invalid' : '' }}" type="text" placeholder="SKU" name="sku">
-                                @if ($errors->has('sku'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('sku') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Model</label>
                             <div class="col-md-8">
                                 <input class="form-control{{ $errors->has('model') ? ' is-invalid' : '' }}" type="text" placeholder="Model" name="model">
@@ -104,6 +93,18 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Description</label>
+                            <div class="col-md-8">
+                                <textarea rows="4" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" type="text" placeholder="description" name="description"> </textarea>
+                                @if ($errors->has('description'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('description') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Image <span style="color: red">*</span></label>
                             <div class="col-md-8">
@@ -119,8 +120,8 @@
                             <label class="control-label col-md-3 text-right">Status <span style="color: red">*</span></label>
                             <div class="col-md-8">
                                 <select name="status" id="status" class="form-control">
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value="1">Stock In</option>
+                                    <option value="0">Stock Out</option>
                                 </select>
                             </div>
                         </div>

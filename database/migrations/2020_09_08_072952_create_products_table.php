@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('product_category_id')->unsigned();
             $table->bigInteger('product_sub_category_id')->unsigned()->nullable();
             $table->bigInteger('product_brand_id')->unsigned();
-            $table->string('sku')->nullable();
+            $table->longText('description')->nullable();
             $table->string('model')->nullable();
             $table->string('image')->default('product.jpg');
             $table->integer('status')->default(1);
