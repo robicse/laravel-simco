@@ -71,6 +71,7 @@
                         <th>Product Image</th>
                         <th>Product</th>
                         <th>Qty</th>
+                        <th>Production</th>
                         <th>Price</th>
                         <th>Sub Total</th>
                     </tr>
@@ -88,6 +89,7 @@
                                 </td>
                                 <td>{{$productPurchaseDetail->product->name}}</td>
                                 <td>{{$productPurchaseDetail->qty}}</td>
+                                <td>{{$productPurchaseDetail->production}}</td>
                                 <td>{{$productPurchaseDetail->price}}</td>
                                 <td>{{$productPurchaseDetail->sub_total}}</td>
                             </tr>

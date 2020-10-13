@@ -85,6 +85,7 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
                 $purchase_purchase_detail->product_id = $request->product_id[$i];
                 $purchase_purchase_detail->qty = $request->qty[$i];
+                $purchase_purchase_detail->production = $request->production[$i];
                 $purchase_purchase_detail->price = $request->price[$i];
                 $purchase_purchase_detail->mrp_price = NULL;
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
@@ -203,6 +204,7 @@ class ProductPurchaseRawMaterialsController extends Controller
             $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
             $purchase_purchase_detail->product_id = $request->product_id[$i];
             $purchase_purchase_detail->qty = $request->qty[$i];
+            $purchase_purchase_detail->production = $request->production[$i];
             $purchase_purchase_detail->price = $request->price[$i];
             $purchase_purchase_detail->mrp_price = NULL;
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
