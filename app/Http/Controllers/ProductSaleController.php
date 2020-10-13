@@ -609,6 +609,7 @@ class ProductSaleController extends Controller
         $transaction->payment_type = $request->payment_type;
         $transaction->check_number = $request->check_number ? $request->check_number : '';
         $transaction->amount = $request->new_paid;
+        $transaction->date = date('Y-m-d');
         $transaction->save();
 
         Toastr::success('Due Pay Successfully', 'Success');

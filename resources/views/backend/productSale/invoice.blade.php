@@ -1,5 +1,13 @@
 @extends('backend._partial.dashboard')
+<style>
+.invoice-to{
+    width: 401px;
+    padding: 10px;
+    border: 2px solid black;
+    margin: 0;
+}
 
+</style>
 @section('content')
     <link rel="stylesheet" href="{{asset('backend/plugins/fontawesome-free/css/all.min.css')}}">
     <!-- Ionicons -->
@@ -44,42 +52,57 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <h4>
-                                            <img src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="250px">
-                                            <small class="float-right">Date: {{date('d-m-Y')}}</small>
+                                            <img  class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="250px"><br><br>
+                                            <small class="float-right"> {{date('d-m-Y')}}</small><br>
+                                            <small class="float-right">Invoice #{{$productSale->invoice_no}}</small><br>
                                         </h4>
                                     </div>
                                     <!-- /.col -->
                                 </div>
                                 <!-- info row -->
                                 <div class="row invoice-info">
-                                    <div class="col-sm-4 invoice-col">
-                                        From
+                                    <div class="col-md-8 invoice-col">
                                         <address>
-                                            <strong>{{$store->name}}</strong><br>
-                                            {{$store->address}}<br>
-                                            Phone: {{$store->phone}}<br>
-                                            Email:
+                                            <strong>Simco Main Store</strong><br>
+                                            Flat # 3-B, (3rd floor)<br>
+                                            Square Tower (Bashundhara Lane)<br>
+                                            36/6, Mirpur Road <br><br>
+                                            Dhaka-1205<br>
+                                            Bangladesh
+
                                         </address>
                                     </div>
                                     <!-- /.col -->
-                                    <div class="col-sm-4 invoice-col">
-                                        To
-                                        <address>
-                                            <strong>{{$party->name}}</strong><br>
-                                            {{$party->address}}<br>
-                                            Phone: {{$party->phone}}<br>
-                                            Email: {{$party->email}}
-                                        </address>
+                                    <div class="col-md-4 invoice-col">
+                                        <div class="invoice-to">
+                                            <table style="width:100%">
+
+                                                <tr>
+                                                    <th>Invoice</th>
+                                                    <th>#{{$productSale->invoice_no}}</th>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Customer Name:</td>
+                                                    <td>{{$party->name}}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone NO:</td>
+                                                    <td>{{$party->phone}}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>Email:</td>
+                                                    <td>{{$party->email}}</td>
+
+                                                </tr>
+                                            </table>
+
+                                        </div>
                                     </div>
                                     <!-- /.col -->
-                                    <div class="col-sm-4 invoice-col">
-                                        <b>Invoice #{{$productSale->invoice_no}}</b><br>
-                                        <br>
-{{--                                        <b>Order ID:</b> 4F3S8J<br>--}}
-{{--                                        <b>Payment Type:</b> {{$productSale->payment_type}}<br>--}}
-{{--                                        <b>Delivery Service:</b> {{$productSale->delivery_service}}--}}
-                                    </div>
-                                    <!-- /.col -->
+
                                 </div>
                                 <!-- /.row -->
 
