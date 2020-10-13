@@ -8,13 +8,18 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <style>
         .invoice-to{
-            width: 406px;
+            /*width: 406px;*/
             padding: 10px;
             border: 2px solid black;
             margin: 0;
         }
 
+        .invoice{
+            font-size: 20px !important;
+        }
+
     </style>
+
     <div class="wrapper">
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -39,18 +44,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                            <div class="callout callout-info">
-                                <h5><i class="fas fa-info"></i> Note:</h5>
-                                This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
-                            </div>
-
-
                             <!-- Main content -->
                             <div class="invoice p-3 mb-3">
                                 <!-- title row -->
                                 <div class="row">
                                     <div class="col-12">
-                                        <h4>
+                                        <h4 style="float: right">
                                             <img  class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="250px"><br><br>
                                             <small class="float-right"> {{date('d-m-Y')}}</small><br>
                                             <small class="float-right">Invoice #{{$productSale->invoice_no}}</small><br>

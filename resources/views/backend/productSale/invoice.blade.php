@@ -1,7 +1,7 @@
 @extends('backend._partial.dashboard')
 <style>
 .invoice-to{
-    width: 401px;
+    /*width: 401px;*/
     padding: 10px;
     border: 2px solid black;
     margin: 0;
@@ -51,8 +51,8 @@
                                 <!-- title row -->
                                 <div class="row">
                                     <div class="col-12">
-                                        <h4>
-                                            <img  class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="250px"><br><br>
+                                        <h4 style="float: right">
+                                            <img class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="250px"><br><br>
                                             <small class="float-right"> {{date('d-m-Y')}}</small><br>
                                             <small class="float-right">Invoice #{{$productSale->invoice_no}}</small><br>
                                         </h4>
