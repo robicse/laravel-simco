@@ -19,6 +19,7 @@ class CreateStocksTable extends Migration
             $table->integer('user_id');
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
+            $table->enum('stock_product_type',['Finish Goods','Raw Materials']);
             $table->enum('stock_type', ['purchase','sale','sale return']);
             $table->integer('previous_stock');
             $table->integer('stock_in');

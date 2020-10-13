@@ -17,6 +17,7 @@
                     <thead>
                     <tr>
                         <th width="5%">#Id</th>
+                        <th width="10%">Product Type</th>
                         <th width="10%">Product Name</th>
                         <th width="10%">Category Name</th>
                         <th width="10%">Sub Category Name</th>
@@ -29,6 +30,7 @@
                     @foreach($products as $key => $product)
                     <tr>
                         <td>{{ $key+1 }}</td>
+                        <td>{{ $product->product_type}}</td>
                         <td>{{ $product->name}}</td>
                         <td>{{ $product->product_category->name}}</td>
                         <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>

@@ -47,6 +47,7 @@ class ProductController extends Controller
         ]);
 
         $product = new Product;
+        $product->product_type = $request->product_type;
         $product->name = $request->name;
         $product->slug = Str::slug($request->name);
         $product->product_category_id = $request->product_category_id;
@@ -101,6 +102,7 @@ class ProductController extends Controller
         ]);
 
         $product = Product::find($id);
+        $product->product_type = $request->product_type;
         $product->name = $request->name;
         $product->slug = Str::slug($request->name);
         $product->product_category_id = $request->product_category_id;

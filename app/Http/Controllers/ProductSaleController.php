@@ -57,7 +57,7 @@ class ProductSaleController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        $products = Product::all();
+        $products = Product::where('product_type','Finish Goods')->get();
         return view('backend.productSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
     }
 
@@ -205,7 +205,7 @@ class ProductSaleController extends Controller
             $stores = Store::where('user_id',$auth_user_id)->get();
         }
         $parties = Party::where('type','customer')->get() ;
-        $products = Product::all();
+        $products = Product::where('product_type','Finish Goods')->get();
         $productSale = ProductSale::find($id);
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
@@ -440,7 +440,7 @@ class ProductSaleController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        $products = Product::all();
+        $products = Product::where('product_type','Finish Goods')->get();
 
         return view('backend.productSale.invoice-edit', compact('productSale','productSaleDetails','transaction','store','party','productCategories','productSubCategories','productBrands','products'));
     }

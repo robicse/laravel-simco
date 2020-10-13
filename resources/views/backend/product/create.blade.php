@@ -24,6 +24,16 @@
                     <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Product Type <span style="color: red">*</span></label>
+                            <div class="col-md-8">
+                                <select name="product_type" id="product_type" class="form-control">
+                                    <option value="">Select</option>
+                                    <option value="Finish Goods">Finish Goods</option>
+                                    <option value="Raw Materials">Raw Materials</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Name <span style="color: red">*</span></label>
                             <div class="col-md-8">
                                 <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="Name" name="name">

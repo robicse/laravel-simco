@@ -15,6 +15,7 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->enum('product_type',['Finish Goods','Raw Materials']);
             $table->string('name');
             $table->string('slug');
             $table->bigInteger('product_category_id')->unsigned();

@@ -7,7 +7,7 @@
                 <h1><i class=""></i> All Product Purchases</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
-                <li class="breadcrumb-item"> <a href="{!! route('productPurchases.create') !!}" class="btn btn-sm btn-primary" type="button">Add Product Purchases</a></li>
+                <li class="breadcrumb-item"> <a href="{!! route('productPurchaseRawMaterials.create') !!}" class="btn btn-sm btn-primary" type="button">Add Product Purchases</a></li>
             </ul>
         </div>
         <div class="col-md-12">
@@ -39,9 +39,9 @@
                         <td>{{ $productPurches->total_amount}}</td>
                         <td>{{ $productPurches->date}}</td>
                         <td>
-                            <a href="{{ route('productPurchases.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left">Show</a>
-                            <a href="{{ route('productPurchases.edit',$productPurches->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
-                            <form method="post" action="{{ route('productPurchases.destroy',$productPurches->id) }}" >
+                            <a href="{{ route('productPurchaseRawMaterials.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left">Show</a>
+                            <a href="{{ route('productPurchaseRawMaterials.edit',$productPurches->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
+                            <form method="post" action="{{ route('productPurchaseRawMaterials.destroy',$productPurches->id) }}" >
                                @method('DELETE')
                                 @csrf
                                 <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>

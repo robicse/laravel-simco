@@ -18,22 +18,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-
-class ProductPurchaseController extends Controller
+class ProductPurchaseRawMaterialsController extends Controller
 {
-
-    function __construct()
-    {
-        $this->middleware('permission:product-purchase-list|product-purchase-create|product-purchase-edit|product-purchase-delete', ['only' => ['index','show']]);
-        $this->middleware('permission:product-purchase-create', ['only' => ['create','store']]);
-        $this->middleware('permission:product-purchase-edit', ['only' => ['edit','update']]);
-        $this->middleware('permission:product-purchase-delete', ['only' => ['destroy']]);
-    }
-
     public function index()
     {
-        $productPurchases = ProductPurchase::where('purchase_product_type','Finish Goods')->latest()->get();
-        return view('backend.productPurchase.index',compact('productPurchases'));
+        $productPurchases = ProductPurchase::where('purchase_product_type','Raw Materials')->latest()->get();
+        return view('backend.productPurchaseRawMaterial.index',compact('productPurchases'));
     }
 
 
@@ -50,8 +40,8 @@ class ProductPurchaseController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        $products = Product::where('product_type','Finish Goods')->get();
-        return view('backend.productPurchase.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
+        $products = Product::where('product_type','Raw Materials')->get();
+        return view('backend.productPurchaseRawMaterial.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
     }
 
 
@@ -80,7 +70,7 @@ class ProductPurchaseController extends Controller
         //$productPurchase ->payment_type = $request->payment_type;
         //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
-        $productPurchase ->purchase_product_type = 'Finish Goods';
+        $productPurchase ->purchase_product_type = 'Raw Materials';
         $productPurchase->save();
         $insert_id = $productPurchase->id;
         if($insert_id)
@@ -96,7 +86,7 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->product_id = $request->product_id[$i];
                 $purchase_purchase_detail->qty = $request->qty[$i];
                 $purchase_purchase_detail->price = $request->price[$i];
-                $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
+                $purchase_purchase_detail->mrp_price = NULL;
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_purchase_detail->save();
 
@@ -114,7 +104,7 @@ class ProductPurchaseController extends Controller
                 $stock->store_id = $request->store_id;
                 $stock->date = $request->date;
                 $stock->product_id = $request->product_id[$i];
-                $stock->stock_product_type = 'Finish Goods';
+                $stock->stock_product_type = 'Raw Materials';
                 $stock->stock_type = 'purchase';
                 $stock->previous_stock = $previous_stock;
                 $stock->stock_in = $request->qty[$i];
@@ -140,7 +130,7 @@ class ProductPurchaseController extends Controller
         }
 
         Toastr::success('Product Purchase Created Successfully', 'Success');
-        return redirect()->route('productPurchases.index');
+        return redirect()->route('productPurchaseRawMaterials.index');
 
     }
 
@@ -151,7 +141,7 @@ class ProductPurchaseController extends Controller
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
         $transaction = Transaction::where('ref_id',$id)->first();
 
-        return view('backend.productPurchase.show', compact('productPurchase','productPurchaseDetails','transaction'));
+        return view('backend.productPurchaseRawMaterial.show', compact('productPurchase','productPurchaseDetails','transaction'));
     }
 
 
@@ -165,14 +155,14 @@ class ProductPurchaseController extends Controller
         }else{
             $stores = Store::where('user_id',$auth_user_id)->get();
         }
-        $products = Product::where('product_type','Finish Goods')->get();
+        $products = Product::where('product_type','Raw Materials')->get();
         $productPurchase = ProductPurchase::find($id);
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $transaction = Transaction::where('ref_id',$id)->first();
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
-        return view('backend.productPurchase.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction'));
+        return view('backend.productPurchaseRawMaterial.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction'));
     }
 
 
@@ -214,7 +204,7 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->product_id = $request->product_id[$i];
             $purchase_purchase_detail->qty = $request->qty[$i];
             $purchase_purchase_detail->price = $request->price[$i];
-            $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
+            $purchase_purchase_detail->mrp_price = NULL;
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
             $purchase_purchase_detail->update();
 
@@ -252,7 +242,7 @@ class ProductPurchaseController extends Controller
         $transaction->update();
 
         Toastr::success('Product Purchases Updated Successfully', 'Success');
-        return redirect()->route('productPurchases.index');
+        return redirect()->route('productPurchaseRawMaterials.index');
     }
 
 
@@ -327,11 +317,11 @@ class ProductPurchaseController extends Controller
     }
     public function invoice()
     {
-        return view('backend.productPurchase.invoice');
+        return view('backend.productPurchaseRawMaterial.invoice');
     }
     public function invoicePrint()
     {
-        return view('backend.productPurchase.invoice-print');
+        return view('backend.productPurchaseRawMaterial.invoice-print');
     }
 
     public function newParty(Request $request){

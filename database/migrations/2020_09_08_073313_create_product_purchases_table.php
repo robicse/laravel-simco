@@ -22,6 +22,7 @@ class CreateProductPurchasesTable extends Migration
             //$table->string('check_number')->nullable;
             $table->float('total_amount', 8,2);
             $table->string('date');
+            $table->enum('purchase_product_type',['Finish Goods','Raw Materials']);
             $table->timestamps();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');

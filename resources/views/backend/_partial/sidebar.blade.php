@@ -26,17 +26,17 @@
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('party.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Party Create</span></a></li>
             </ul>
         </li>
-        <li class="treeview{{Request::is('productPurchases*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Product Purchase </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('productPurchases*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Finish Goods Purchase </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase List</span></a></li>
-                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Purchase Create</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">List</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create</span></a></li>
 
             </ul>
         </li>
-        <li class="treeview{{Request::is('productSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Product Sale </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('productSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Finish Goods Sale </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productSales.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale List</span></a></li>
-                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productSales.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productSales.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">List</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productSales.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create</span></a></li>
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productSales.customer.due') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Customer Due</span></a></li>
             </ul>
         </li>
@@ -46,11 +46,18 @@
 {{--                <li><a class="app-menu__item" href="{{ route('productSales.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
 {{--            </ul>--}}
 {{--        </li>--}}
-        <li class="treeview{{Request::is('productSaleReturns*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Product Sale Return</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('productSaleReturns*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Finish Goods Sale Return</span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="app-menu__item" href="{{ route('returnable.sale.product') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Returnable Sale Product </span></a></li>
-                <li><a class="app-menu__item" href="{{ route('productSaleReturns.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Return List</span></a></li>
+                <li><a class="app-menu__item" href="{{ route('returnable.sale.product') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create </span></a></li>
+                <li><a class="app-menu__item" href="{{ route('productSaleReturns.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">List</span></a></li>
 {{--                <li><a class="app-menu__item" href="{{ route('productSaleReturns.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
+
+            </ul>
+        </li>
+        <li class="treeview{{Request::is('productPurchaseRawMaterials*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Raw Materials Purchase </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchaseRawMaterials.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">List</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productPurchaseRawMaterials.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create</span></a></li>
 
             </ul>
         </li>
