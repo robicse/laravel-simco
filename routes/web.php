@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('officeCostingCategory','OfficeCostingCategoryController');
     Route::resource('expenses','ExpenseController');
     Route::resource('productPurchaseRawMaterials','ProductPurchaseRawMaterialsController');
+    Route::resource('productProductions','ProductProductionController');
 
 
     Route::get('productPurchases-invoice','ProductPurchaseController@invoice')->name('productPurchases-invoice');
@@ -81,6 +82,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('pay-due','ProductSaleController@payDue')->name('pay.due');
     Route::get('productSales-customer-due','ProductSaleController@customerDue')->name('productSales.customer.due');
     Route::post('party/new-office-costing-category','ExpenseController@newOfficeCostingCategory')->name('office.costing.category.new');
+    Route::get('product-production-relation-data','ProductProductionController@productProductionRelationData');
 
     //excel
     Route::get('export', 'UserController@export')->name('export');

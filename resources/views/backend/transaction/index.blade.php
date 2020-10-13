@@ -27,6 +27,7 @@
                                 <th width="10%">User</th>
                                 <th width="10%">Store</th>
                                 <th width="15%">Party</th>
+                                <th width="15%">Product Type</th>
                                 <th width="15%">Transaction Type</th>
                                 <th width="15%">Payment Type</th>
                                 <th width="15%">Amount</th>
@@ -44,6 +45,7 @@
                                         <td>{{ $transaction->user->name}}</td>
                                         <td>{{ $transaction->store->name}}</td>
                                         <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
+                                        <td>{{ $transaction->transaction_product_type}}</td>
                                         <td>{{ $transaction->transaction_type}}</td>
                                         <td>
                                             {{ $transaction->payment_type}}

@@ -61,6 +61,12 @@
 
             </ul>
         </li>
+        <li class="treeview{{Request::is('productProductions*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Raw Materials Production </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productProductions.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">List</span></a></li>
+                <li style="background-color: gray"><a class="app-menu__item" href="{{ route('productProductions.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create</span></a></li>
+            </ul>
+        </li>
         <li class="treeview{{Request::is('stock*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Stock </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li style="background-color: gray"><a class="app-menu__item" href="{{ route('stock.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Stock List</span></a></li>
