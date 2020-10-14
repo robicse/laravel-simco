@@ -81,7 +81,6 @@
                                 <th>Sub Category</th>
                                 <th>Brand</th>
                                 <th>Qty <small class="requiredCustom">*</small></th>
-                                <th>Production</th>
                                 <th>Price <small class="requiredCustom">*</small></th>
                                 <th>Sub Total</th>
                                 <th>Action</th>
@@ -131,9 +130,6 @@
                                 </td>
                                 <td>
                                     <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
-                                </td>
-                                <td>
-                                    <input type="text" min="1" max="" class="qty form-control" name="production[]" value="" required >
                                 </td>
                                 <td>
                                     <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
@@ -267,7 +263,6 @@
                     '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
-                    '<td><input type="text" min="1" max="" class="qty form-control" name="production[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
