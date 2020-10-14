@@ -20,6 +20,14 @@ use Illuminate\Support\Str;
 
 class ProductPurchaseRawMaterialsController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:product-purchase-raw-materials-list|product-purchase-raw-materials-create|product-purchase-raw-materials-edit|product-purchase-raw-materials-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:product-purchase-raw-materials-create', ['only' => ['create','store']]);
+        $this->middleware('permission:product-purchase-raw-materials-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:product-purchase-raw-materials-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $productPurchases = ProductPurchase::where('purchase_product_type','Raw Materials')->latest()->get();
@@ -162,7 +170,9 @@ class ProductPurchaseRawMaterialsController extends Controller
         $productBrands = ProductBrand::all();
         $transaction = Transaction::where('ref_id',$id)->first();
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
-        return view('backend.productPurchaseRawMaterial.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction'));
+        $stock_id = Stock::where('ref_id',$id)->where('stock_type','purchase')->pluck('id')->first();
+        //dd($stock_id);
+        return view('backend.productPurchaseRawMaterial.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction','stock_id'));
     }
 
 
@@ -175,6 +185,7 @@ class ProductPurchaseRawMaterialsController extends Controller
 
         ]);
 
+        $stock_id = $request->stock_id;
         $row_count = count($request->product_id);
         $total_amount = 0;
         for($i=0; $i<$row_count;$i++)
@@ -191,7 +202,7 @@ class ProductPurchaseRawMaterialsController extends Controller
         //$productPurchase ->payment_type = $request->payment_type;
         //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
-        $productPurchase->update();
+        //$productPurchase->update();
 
         for($i=0; $i<$row_count;$i++)
         {
@@ -206,16 +217,17 @@ class ProductPurchaseRawMaterialsController extends Controller
             $purchase_purchase_detail->price = $request->price[$i];
             $purchase_purchase_detail->mrp_price = NULL;
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
-            $purchase_purchase_detail->update();
+            //$purchase_purchase_detail->update();
 
 
             $product_id = $request->product_id[$i];
-            $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
+            $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
             }else{
                 $previous_stock = 0;
             }
+
             // product stock
             $stock = Stock::where('ref_id',$id)->where('stock_type','purchase')->first();
             $stock->user_id = Auth::id();

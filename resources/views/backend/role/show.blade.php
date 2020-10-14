@@ -6,9 +6,9 @@
             <div>
                 <h1><i class=""></i> Show Role</h1>
             </div>
-            <ul class="app-breadcrumb breadcrumb">
-                <li class="breadcrumb-item"> <a href="{{ route('roles.index') }}" class="btn btn-sm btn-primary" type="button">Add Role</a></li>
-            </ul>
+{{--            <ul class="app-breadcrumb breadcrumb">--}}
+{{--                <li class="breadcrumb-item"> <a href="{{ route('roles.index') }}" class="btn btn-sm btn-primary" type="button">Add Role</a></li>--}}
+{{--            </ul>--}}
         </div>
         <div class="row">
             {{--<div class="col-xs-12 col-sm-12 col-md-12">

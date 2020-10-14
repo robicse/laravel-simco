@@ -174,8 +174,8 @@
                         <!-- accepted payments column -->
                         <div class="col-md-6">
 
-                            <p class="lead">Payment Type:</p>
-                            <p class="text-muted well well-sm shadow-none" >
+                            <p style="text-align: left;font-size: 24px;" class="lead">Payment Type:</p>
+                            <p style="text-align: left;font-size: 24px;" class="text-muted well well-sm shadow-none" >
                                 {{$transaction->payment_type}}
                                 @if($transaction->payment_type == 'check')
                                     ( Check Number: {{$transaction->check_number}} )
@@ -190,24 +190,24 @@
                             <div class="table-responsive">
                                 <table class="table">
                                     <tr>
-                                        <th style="width:50%">Subtotal:</th>
-                                        <td>{{$sum_sub_total}}</td>
+                                        <th style="text-align: left;font-size: 24px;">Subtotal:</th>
+                                        <td style="text-align: left;font-size: 24px;">{{$sum_sub_total}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Discount:</th>
-                                        <td>{{$productSale->discount_amount}}</td>
+                                        <th style="text-align: left;font-size: 24px;">Discount:</th>
+                                        <td style="text-align: left;font-size: 24px;">{{$productSale->discount_amount}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Total Amount:</th>
-                                        <td>{{$productSale->total_amount}}</td>
+                                        <th style="text-align: left;font-size: 24px;">Total Amount:</th>
+                                        <td style="text-align: left;font-size: 24px;">{{$productSale->total_amount}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Paid Amount:</th>
-                                        <td>{{$productSale->paid_amount}}</td>
+                                        <th style="text-align: left;font-size: 24px;">Paid Amount:</th>
+                                        <td style="text-align: left;font-size: 24px;">{{$productSale->paid_amount}}</td>
                                     </tr>
                                     <tr>
-                                        <th>Due Amount:</th>
-                                        <td>{{$productSale->due_amount}}</td>
+                                        <th style="text-align: left;font-size: 24px;">Due Amount:</th>
+                                        <td style="text-align: left;font-size: 24px;">{{$productSale->due_amount}}</td>
                                     </tr>
 
                                 </table>

@@ -212,7 +212,8 @@ class ProductSaleController extends Controller
         $productBrands = ProductBrand::all();
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
         $transaction = Transaction::where('ref_id',$id)->first();
-        return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands','transaction'));
+        $stock_id = Stock::where('ref_id',$id)->where('stock_type','purchase')->pluck('id')->first();
+        return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands','transaction','stock_id'));
     }
 
 
@@ -225,6 +226,7 @@ class ProductSaleController extends Controller
 
         ]);
 
+        $stock_id = $request->stock_id;
         $row_count = count($request->product_id);
         $total_amount = 0;
         for($i=0; $i<$row_count;$i++)
@@ -275,7 +277,7 @@ class ProductSaleController extends Controller
 
 
             $product_id = $request->product_id[$i];
-            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+            $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->latest()->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
             }else{

@@ -22,6 +22,14 @@ use Illuminate\Support\Str;
 
 class ProductProductionController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:product-production-list|product-production-create|product-production-edit|product-production-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:product-production-create', ['only' => ['create','store']]);
+        $this->middleware('permission:product-production-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:product-production-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $auth_user_id = Auth::user()->id;
@@ -164,7 +172,8 @@ class ProductProductionController extends Controller
         $productBrands = ProductBrand::all();
         $productProductionDetails = ProductProductionDetail::where('product_production_id',$id)->get();
         $transaction = Transaction::where('ref_id',$id)->first();
-        return view('backend.productProduction.edit',compact('stores','products','productProduction','productProductionDetails','productCategories','productSubCategories','productBrands','transaction'));
+        $stock_id = Stock::where('ref_id',$id)->where('stock_type','production')->pluck('id')->first();
+        return view('backend.productProduction.edit',compact('stores','products','productProduction','productProductionDetails','productCategories','productSubCategories','productBrands','transaction','stock_id'));
     }
 
 
@@ -175,6 +184,7 @@ class ProductProductionController extends Controller
             'store_id'=> 'required',
         ]);
 
+        $stock_id = $request->stock_id;
         $row_count = count($request->product_id);
         $total_amount = 0;
         for($i=0; $i<$row_count;$i++)
@@ -207,7 +217,7 @@ class ProductProductionController extends Controller
 
 
             $product_id = $request->product_id[$i];
-            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+            $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->latest()->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
             }else{
