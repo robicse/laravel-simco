@@ -24,6 +24,7 @@
                     <form method="post" action="{{ route('productSales.update',$productSale->id) }}">
                         @method('PUT')
                         @csrf
+                        <input type="hidden" name="stock_id" value="{{$stock_id}}">
                         <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">

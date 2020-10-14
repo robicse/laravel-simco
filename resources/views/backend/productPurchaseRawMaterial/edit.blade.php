@@ -29,6 +29,7 @@
                     <form method="post" action="{{ route('productPurchaseRawMaterials.update',$productPurchase->id) }}">
                         @method('PUT')
                         @csrf
+                        <input type="hidden" name="stock_id" value="{{$stock_id}}">
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
