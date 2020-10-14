@@ -22,6 +22,14 @@ use Illuminate\Support\Str;
 
 class ProductProductionController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:product-production-list|product-production-create|product-production-edit|product-production-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:product-production-create', ['only' => ['create','store']]);
+        $this->middleware('permission:product-production-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:product-production-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $auth_user_id = Auth::user()->id;

@@ -20,6 +20,14 @@ use Illuminate\Support\Str;
 
 class ProductPurchaseRawMaterialsController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:product-purchase-raw-materials-list|product-purchase-raw-materials-create|product-purchase-raw-materials-edit|product-purchase-raw-materials-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:product-purchase-raw-materials-create', ['only' => ['create','store']]);
+        $this->middleware('permission:product-purchase-raw-materials-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:product-purchase-raw-materials-delete', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $productPurchases = ProductPurchase::where('purchase_product_type','Raw Materials')->latest()->get();
