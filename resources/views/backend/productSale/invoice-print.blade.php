@@ -170,6 +170,52 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <div class="row" style="">
+                        <!-- accepted payments column -->
+                        <div class="col-md-6">
+
+                            <p class="lead">Payment Type:</p>
+                            <p class="text-muted well well-sm shadow-none" >
+                                {{$transaction->payment_type}}
+                                @if($transaction->payment_type == 'check')
+                                    ( Check Number: {{$transaction->check_number}} )
+                                @endif
+                            </p>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6" style="float: right;margin-top: -100px">
+                            {{--                                        <p class="lead">Amount Due 2/22/2014</p>--}}
+                            <p class="lead">Amount</p>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width:50%">Subtotal:</th>
+                                        <td>{{$sum_sub_total}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Discount:</th>
+                                        <td>{{$productSale->discount_amount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Amount:</th>
+                                        <td>{{$productSale->total_amount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Paid Amount:</th>
+                                        <td>{{$productSale->paid_amount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Due Amount:</th>
+                                        <td>{{$productSale->due_amount}}</td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
                     <div class="row footer_div">
                         <div class="col-md-4" style="width: 33%;float: left;display: inline-block">
                             <strong>Mr. ASM Ibrahim</strong> <br>

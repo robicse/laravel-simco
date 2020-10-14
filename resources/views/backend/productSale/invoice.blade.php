@@ -97,6 +97,10 @@
                                                     <td>{{$party->email}}</td>
 
                                                 </tr>
+                                                <tr>
+                                                    <td style="text-align: left;font-size: 24px;">Creditor:</td>
+                                                    <td style="text-align: left;font-size: 24px;">Test</td>
+                                                </tr>
                                             </table>
 
                                         </div>
@@ -226,7 +230,23 @@
                                     <!-- /.col -->
                                 </div>
                                 <!-- /.row -->
-
+                                <div class="row footer_div">
+                                    <div class="col-md-4" style="width: 33%;float: left;display: inline-block">
+                                        <strong>Mr. ASM Ibrahim</strong> <br>
+                                        Director of Simco<br>
+                                    </div>
+                                    <div class="col-md-4" style="width: 33%;float: left;display: inline-block">
+                                        Mob : +88-02-9662755<br>
+                                        IP : +88-02-8624637<br>
+                                        email : <span style="color: #0000FF">simcodhaka@gmail.com</span>
+                                    </div>
+                                    <div class="col-md-4" style="width: 33%;float: left;display: inline-block">
+                                        <strong>Address :</strong><br>
+                                        Flat # 3-B, (3rd floor) Square Tower<br/>
+                                        (Bashundhara Lane) 36/6, Mirpur Road<br/>
+                                        Dhaka-1205, Bangladesh.
+                                    </div>
+                                </div>
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
                                     <div class="col-12">
