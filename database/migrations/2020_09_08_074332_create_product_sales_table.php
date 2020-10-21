@@ -29,6 +29,7 @@ class CreateProductSalesTable extends Migration
             $table->float('paid_amount', 8,2);
             $table->float('due_amount', 8,2);
             $table->string('date');
+            $table->enum('sale_type',['pos','other']);
             $table->timestamps();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');
