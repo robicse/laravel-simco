@@ -84,8 +84,24 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('party/new-office-costing-category','ExpenseController@newOfficeCostingCategory')->name('office.costing.category.new');
     Route::get('product-production-relation-data','ProductProductionController@productProductionRelationData');
 
+
+
+
     Route::get('productPosSales/list','ProductPosSaleController@index')->name('productPosSales.index');
     Route::get('productPosSales','ProductPosSaleController@create')->name('productPosSales.create');
+    Route::get('sale/{id}/data', 'ProductPosSaleController@listData')->name('sale.data');
+    Route::get('sale/loadform/{discount}/{total}/{paid}', 'ProductPosSaleController@loadForm');
+
+
+    Route::get('selectedform/{product_code}','ProductPosSaleController@selectedform');
+    Route::get('add-to-cart','CartController@addToCart');
+    Route::get('delete-cart-product/{rowId}','CartController@deleteCartProduct');
+    Route::get('delete-all-cart-product','CartController@deleteAllCartProduct');
+
+
+
+
+
 
     //excel
     Route::get('export', 'UserController@export')->name('export');

@@ -13,6 +13,7 @@
                             <th>Product Code</th>
                             <th>Product Name</th>
                             <th>Purchase Price</th>
+                            <th>Stock Qty</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -20,8 +21,22 @@
                         @foreach($products as $data)
                             <tr>
                             <th>{{ $data->product_code }}</th>
-                            <th>{{ $data->name }}</th>
-                            <th>Rp. {{ number_format(200) }}</th>
+                            <th>
+                                @php
+                                   echo $product_name = \App\Product::where('id',$data->product_id)->pluck('name')->first();
+                                @endphp
+                            </th>
+                            <th>
+                                Tk.
+                                @php
+                                    echo $product_price = \App\ProductPurchaseDetail::where('product_id',$data->product_id)->latest()->pluck('mrp_price')->first();
+                                @endphp
+                            </th>
+                                <th>
+                                    @php
+                                        echo $product_current_stock = \App\Stock::where('product_id',$data->product_id)->latest()->pluck('current_stock')->first();
+                                    @endphp
+                                </th>
                             <th><a onclick="selectItem({{ $data->product_code }})" class="btn btn-primary"><i class="fa fa-check-circle"></i> Select</a></th>
                             </tr>
                         @endforeach
