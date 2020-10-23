@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\ProductPurchaseDetail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -13,21 +14,28 @@ class CartController extends Controller
         $product_code = $request->product_code;
         $data = array();
         if($product_code){
-            $product = DB::table('products')
-                ->where('product_code',$product_code)
-                ->first();
+            $product_check_exists = Product::where('product_code',$product_code)->pluck('id')->first();
+            if($product_check_exists){
+                $data['product_check_exists'] = 'Product Found!';
+                $product = DB::table('products')
+                    ->where('product_code',$product_code)
+                    ->first();
 
-            if(!empty($product)){
-                $price = ProductPurchaseDetail::where('product_id',$product->id)->latest()->pluck('mrp_price')->first();
+                if(!empty($product)){
+                    $price = ProductPurchaseDetail::where('product_id',$product->id)->latest()->pluck('mrp_price')->first();
 
-                $data['id'] = $product->id;
-                $data['name'] = $product->name;
-                $data['qty'] = 1;
-                $data['price'] = $price;
-                $data['options']['product_code'] = $product_code;
-                Cart::add($data);
+                    $data['id'] = $product->id;
+                    $data['name'] = $product->name;
+                    $data['qty'] = 1;
+                    $data['price'] = $price;
+                    $data['options']['product_code'] = $product_code;
+                    Cart::add($data);
+                }
+                $data['countCart'] = Cart::count();
+            }else{
+                $data['product_check_exists'] = 'No Product Found!';
             }
-            $data['countCart'] = Cart::count();
+
         }
         return response()->json(['success'=> true, 'response'=>$data]);
     }

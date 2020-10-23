@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Due;
 use App\Party;
+use App\Product;
 use App\ProductBrand;
 use App\ProductCategory;
 use App\ProductPurchaseDetail;
 use App\ProductSale;
+use App\ProductSaleDetail;
 use App\ProductSubCategory;
+use App\Stock;
 use App\Store;
+use App\Transaction;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -82,73 +88,17 @@ class ProductPosSaleController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        //$products = Product::where('product_type','Finish Goods')->get();
         $products = DB::table('product_purchase_details')
             ->select('product_purchase_details.product_id','product_purchase_details.product_code')
             ->leftJoin('products','products.id','=','product_purchase_details.product_id')
-            //->whereIn('transaction_type',['Purchase','Payment','Bill','Receive','Journal','Opening'])
-            //->where('account_no',$request->account_no)
-            //->Orderby('id','asc')
             ->groupBy('product_purchase_details.product_id')
             ->groupBy('product_purchase_details.product_code')
-            //->groupBy('product_purchase_details.qty')
-            //->groupBy('product_purchase_details.mrp_price')
             ->get();
-        //dd($products);
+
         return view('backend.productPosSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
     }
 
-    public function loadForm($discount, $total, $paid){
-        $bayar = $total - ($discount / 100 * $total);
-        $due = ($paid != 0) ? $paid - $bayar : 0;
 
-        $data = array(
-            "totalrp" => $total,
-            "bayar" => $bayar,
-            "bayarrp" => $bayar,
-            "terbilang" => $bayar." Tk",
-            "kembalirp" => $due,
-            "kembaliterbilang" => $due." Tk"
-        );
-        return response()->json($data);
-    }
-
-    public function listData($id)
-    {
-//        $detail = PenjualanDetail::leftJoin('produk', 'produk.kode_produk', '=', 'penjualan_detail.kode_produk')
-//            ->where('id_penjualan', '=', $id)
-//            ->get();
-
-        $detail = ProductPurchaseDetail::leftJoin('product_purchases', 'product_purchases.id', '=', 'product_purchase_details.product_purchase_id')
-            ->where('id_penjualan', '=', $id)
-            ->get();
-        $no = 0;
-        $data = array();
-        $total = 0;
-        $total_item = 0;
-        foreach($detail as $list){
-            $no ++;
-            $row = array();
-            $row[] = $no;
-            $row[] = $list->kode_produk;
-            $row[] = $list->nama_produk;
-            $row[] = "Tk. ".format_uang($list->harga_jual);
-            $row[] = "<input type='number' class='form-control' name='jumlah_$list->id_penjualan_detail' value='$list->jumlah' onChange='changeCount($list->id_penjualan_detail)'>";
-            $row[] = $list->diskon."%";
-            $row[] = "Tk. ".format_uang($list->sub_total);
-            $row[] = '<div class="btn-group">
-                    <a onclick="deleteItem('.$list->id_penjualan_detail.')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
-            $data[] = $row;
-
-            $total += $list->harga_jual * $list->jumlah;
-            $total_item += $list->jumlah;
-        }
-
-        $data[] = array("<span class='hide total'>$total</span><span class='hide totalitem'>$total_item</span>", "", "", "", "", "", "", "");
-
-        $output = array("data" => $data);
-        return response()->json($output);
-    }
 
 
 
@@ -255,7 +205,8 @@ class ProductPosSaleController extends Controller
                 $html .= "<th>".$item->options['product_code']."</th>";
                 $html .= "<th>".$item->name."</th>";
                 $html .= "<th align=\"right\">".$item->price."</th>";
-                $html .= "<th><input type=\"number\" name=\"qty\" value=\"1\" size=\"28\" </th>";
+                //$html .= "<th><input type=\"text\" value=\"".$item->qty."\" size=\"28\" </th>";
+                $html .= "<th>".$item->qty."</th>";
                 $html .= "<th align=\"right\">".$item->price."</th>";
                 $html .= "<th><input type=\"button\" class=\"btn btn-warning\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Remove\" onClick=\"deleteCart('$item->rowId')\" /></th>";
                 $html .= "</tr>";
@@ -270,44 +221,44 @@ class ProductPosSaleController extends Controller
                         </div>
                         <div class=\"col-md-4\">
                             <div class=\"form-group row\">
-                                <label for=\"totalrp\" class=\"col-md-4 control-label\">Sub Total</label>
+                                <label for=\"sub_total\" class=\"col-md-4 control-label\">Sub Total</label>
                                 <div class=\"col-md-8\">
-                                    <input type=\"text\" class=\"form-control\" id=\"totalrp\" readonly>
+                                    <input type=\"text\" class=\"form-control\" id=\"sub_total\" value=\"".Cart::subtotal()."\" readonly>
                                 </div>
                             </div>
                             <div class=\"form-group row\">
                                 <label for=\"member\" class=\"col-md-4 control-label\">Customer</label>
                                 <div class=\"col-md-8\">
                                     <div class=\"input-group\">
-                                        <input id=\"member\" type=\"text\" class=\"form-control\" name=\"member\" value=\"0\">
+                                        <input id=\"member\" type=\"text\" class=\"form-control\" name=\"customer_id\" >
                                         <span class=\"input-group-btn\">
-                                          <button onclick=\"showMember()\" type=\"button\" class=\"btn btn-info\">...</button>
+                                          <button onclick=\"showMember()\" type=\"button\" class=\"btn btn-info\">select</button>
                                         </span>
                                     </div>
                                 </div>
                             </div>
                             <div class=\"form-group row\">
-                                <label for=\"diskon\" class=\"col-md-4 control-label\">Discount</label>
+                                <label for=\"discount_amount\" class=\"col-md-4 control-label\">Discount</label>
                                 <div class=\"col-md-8\">
-                                    <input type=\"text\" class=\"form-control\" name=\"diskon\" id=\"diskon\" value=\"0\">
+                                    <input type=\"text\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onblur=\"discountAmount('')\" value=\"0\">
                                 </div>
                             </div>
                             <div class=\"form-group row\">
-                                <label for=\"bayarrp\" class=\"col-md-4 control-label\">Grand Total</label>
+                                <label for=\"grand_total\" class=\"col-md-4 control-label\">Grand Total</label>
                                 <div class=\"col-md-8\">
-                                    <input type=\"text\" class=\"form-control\" name=\"bayarrp\" id=\"diskon\" value=\"0\" readonly>
+                                    <input type=\"text\" class=\"form-control\" name=\"grand_total\" id=\"grand_total\" value=\"".Cart::subtotal()."\" readonly>
                                 </div>
                             </div>
                             <div class=\"form-group row\">
-                                <label for=\"diterima\" class=\"col-md-4 control-label\">Paid</label>
+                                <label for=\"paid_amount\" class=\"col-md-4 control-label\">Paid</label>
                                 <div class=\"col-md-8\">
-                                    <input type=\"number\" class=\"form-control\" value=\"0\" name=\"diterima\" id=\"diterima\">
+                                    <input type=\"number\" class=\"form-control\" value=\"0\" name=\"paid_amount\" onblur=\"paidAmount('')\" id=\"paid_amount\">
                                 </div>
                             </div>
                             <div class=\"form-group row\">
-                                <label for=\"kembali\" class=\"col-md-4 control-label\">Due</label>
+                                <label for=\"due_amount\" class=\"col-md-4 control-label\">Due</label>
                                 <div class=\"col-md-8\">
-                                    <input type=\"text\" class=\"form-control\" id=\"kembali\" value=\"0\" readonly>
+                                    <input type=\"text\" class=\"form-control\" id=\"due_amount\" name=\"due_amount\" value=\"0\" readonly>
                                 </div>
                             </div>
                             <div class=\"box-footer\">
@@ -318,6 +269,126 @@ class ProductPosSaleController extends Controller
             </form>";
         echo json_encode($html);
 
+    }
+
+    public function postInsert(Request $request){
+        //dd($request->all());
+        echo '<pre>';
+        print_r($request->all());
+        echo '</pre>';
+        dd(Cart::content());
+
+
+        $total_amount = Cart::subtotal();
+
+
+        $customer_id = $request->customer_id ? $request->customer_id : 2;
+        $discount_amount = $request->discount_amount;
+        $paid_amount = $request->paid_amount;
+        $due_amount = $request->due_amount;
+
+        $discount_type = 'flat';
+        $total_amount -= $discount_amount;
+
+
+        $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
+        if(!empty($get_invoice_no)){
+            $invoice_no = $get_invoice_no+1;
+        }else{
+            $invoice_no = 1000;
+        }
+
+        // product purchase
+        $productSale = new ProductSale();
+        $productSale->invoice_no = $invoice_no;
+        $productSale->user_id = Auth::id();
+        $productSale->party_id = $customer_id;
+        $productSale->store_id = 1;
+        $productSale->date = date('Y-m-d');
+        $productSale->delivery_service = NULL;
+        $productSale->delivery_service_charge = 0;
+        $productSale->discount_type = $discount_type;
+        $productSale->discount_amount = $discount_amount;
+        $productSale->total_amount = $total_amount;
+        $productSale->paid_amount = $paid_amount;
+        $productSale->due_amount = $due_amount;
+        $productSale->save();
+        $insert_id = $productSale->id;
+        if($insert_id)
+        {
+            foreach (Cart::content() as $content) {
+                $product = Product::where('id',$content->id)->first();
+
+
+                // product purchase detail
+                $purchase_sale_detail = new ProductSaleDetail();
+                $purchase_sale_detail->product_sale_id = $insert_id;
+                $purchase_sale_detail->return_type = 'not returnable';
+                $purchase_sale_detail->product_category_id = $product->product_category_id;
+                $purchase_sale_detail->product_sub_category_id = $product->product_sub_category_id ? $product->product_sub_category_id : NULL;
+                $purchase_sale_detail->product_brand_id = $product->product_brand_id;
+                $purchase_sale_detail->product_id = $content->id;
+                $purchase_sale_detail->qty = $content->qty;
+                $purchase_sale_detail->price = $content->price;
+                $purchase_sale_detail->sub_total = $content->qty*$content->price;
+                $purchase_sale_detail->save();
+
+                $check_previous_stock = Stock::where('product_id',$content->id)->latest()->pluck('current_stock')->first();
+                if(!empty($check_previous_stock)){
+                    $previous_stock = $check_previous_stock;
+                }else{
+                    $previous_stock = 0;
+                }
+
+                // product stock
+                $stock = new Stock();
+                $stock->user_id = Auth::id();
+                $stock->ref_id = $insert_id;
+                $stock->store_id = 1;
+                $stock->date = date('Y-m-d');
+                $stock->product_id = $content->id;
+                $stock->stock_type = 'sale';
+                $stock->previous_stock = $previous_stock;
+                $stock->stock_in = 0;
+                $stock->stock_out = $content->qty;
+                $stock->current_stock = $previous_stock - $content->qty;
+                $stock->save();
+            }
+
+            // due
+            $due = new Due();
+            $due->invoice_no = $invoice_no;
+            $due->ref_id = $insert_id;
+            $due->user_id = Auth::id();
+            $due->store_id = 1;
+            $due->party_id = $customer_id;
+            $due->total_amount = $total_amount;
+            $due->paid_amount = $request->paid_amount;
+            $due->due_amount = $request->due_amount;
+            $due->save();
+
+            // transaction
+            $transaction = new Transaction();
+            $transaction->invoice_no = $invoice_no;
+            $transaction->user_id = Auth::id();
+            $transaction->store_id = 1;
+            $transaction->party_id = $customer_id;
+            $transaction->date = date('Y-m-d');
+            $transaction->ref_id = $insert_id;
+            $transaction->transaction_type = 'sale';
+            $transaction->payment_type = 'cash';
+            $transaction->check_number = '';
+            $transaction->amount = $total_amount;
+            $transaction->save();
+
+            Toastr::success('Order Successfully done! ');
+            Cart::destroy();
+            return back();
+        }else{
+            Toastr::warning('Something went wrong! ');
+            Cart::destroy();
+            return back();
+        }
     }
 
 }

@@ -107,7 +107,7 @@
 {{--                        </form>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
-                <div class="col-md-12" id="newform"></div>
+                <div class="col-md-12" id="loadForm"></div>
             </div>
         </div>
     </main>
@@ -119,18 +119,14 @@
     <script>
 
         function loadData(id){
-            // alert(id);
             $.ajax({
                 url : "{{ URL('/selectedform') }}/" + id,
                 type: "GET",
                 dataType: "json",
-                /*dataType: "html",*/
                 success: function(data)
                 {
                     console.log(data);
-                    $('#newform').html(data);
-                    /*$('#btnSave').hide();*/
-                    /*console.log(data);*/
+                    $('#loadForm').html(data);
                 },
                 /*error: function (jqXHR, textStatus, errorThrown)
                 {
@@ -142,47 +138,105 @@
             });
         }
 
+        /*One way on blur*/
+        {{--$(function(){--}}
+        {{--    $('.tabel-produk').DataTable();--}}
+        {{--    loadData(product_code=null)--}}
 
-        $(function(){
+        {{--    $('#kode').change(function(){--}}
+        {{--        var product_code = $('#kode').val();--}}
+        {{--        if(product_code){--}}
+        {{--            $.ajax({--}}
+        {{--                url : "{{URL('add-to-cart')}}",--}}
+        {{--                method : "get",--}}
+        {{--                data : {--}}
+        {{--                    product_code : product_code--}}
+        {{--                },--}}
+        {{--                success : function (res){--}}
+        {{--                    console.log(res)--}}
+        {{--                    $('#kode').val('').focus();--}}
+        {{--                    loadData(product_code)--}}
+        {{--                },--}}
+        {{--                error : function (err){--}}
+        {{--                    console.log(err)--}}
+        {{--                }--}}
+        {{--            })--}}
+        {{--        }else{--}}
+        {{--            alert('No Product Code Found!');--}}
+        {{--            location.reload();--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--});--}}
+        /*One way on blur*/
+
+
+
+        (function () {
             $('.tabel-produk').DataTable();
-
             loadData(product_code=null)
 
-            // var i = 1;
-            $('#kode').change(function(){
-                // console.log(i++)
-                var product_code = $('#kode').val();
-                // console.log(product_code);
+            /*automatically call after two seconds*/
+            var timeout = {};
+            var update = function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    var product_code = $('#kode').val();
+                    console.log(product_code);
+                    if(product_code)
+                    {
+                        $.ajax({
+                            url : "{{URL('add-to-cart')}}",
+                            method : "get",
+                            data : {
+                                product_code : product_code
+                            },
+                            success : function (res){
+                                console.log(res)
+                                $('#kode').val('').focus();
+                                loadData(product_code)
+                                if(res.response.product_check_exists == 'No Product Found!')
+                                    toastr.warning('no product found using this code!');
+                                else
+                                    toastr.success('successfully added to cart');
+                            },
+                            error : function (err){
+                                console.log(err)
+                            }
+                        })
+                    }
+                }, 2000);
+            };
+
+            $('input#kode').keyup(update);
+            $('input#kode').change(update);
+            /*automatically call after two seconds*/
+
+        }());
 
 
-                if(product_code){
-                    $.ajax({
-                        url : "{{URL('add-to-cart')}}",
-                        method : "get",
-                        data : {
-                            product_code : product_code
-                        },
-                        success : function (res){
-                            console.log(res)
-                            $('#kode').val('').focus();
-                            loadData(product_code)
-                        },
-                        error : function (err){
-                            console.log(err)
-                        }
-                    })
-                }else{
-                    alert('No Product Code Found!');
-                    //location.reload();
-                }
+        function discountAmount(){
+            var sub_total = $('#sub_total').val();
+            var discount_amount = parseFloat($('#discount_amount').val()).toFixed(2);
+            var grand_total = sub_total - discount_amount;
+            var grand_total = parseFloat(grand_total).toFixed(2);
+            $('#discount_amount').val(discount_amount);
+            $('#grand_total').val(grand_total);
+            $('#due_amount').val(grand_total);
+        }
 
-            });
+        function paidAmount(){
+            console.log('okk');
+            var grand_total = $('#grand_total').val();
+            var paid_amount = parseFloat($('#paid_amount').val()).toFixed(2);
+            var due_amount = grand_total - paid_amount;
+            var due_amount = parseFloat(due_amount).toFixed(2);
+            $('#paid_amount').val(paid_amount);
+            $('#due_amount').val(due_amount);
+        }
 
-        });
 
 
         function deleteCart(rowId) {
-            //var product_code = "";
             if (confirm("Are you sure, delete this item!")) {
                 $.ajax({
                     url: "{{ URL('/delete-cart-product') }}/" + rowId,
@@ -200,7 +254,6 @@
         }
 
         function deleteAllCart() {
-            //var product_code = "";
             if (confirm("Are you sure, delete all item!")) {
                 $.ajax({
                     url: "{{ URL('/delete-all-cart-product') }}",
@@ -217,6 +270,12 @@
             }
         }
 
+        // function updateCart(rowId){
+        //     var test = $("input:text").val();
+        //     console.log(test);
+        //
+        // }
+
 
 
 
@@ -227,6 +286,32 @@
         function selectItem(kode){
             $('#kode').val(kode);
             $('#modal-produk').modal('hide');
+
+            /*additional*/
+            setTimeout(function () {
+                var product_code = $('#kode').val();
+                console.log(product_code);
+                if(product_code)
+                {
+                    $.ajax({
+                        url : "{{URL('add-to-cart')}}",
+                        method : "get",
+                        data : {
+                            product_code : product_code
+                        },
+                        success : function (res){
+                            console.log(res)
+                            $('#kode').val('').focus();
+                            loadData(product_code)
+                            toastr.success('successfully added to cart');
+                        },
+                        error : function (err){
+                            console.log(err)
+                        }
+                    })
+                }
+            }, 1000);
+            /*additional*/
         }
 
         function showMember(){

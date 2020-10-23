@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('add-to-cart','CartController@addToCart');
     Route::get('delete-cart-product/{rowId}','CartController@deleteCartProduct');
     Route::get('delete-all-cart-product','CartController@deleteAllCartProduct');
+    Route::post('pos_insert', 'ProductPosSaleController@postInsert');
 
 
 
