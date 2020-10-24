@@ -185,9 +185,7 @@ class ProductPosSaleController extends Controller
 
 
         $html = "<form name=\"form\" id=\"form\" action=\"".$baseurl."\" method=\"post\" enctype=\"multipart/form-data\">
-                    <div class=\"form-group row\">
-                    <div class=\"col-md-8\">
-                    <input type=\"hidden\" name=\"_token\" value=\"".csrf_token()."\" />
+                <input type=\"hidden\" name=\"_token\" value=\"".csrf_token()."\" />
                     <table class=\"table table-striped tabel-penjualan\">
                         <thead>
                             <tr>
@@ -201,86 +199,82 @@ class ProductPosSaleController extends Controller
                             </tr>
                         </thead>
                         <tbody>";
-                        if(Cart::count() > 0):
-                            foreach(Cart::content() as $item):
-                                $html .= "<tr>";
-                                $html .= "<th width=\"30\">1</th>";
-                                $html .= "<th>".$item->options['product_code']."</th>";
-                                $html .= "<th>".$item->name."</th>";
-                                $html .= "<th align=\"right\">".$item->price."</th>";
-                                //$html .= "<th><input type=\"text\" value=\"".$item->qty."\" size=\"28\" </th>";
-                                $html .= "<th>".$item->qty."</th>";
-                                $html .= "<th align=\"right\">".$item->price."</th>";
-                                $html .= "<th><input type=\"button\" class=\"btn btn-warning\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Remove\" onClick=\"deleteCart('$item->rowId')\" /></th>";
-                                $html .= "</tr>";
-                            endforeach;
-                            $html .= "<tr><th align=\"right\" colspan=\"7\"><input type=\"button\" class=\"btn btn-danger\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Clear Item\" onClick=\"deleteAllCart()\" /></th></tr>";
-                        endif;
-                        $html .= "</tbody>
+        if(Cart::count() > 0):
+            foreach(Cart::content() as $item):
+                $html .= "<tr>";
+                $html .= "<th width=\"30\">1</th>";
+                $html .= "<th>".$item->options['product_code']."</th>";
+                $html .= "<th>".$item->name."</th>";
+                $html .= "<th align=\"right\">".$item->price."</th>";
+                //$html .= "<th><input type=\"text\" value=\"".$item->qty."\" size=\"28\" </th>";
+                $html .= "<th>".$item->qty."</th>";
+                $html .= "<th align=\"right\">".$item->price."</th>";
+                $html .= "<th><input type=\"button\" class=\"btn btn-warning\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Remove\" onClick=\"deleteCart('$item->rowId')\" /></th>";
+                $html .= "</tr>";
+            endforeach;
+            $html .= "<tr><th align=\"right\" colspan=\"7\"><input type=\"button\" class=\"btn btn-danger\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Clear Item\" onClick=\"deleteAllCart()\" /></th></tr>";
+        endif;
+        $html .= "</tbody>
                     </table>
-                    </div>
+                    <div class=\"row\">
+                        <div class=\"col-md-8\">
 
-                    <div class=\"col-md-4\">
-                        <div class=\"form-group row\">
-                            <label for=\"sub_total\" class=\"col-md-4 control-label\">Sub Total</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" id=\"sub_total\" value=\"".Cart::subtotal()."\" readonly>
-                            </div>
                         </div>
-                        <div class=\"form-group row\" style=\"display: none\">
-                            <label for=\"member\" class=\"col-md-4 control-label\">Customer</label>
-                            <div class=\"col-md-8\">
-                                <div class=\"input-group\">
-                                    <input id=\"member\" type=\"text\" class=\"form-control\" name=\"customer\" value=\"Mr.\">
-                                    <span class=\"input-group-btn\">
-                                      <button onclick=\"showMember()\" type=\"button\" class=\"btn btn-info\">select</button>
-                                    </span>
+                        <div class=\"col-md-4\">
+                            <div class=\"form-group row\">
+                                <label for=\"sub_total\" class=\"col-md-4 control-label\">Sub Total</label>
+                                <div class=\"col-md-8\">
+                                    <input type=\"text\" class=\"form-control\" id=\"sub_total\" value=\"".Cart::subtotal()."\" readonly>
                                 </div>
                             </div>
-                        </div>
-                        <div class=\"form-group row\">
-                            <label for=\"vat_amount\" class=\"col-md-4 control-label\">Vat(Percentage)</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" name=\"vat_amount\" id=\"vat_amount\" onblur=\"vatAmount('')\" value=\"0.00\">
+                            <div class=\"form-group row\" style=\"display: none\">
+                                <label for=\"member\" class=\"col-md-4 control-label\">Customer</label>
+                                <div class=\"col-md-8\">
+                                    <div class=\"input-group\">
+                                        <input id=\"member\" type=\"text\" class=\"form-control\" name=\"customer\" value=\"Mr.\">
+                                        <span class=\"input-group-btn\">
+                                          <button onclick=\"showMember()\" type=\"button\" class=\"btn btn-info\">select</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=\"form-group row\">
+                                <label for=\"discount_amount\" class=\"col-md-4 control-label\">Discount(Flat)</label>
+                                <div class=\"col-md-8\">
+                                    <input type=\"text\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onblur=\"discountAmount('')\" value=\"0.00\">
+                                </div>
+                            </div>
+                            <div class=\"form-group row\">
+                                <label for=\"grand_total\" class=\"col-md-4 control-label\">Grand Total</label>
+                                <div class=\"col-md-8\">
+                                    <input type=\"text\" class=\"form-control\" name=\"grand_total\" id=\"grand_total\" value=\"".Cart::subtotal()."\" readonly>
+                                </div>
+                            </div>
+                            <div class=\"form-group row\">
+                                <label for=\"paid_amount\" class=\"col-md-4 control-label\">Paid</label>
+                                <div class=\"col-md-8\">
+                                    <input type=\"number\" class=\"form-control\" value=\"0.00\" name=\"paid_amount\" onblur=\"paidAmount('')\" id=\"paid_amount\">
+                                </div>
+                            </div>
+                            <div class=\"form-group row\">
+                                <label for=\"due_amount\" class=\"col-md-4 control-label\">Due</label>
+                                <div class=\"col-md-8\">
+                                    <input type=\"text\" class=\"form-control\" id=\"due_amount\" name=\"due_amount\" value=\"0.00\" readonly>
+                                </div>
+                            </div>
+                            <div class=\"form-group row\">
+                                <label for=\"due_amount\" class=\"col-md-4 control-label\">Payment Type</label>
+                                <div class=\"col-md-8\">
+                                    <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\">
+                                        <option value=\"cash\">cash</option>
+                                        <option value=\"credit\">credit</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=\"box-footer\">
+                                <button type=\"submit\" class=\"btn btn-primary pull-right simpan\"><i class=\"fa fa-floppy-o\"></i> Save</button>
                             </div>
                         </div>
-                        <div class=\"form-group row\">
-                            <label for=\"discount_amount\" class=\"col-md-4 control-label\">Discount(Flat)</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onblur=\"discountAmount('')\" value=\"0.00\">
-                            </div>
-                        </div>
-                        <div class=\"form-group row\">
-                            <label for=\"grand_total\" class=\"col-md-4 control-label\">Grand Total</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" name=\"grand_total\" id=\"grand_total\" value=\"".Cart::subtotal()."\" readonly>
-                            </div>
-                        </div>
-                        <div class=\"form-group row\">
-                            <label for=\"paid_amount\" class=\"col-md-4 control-label\">Paid</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"number\" class=\"form-control\" value=\"0.00\" name=\"paid_amount\" onblur=\"paidAmount('')\" id=\"paid_amount\">
-                            </div>
-                        </div>
-                        <div class=\"form-group row\">
-                            <label for=\"due_amount\" class=\"col-md-4 control-label\">Due</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" id=\"due_amount\" name=\"due_amount\" value=\"0.00\" readonly>
-                            </div>
-                        </div>
-                        <div class=\"form-group row\">
-                            <label for=\"due_amount\" class=\"col-md-4 control-label\">Payment Type</label>
-                            <div class=\"col-md-8\">
-                                <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\">
-                                    <option value=\"cash\">cash</option>
-                                    <option value=\"credit\">credit</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class=\"box-footer\">
-                            <button type=\"submit\" class=\"btn btn-primary pull-right simpan\"><i class=\"fa fa-floppy-o\"></i> Save</button>
-                        </div>
-                    </div>
                     </div>
             </form>";
         echo json_encode($html);
@@ -288,7 +282,7 @@ class ProductPosSaleController extends Controller
     }
 
     public function postInsert(Request $request){
-        //dd($request->all());
+        dd($request->all());
         $customer = $request->customer;
         if(is_numeric($customer) && strlen($customer) > 9){
             $customer_check_exits = Party::where('phone',$customer)->pluck('id')->first();
@@ -355,14 +349,20 @@ class ProductPosSaleController extends Controller
 //        dd(Cart::content());
 
 
-        //$total_amount = Cart::subtotal();
+        $total_amount = Cart::subtotal();
+
         $vat_amount = $request->vat_amount;
         $discount_amount = $request->discount_amount;
-        $total_amount = $request->grand_total;
         $paid_amount = $request->paid_amount;
         $due_amount = $request->due_amount;
         $payment_type = $request->payment_type;
 
+        $vat_type = 'percentage';
+        if($vat_type == 'percentage'){
+            $total_amount = ($total_amount*$vat_amount)/100;
+        }
+        $discount_type = 'flat';
+        $total_amount -= $discount_amount;
 
 
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();

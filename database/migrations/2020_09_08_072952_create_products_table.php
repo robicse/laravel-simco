@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->enum('product_type',['Finish Goods','Raw Materials']);
             $table->string('name');
             $table->string('slug');
+            $table->string('product_code')->nullable();
             $table->bigInteger('product_category_id')->unsigned();
             $table->bigInteger('product_sub_category_id')->unsigned()->nullable();
             $table->bigInteger('product_brand_id')->unsigned();

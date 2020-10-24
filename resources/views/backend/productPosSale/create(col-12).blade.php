@@ -4,30 +4,15 @@
     <main class="app-content">
         <div class="col-md-12">
             <div class="tile">
-
-                <div class="form-group row">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-                            <label for="totalrp" class="col-md-2 control-label">Product Code</label>
-                            <div class="col-md-10  input-group">
-                                <input id="kode" type="text" class="form-control" name="kode" autofocus required>
-                                <span class="input-group-btn">
+                    <div class="form-group row">
+                        <label for="totalrp" class="col-md-2 control-label">Product Code</label>
+                        <div class="col-md-10  input-group">
+                            <input id="kode" type="text" class="form-control" name="kode" autofocus required>
+                            <span class="input-group-btn">
                                 <button onclick="showProduct()" type="button" class="btn btn-info">Show Product</button>
                             </span>
-                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-md-12" id="loadForm"></div>
-                </div>
-
-
-
-
-
-
 
 {{--                <form class="form-keranjang">--}}
 {{--                    {{ csrf_field() }} {{ method_field('PATCH') }}--}}
@@ -115,6 +100,7 @@
 {{--                        </form>--}}
 {{--                    </div>--}}
 {{--                </div>--}}
+                <div class="col-md-12" id="loadForm"></div>
             </div>
         </div>
     </main>
@@ -223,28 +209,22 @@
         }());
 
 
-        function vatAmount(){
-            var sub_total = $('#sub_total').val();
-            var vat_amount = parseFloat($('#vat_amount').val()).toFixed(2);
-            var vat_subtraction = (sub_total*vat_amount)/100;
-            var grand_total = sub_total - vat_subtraction;
-            var grand_total = parseFloat(grand_total).toFixed(2);
-            $('#vat_amount').val(vat_amount);
-            //$('#discount_amount').val(discount_amount);
-            $('#grand_total').val(grand_total);
-            $('#due_amount').val(grand_total);
-        }
+        // function vatAmount(){
+        //     var sub_total = $('#sub_total').val();
+        //     var vat_amount = parseFloat($('#vat_amount').val()).toFixed(2);
+        //     var grand_total = sub_total - vat_amount;
+        //     var grand_total = parseFloat(grand_total).toFixed(2);
+        //     $('#vat_amount').val(vat_amount);
+        //     //$('#discount_amount').val(discount_amount);
+        //     $('#grand_total').val(grand_total);
+        //     $('#due_amount').val(grand_total);
+        // }
 
 
         function discountAmount(){
             var sub_total = $('#sub_total').val();
-            var grand_total = $('#grand_total').val();
             var discount_amount = parseFloat($('#discount_amount').val()).toFixed(2);
-            if(grand_total > 0){
-                var grand_total = grand_total - discount_amount;
-            }else{
-                var grand_total = sub_total - discount_amount;
-            }
+            var grand_total = sub_total - discount_amount;
             var grand_total = parseFloat(grand_total).toFixed(2);
             $('#discount_amount').val(discount_amount);
             $('#grand_total').val(grand_total);

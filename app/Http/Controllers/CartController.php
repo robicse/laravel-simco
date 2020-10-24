@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\ProductPurchaseDetail;
+use App\Stock;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,22 +17,27 @@ class CartController extends Controller
         if($product_code){
             $product_check_exists = Product::where('product_code',$product_code)->pluck('id')->first();
             if($product_check_exists){
-                $data['product_check_exists'] = 'Product Found!';
-                $product = DB::table('products')
-                    ->where('product_code',$product_code)
-                    ->first();
+                $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
+                if($product_current_stock_check_exists > 0){
+                    $data['product_check_exists'] = 'Product Found!';
+                    $product = DB::table('products')
+                        ->where('product_code',$product_code)
+                        ->first();
 
-                if(!empty($product)){
-                    $price = ProductPurchaseDetail::where('product_id',$product->id)->latest()->pluck('mrp_price')->first();
+                    if(!empty($product)){
+                        $price = ProductPurchaseDetail::where('product_id',$product->id)->latest()->pluck('mrp_price')->first();
 
-                    $data['id'] = $product->id;
-                    $data['name'] = $product->name;
-                    $data['qty'] = 1;
-                    $data['price'] = $price;
-                    $data['options']['product_code'] = $product_code;
-                    Cart::add($data);
+                        $data['id'] = $product->id;
+                        $data['name'] = $product->name;
+                        $data['qty'] = 1;
+                        $data['price'] = $price;
+                        $data['options']['product_code'] = $product_code;
+                        Cart::add($data);
+                    }
+                    $data['countCart'] = Cart::count();
+                }else{
+                    $data['product_check_exists'] = 'No Product Stock Found!';
                 }
-                $data['countCart'] = Cart::count();
             }else{
                 $data['product_check_exists'] = 'No Product Found!';
             }
