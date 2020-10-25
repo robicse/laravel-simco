@@ -19,6 +19,16 @@
                     </div>
                 </div>
 
+                @if(Session::get('product_sale_id'))
+
+                <div class="form-group row">
+                    <div class="col-md-12 text-center">
+                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'now')}}" class="btn btn-sm btn-primary" type="button">Print Now</a>
+                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'latter')}}" class="btn btn-sm btn-warning" type="button">Print Latter</a>
+                    </div>
+                </div>
+                @endif
+
                 <div class="form-group row">
                     <div class="col-md-12" id="loadForm"></div>
                 </div>
@@ -228,8 +238,9 @@
             var vat_amount = parseFloat($('#vat_amount').val()).toFixed(2);
             var vat_subtraction = (sub_total*vat_amount)/100;
             var grand_total = sub_total - vat_subtraction;
+            var vat_subtraction = parseFloat(vat_subtraction).toFixed(2);
             var grand_total = parseFloat(grand_total).toFixed(2);
-            $('#vat_amount').val(vat_amount);
+            $('#vat_amount').val(vat_subtraction);
             //$('#discount_amount').val(discount_amount);
             $('#grand_total').val(grand_total);
             $('#due_amount').val(grand_total);
@@ -315,7 +326,7 @@
             $('#modal-produk').modal('hide');
 
             /*additional*/
-            setTimeout(function () {
+            //setTimeout(function () {
                 var product_code = $('#kode').val();
                 console.log(product_code);
                 if(product_code)
@@ -337,7 +348,7 @@
                         }
                     })
                 }
-            }, 1000);
+            //}, 1000);
             /*additional*/
         }
 

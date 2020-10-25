@@ -24,10 +24,10 @@
                         <th>Customer</th>
 {{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
-                        <th>Paid Amount</th>
+{{--                        <th>Paid Amount</th>--}}
                         <th>Date</th>
                         <th>Due Amount</th>
-                        <th>Action</th>
+                        <th colspan="3">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,7 +39,7 @@
                         <td>{{ $productSale->party->name}}</td>
 {{--                        <td>{{ $productSale->payment_type}}</td>--}}
                         <td>{{ $productSale->total_amount}}</td>
-                        <td>{{ $productSale->paid_amount}}</td>
+{{--                        <td>{{ $productSale->paid_amount}}</td>--}}
                         <td>{{ $productSale->date}}</td>
                         <td>
                             {{ $productSale->due_amount}}
@@ -47,7 +47,8 @@
                                 <a href="" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#exampleModal-<?= $productSale->id;?>"> Pay Due</a>
                             @endif
                         </td>
-                        <td>
+                        <td colspan="3">
+                            <a href="{{url('pos/print/'.$productSale->id.'/'.'list')}}" class="btn btn-sm btn-warning" type="button">Print</a>
                             <a href="{{ route('productSales.show',$productSale->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productSales.edit',$productSale->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
                             <form method="post" action="{{ route('productSales.destroy',$productSale->id) }}" >

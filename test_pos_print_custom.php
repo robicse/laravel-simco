@@ -1,11 +1,13 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
+
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 
-/* Fill in your own connector here */
-$connector = new FilePrintConnector("php://stdout");
+/* Open the printer; this will change depending on how it is connected */
+$connector = new WindowsPrintConnector("RONGTA 80mm Series Printer");
+$printer = new Printer($connector);
 
 /* Information for the receipt */
 $items = array(
@@ -22,12 +24,16 @@ $total = new item('Total', '14.25', true);
 $date = "Monday 6th of April 2015 02:56:25 PM";
 
 /* Start the printer */
-$logo = EscposImage::load("resources/escpos-php.png", false);
+//$logo = EscposImage::load("escpos-php.png", false);
 $printer = new Printer($connector);
 
 /* Print top logo */
-$printer -> setJustification(Printer::JUSTIFY_CENTER);
-$printer -> graphics($logo);
+//$printer -> setJustification(Printer::JUSTIFY_CENTER);
+//$printer -> graphics($logo);
+$logo = EscposImage::load("escpos-php.png", false);
+$printer -> bitImage($logo);
+$printer -> text("Regular Tux.\n");
+$printer -> feed();
 
 /* Name of shop */
 $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
@@ -70,7 +76,7 @@ $printer -> text($date . "\n");
 
 /* Cut the receipt and open the cash drawer */
 $printer -> cut();
-$printer -> pulse();
+//$printer -> pulse();
 
 $printer -> close();
 
@@ -87,7 +93,7 @@ class item
         $this -> price = $price;
         $this -> dollarSign = $dollarSign;
     }
-    
+
     public function __toString()
     {
         $rightCols = 10;
@@ -96,7 +102,7 @@ class item
             $leftCols = $leftCols / 2 - $rightCols / 2;
         }
         $left = str_pad($this -> name, $leftCols) ;
-        
+
         $sign = ($this -> dollarSign ? '$ ' : '');
         $right = str_pad($sign . $this -> price, $rightCols, ' ', STR_PAD_LEFT);
         return "$left$right\n";

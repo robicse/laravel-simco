@@ -19,12 +19,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class ProductPosSaleController extends Controller
 {
     public function index()
     {
+        //Session::put('product_sale_id',14);
+        Session::forget('product_sale_id');
+
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin"){
@@ -201,22 +205,22 @@ class ProductPosSaleController extends Controller
                             </tr>
                         </thead>
                         <tbody>";
-                        if(Cart::count() > 0):
-                            foreach(Cart::content() as $item):
-                                $html .= "<tr>";
-                                $html .= "<th width=\"30\">1</th>";
-                                $html .= "<th>".$item->options['product_code']."</th>";
-                                $html .= "<th>".$item->name."</th>";
-                                $html .= "<th align=\"right\">".$item->price."</th>";
-                                //$html .= "<th><input type=\"text\" value=\"".$item->qty."\" size=\"28\" </th>";
-                                $html .= "<th>".$item->qty."</th>";
-                                $html .= "<th align=\"right\">".$item->price."</th>";
-                                $html .= "<th><input type=\"button\" class=\"btn btn-warning\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Remove\" onClick=\"deleteCart('$item->rowId')\" /></th>";
-                                $html .= "</tr>";
-                            endforeach;
-                            $html .= "<tr><th align=\"right\" colspan=\"7\"><input type=\"button\" class=\"btn btn-danger\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Clear Item\" onClick=\"deleteAllCart()\" /></th></tr>";
-                        endif;
-                        $html .= "</tbody>
+        if(Cart::count() > 0):
+            foreach(Cart::content() as $item):
+                $html .= "<tr>";
+                $html .= "<th width=\"30\">1</th>";
+                $html .= "<th>".$item->options['product_code']."</th>";
+                $html .= "<th>".$item->name."</th>";
+                $html .= "<th align=\"right\">".$item->price."</th>";
+                //$html .= "<th><input type=\"text\" value=\"".$item->qty."\" size=\"28\" </th>";
+                $html .= "<th>".$item->qty."</th>";
+                $html .= "<th align=\"right\">".$item->price."</th>";
+                $html .= "<th><input type=\"button\" class=\"btn btn-warning\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Remove\" onClick=\"deleteCart('$item->rowId')\" /></th>";
+                $html .= "</tr>";
+            endforeach;
+            $html .= "<tr><th align=\"right\" colspan=\"7\"><input type=\"button\" class=\"btn btn-danger\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Clear Item\" onClick=\"deleteAllCart()\" /></th></tr>";
+        endif;
+        $html .= "</tbody>
                     </table>
                     </div>
 
@@ -278,6 +282,7 @@ class ProductPosSaleController extends Controller
                             </div>
                         </div>
                         <div class=\"box-footer\">
+                        <div class=\"col-md-8\">
                             <button type=\"submit\" class=\"btn btn-primary pull-right simpan\"><i class=\"fa fa-floppy-o\"></i> Save</button>
                         </div>
                     </div>
@@ -381,13 +386,14 @@ class ProductPosSaleController extends Controller
         $productSale->date = date('Y-m-d');
         $productSale->delivery_service = NULL;
         $productSale->delivery_service_charge = 0;
-        $productSale->discount_type = $vat_type;
-        $productSale->discount_amount = $vat_amount;
-        $productSale->discount_type = $discount_type;
+        $productSale->vat_type = 'percentage';
+        $productSale->vat_amount = $vat_amount;
+        $productSale->discount_type = 'flat';
         $productSale->discount_amount = $discount_amount;
         $productSale->total_amount = $total_amount;
         $productSale->paid_amount = $paid_amount;
         $productSale->due_amount = $due_amount;
+        $productSale->sale_type = 'pos';
         $productSale->save();
         $insert_id = $productSale->id;
         if($insert_id)
@@ -455,6 +461,9 @@ class ProductPosSaleController extends Controller
             $transaction->check_number = '';
             $transaction->amount = $total_amount;
             $transaction->save();
+
+            // session add product sale id
+            Session::put('product_sale_id',$insert_id);
 
             Toastr::success('Order Successfully done! ');
             Cart::destroy();

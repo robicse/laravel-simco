@@ -91,6 +91,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('productPosSales','ProductPosSaleController@create')->name('productPosSales.create');
     Route::get('sale/{id}/data', 'ProductPosSaleController@listData')->name('sale.data');
     Route::get('sale/loadform/{discount}/{total}/{paid}', 'ProductPosSaleController@loadForm');
+    Route::get('pos/print/{id}/{status}', 'PointOfSaleController@print')->name('pointOfSale.print');
 
 
     Route::get('selectedform/{product_code}','ProductPosSaleController@selectedform');
