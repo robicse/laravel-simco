@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+//use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 
 use App\Classes\item;
 
@@ -47,6 +48,7 @@ class PointOfSaleController extends Controller
             try {
                 /* Open the printer; this will change depending on how it is connected */
                 $connector = new WindowsPrintConnector("RONGTA 80mm Series Printer");
+                //$connector = new NetworkPrintConnector("192.168.0.110", 9100);
                 /* Start the printer */
                 $printer = new Printer($connector);
 
@@ -130,6 +132,7 @@ class PointOfSaleController extends Controller
                 $printer -> text("For trading hours, please visit simco.com.bd\n");
                 $printer -> feed(2);
                 $printer -> text($date . "\n");
+                //dd($printer);
 
                 /* Cut the receipt and open the cash drawer */
                 $printer -> cut();
@@ -150,5 +153,43 @@ class PointOfSaleController extends Controller
             Toastr::success('You can print latter!', 'Success');
         }
         return redirect()->route('productPosSales.create');
+    }
+
+    public function print2(Request $request,$id,$status){
+
+        // session remove product sale id
+        Session::forget('product_sale_id');
+
+        if($status == 'now' || $status == 'list'){
+
+            //print status update
+            $productSale = ProductSale::find($id);
+            if($status == 'now'){
+                $status = 1;
+            }else{
+                $status = 3;
+            }
+            $productSale->print_status=$status;
+            $productSale->save();
+
+            date_default_timezone_set("Asia/Bangkok");
+
+            $productSale = ProductSale::find($id);
+            $productSaleDetails = DB::table('product_sale_details')
+                ->select('products.name','product_sale_details.price','product_sale_details.qty','product_sale_details.sub_total')
+                ->join('products','product_sale_details.product_id','=','products.id')
+                ->where('product_sale_details.product_sale_id',$id)
+                ->get();
+            Toastr::success('Successfully Printed!', 'Success');
+            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails'));
+        }else{
+            //print status update
+            $productSale = ProductSale::find($id);
+            $productSale->print_status=2;
+            $productSale->save();
+            Toastr::success('You can print latter!', 'Success');
+        }
+        return redirect()->route('productPosSales.create');
+
     }
 }
