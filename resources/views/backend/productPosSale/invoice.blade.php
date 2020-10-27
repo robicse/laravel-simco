@@ -25,16 +25,16 @@
 
         td.quantity,
         th.quantity {
-            width: 80px;
-            max-width: 80px;
+            width: 60px;
+            max-width: 60px;
             text-align: left;
             word-break: break-all;
         }
 
         td.price,
         th.price {
-            width: 40px;
-            max-width: 40px;
+            width: 60px;
+            max-width: 60px;
             text-align: left;
             word-break: break-all;
         }
@@ -48,16 +48,16 @@
 
         td.left_text,
         th.left_text {
-            width: 140px;
-            max-width: 140px;
+            width: 120px;
+            max-width: 120px;
             text-align: left;
             word-break: break-all;
         }
 
         td.right_text,
         th.right_text {
-            width: 40px;
-            max-width: 40px;
+            width: 60px;
+            max-width: 60px;
             text-align: left;
             word-break: break-all;
         }
@@ -92,11 +92,15 @@
         /*    width: inherit;*/
         /*}*/
 
-        @media print {
-            .hidden-print,
-            .hidden-print * {
-                display: none !important;
-            }
+        /*@media print {*/
+        /*    .hidden-print,*/
+        /*    .hidden-print * {*/
+        /*        display: none !important;*/
+        /*    }*/
+        /*}*/
+
+        @page {
+            margin: 0;
         }
     </style>
 </head>

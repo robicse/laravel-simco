@@ -160,15 +160,29 @@ class PointOfSaleController extends Controller
         // session remove product sale id
         Session::forget('product_sale_id');
 
-        if($status == 'now' || $status == 'list'){
+        if($status == 'list'){
 
             //print status update
             $productSale = ProductSale::find($id);
-            if($status == 'now'){
-                $status = 1;
-            }else{
-                $status = 3;
-            }
+            $status = 3;
+            $productSale->print_status=$status;
+            $productSale->save();
+
+            date_default_timezone_set("Asia/Bangkok");
+
+            $productSale = ProductSale::find($id);
+            $productSaleDetails = DB::table('product_sale_details')
+                ->select('products.name','product_sale_details.price','product_sale_details.qty','product_sale_details.sub_total')
+                ->join('products','product_sale_details.product_id','=','products.id')
+                ->where('product_sale_details.product_sale_id',$id)
+                ->get();
+            Toastr::success('Successfully Printed!', 'Success');
+            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails'));
+        }else if($status == 'now'){
+
+            //print status update
+            $productSale = ProductSale::find($id);
+            $status = 1;
             $productSale->print_status=$status;
             $productSale->save();
 

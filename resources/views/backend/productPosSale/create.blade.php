@@ -23,8 +23,9 @@
 
                 <div class="form-group row">
                     <div class="col-md-12 text-center">
-                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'now')}}" class="btn btn-sm btn-primary" type="button">Print Now</a>
-                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'latter')}}" class="btn btn-sm btn-warning" type="button">Print Latter</a>
+                            <a href="{{url('pos/print2/'.Session::get('product_sale_id').'/'.'now')}}" target="_blank" class="btn btn-sm btn-primary printNow" type="button">Print Now</a>
+{{--                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'now')}}" class="btn btn-sm btn-primary" type="button">Print Now</a>--}}
+                            <a href="{{url('pos/print/'.Session::get('product_sale_id').'/'.'latter')}}" class="btn btn-sm btn-warning printLatter" type="button">Print Latter</a>
                     </div>
                 </div>
                 @endif
@@ -229,6 +230,14 @@
             $('input#kode').keyup(update);
             $('input#kode').change(update);
             /*automatically call after two seconds*/
+
+
+
+            $('.printNow').click(function (){
+                // location.reload();
+                $('.printNow').hide();
+                $('.printLatter').hide();
+            })
 
         }());
 

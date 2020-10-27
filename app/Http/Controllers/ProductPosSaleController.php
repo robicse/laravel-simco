@@ -245,13 +245,13 @@ class ProductPosSaleController extends Controller
                         <div class=\"form-group row\">
                             <label for=\"vat_amount\" class=\"col-md-4 control-label\">Vat(Percentage)</label>
                             <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" name=\"vat_amount\" id=\"vat_amount\" onblur=\"vatAmount('')\" value=\"0.00\">
+                                <input type=\"number\" class=\"form-control\" name=\"vat_amount\" id=\"vat_amount\" onblur=\"vatAmount('')\" value=\"0.00\">
                             </div>
                         </div>
                         <div class=\"form-group row\">
                             <label for=\"discount_amount\" class=\"col-md-4 control-label\">Discount(Flat)</label>
                             <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onblur=\"discountAmount('')\" value=\"0.00\">
+                                <input type=\"number\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onblur=\"discountAmount('')\" value=\"0.00\">
                             </div>
                         </div>
                         <div class=\"form-group row\">
@@ -269,7 +269,7 @@ class ProductPosSaleController extends Controller
                         <div class=\"form-group row\">
                             <label for=\"due_amount\" class=\"col-md-4 control-label\">Due</label>
                             <div class=\"col-md-8\">
-                                <input type=\"text\" class=\"form-control\" id=\"due_amount\" name=\"due_amount\" value=\"0.00\" readonly>
+                                <input type=\"text\" class=\"form-control\" id=\"due_amount\" name=\"due_amount\" value=\"".Cart::subtotal()."\" readonly>
                             </div>
                         </div>
                         <div class=\"form-group row\">
