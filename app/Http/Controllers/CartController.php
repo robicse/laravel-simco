@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\DB;
 class CartController extends Controller
 {
     public function addToCart(Request $request){
-        $product_code = $request->product_code;
+        $barcode = $request->barcode;
         $data = array();
-        if($product_code){
-            $product_check_exists = Product::where('product_code',$product_code)->pluck('id')->first();
+        if($barcode){
+            $product_check_exists = Product::where('barcode',$barcode)->pluck('id')->first();
             if($product_check_exists){
                 $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
                 if($product_current_stock_check_exists > 0){
                     $data['product_check_exists'] = 'Product Found!';
                     $product = DB::table('products')
-                        ->where('product_code',$product_code)
+                        ->where('barcode',$barcode)
                         ->first();
 
                     if(!empty($product)){
@@ -31,7 +31,7 @@ class CartController extends Controller
                         $data['name'] = $product->name;
                         $data['qty'] = 1;
                         $data['price'] = $price;
-                        $data['options']['product_code'] = $product_code;
+                        $data['options']['barcode'] = $barcode;
                         Cart::add($data);
                     }
                     $data['countCart'] = Cart::count();

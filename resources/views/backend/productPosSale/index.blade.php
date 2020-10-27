@@ -26,16 +26,16 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class=""></i> All Product Sale</h1>
+                <h1><i class=""></i> All Product POS Sale</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
-                <li class="breadcrumb-item"> <a href="{!! route('productPosSales.create') !!}" class="btn btn-sm btn-primary" type="button">Add Product Sales</a></li>
+                <li class="breadcrumb-item"> <a href="{!! route('productPosSales.create') !!}" class="btn btn-sm btn-primary" type="button">Add Product POS Sales</a></li>
             </ul>
         </div>
         <div class="col-md-12">
             <div class="tile">
 
-                <h3 class="tile-title">Product Sales Table</h3>
+                <h3 class="tile-title">Product POS Sales Table</h3>
                 <table id="example1" class="table table-bordered table-striped">
 
                     <thead>
@@ -70,8 +70,9 @@
                             @endif
                         </td>
                         <td colspan="3">
-                            <a href="{{url('pos/print2/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>
 {{--                            <a href="{{url('pos/print/'.$productSale->id.'/'.'list')}}" class="btn btn-sm btn-warning" type="button">Print</a>--}}
+{{--                            <a href="{{url('pos/print2/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>--}}
+                            <a href="{{url('product-pos-sales-invoice/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>
                             <a href="{{ route('productSales.show',$productSale->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productSales.edit',$productSale->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
                             <form method="post" action="{{ route('productSales.destroy',$productSale->id) }}" >

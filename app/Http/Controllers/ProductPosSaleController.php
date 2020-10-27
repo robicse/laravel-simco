@@ -94,10 +94,10 @@ class ProductPosSaleController extends Controller
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $products = DB::table('product_purchase_details')
-            ->select('product_purchase_details.product_id','product_purchase_details.product_code')
+            ->select('product_purchase_details.product_id','product_purchase_details.barcode')
             ->leftJoin('products','products.id','=','product_purchase_details.product_id')
             ->groupBy('product_purchase_details.product_id')
-            ->groupBy('product_purchase_details.product_code')
+            ->groupBy('product_purchase_details.barcode')
             ->get();
 
         return view('backend.productPosSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
@@ -111,7 +111,7 @@ class ProductPosSaleController extends Controller
 
 
 
-    public function selectedform($product_code){
+    public function selectedform($barcode){
 
         $baseurl = URL('/pos_insert');
 
@@ -123,7 +123,7 @@ class ProductPosSaleController extends Controller
 //                        <thead>
 //                            <tr>
 //                                <th width="30">No</th>
-//                                <th>Product Code</th>
+//                                <th>Barcode</th>
 //                                <th>Product Name</th>
 //                                <th align="right">Price</th>
 //                                <th>Quantity</th>
@@ -196,7 +196,7 @@ class ProductPosSaleController extends Controller
                         <thead>
                             <tr>
                                 <th width=\"30\">No</th>
-                                <th>Product Code</th>
+                                <th>Barcode</th>
                                 <th>Product Name</th>
                                 <th align=\"right\">Price</th>
                                 <th>Quantity</th>
@@ -209,7 +209,7 @@ class ProductPosSaleController extends Controller
             foreach(Cart::content() as $item):
                 $html .= "<tr>";
                 $html .= "<th width=\"30\">1</th>";
-                $html .= "<th>".$item->options['product_code']."</th>";
+                $html .= "<th>".$item->options['barcode']."</th>";
                 $html .= "<th>".$item->name."</th>";
                 $html .= "<th align=\"right\">".$item->price."</th>";
                 //$html .= "<th><input type=\"text\" value=\"".$item->qty."\" size=\"28\" </th>";

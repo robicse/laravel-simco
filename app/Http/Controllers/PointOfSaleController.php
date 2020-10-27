@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Party;
 use App\ProductSale;
 use App\ProductSaleDetail;
+use App\Store;
+use App\Transaction;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 
@@ -155,7 +158,7 @@ class PointOfSaleController extends Controller
         return redirect()->route('productPosSales.create');
     }
 
-    public function print2(Request $request,$id,$status){
+    public function printPos(Request $request,$id,$status){
 
         // session remove product sale id
         Session::forget('product_sale_id');
@@ -177,7 +180,7 @@ class PointOfSaleController extends Controller
                 ->where('product_sale_details.product_sale_id',$id)
                 ->get();
             Toastr::success('Successfully Printed!', 'Success');
-            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails'));
+            return view('backend.productPosSale.pos_invoice', compact('productSale','productSaleDetails'));
         }else if($status == 'now'){
 
             //print status update
@@ -195,7 +198,7 @@ class PointOfSaleController extends Controller
                 ->where('product_sale_details.product_sale_id',$id)
                 ->get();
             Toastr::success('Successfully Printed!', 'Success');
-            return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails'));
+            return view('backend.productPosSale.pos_invoice', compact('productSale','productSaleDetails'));
         }else{
             //print status update
             $productSale = ProductSale::find($id);
@@ -205,5 +208,36 @@ class PointOfSaleController extends Controller
         }
         return redirect()->route('productPosSales.create');
 
+    }
+
+    public function invoicePos($id)
+    {
+        //print status update
+        $productSale = ProductSale::find($id);
+        $status = 1;
+        $productSale->print_status=$status;
+        $productSale->save();
+
+        $productSale = ProductSale::find($id);
+        $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
+        $transaction = Transaction::where('ref_id',$id)->first();
+        $store_id = $productSale->store_id;
+        $party_id = $productSale->party_id;
+        $store = Store::find($store_id);
+        $party = Party::find($party_id);
+
+        return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transaction','store','party'));
+    }
+    public function invoicePosPrint($id)
+    {
+        $productSale = ProductSale::find($id);
+        $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
+        $transaction = Transaction::where('ref_id',$id)->first();
+        $store_id = $productSale->store_id;
+        $party_id = $productSale->party_id;
+        $store = Store::find($store_id);
+        $party = Party::find($party_id);
+
+        return view('backend.productPosSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party'));return view('backend.productSale.invoice-print');
     }
 }

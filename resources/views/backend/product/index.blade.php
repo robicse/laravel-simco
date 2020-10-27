@@ -18,7 +18,7 @@
                     <tr>
                         <th width="5%">#Id</th>
                         <th width="10%">Product Type</th>
-                        <th width="10%">Product Code</th>
+                        <th width="10%">Barcode</th>
                         <th width="10%">Product Name</th>
                         <th width="10%">Category Name</th>
                         <th width="10%">Sub Category Name</th>
@@ -29,25 +29,25 @@
                     </thead>
                     <tbody>
                     @foreach($products as $key => $product)
-                    <tr>
-                        <td>{{ $key+1 }}</td>
-                        <td>{{ $product->product_type}}</td>
-                        <td>{{ $product->product_code}}</td>
-                        <td>{{ $product->name}}</td>
-                        <td>{{ $product->product_category->name}}</td>
-                        <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>
-                        <td>{{ $product->product_brand->name}}</td>
-                        <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="100px;"></td>
-                        <td>
-                            <a href="{{ route('products.edit',$product->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
-                            <form method="post" action="{{ route('products.destroy',$product->id) }}" >
-                               @method('DELETE')
-                                @csrf
-                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                        @endforeach
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $product->product_type}}</td>
+                            <td>{{ $product->barcode}}</td>
+                            <td>{{ $product->name}}</td>
+                            <td>{{ $product->product_category->name}}</td>
+                            <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>
+                            <td>{{ $product->product_brand->name}}</td>
+                            <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="100px;"></td>
+                            <td>
+                                <a href="{{ route('products.edit',$product->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
+                                <form method="post" action="{{ route('products.destroy',$product->id) }}" >
+                                    @method('DELETE')
+                                    @csrf
+                                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
                 <div class="tile-footer">

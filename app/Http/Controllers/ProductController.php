@@ -41,7 +41,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'product_code' => 'required',
+            'barcode' => 'required',
             'product_category_id' => 'required',
             //'product_sub_category_id' => 'required',
             'product_brand_id' => 'required',
@@ -49,7 +49,7 @@ class ProductController extends Controller
 
         $product = new Product;
         $product->product_type = $request->product_type;
-        $product->product_code = $request->product_code;
+        $product->barcode = $request->barcode;
         $product->name = $request->name;
         $product->slug = Str::slug($request->name);
         $product->product_category_id = $request->product_category_id;
@@ -106,7 +106,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->product_type = $request->product_type;
         $product->name = $request->name;
-        $product->product_code = $request->product_code;
+        $product->barcode = $request->barcode;
         $product->slug = Str::slug($request->name);
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;

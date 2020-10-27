@@ -45,12 +45,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Product Code <span style="color: red">*</span></label>
+                            <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
                             <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('product_code') ? ' is-invalid' : '' }}" type="text" placeholder="Product Code" name="product_code" value="{{$product->product_code}}">
-                                @if ($errors->has('product_code'))
+                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="Barcode" name="barcode" value="{{$product->barcode}}">
+                                @if ($errors->has('barcode'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('product_code') }}</strong>
+                                        <strong>{{ $errors->first('barcode') }}</strong>
                                     </span>
                                 @endif
                             </div>
