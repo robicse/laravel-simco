@@ -25,9 +25,15 @@ class UserController extends Controller
         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $users=User::latest()->get();
+        $auth_user = Auth::user()->roles[0]->name;
+        if($auth_user == "Admin") {
+            $users=User::latest()->get();
+        }else{
+            $users=User::where('id',Auth::user()->id)->get();
+        }
+
         return view('backend.user.index',compact('users'));
     }
 
@@ -149,5 +155,37 @@ class UserController extends Controller
         Excel::import(new UsersImport,request()->file('file'));
 
         return back();
+    }
+
+    public function changedPassword($user_id)
+    {
+        return view('backend.user.edit-password', compact('user_id'));
+    }
+    public function changedPasswordUpdated(Request $request)
+    {
+        $this->validate($request, [
+            'old_password' => 'required',
+            'password' => 'required|confirmed',
+        ]);
+        //$hashedPassword = Auth::user()->password;
+        $hashedPassword = User::where('id',$request->user_id)->pluck('password')->first();
+
+        if (\Illuminate\Support\Facades\Hash::check($request->old_password, $hashedPassword)) {
+            if (!Hash::check($request->password, $hashedPassword)) {
+                //$user = \App\User::find(Auth::id());
+                $user = User::find($request->user_id);
+                $user->password = Hash::make($request->password);
+                $user->save();
+                Toastr::success('Password Updated Successfully','Success');
+                Auth::logout();
+                return redirect()->route('login');
+            } else {
+                Toastr::error('New password cannot be the same as old password.', 'Error');
+                return redirect()->back();
+            }
+        } else {
+            Toastr::error('Current password not match.', 'Error');
+            return redirect()->back();
+        }
     }
 }
