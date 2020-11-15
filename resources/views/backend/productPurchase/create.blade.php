@@ -91,7 +91,7 @@
                             <tbody class="neworderbody">
                             <tr>
                                 <td width="5%" class="no">1</td>
-                                <td>
+                                <td width="12%">
                                     <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                         <option value="">Select  Product</option>
                                         @foreach($products as $product)
@@ -99,7 +99,7 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>
+                                <td width="12%">
                                     <div id="product_category_id_1">
                                         <select class="form-control product_category_id select2" name="product_category_id[]"  required>
                                             <option value="">Select  Category</option>
@@ -109,7 +109,7 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td>
+                                <td width="12%">
                                     <div id="product_sub_category_id_1">
                                         <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
                                             <option value="">Select  Sub Category</option>
@@ -119,7 +119,7 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td>
+                                <td width="12%">
                                     <div id="product_brand_id_1">
                                         <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
                                             <option value="">Select  Brand</option>
@@ -129,16 +129,16 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td>
+                                <td width="8%">
                                     <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                 </td>
-                                <td>
+                                <td width="10%">
                                     <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
                                 </td>
-                                <td>
+                                <td width="10%">
                                     <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="" required >
                                 </td>
-                                <td>
+                                <td width="10%">
                                     <input type="text" class="amount form-control" name="sub_total[]">
                                 </td>
                             </tr>

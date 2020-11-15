@@ -91,7 +91,7 @@
                                     @php
                                         $current_row = $key+1;
                                     @endphp
-                                    <td>
+                                    <td width="12%">
                                         <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
                                             <option value="">Select  Product</option>
                                             @foreach($products as $product)
@@ -100,7 +100,7 @@
                                         </select>
                                         <input type="hidden" class="form-control" name="product_purchase_detail_id[]" value="{{$productPurchaseDetail->id}}" >
                                     </td>
-                                    <td>
+                                    <td width="12%">
                                         <div id="product_category_id_{{$current_row}}">
                                             <select class="form-control product_category_id" name="product_category_id[]" readonly required>
                                                 <option value="">Select  Category</option>
@@ -110,7 +110,7 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td width="12%">
                                         <div id="product_sub_category_id_{{$current_row}}">
                                             <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
                                                 <option value="">Select  Sub Category</option>
@@ -120,7 +120,7 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td width="12%">
                                         <div id="product_brand_id_{{$current_row}}">
                                             <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
                                                 <option value="">Select  Brand</option>
@@ -130,16 +130,16 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td width="8%">
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productPurchaseDetail->qty}}" required >
                                     </td>
-                                    <td>
+                                    <td width="10%">
                                         <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productPurchaseDetail->price}}" required >
                                     </td>
-                                    <td>
+                                    <td width="10%">
                                         <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="{{$productPurchaseDetail->mrp_price}}" required >
                                     </td>
-                                    <td>
+                                    <td width="10%">
                                         <input type="text" class="amount form-control" name="sub_total[]" value="{{$productPurchaseDetail->sub_total}}">
                                     </td>
                                 </tr>
