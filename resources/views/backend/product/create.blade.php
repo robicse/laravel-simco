@@ -45,17 +45,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
-                            <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="Barcode" name="barcode">
-                                @if ($errors->has('barcode'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('barcode') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Product Category <span style="color: red">*</span></label>
                             <div class="col-md-8">
                                 <select name="product_category_id" id="product_category_id" class="form-control">
@@ -135,6 +124,17 @@
                                 {{--                                        <strong>{{ $errors->first('image') }}</strong>--}}
                                 {{--                                    </span>--}}
                                 {{--                                @endif--}}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
+                            <div class="col-md-8">
+                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="Barcode" name="barcode">
+                                @if ($errors->has('barcode'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('barcode') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group row">

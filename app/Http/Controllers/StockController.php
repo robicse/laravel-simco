@@ -16,7 +16,7 @@ class StockController extends Controller
         $this->middleware('permission:product-list', ['only' => ['stockList']]);
     }
     public function stockList(){
-        $stores = Store::all();
+        $stores = Store::latest()->get();
         return view('backend.stock.index', compact('stores'));
     }
     public function export()

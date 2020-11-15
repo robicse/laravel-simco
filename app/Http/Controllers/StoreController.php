@@ -24,7 +24,7 @@ class StoreController extends Controller
 
     public function index()
     {
-        $stores = Store::orderBy('id','desc')->paginate(5);
+        $stores = Store::latest()->get();
         return view('backend.store.index', compact('stores'));
     }
 

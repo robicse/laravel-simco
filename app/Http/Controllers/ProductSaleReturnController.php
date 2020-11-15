@@ -111,6 +111,7 @@ class ProductSaleReturnController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale return';
             $transaction->payment_type = $request->payment_type;
+            $transaction->date = date('Y-m-d');
             $transaction->amount = $request->total_amount;
             $transaction->save();
 
@@ -135,6 +136,7 @@ class ProductSaleReturnController extends Controller
             $stock->stock_in = $request->return_qty;;
             $stock->stock_out = 0;
             $stock->current_stock = $previous_stock + $request->return_qty;
+            $stock->date = date('Y-m-d');
             $stock->save();
 
 

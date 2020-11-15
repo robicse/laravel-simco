@@ -37,7 +37,7 @@ class ProductProductionController extends Controller
         if($auth_user == "Admin"){
             $productProductions = ProductProduction::latest()->get();
         }else{
-            $productProductions = ProductProduction::where('user_id',$auth_user_id)->get();
+            $productProductions = ProductProduction::where('user_id',$auth_user_id)->latest()->get();
         }
         return view('backend.productProduction.index',compact('productProductions'));
     }

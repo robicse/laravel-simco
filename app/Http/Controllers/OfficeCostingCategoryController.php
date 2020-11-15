@@ -11,7 +11,7 @@ class OfficeCostingCategoryController extends Controller
 {
     public function index()
     {
-        $officeCostingCategories = OfficeCostingCategory::orderBy('id','desc')->paginate(5);
+        $officeCostingCategories = OfficeCostingCategory::latest()->get();
         return view('backend.officeCostingCategory.index', compact('officeCostingCategories'));
     }
 

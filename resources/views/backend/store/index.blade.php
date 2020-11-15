@@ -50,7 +50,6 @@
                 </table>
                 <div class="tile-footer">
                 </div>
-                {{ $stores->links() }}
             </div>
 
         </div>

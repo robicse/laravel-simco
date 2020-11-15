@@ -23,12 +23,12 @@
         @foreach($transactions as $key => $transaction)
             <tr>
                 <td>{{ $key+1 }}</td>
-                <td>{{ $transaction->user->name}}</td>
-                <td>{{ $transaction->store->name}}</td>
-                <td>{{ $transaction->party->name}}</td>
-                <td>{{ $transaction->transaction_type}}</td>
-                <td>{{ $transaction->payment_type}}</td>
-                <td>{{ $transaction->amount}}</td>
+                <td>{{ $transaction->user ? $transaction->user->name : ''}}</td>
+                <td>{{ $transaction->store ? $transaction->store->name : ''}}</td>
+                <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
+                <td>{{ $transaction->transaction_type ? $transaction->transaction_type : ''}}</td>
+                <td>{{ $transaction->payment_type ? $transaction->payment_type : ''}}</td>
+                <td>{{ $transaction->amount ? $transaction->amount : ''}}</td>
             </tr>
         @endforeach
     @endif

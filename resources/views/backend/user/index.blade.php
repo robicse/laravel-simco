@@ -79,7 +79,6 @@
                     </tbody>
                 </table>
                 <div class="tile-footer">
-              {{$users->links()}}
                 </div>
             </div>
         </div>
