@@ -200,8 +200,11 @@
                             </tfoot>
                         </table>
                         <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
+                            <label class="control-label col-md-3">
+
+                            </label>
                             <div class="col-md-8">
+                                <label class="checkbox-inline"><input type="checkbox" name="print_now" value="1"> Redirect Print Page</label>
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
                             </div>
                         </div>
@@ -307,6 +310,7 @@
                     var t = total-per;
                 }
                 $('#total_amount').val(t);
+                $('#due_amount').val(t);
             });
             $('.getmoney').change(function(){
                 var total = $('#total_amount').val();

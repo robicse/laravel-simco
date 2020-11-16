@@ -52,7 +52,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <h4 style="float: right">
-                                            <img class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="250px"><br><br>
+                                            <img class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="200px"><br><br>
                                             <small class="float-right"> {{date('d-m-Y')}}</small><br>
                                             <small class="float-right">Invoice #{{$productSale->invoice_no}}</small><br>
                                         </h4>
@@ -237,20 +237,13 @@
                                     </div>
                                     <div class="col-md-4" style="width: 33%;float: left;display: inline-block">
                                         Mob : +88-02-9662755<br>
-                                        IP : +88-02-8624637<br>
-                                        email : <span style="color: #0000FF">simcodhaka@gmail.com</span>
-                                    </div>
-                                    <div class="col-md-4" style="width: 33%;float: left;display: inline-block">
-                                        <strong>Address :</strong><br>
-                                        Flat # 3-B, (3rd floor) Square Tower<br/>
-                                        (Bashundhara Lane) 36/6, Mirpur Road<br/>
-                                        Dhaka-1205, Bangladesh.
+                                        IP : +88-02-8624637
                                     </div>
                                 </div>
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
                                     <div class="col-12">
-                                        <a href="{{route('productSales-invoice-print',$productSale->id)}}" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                        <a href="{{route('productSales-invoice-print',$productSale->id)}}" target="_blank" class="btn btn-success float-right"><i class="fas fa-print"></i> Print</a>
 {{--                                        <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit--}}
 {{--                                            Payment--}}
 {{--                                        </button>--}}

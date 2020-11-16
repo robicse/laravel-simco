@@ -180,7 +180,12 @@ class ProductSaleController extends Controller
         }
 
         Toastr::success('Product Sale Created Successfully', 'Success');
-        return redirect()->route('productSales.index');
+        if($request->print_now == 1){
+            //return redirect()->route('productSales-invoice',$insert_id);
+            return redirect()->route('productSales-invoice-print',$insert_id);
+        }else{
+            return redirect()->route('productSales.index');
+        }
 
     }
 

@@ -98,7 +98,7 @@ class ProductPosSaleController extends Controller
             ->leftJoin('products','products.id','=','product_purchase_details.product_id')
             ->groupBy('product_purchase_details.product_id')
             ->groupBy('product_purchase_details.barcode')
-            ->get();
+            ->latest('products.id')->get();
 
         return view('backend.productPosSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
     }
