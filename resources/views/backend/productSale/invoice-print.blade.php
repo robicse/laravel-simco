@@ -1,6 +1,6 @@
 
 <!-- Google Font: Source Sans Pro -->
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+{{--<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">--}}
 
 <!-- Printable area end -->
 <div class="row">
@@ -15,7 +15,9 @@
                 <style>
                     .panel-body {
                         min-height: 1000px !important;
-                        font-size: 20px !important;
+                        font-size: 18px !important;
+                        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                        font-weight: inherit;
                     }
                     .invoice {
                         border-collapse: collapse;
@@ -29,7 +31,7 @@
 
                     .invoice td {
                         text-align: center;
-                        font-size: 20px;
+                        font-size: 18px;
                     }
 
                     .invoice-logo{
@@ -61,7 +63,7 @@
                         size: A4;
                         /*size: Letter;*/
                         /*margin: 0px !important;*/
-                        margin: 20px 100px !important;
+                        margin: 18px 100px !important;
                     }
 
                     /*@media screen {*/
@@ -94,8 +96,8 @@
                         <div class="col-md-6" style="width: 100%; float: left;display: inline-block">&nbsp;</div>
                         <div class="col-md-6" style="text-align: right; width: 100%; display: inline-block">
                             <div class="invoice-logo">
-                                <span style="font-size: 20px;"> {{date('d-m-Y')}}</span><br>
-                                <small class="float-right" style="font-size: 20px;">Invoice #{{$productSale->invoice_no}}</small><br>
+                                <span style="font-size: 18px;"> {{date('d-m-Y')}}</span><br>
+                                <small class="float-right" style="font-size: 18px;">Invoice #{{$productSale->invoice_no}}</small><br>
                             </div>
                         </div>
                     </div>
@@ -113,24 +115,24 @@
                             <div class="invoice-to">
                                 <table>
                                     <tr>
-                                        <th style="text-align: left;font-size: 20px;">Invoice</th>
-                                        <th style="text-align: left;font-size: 20px;">#{{$productSale->invoice_no}}</th>
+                                        <th style="text-align: left;font-size: 18px;">Invoice</th>
+                                        <th style="text-align: left;font-size: 18px;">#{{$productSale->invoice_no}}</th>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 20px;">Customer Name:</td>
-                                        <td style="text-align: left;font-size: 20px;">{{$party->name}}</td>
+                                        <td style="text-align: left;font-size: 18px;">Customer Name:</td>
+                                        <td style="text-align: left;font-size: 18px;">{{$party->name}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 20px;">Phone NO:</td>
-                                        <td style="text-align: left;font-size: 20px;">{{$party->phone}}</td>
+                                        <td style="text-align: left;font-size: 18px;">Phone NO:</td>
+                                        <td style="text-align: left;font-size: 18px;">{{$party->phone}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 20px;">Email:</td>
-                                        <td style="text-align: left;font-size: 20px;">{{$party->email}}</td>
+                                        <td style="text-align: left;font-size: 18px;">Email:</td>
+                                        <td style="text-align: left;font-size: 18px;">{{$party->email}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 20px;">Creditor:</td>
-                                        <td style="text-align: left;font-size: 20px;">Test</td>
+                                        <td style="text-align: left;font-size: 18px;">Creditor:</td>
+                                        <td style="text-align: left;font-size: 18px;">Test</td>
                                     </tr>
                                 </table>
                             </div>
@@ -174,8 +176,8 @@
                         <!-- accepted payments column -->
                         <div class="col-md-6">
 
-                            <p style="text-align: left;font-size: 20px;" class="lead">Payment Type:</p>
-                            <p style="text-align: left;font-size: 20px;" class="text-muted well well-sm shadow-none" >
+                            <p style="text-align: left;font-size: 18px;" class="lead">Payment Type:</p>
+                            <p style="text-align: left;font-size: 18px;" class="text-muted well well-sm shadow-none" >
                                 {{$transaction->payment_type}}
                                 @if($transaction->payment_type == 'check')
                                     ( Check Number: {{$transaction->check_number}} )
@@ -190,24 +192,24 @@
                             <div class="table-responsive">
                                 <table class="table">
                                     <tr>
-                                        <th style="text-align: left;font-size: 20px;">Subtotal:</th>
-                                        <td style="text-align: left;font-size: 20px;">{{$sum_sub_total}}</td>
+                                        <th style="text-align: left;font-size: 18px;">Subtotal:</th>
+                                        <td style="text-align: left;font-size: 18px;">{{$sum_sub_total}}</td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: left;font-size: 20px;">Discount:</th>
-                                        <td style="text-align: left;font-size: 20px;">{{$productSale->discount_amount}}</td>
+                                        <th style="text-align: left;font-size: 18px;">Discount:</th>
+                                        <td style="text-align: left;font-size: 18px;">{{$productSale->discount_amount}}</td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: left;font-size: 20px;">Total Amount:</th>
-                                        <td style="text-align: left;font-size: 20px;">{{$productSale->total_amount}}</td>
+                                        <th style="text-align: left;font-size: 18px;">Total Amount:</th>
+                                        <td style="text-align: left;font-size: 18px;">{{$productSale->total_amount}}</td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: left;font-size: 20px;">Paid Amount:</th>
-                                        <td style="text-align: left;font-size: 20px;">{{$productSale->paid_amount}}</td>
+                                        <th style="text-align: left;font-size: 18px;">Paid Amount:</th>
+                                        <td style="text-align: left;font-size: 18px;">{{$productSale->paid_amount}}</td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: left;font-size: 20px;">Due Amount:</th>
-                                        <td style="text-align: left;font-size: 20px;">{{$productSale->due_amount}}</td>
+                                        <th style="text-align: left;font-size: 18px;">Due Amount:</th>
+                                        <td style="text-align: left;font-size: 18px;">{{$productSale->due_amount}}</td>
                                     </tr>
 
                                 </table>

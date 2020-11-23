@@ -204,7 +204,7 @@
 
                             </label>
                             <div class="col-md-8">
-                                <label class="checkbox-inline"><input type="checkbox" name="print_now" value="1"> Redirect Print Page</label>
+                                <label class="checkbox-inline"><input type="checkbox" name="print_now" value="1" style="margin-right: 5px;height: 24px;width: 30px;"><span style="height: 30px;background-color: green;padding: 10px;border-radius: 3px;">Redirect Print Page</span></label>
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
                             </div>
                         </div>
