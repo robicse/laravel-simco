@@ -13591,7 +13591,7 @@ be a descendant of the grid when it is being dragged.
             flex: 0 0 auto;
     display: block;
     width: 230px;
-    background-color: #007d71;
+    background-color: #ffffff;
   }
 }
 
@@ -14521,7 +14521,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .material-half-bg .cover {
-  background-color: #313A95;
+  /*background-color: #313A95;*/
   height: 50vh;
 }
 

@@ -34,7 +34,7 @@
                         <td>{{ $store->phone }}</td>
                         <td>{{ $store->address }}</td>
                         <td>
-                            <img src="{{asset('uploads/store/'.$store->logo)}}" height="60px" width="250px"/>
+                            <img src="{{asset('uploads/store/'.$store->logo)}}" height="80px" width="250px"/>
                         </td>
                         <td>
                             <a href="{{ route('stores.edit',$store->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>

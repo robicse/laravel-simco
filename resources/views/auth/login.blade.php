@@ -17,7 +17,7 @@
 </section>
 <section class="login-content">
     <div class="logo">
-        <h1><img src="{{asset('uploads/logo.png')}}" alt="logo" height="60px" width="250px"></h1>
+        <h1><img src="{{asset('uploads/logo.png')}}" alt="logo" height="auto" width="250px"></h1>
     </div>
     @if (session('status'))
         <div class="alert alert-success" role="alert">

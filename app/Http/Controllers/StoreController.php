@@ -59,7 +59,7 @@ class StoreController extends Controller
             $currentDate = Carbon::now()->toDateString();
             $logoName = $currentDate . '-' . uniqid() . '.' . $logo->getClientOriginalExtension();
             //resize image for hospital and upload
-            $proLogo =Image::make($logo)->resize(250, 60)->save($logo->getClientOriginalExtension());
+            $proLogo =Image::make($logo)->resize(250, 80)->save($logo->getClientOriginalExtension());
             Storage::disk('public')->put('uploads/store/'.$logoName, $proLogo);
 
 
@@ -115,7 +115,7 @@ class StoreController extends Controller
                 Storage::disk('public')->delete('uploads/store/'.$store->logo);
             }
             //resize image for hospital and upload
-            $proLogo =Image::make($logo)->resize(250, 60)->save($logo->getClientOriginalExtension());
+            $proLogo =Image::make($logo)->resize(250, 80)->save($logo->getClientOriginalExtension());
             Storage::disk('public')->put('uploads/store/'.$logoName, $proLogo);
 
 
