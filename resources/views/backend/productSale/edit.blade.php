@@ -150,10 +150,10 @@
                                         </select>
                                     </td>
                                     <td width="8%">
-                                        <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
+                                        <input type="text" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
                                     </td>
                                     <td width="10%">
-                                        <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
+                                        <input type="text" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
                                     </td>
                                     <td width="10%">
                                         <input type="text" class="amount form-control" name="sub_total[]" value="{{$productSaleDetail->sub_total}}">
@@ -268,6 +268,11 @@
             $('.neworderbody').delegate('.qty, .price', 'keyup', function () {
                 var gr_tot = 0;
                 var tr = $(this).parent().parent();
+                if(tr.find('.qty').val() && isNaN(tr.find('.qty').val())){
+                    alert("Must input numbers");
+                    tr.find('.qty').val('')
+                    return false;
+                }
                 var qty = tr.find('.qty').val() - 0;
                 var stock_qty = tr.find('.stock_qty').val() - 0;
                 if(qty > stock_qty){

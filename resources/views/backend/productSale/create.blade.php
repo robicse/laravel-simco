@@ -158,10 +158,10 @@
                                     <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
                                 </td>
                                 <td width="8%">
-                                    <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
+                                    <input type="text" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                 </td>
                                 <td width="10%">
-                                    <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                    <input type="text" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" required >
                                 </td>
                                 <td width="10%">
                                     <input type="text" class="amount form-control" name="sub_total[]">
@@ -331,7 +331,7 @@
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
                     '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
-                    '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
+                    '<td><input type="text" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
@@ -352,6 +352,11 @@
             $('.neworderbody').delegate('.qty, .price', 'keyup', function () {
                 var gr_tot = 0;
                 var tr = $(this).parent().parent();
+                if(tr.find('.qty').val() && isNaN(tr.find('.qty').val())){
+                    alert("Must input numbers");
+                    tr.find('.qty').val('')
+                    return false;
+                }
                 var qty = tr.find('.qty').val() - 0;
                 var stock_qty = tr.find('.stock_qty').val() - 0;
                 if(qty > stock_qty){
