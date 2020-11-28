@@ -106,35 +106,28 @@
                     <div>&nbsp;</div>
                     <div class="row">
                         <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
-                            <strong>Simco Main Store</strong><br>
-                            Flat # 3-B, (3rd floor)<br>
-                            Square Tower (Bashundhara Lane)<br>
-                            36/6, Mirpur Road <br><br>
-                            Dhaka-1205<br>
-                            Bangladesh
+                            <strong>To,</strong><br>
+                            <strong>{{$party->name}}</strong><br>
+                            {{$party->address}}
                         </div>
                         <div class="col-md-6" style="text-align: right; width: 40%; display: inline-block">
                             <div class="invoice-to">
                                 <table>
                                     <tr>
-                                        <th style="text-align: left;font-size: 18px;">Invoice</th>
+                                        <th style="text-align: left;font-size: 18px;border-right: 1px solid #000000">Invoice</th>
                                         <th style="text-align: left;font-size: 18px;">#{{$productSale->invoice_no}}</th>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 18px;">Customer Name:</td>
-                                        <td style="text-align: left;font-size: 18px;">{{$party->name}}</td>
+                                        <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Date:</td>
+                                        <td style="text-align: left;font-size: 18px;">{{date('d-m-Y')}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 18px;">Phone NO:</td>
+                                        <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Phone NO:</td>
                                         <td style="text-align: left;font-size: 18px;">{{$party->phone}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 18px;">Email:</td>
-                                        <td style="text-align: left;font-size: 18px;">{{$party->email}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left;font-size: 18px;">Creditor:</td>
-                                        <td style="text-align: left;font-size: 18px;">Test</td>
+                                        <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Creditor BY:</td>
+                                        <td style="text-align: left;font-size: 18px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -172,6 +165,36 @@
                                 </td>
                             </tr>
                         @endforeach
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Subtotal:</td>
+                            <td>{{$sum_sub_total}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Discount:</td>
+                            <td>-{{$productSale->discount_amount}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Total Amount</td>
+                            <td>{{$productSale->total_amount}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Paid Amount:</td>
+                            <td>{{$productSale->paid_amount}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                            <td>Due Amount:</td>
+                            <td>{{$productSale->due_amount}}</td>
+                        </tr>
                         </tbody>
                     </table>
                     <div class="row" style="">
@@ -187,37 +210,16 @@
                             </p>
                         </div>
                         <!-- /.col -->
-                        <div class="col-md-6" style="float: right;margin-top: -100px">
-                            {{--                                        <p class="lead">Amount Due 2/22/2014</p>--}}
-                            <p class="lead">Amount:</p>
-
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tr>
-                                        <th style="text-align: left;font-size: 18px;">Subtotal:</th>
-                                        <td style="text-align: left;font-size: 18px;">{{$sum_sub_total}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align: left;font-size: 18px;">Discount:</th>
-                                        <td style="text-align: left;font-size: 18px;">{{$productSale->discount_amount}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align: left;font-size: 18px;">Total Amount:</th>
-                                        <td style="text-align: left;font-size: 18px;">{{$productSale->total_amount}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align: left;font-size: 18px;">Paid Amount:</th>
-                                        <td style="text-align: left;font-size: 18px;">{{$productSale->paid_amount}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th style="text-align: left;font-size: 18px;">Due Amount:</th>
-                                        <td style="text-align: left;font-size: 18px;">{{$productSale->due_amount}}</td>
-                                    </tr>
-
-                                </table>
+                        <div class="row">
+                            <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
+                                <strong>Received By</strong><br>
+                                <strong>Customer signature</strong>
+                            </div>
+                            <div class="col-md-6" style="text-align: right; width: 40%; display: inline-block">
+                                <strong>Authorize Signature</strong><br>
+                                <strong>For SIMCO Electronics</strong>
                             </div>
                         </div>
-                        <!-- /.col -->
                     </div>
 
                     <div class="row footer_div">

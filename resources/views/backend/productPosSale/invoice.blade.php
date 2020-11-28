@@ -63,46 +63,32 @@
                                 <div class="row invoice-info">
                                     <div class="col-md-8 invoice-col">
                                         <address>
-                                            <strong>Simco Main Store</strong><br>
-                                            Flat # 3-B, (3rd floor)<br>
-                                            Square Tower (Bashundhara Lane)<br>
-                                            36/6, Mirpur Road <br><br>
-                                            Dhaka-1205<br>
-                                            Bangladesh
-
+                                            <strong>To,</strong><br>
+                                            <strong>{{$party->name}}</strong><br>
+                                            {{$party->address}}
                                         </address>
                                     </div>
                                     <!-- /.col -->
                                     <div class="col-md-4 invoice-col">
                                         <div class="invoice-to">
-                                            <table style="width:100%">
-
+                                            <table>
                                                 <tr>
-                                                    <th>Invoice</th>
-                                                    <th>#{{$productSale->invoice_no}}</th>
-
+                                                    <th style="text-align: left;font-size: 18px;border-right: 1px solid #000000">Invoice</th>
+                                                    <th style="text-align: left;font-size: 18px;">#{{$productSale->invoice_no}}</th>
                                                 </tr>
                                                 <tr>
-                                                    <td>Customer Name:</td>
-                                                    <td>{{$party->name}}</td>
-
+                                                    <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Date:</td>
+                                                    <td style="text-align: left;font-size: 18px;">{{date('d-m-Y')}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Phone NO:</td>
-                                                    <td>{{$party->phone}}</td>
-
+                                                    <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Phone NO:</td>
+                                                    <td style="text-align: left;font-size: 18px;">{{$party->phone}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Email:</td>
-                                                    <td>{{$party->email}}</td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align: left;font-size: 24px;">Creditor:</td>
-                                                    <td style="text-align: left;font-size: 24px;">Test</td>
+                                                    <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Creditor BY:</td>
+                                                    <td style="text-align: left;font-size: 18px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
                                                 </tr>
                                             </table>
-
                                         </div>
                                     </div>
                                     <!-- /.col -->
@@ -142,6 +128,36 @@
                                                 </td>
                                             </tr>
                                             @endforeach
+                                            <tr>
+                                                <td colspan="3">&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">&nbsp;</td>
+                                                <td>Subtotal:</td>
+                                                <td>{{$sum_sub_total}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">&nbsp;</td>
+                                                <td>Discount:</td>
+                                                <td>-{{$productSale->discount_amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">&nbsp;</td>
+                                                <td>Total Amount</td>
+                                                <td>{{$productSale->total_amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">&nbsp;</td>
+                                                <td>Paid Amount:</td>
+                                                <td>{{$productSale->paid_amount}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">&nbsp;</td>
+                                                <td>Due Amount:</td>
+                                                <td>{{$productSale->due_amount}}</td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -152,17 +168,6 @@
                                 <div class="row">
                                     <!-- accepted payments column -->
                                     <div class="col-6">
-{{--                                        <p class="lead">Payment Methods:</p>--}}
-{{--                                        <img src="{{asset('backend/dist/img/credit/visa.png')}}" alt="Visa">--}}
-{{--                                        <img src="{{asset('backend/dist/img/credit/mastercard.png')}}" alt="Mastercard">--}}
-{{--                                        <img src="{{asset('backend/dist/img/credit/american-express.png')}}" alt="American Express">--}}
-{{--                                        <img src="{{asset('backend/dist/img/credit/paypal2.png')}}" alt="Paypal">--}}
-
-{{--                                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">--}}
-{{--                                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem--}}
-{{--                                            plugg--}}
-{{--                                            dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.--}}
-{{--                                        </p>--}}
                                         <p class="lead">Payment Type:</p>
                                         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                                             {{$transaction->payment_type}}
@@ -172,59 +177,14 @@
                                         </p>
                                     </div>
                                     <!-- /.col -->
-                                    <div class="col-6">
-{{--                                        <p class="lead">Amount Due 2/22/2014</p>--}}
-                                        <p class="lead">Amount</p>
-
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <tr>
-                                                    <th style="width:50%">Subtotal:</th>
-                                                    <td>{{$sum_sub_total}}</td>
-                                                </tr>
-{{--                                                <tr>--}}
-{{--                                                    <th>Tax (9.3%)</th>--}}
-{{--                                                    <td>$10.34</td>--}}
-{{--                                                </tr>--}}
-                                                <tr>
-                                                    <th>Discount:</th>
-                                                    <td>{{$productSale->discount_amount}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total Amount:</th>
-                                                    <td>{{$productSale->total_amount}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Paid Amount:</th>
-                                                    <td>{{$productSale->paid_amount}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Due Amount:</th>
-                                                    <td>{{$productSale->due_amount}}</td>
-                                                </tr>
-{{--                                                <tr>--}}
-{{--                                                    <th>Previous Due Amount:</th>--}}
-{{--                                                    <td>--}}
-{{--                                                        @php--}}
-{{--                                                            $product_sale_dues = \App\ProductSale::query()--}}
-{{--                                                            ->select(DB::raw('SUM(due_amount) as due_amount'))--}}
-{{--                                                            ->where('id','<',$productSale->id)--}}
-{{--                                                            ->first();--}}
-
-{{--                                                            $previous_due_amount = $product_sale_dues->due_amount;--}}
-{{--                                                            if(!empty($previous_due_amount)){--}}
-{{--                                                                echo $previous_due_amount;--}}
-{{--                                                            }else{--}}
-{{--                                                                echo $previous_due_amount = 0;--}}
-{{--                                                            }--}}
-{{--                                                        @endphp--}}
-{{--                                                    </td>--}}
-{{--                                                </tr>--}}
-{{--                                                <tr>--}}
-{{--                                                    <th>Final Due Amount:</th>--}}
-{{--                                                    <td>{{$productSale->due_amount+$previous_due_amount}}</td>--}}
-{{--                                                </tr>--}}
-                                            </table>
+                                    <div class="row">
+                                        <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
+                                            <strong>Received By</strong><br>
+                                            <strong>Customer signature</strong>
+                                        </div>
+                                        <div class="col-md-6" style="text-align: right; width: 40%; display: inline-block">
+                                            <strong>Authorize Signature</strong><br>
+                                            <strong>For SIMCO Electronics</strong>
                                         </div>
                                     </div>
                                     <!-- /.col -->
