@@ -15,7 +15,7 @@
                 <style>
                     .panel-body {
                         min-height: 1000px !important;
-                        font-size: 18px !important;
+                        font-size: 16px !important;
                         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                         font-weight: inherit;
                     }
@@ -32,7 +32,7 @@
 
                     .invoice td {
                         text-align: center;
-                        font-size: 18px;
+                        font-size: 16px;
                         border: 1px solid #000;
                     }
 
@@ -65,8 +65,8 @@
                         size: A4;
                         /*size: Letter;*/
                         /*margin: 0px !important;*/
-                        /*margin: 18px 100px !important;*/
-                        margin: 18px 50px !important;
+                        /*margin: 16px 100px !important;*/
+                        margin: 16px 50px !important;
                     }
 
                     /*@media screen {*/
@@ -95,15 +95,15 @@
                             </div>
                         </div>
                     </div>
-{{--                    <div class="row">--}}
-{{--                        <div class="col-md-6" style="width: 100%; float: left;display: inline-block">&nbsp;</div>--}}
-{{--                        <div class="col-md-6" style="text-align: right; width: 100%; display: inline-block">--}}
-{{--                            <div class="invoice-logo">--}}
-{{--                                <span style="font-size: 18px;"> {{date('d-m-Y')}}</span><br>--}}
-{{--                                <small class="float-right" style="font-size: 18px;">Invoice #{{$productSale->invoice_no}}</small><br>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="row">--}}
+                    {{--                        <div class="col-md-6" style="width: 100%; float: left;display: inline-block">&nbsp;</div>--}}
+                    {{--                        <div class="col-md-6" style="text-align: right; width: 100%; display: inline-block">--}}
+                    {{--                            <div class="invoice-logo">--}}
+                    {{--                                <span style="font-size: 16px;"> {{date('d-m-Y')}}</span><br>--}}
+                    {{--                                <small class="float-right" style="font-size: 16px;">Invoice #{{$productSale->invoice_no}}</small><br>--}}
+                    {{--                            </div>--}}
+                    {{--                        </div>--}}
+                    {{--                    </div>--}}
                     <div>&nbsp;</div>
                     <div class="row">
                         <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
@@ -115,20 +115,20 @@
                             <div class="invoice-to">
                                 <table>
                                     <tr>
-                                        <th style="text-align: left;font-size: 18px;border-right: 1px solid #000000">Invoice</th>
-                                        <th style="text-align: left;font-size: 18px;">#{{$productSale->invoice_no}}</th>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Invoice</td>
+                                        <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Date:</td>
-                                        <td style="text-align: left;font-size: 18px;">{{date('d-m-Y')}}</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
+                                        <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Phone NO:</td>
-                                        <td style="text-align: left;font-size: 18px;">{{$party->phone}}</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>
+                                        <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Creditor BY:</td>
-                                        <td style="text-align: left;font-size: 18px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Creditor BY:</td>
+                                        <td style="text-align: left;font-size: 16px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -139,12 +139,13 @@
                     <br/>
                     <table class="invoice">
                         <thead>
-                        <tr>
-                            <th>SL#</th>
-                            <th>Product</th>
+                        <tr style="background-color: #dddddd">
+                            <th>SL NO.</th>
+                            <th>Description</th>
                             <th>Qty</th>
-                            <th>Price</th>
-                            <th>Subtotal</th>
+                            <th>Unit</th>
+                            <th>Unit Price BDT</th>
+                            <th>Amount BDT</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -156,6 +157,7 @@
                                 <td>{{$key+1}}</td>
                                 <td>{{$productSaleDetail->product->name}}</td>
                                 <td>{{$productSaleDetail->qty}}</td>
+                                <td>{{$productSaleDetail->product_unit->name}}</td>
                                 <td>{{$productSaleDetail->price}}</td>
                                 <td>
                                     @php
@@ -167,34 +169,34 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="3">&nbsp;</td>
+                            <td colspan="4">&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td>Subtotal:</td>
-                            <td>{{$sum_sub_total}}</td>
+                            <th colspan="4">&nbsp;</th>
+                            <th>Subtotal:</th>
+                            <th>{{$sum_sub_total}}</th>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td>Discount:</td>
-                            <td>-{{$productSale->discount_amount}}</td>
+                            <th colspan="4">&nbsp;</th>
+                            <th>Discount:</th>
+                            <th>-{{$productSale->discount_amount}}</th>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td>Total Amount</td>
-                            <td>{{$productSale->total_amount}}</td>
+                            <th colspan="4">&nbsp;</th>
+                            <th>Total Amount</th>
+                            <th>{{$productSale->total_amount}}</th>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td>Paid Amount:</td>
-                            <td>{{$productSale->paid_amount}}</td>
+                            <th colspan="4">&nbsp;</th>
+                            <th>Paid Amount:</th>
+                            <th>{{$productSale->paid_amount}}</th>
                         </tr>
                         <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td>Due Amount:</td>
-                            <td>{{$productSale->due_amount}}</td>
+                            <th colspan="4">&nbsp;</th>
+                            <th>Due Amount:</th>
+                            <th>{{$productSale->due_amount}}</th>
                         </tr>
                         </tbody>
                     </table>
@@ -202,8 +204,8 @@
                         <!-- accepted payments column -->
                         <div class="col-md-6">
 
-                            <p style="text-align: left;font-size: 18px;" class="lead">Payment Type:</p>
-                            <p style="text-align: left;font-size: 18px;" class="text-muted well well-sm shadow-none" >
+                            <p style="text-align: left;font-size: 16px;" class="lead">Payment Type:</p>
+                            <p style="text-align: left;font-size: 16px;" class="text-muted well well-sm shadow-none" >
                                 {{$transaction->payment_type}}
                                 @if($transaction->payment_type == 'check')
                                     ( Check Number: {{$transaction->check_number}} )

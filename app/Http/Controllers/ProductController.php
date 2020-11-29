@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ProductBrand;
 use App\ProductCategory;
 use App\ProductSubCategory;
+use App\ProductUnit;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,7 +35,8 @@ class ProductController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        return view('backend.product.create', compact('productCategories','productSubCategories','productBrands'));
+        $productUnits = ProductUnit::all();
+        return view('backend.product.create', compact('productCategories','productSubCategories','productBrands','productUnits'));
     }
 
     public function store(Request $request)
@@ -55,6 +57,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
+        $product->product_unit_id = $request->product_unit_id;
         $product->description = $request->description;
         $product->model = $request->model;
         $product->status = $request->status;
@@ -90,8 +93,9 @@ class ProductController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
+        $productUnits = ProductUnit::all();
         $product = Product::find($id);
-        return view('backend.product.edit', compact('product','productCategories','productSubCategories','productBrands'));
+        return view('backend.product.edit', compact('product','productCategories','productSubCategories','productBrands','productUnits'));
     }
 
     public function update(Request $request, $id)
@@ -111,6 +115,7 @@ class ProductController extends Controller
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
+        $product->product_unit_id = $request->product_unit_id;
         $product->description = $request->description;
         $product->model = $request->model;
         $product->status = $request->status;

@@ -89,9 +89,10 @@
                             <thead>
                             <tr>
                                 <th>Product</th>
-                                <th>Category</th>
-                                <th>Sub Category</th>
-                                <th>Brand</th>
+                                <th style="display: none">Category</th>
+                                <th style="display: none">Sub Category</th>
+                                <th style="display: none">Brand</th>
+                                <th>Unit</th>
                                 <th>Returnable</th>
                                 <th>Qty</th>
                                 <th>Price</th>
@@ -113,7 +114,7 @@
                                         </select>
                                         <input type="hidden" class="form-control" name="product_Sale_detail_id[]" value="{{$productSaleDetail->id}}" >
                                     </td>
-                                    <td width="12%">
+                                    <td width="12%" style="display: none">
                                         <div id="product_category_id_{{$current_row}}">
                                             <select class="form-control product_category_id" name="product_category_id[]" readonly required>
                                                 <option value="">Select  Category</option>
@@ -123,7 +124,7 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="12%">
+                                    <td width="12%" style="display: none">
                                         <div id="product_sub_category_id_{{$current_row}}">
                                             <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
                                                 <option value="">Select  Sub Category</option>
@@ -133,12 +134,22 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="12%">
+                                    <td width="12%" style="display: none">
                                         <div id="product_brand_id_{{$current_row}}">
                                             <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
                                                 <option value="">Select  Brand</option>
                                                 @foreach($productBrands as $productBrand)
                                                     <option value="{{$productBrand->id}}" {{$productBrand->id == $productSaleDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td width="12%">
+                                        <div id="product_unit_id_{{$current_row}}">
+                                            <select class="form-control product_unit_id" name="product_unit_id[]" readonly required>
+                                                <option value="">Select  Unit</option>
+                                                @foreach($productUnits as $productUnit)
+                                                    <option value="{{$productUnit->id}}" {{$productUnit->id == $productSaleDetail->product_unit_id ? 'selected' : ''}}>{{$productUnit->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -163,18 +174,18 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <th colspan="2">
-                                    Discount Type:
+                                <th>
+                                    Type:
                                     <select name="discount_type" id="discount_type" class="form-control" >
                                         <option value="flat" {{'flat' == $productSale->return_type ? 'selected' : ''}}>flat</option>
                                         <option value="percentage" {{'percentage' == $productSale->return_type ? 'selected' : ''}}>percentage</option>
                                     </select>
                                 </th>
                                 <th>
-                                    Discount Amount:
+                                    Discount:
                                     <input type="text" id="discount_amount" class="discount_amount form-control" name="discount_amount" value="{{$productSale->discount_amount}}">
                                 </th>
-                                <th colspan="2">
+                                <th>
                                     Total:
                                     <input type="text" id="total_amount" class="form-control" name="total_amount" value="{{$productSale->total_amount}}">
                                 </th>
@@ -183,7 +194,7 @@
                                     <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount" value="{{$productSale->paid_amount}}">
                                 </th>
                                 <th colspan="2">
-                                    Remaining Amount:
+                                    Due Amount:
                                     <input type="text" id="due_amount" class="backmoney form-control" name="due_amount" value="{{$productSale->due_amount}}">
                                 </th>
                             </tr>
@@ -240,13 +251,15 @@
                 var productCategory = $('.product_category_id').html();
                 var productSubCategory = $('.product_sub_category_id').html();
                 var productBrand = $('.product_brand_id').html();
+                var productUnit = $('.product_unit_id').html();
                 var product = $('.product_id').html();
                 var n = ($('.neworderbody tr').length - 0) + 1;
                 var tr = '<tr><td class="no">' + n + '</td>' +
                     '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
-                    '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
-                    '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
+                    '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
+                    '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
+                    '<td style="display: none"><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
+                    '<td><div id="product_unit_id_'+n+'"><select class="form-control product_unit_id select2" name="product_unit_id[]" id="product_unit_id_'+n+'" required>' + productUnit + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +

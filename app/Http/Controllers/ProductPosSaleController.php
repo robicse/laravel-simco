@@ -408,6 +408,7 @@ class ProductPosSaleController extends Controller
                 $purchase_sale_detail->product_category_id = $product->product_category_id;
                 $purchase_sale_detail->product_sub_category_id = $product->product_sub_category_id ? $product->product_sub_category_id : NULL;
                 $purchase_sale_detail->product_brand_id = $product->product_brand_id;
+                $purchase_sale_detail->product_unit_id = $product->product_unit_id;
                 $purchase_sale_detail->product_id = $content->id;
                 $purchase_sale_detail->qty = $content->qty;
                 $purchase_sale_detail->price = $content->price;

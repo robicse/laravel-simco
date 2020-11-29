@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('product_category_id')->unsigned();
             $table->bigInteger('product_sub_category_id')->unsigned()->nullable();
             $table->bigInteger('product_brand_id')->unsigned();
+            $table->bigInteger('product_unit_id')->unsigned();
             $table->longText('description')->nullable();
             $table->string('model')->nullable();
             $table->string('image')->default('product.jpg');
@@ -30,6 +31,7 @@ class CreateProductsTable extends Migration
             $table->foreign('product_category_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->foreign('product_sub_category_id')->references('id')->on('product_sub_categories')->onDelete('cascade');
             $table->foreign('product_brand_id')->references('id')->on('product_brands')->onDelete('cascade');
+            $table->foreign('product_unit_id')->references('id')->on('product_units')->onDelete('cascade');
         });
     }
 

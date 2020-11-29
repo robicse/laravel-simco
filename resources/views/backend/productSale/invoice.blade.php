@@ -1,11 +1,11 @@
 @extends('backend._partial.dashboard')
 <style>
-.invoice-to{
-    /*width: 401px;*/
-    padding: 10px;
-    border: 2px solid black;
-    margin: 0;
-}
+    .invoice-to{
+        /*width: 401px;*/
+        padding: 10px;
+        border: 2px solid black;
+        margin: 0;
+    }
 
 </style>
 @section('content')
@@ -73,20 +73,20 @@
                                         <div class="invoice-to">
                                             <table>
                                                 <tr>
-                                                    <th style="text-align: left;font-size: 18px;border-right: 1px solid #000000">Invoice</th>
-                                                    <th style="text-align: left;font-size: 18px;">#{{$productSale->invoice_no}}</th>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Invoice</td>
+                                                    <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Date:</td>
-                                                    <td style="text-align: left;font-size: 18px;">{{date('d-m-Y')}}</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
+                                                    <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Phone NO:</td>
-                                                    <td style="text-align: left;font-size: 18px;">{{$party->phone}}</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>
+                                                    <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 18px;border-right: 1px solid #000000"">Creditor BY:</td>
-                                                    <td style="text-align: left;font-size: 18px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Creditor BY:</td>
+                                                    <td style="text-align: left;font-size: 16px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -101,12 +101,13 @@
                                     <div class="col-12 table-responsive">
                                         <table class="table table-striped">
                                             <thead>
-                                            <tr>
-                                                <th>SL#</th>
-                                                <th>Product</th>
+                                            <tr style="background-color: #dddddd">
+                                                <th>SL NO.</th>
+                                                <th>Description</th>
                                                 <th>Qty</th>
-                                                <th>Price</th>
-                                                <th>Subtotal</th>
+                                                <th>Unit</th>
+                                                <th>Unit Price BDT</th>
+                                                <th>Amount BDT</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -114,49 +115,50 @@
                                                 $sum_sub_total = 0;
                                             @endphp
                                             @foreach($productSaleDetails as $key => $productSaleDetail)
-                                            <tr>
-                                                <td>{{$key+1}}</td>
-                                                <td>{{$productSaleDetail->product->name}}</td>
-                                                <td>{{$productSaleDetail->qty}}</td>
-                                                <td>{{$productSaleDetail->price}}</td>
-                                                <td>
-                                                    @php
-                                                        $sub_total=$productSaleDetail->qty*$productSaleDetail->price;
-                                                        $sum_sub_total += $sub_total;
-                                                    @endphp
-                                                    {{$sub_total}}
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{$key+1}}</td>
+                                                    <td>{{$productSaleDetail->product->name}}</td>
+                                                    <td>{{$productSaleDetail->qty}}</td>
+                                                    <td>{{$productSaleDetail->product_unit->name}}</td>
+                                                    <td>{{$productSaleDetail->price}}</td>
+                                                    <td>
+                                                        @php
+                                                            $sub_total=$productSaleDetail->qty*$productSaleDetail->price;
+                                                            $sum_sub_total += $sub_total;
+                                                        @endphp
+                                                        {{$sub_total}}
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                             <tr>
-                                                <td colspan="3">&nbsp;</td>
+                                                <td colspan="4">&nbsp;</td>
                                                 <td>&nbsp;</td>
                                                 <td>&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">&nbsp;</td>
-                                                <td>Subtotal:</td>
-                                                <td>{{$sum_sub_total}}</td>
+                                                <th colspan="4">&nbsp;</th>
+                                                <th>Subtotal:</th>
+                                                <th>{{$sum_sub_total}}</th>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">&nbsp;</td>
-                                                <td>Discount:</td>
-                                                <td>-{{$productSale->discount_amount}}</td>
+                                                <th colspan="4">&nbsp;</th>
+                                                <th>Discount:</th>
+                                                <th>-{{$productSale->discount_amount}}</th>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">&nbsp;</td>
-                                                <td>Total Amount</td>
-                                                <td>{{$productSale->total_amount}}</td>
+                                                <th colspan="4">&nbsp;</th>
+                                                <th>Total Amount</th>
+                                                <th>{{$productSale->total_amount}}</th>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">&nbsp;</td>
-                                                <td>Paid Amount:</td>
-                                                <td>{{$productSale->paid_amount}}</td>
+                                                <th colspan="4">&nbsp;</th>
+                                                <th>Paid Amount:</th>
+                                                <th>{{$productSale->paid_amount}}</th>
                                             </tr>
                                             <tr>
-                                                <td colspan="3">&nbsp;</td>
-                                                <td>Due Amount:</td>
-                                                <td>{{$productSale->due_amount}}</td>
+                                                <th colspan="4">&nbsp;</th>
+                                                <th>Due Amount:</th>
+                                                <th>{{$productSale->due_amount}}</th>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -233,12 +235,12 @@
                                 <div class="row no-print">
                                     <div class="col-12">
                                         <a href="{{route('productSales-invoice-print',$productSale->id)}}" target="_blank" class="btn btn-success float-right"><i class="fas fa-print"></i> Print</a>
-{{--                                        <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit--}}
-{{--                                            Payment--}}
-{{--                                        </button>--}}
-{{--                                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">--}}
-{{--                                            <i class="fas fa-download"></i> Generate PDF--}}
-{{--                                        </button>--}}
+                                        {{--                                        <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit--}}
+                                        {{--                                            Payment--}}
+                                        {{--                                        </button>--}}
+                                        {{--                                        <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">--}}
+                                        {{--                                            <i class="fas fa-download"></i> Generate PDF--}}
+                                        {{--                                        </button>--}}
                                     </div>
                                 </div>
                             </div>

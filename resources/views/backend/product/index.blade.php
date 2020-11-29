@@ -23,6 +23,7 @@
                         <th width="10%">Category Name</th>
                         <th width="10%">Sub Category Name</th>
                         <th width="10%">Brand Name</th>
+                        <th width="10%">Unit Name</th>
                         <th width="10%">Image</th>
                         <th width="15%">Action</th>
                     </tr>
@@ -37,6 +38,7 @@
                             <td>{{ $product->product_category->name}}</td>
                             <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>
                             <td>{{ $product->product_brand->name}}</td>
+                            <td>{{ $product->product_unit->name}}</td>
                             <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="100px;"></td>
                             <td>
                                 <a href="{{ route('products.edit',$product->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>

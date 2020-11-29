@@ -17,4 +17,8 @@ class Product extends Model
     public function product_brand(){
         return $this->belongsTo('App\ProductBrand');
     }
+
+    public function product_unit(){
+        return $this->belongsTo('App\ProductUnit');
+    }
 }

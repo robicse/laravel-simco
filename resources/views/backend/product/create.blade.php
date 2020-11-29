@@ -93,6 +93,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Product Unit <span style="color: red">*</span></label>
+                            <div class="col-md-8">
+                                <select name="product_unit_id" id="product_unit_id" class="form-control">
+                                    <option value="">Select One</option>
+                                    @foreach($productUnits as $productUnit)
+                                        <option value="{{$productUnit->id}}">{{$productUnit->name}}</option>
+                                    @endforeach()
+                                </select>
+                                @if ($errors->has('product_unit_id'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('product_unit_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Model</label>
                             <div class="col-md-8">
                                 <input class="form-control{{ $errors->has('model') ? ' is-invalid' : '' }}" type="text" placeholder="Model" name="model">
