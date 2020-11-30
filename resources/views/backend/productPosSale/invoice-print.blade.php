@@ -231,37 +231,35 @@
                             Square Tower, 3-B Level-4
                             36/6, Mirpur Road
                             Bashundhara Lane
-                            Dhaka-1205, Bangladesh.<br>
+                            Dhaka-1205, Bangladesh.
+                        </div>
+                        <div style="width: 21%;float: left;display: inline-block">
+                            <div style="width: 25%;float: left;">Phone:</div>
+                            <div style="width: 75%;float: left;">+88-02-9662755</div>
+                            <div style="width: 25%;float: left;">Cell:</div>
+                            <div style="width: 75%;float: left;">+88-01711-530918</div>
+                            <div style="width: 25%;float: left;">&nbsp;</div>
+                            <div style="width: 75%;float: left;">+88-01971-530918</div>
+                            <div style="width: 25%;float: left;">Fax:</div>
+                            <div style="width: 75%;float: left;">+88-02-58616169</div>
                         </div>
                         <div style="width: 20%;float: left;display: inline-block">
-                            Phone: +88-02-9662755<br>
-                            Cell: +88-01711-530918<br>
-                            +88-01971-530918<br>
-                            Fax: +88-02-58616169
+                            simcodhaka@gmail.com
+                            simco91@gmail.com
+                            info@simco.com.bd
+                            www.simco.com.bd
                         </div>
-                        <div style="width: 20%;float: left;display: inline-block">
-                            simcodhaka@gmail.com<br>
-                            simco91@gmail.com<br>
-                            www.simco.com.bd<br>
-                        </div>
-                        <div style="width: 20%;float: left;display: inline-block">
-                            Prime Bank Ltd.
-                            BRAC Bank Ltd.
-                            NCC Bank Ltd.
-                            Trust Bank Ltd.
-                            Agrani Bank
-                            Ltd.
-                        </div>
-                        <div style="width: 20%;float: left;display: inline-block">
-                            CD A/C #:
-                            02114117001874
-                            CD A/C #:
-                            1524204051833001
-                            CD A/C #:
-                            00430210000068
-                            CD A/C #:
-                            00530210005141
-                            CD A/C #: 0200010401754
+                        <div style="width: 39%;float: left;display: inline-block">
+                            <div style="width: 39%;float: left;">Prime Bank Ltd.</div>
+                            <div style="width: 61%;float: left;">CD A/C #: 02114117001874</div>
+                            <div style="width: 39%;float: left;">BRAC Bank Ltd.</div>
+                            <div style="width: 61%;float: left;">CD A/C #: 1524204051833001</div>
+                            <div style="width: 39%;float: left;">NCC Bank Ltd.</div>
+                            <div style="width: 61%;float: left;">CD A/C #: 00430210000068</div>
+                            <div style="width: 39%;float: left;">Trust Bank Ltd.</div>
+                            <div style="width: 61%;float: left;">CD A/C #: 00530210005141</div>
+                            <div style="width: 39%;float: left;">Agrani Bank Ltd.</div>
+                            <div style="width: 61%;float: left;">CD A/C #: 0200010401754</div>
                         </div>
                     </div>
                 </div>
