@@ -54,6 +54,7 @@
                         bottom: 0 !important;
                         border-top: 1px solid #000000;
                         width:100%;
+                        font-size: 12px !important;
                     }
 
                     /* default settings */
@@ -118,15 +119,15 @@
                                         <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000"">Date:</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
                                         <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000"">Phone NO:</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>
                                         <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000"">Creditor BY:</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Creditor BY:</td>
                                         <td style="text-align: left;font-size: 16px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
                                     </tr>
                                 </table>
@@ -239,9 +240,9 @@
                             Fax: +88-02-58616169
                         </div>
                         <div style="width: 20%;float: left;display: inline-block">
-                            simcodhaka<br>@gmail.com<br>
-                            simco91<br>@gmail.com<br>
-                            www.simco<br>.com.bd<br>
+                            simcodhaka@gmail.com<br>
+                            simco91@gmail.com<br>
+                            www.simco.com.bd<br>
                         </div>
                         <div style="width: 20%;float: left;display: inline-block">
                             Prime Bank Ltd.

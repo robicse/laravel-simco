@@ -54,6 +54,7 @@
                         bottom: 0 !important;
                         border-top: 1px solid #000000;
                         width:100%;
+                        font-size: 12px !important;
                     }
 
                     /* default settings */
@@ -240,9 +241,9 @@
                             Fax: +88-02-58616169
                         </div>
                         <div style="width: 20%;float: left;display: inline-block">
-                            simcodhaka<br>@gmail.com<br>
-                            simco91<br>@gmail.com<br>
-                            www.simco<br>.com.bd<br>
+                            simcodhaka@gmail.com<br>
+                            simco91@gmail.com<br>
+                            www.simco.com.bd<br>
                         </div>
                         <div style="width: 20%;float: left;display: inline-block">
                             Prime Bank Ltd.
