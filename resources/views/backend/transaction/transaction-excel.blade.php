@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     @php
-        $transactions = \App\Transaction::where('store_id',$store->id)->get();
+        $transactions = \App\Transaction::where('store_id',$store->id)->latest()->get();
     @endphp
     @if(!empty($transactions))
         @foreach($transactions as $key => $transaction)

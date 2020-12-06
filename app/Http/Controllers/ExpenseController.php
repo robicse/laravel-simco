@@ -80,6 +80,7 @@ class ExpenseController extends Controller
             $transaction->payment_type = $request->payment_type;
             $transaction->check_number = $request->check_number ? $request->check_number : '';
             $transaction->amount = $request->amount;
+            $transaction->date = $request->date;
             $transaction->save();
         }
 
@@ -123,7 +124,16 @@ class ExpenseController extends Controller
         $expense->check_number = $request->check_number ? $request->check_number : NULL;
         $expense->amount = $request->amount;
         //$expense->date = date('d-m-Y');
-        $expense->save();
+        $affectedRows = $expense->save();
+
+        if($affectedRows){
+            $transaction = Transaction::where('ref_id',$id)->first();
+            $transaction->payment_type = $request->payment_type;
+            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->amount = $request->amount;
+            //$transaction->date = $request->date;
+            $transaction->save();
+        }
 
 
         Toastr::success('Expense Updated Successfully', 'Success');

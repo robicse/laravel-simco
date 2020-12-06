@@ -30,7 +30,7 @@
                             </thead>
                             <tbody>
                             @php
-                                $delivery_charges = \App\ProductSale::where('store_id',$store->id)->get();
+                                $delivery_charges = \App\ProductSale::where('store_id',$store->id)->latest()->get();
                             @endphp
                             @if(!empty($delivery_charges))
                                 @foreach($delivery_charges as $key => $delivery_charge)
