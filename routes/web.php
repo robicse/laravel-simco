@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('expenses','ExpenseController');
     Route::resource('productPurchaseRawMaterials','ProductPurchaseRawMaterialsController');
     Route::resource('productProductions','ProductProductionController');
+    Route::resource('productSaleReplacement','ProductSaleReplacementController');
 
 
     Route::get('productPurchases-invoice','ProductPurchaseController@invoice')->name('productPurchases-invoice');

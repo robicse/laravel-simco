@@ -69,7 +69,7 @@
                                 <a href="" class="btn btn-warning btn-sm mx-1" data-toggle="modal" data-target="#exampleModal-<?= $productSale->id;?>"> Pay Due</a>
                             @endif
                         </td>
-                        <td colspan="3">
+                        <td class="d-inline-flex" colspan="3">
 {{--                            <a href="{{url('pos/print/'.$productSale->id.'/'.'list')}}" class="btn btn-sm btn-warning" type="button">Print</a>--}}
 {{--                            <a href="{{url('pos/print2/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>--}}
                             <a href="{{url('product-pos-sales-invoice/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>
