@@ -23,6 +23,7 @@ class CreateProductSaleReplacementsTable extends Migration
             $table->bigInteger('party_id')->unsigned();
             $table->bigInteger('product_id')->unsigned();
             $table->string('replace_qty')->nullable();
+            $table->float('price',8,2)->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->foreign('party_id')->references('id')->on('parties')->onDelete('cascade');

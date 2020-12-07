@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('productSales-invoice-edit/{id}','ProductSaleController@invoiceEdit')->name('productSales-invoice-edit');
     Route::post('productSales-invoice-update/{id}','ProductSaleController@updateInvoice')->name('productSales.invoiceUpdate');
     Route::get('sub-category-list','ProductController@subCategoryList');
+    Route::get('check-barcode','ProductController@checkBarcode');
     Route::get('product-relation-data','ProductPurchaseController@productRelationData');
     Route::get('product-sale-relation-data','ProductSaleController@productSaleRelationData');
     Route::get('stock-list','StockController@stockList')->name('stock.index');
@@ -113,6 +114,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('pos_insert', 'ProductPosSaleController@postInsert');
 
 
+    Route::get('get-sale-product/{sale_id}','ProductSaleReplacementController@getSaleProduct');
 
 
 
