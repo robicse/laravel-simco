@@ -230,6 +230,7 @@ class PointOfSaleController extends Controller
         return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transactions','store','party','digit'));
     }
     public function invoicePosPrint($id)
+
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();

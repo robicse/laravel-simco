@@ -20,6 +20,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use NumberFormatter;
 
 class ProductSaleController extends Controller
 {
@@ -440,7 +441,9 @@ class ProductSaleController extends Controller
         $store = Store::find($store_id);
         $party = Party::find($party_id);
 
-        return view('backend.productSale.invoice', compact('productSale','productSaleDetails','transactions','store','party'));
+        $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        return view('backend.productSale.invoice', compact('productSale','productSaleDetails','transactions','store','party','digit'));
+
     }
     public function invoicePrint($id)
     {
@@ -452,7 +455,9 @@ class ProductSaleController extends Controller
         $store = Store::find($store_id);
         $party = Party::find($party_id);
 
-        return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transactions','store','party'));return view('backend.productSale.invoice-print');
+        $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transactions','store','party','digit'));
+
     }
 
     public function invoiceEdit($id)

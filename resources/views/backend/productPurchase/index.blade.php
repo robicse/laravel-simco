@@ -38,7 +38,7 @@
                         <td>{{ $productPurches->purchase_product_type}}</td>
                         <td>{{ $productPurches->total_amount}}</td>
                         <td>{{ $productPurches->date}}</td>
-                        <td>
+                        <td class="d-inline-flex">
                             <a href="{{ route('productPurchases.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productPurchases.edit',$productPurches->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
                             <form method="post" action="{{ route('productPurchases.destroy',$productPurches->id) }}" >
