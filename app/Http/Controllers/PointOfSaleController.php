@@ -18,6 +18,7 @@ use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 //use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 
 use App\Classes\item;
+use NumberFormatter;
 
 class PointOfSaleController extends Controller
 {
@@ -225,8 +226,8 @@ class PointOfSaleController extends Controller
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
-
-        return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transaction','store','party'));
+        $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transaction','store','party','digit'));
     }
     public function invoicePosPrint($id)
     {
@@ -237,7 +238,8 @@ class PointOfSaleController extends Controller
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
-
-        return view('backend.productPosSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party'));return view('backend.productSale.invoice-print');
+        $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        return view('backend.productPosSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party','digit'));
+//        return view('backend.productSale.invoice-print');
     }
 }

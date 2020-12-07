@@ -36,6 +36,7 @@ class ProductController extends Controller
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $productUnits = ProductUnit::all();
+        //dd($productUnits);
         return view('backend.product.create', compact('productCategories','productSubCategories','productBrands','productUnits'));
     }
 

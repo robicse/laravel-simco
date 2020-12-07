@@ -77,8 +77,10 @@
                                                     <select name="payment_type" id="payment_type" class="form-control" >
                                                         <option value="">Select One</option>
                                                         <option value="cash">cash</option>
-                                                        <option value="online">online</option>
+                                                        <option value="check">check</option>
                                                     </select>
+                                                    <span>&nbsp;</span>
+                                                    <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -182,11 +184,7 @@
                 $('#content').toggle('show');
             });
 
-
-
         });
-
-
         // ajax
         function getval(row,sel)
         {
@@ -214,6 +212,18 @@
                 }
             })
         }
+
+        $(function() {
+            $('#check_number').hide();
+            $('#payment_type').change(function(){
+                if($('#payment_type').val() == 'check') {
+                    $('#check_number').show();
+                } else {
+                    $('#check_number').val('');
+                    $('#check_number').hide();
+                }
+            });
+        });
     </script>
 @endpush
 

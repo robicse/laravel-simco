@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Store;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use DB;
 
@@ -25,7 +26,7 @@ class HomeController extends Controller
         //return view('home');
         //return view('backend._partial.home',['customers'=>$customer,'totalDue'=>$totalDue,'todaySell'=>$todaySell,'todayDue'=>$todayDue,'todaPaid'=>$todayPaid,'todayInvoice'=>$todayInvoice]);
 
-
+//        Toastr::success('welcome Dashboard Successfully', 'warning');
 
         $stores = Store::all();
 
