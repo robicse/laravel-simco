@@ -231,7 +231,7 @@ class ProductPosSaleController extends Controller
                                 <input type=\"text\" class=\"form-control\" id=\"sub_total\" value=\"".Cart::subtotal()."\" readonly>
                             </div>
                         </div>
-                        <div class=\"form-group row\" style=\"display: none\">
+                        <div class=\"form-group row\">
                             <label for=\"member\" class=\"col-md-4 control-label\">Customer</label>
                             <div class=\"col-md-8\">
                                 <div class=\"input-group\">
@@ -244,26 +244,30 @@ class ProductPosSaleController extends Controller
                         </div>
                         <div class=\"form-group row\">
                             <label for=\"vat_amount\" class=\"col-md-4 control-label\">Vat(Percentage)</label>
-                            <div class=\"col-md-8\">
-                                <input type=\"number\" class=\"form-control\" name=\"vat_amount\" id=\"vat_amount\" onblur=\"vatAmount('')\" value=\"0.00\">
+                            <div class=\"col-md-4\">
+                                <input type=\"text\" class=\"form-control\" id=\"vat_amount\" onkeyup=\"vatAmount('')\" value=\"0\">
+                            </div>
+                            <div class=\"col-md-4\">
+                                <input type=\"text\" class=\"form-control\" name=\"vat_amount\" id=\"show_vat_amount\" value=\"0\" readonly>
                             </div>
                         </div>
                         <div class=\"form-group row\">
                             <label for=\"discount_amount\" class=\"col-md-4 control-label\">Discount(Flat)</label>
                             <div class=\"col-md-8\">
-                                <input type=\"number\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onblur=\"discountAmount('')\" value=\"0.00\">
+                                <input type=\"number\" class=\"form-control\" name=\"discount_amount\" id=\"discount_amount\" onkeyup=\"discountAmount('')\" value=\"0\">
                             </div>
                         </div>
                         <div class=\"form-group row\">
                             <label for=\"grand_total\" class=\"col-md-4 control-label\">Grand Total</label>
                             <div class=\"col-md-8\">
+                                <input type=\"hidden\" class=\"form-control\" id=\"store_grand_total\" value=\"".Cart::subtotal()."\" readonly>
                                 <input type=\"text\" class=\"form-control\" name=\"grand_total\" id=\"grand_total\" value=\"".Cart::subtotal()."\" readonly>
                             </div>
                         </div>
                         <div class=\"form-group row\">
                             <label for=\"paid_amount\" class=\"col-md-4 control-label\">Paid</label>
                             <div class=\"col-md-8\">
-                                <input type=\"number\" class=\"form-control\" value=\"0.00\" name=\"paid_amount\" onblur=\"paidAmount('')\" id=\"paid_amount\">
+                                <input type=\"number\" class=\"form-control\" value=\"0\" name=\"paid_amount\" onkeyup=\"paidAmount('')\" id=\"paid_amount\">
                             </div>
                         </div>
                         <div class=\"form-group row\">
@@ -277,8 +281,10 @@ class ProductPosSaleController extends Controller
                             <div class=\"col-md-8\">
                                 <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\">
                                     <option value=\"cash\">cash</option>
-                                    <option value=\"credit\">credit</option>
+                                    <option value=\"check\">check</option>
                                 </select>
+                                <span>&nbsp;</span>
+                                <input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\">
                             </div>
                         </div>
                         <div class=\"box-footer\">
@@ -367,6 +373,7 @@ class ProductPosSaleController extends Controller
         $paid_amount = $request->paid_amount;
         $due_amount = $request->due_amount;
         $payment_type = $request->payment_type;
+        $check_number = $request->check_number;
 
 
 
@@ -459,7 +466,7 @@ class ProductPosSaleController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $payment_type;
-            $transaction->check_number = '';
+            $transaction->check_number = $check_number ? $check_number : '';
             $transaction->amount = $total_amount;
             $transaction->save();
 
