@@ -221,25 +221,25 @@ class PointOfSaleController extends Controller
 
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
         $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-        return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transaction','store','party','digit'));
+        return view('backend.productPosSale.invoice', compact('productSale','productSaleDetails','transactions','store','party','digit'));
     }
     public function invoicePosPrint($id)
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
         $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-        return view('backend.productPosSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party','digit'));
+        return view('backend.productPosSale.invoice-print', compact('productSale','productSaleDetails','transactions','store','party','digit'));
 //        return view('backend.productSale.invoice-print');
     }
 }
