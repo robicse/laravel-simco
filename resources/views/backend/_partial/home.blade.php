@@ -175,9 +175,19 @@
 
                         <div class="col-md-3">
                             <a href="{{ route('stock.summary.list') }}">
-                                <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                <div class="widget-small primary coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                     <div class="info">
                                         <h4>Stock Summary</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('stock.low.list') }}">
+                                <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                    <div class="info">
+                                        <h4>Stock Low</h4>
                                         <p><b></b></p>
                                     </div>
                                 </div>

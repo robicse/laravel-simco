@@ -29,4 +29,9 @@ class StockController extends Controller
         $stores = Store::latest()->get();
         return view('backend.stock.stock_summary', compact('stores'));
     }
+
+    public function stockLowList(){
+        $stores = Store::latest()->get();
+        return view('backend.stock.stock_low', compact('stores'));
+    }
 }
