@@ -7,7 +7,7 @@
         </div>
     </div>
     <ul class="app-menu ">
-        <li><a class="app-menu__item {{Request ::is('home') ? ' active ' : ''}}" href="{!! URL::to('/home') !!}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+        <li onclick="deletePost"><a class="app-menu__item {{Request ::is('home') ? ' active ' : ''}}" href="{!! URL::to('/home') !!}" ><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
         @php
             //if(Auth::User()->getRoleNames()[0] == "Admin"){
             //if(Auth::User()->role=='1'){

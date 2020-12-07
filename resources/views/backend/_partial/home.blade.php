@@ -183,20 +183,51 @@
                                 </div>
                             </a>
                         </div>
-                        {{--<div class="col-md-3">
-                            <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i> <div class="info">
-                                    <h4>Today Invoice</h4>
-                                    <p><b></b></p>
+                        <div class="col-md-3">
+                            <a href="{{ route('productPurchases.create') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
+                                        <h4>FG Stock In</h4>
+                                        <p><b></b></p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-md-3">
-                            <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i> <div class="info">
-                                    <h4>Today Invoice</h4>
-                                    <p><b></b></p>
+                            <a href="{{ route('productPosSales.create') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i> <div class="info">
+                                        <h4>POS Sale/Stock Out</h4>
+                                        <p><b></b></p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>--}}
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('productSales.create') }}">
+                                <div class="widget-small info coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i> <div class="info">
+                                        <h4>FG Whole Sale</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a  href="{{ route('returnable.sale.product') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
+                                        <h4>FG Sale Return</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a  href="{{ route('productPurchaseRawMaterials.create') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fa fa-shopping-basket"></i> <div class="info">
+                                        <h4>Raw Materials Stock In</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     @endforeach
                 @endif
         </div>
@@ -213,3 +244,19 @@
 @section('footer')
 
 @endsection
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    // Swal.fire({
+    //     title: 'Custom animation with Animate.css',
+    //     showClass: {
+    //         popup: 'animate__animated animate__fadeInDown'
+    //     },
+    //     hideClass: {
+    //         popup: 'animate__animated animate__fadeOutUp'
+    //     }
+    // })
+    //sweet alert
+    function deletePost() {
+        swal("Here's the title!", "...and here's the text!");
+    }
+</script>
