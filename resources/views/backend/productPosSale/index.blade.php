@@ -70,8 +70,6 @@
                             @endif
                         </td>
                         <td class="d-inline-flex" colspan="3">
-{{--                            <a href="{{url('pos/print/'.$productSale->id.'/'.'list')}}" class="btn btn-sm btn-warning" type="button">Print</a>--}}
-{{--                            <a href="{{url('pos/print2/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>--}}
                             <a href="{{url('product-pos-sales-invoice/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" type="button">Print</a>
                             <a href="{{ route('productSales.show',$productSale->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productSales.edit',$productSale->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>

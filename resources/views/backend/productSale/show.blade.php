@@ -12,9 +12,9 @@
         </div>
         <div class="col-md-12">
             <div class="tile">
-                <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item" style="margin-left: 88%"> <a href="{!! route('productSales-invoice',$productSale->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Page</a></li>
-                </ul>
+{{--                <ul class="app-breadcrumb breadcrumb">--}}
+{{--                    <li class="breadcrumb-item" style="margin-left: 88%"> <a href="{!! route('productSales-invoice',$productSale->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Page</a></li>--}}
+{{--                </ul>--}}
                 <h3 class="tile-title">Product Sales</h3>
                 <table class="table table-striped">
                     <thead>

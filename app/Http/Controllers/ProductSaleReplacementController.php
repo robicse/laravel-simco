@@ -84,7 +84,6 @@ class ProductSaleReplacementController extends Controller
                         $html .= "</tbody>
                     </table>";
         echo json_encode($html);
-
     }
 
 

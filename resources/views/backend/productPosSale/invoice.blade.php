@@ -77,15 +77,15 @@
                                                     <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000"">Date:</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
                                                     <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000"">Phone NO:</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>
                                                     <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000"">Creditor BY:</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Creditor BY:</td>
                                                     <td style="text-align: left;font-size: 16px;">{{\Illuminate\Support\Facades\Auth::user()->name}}</td>
                                                 </tr>
                                             </table>
@@ -175,21 +175,21 @@
                                     <div class="col-6">
                                         <p class="lead">Payment Type:</p>
                                         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                                            @if(!empty($transactions))
-                                                <ul>
-                                                    @foreach($transactions as $transaction)
-                                                        <li>
-                                                            {{$transaction->payment_type}}
-                                                            @if($transaction->payment_type == 'check')
-                                                                ( Check Number: {{$transaction->check_number}} )
-                                                            @endif
-                                                            :
-                                                            {{$transaction->amount}}
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
+                                        @if(!empty($transactions))
+                                            <ul>
+                                                @foreach($transactions as $transaction)
+                                                    <li>
+                                                        {{$transaction->payment_type}}
+                                                        @if($transaction->payment_type == 'check')
+                                                            ( Check Number: {{$transaction->check_number}} )
+                                                        @endif
+                                                        :
+                                                        {{$transaction->amount}}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
                                             @endif
-                                        </p>
+                                            </p>
                                     </div>
                                     <!-- /.col -->
                                     <div class="row">
