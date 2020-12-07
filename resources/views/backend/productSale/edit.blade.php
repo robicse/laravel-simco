@@ -183,15 +183,16 @@
                                 </th>
                                 <th>
                                     Discount:
-                                    <input type="text" id="discount_amount" class="discount_amount form-control" name="discount_amount" value="{{$productSale->discount_amount}}">
+                                    <input type="text" id="discount_amount" class="discount_amount form-control" name="discount_amount" onkeyup="discountAmount('')" value="{{$productSale->discount_amount}}">
                                 </th>
                                 <th>
                                     Total:
+                                    <input type="hidden" id="store_total_amount" class="form-control" value="{{$productSale->total_amount}}">
                                     <input type="text" id="total_amount" class="form-control" name="total_amount" value="{{$productSale->total_amount}}">
                                 </th>
                                 <th colspan="2">
                                     Paid Amount:
-                                    <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount" value="{{$productSale->paid_amount}}">
+                                    <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount" onkeyup="paidAmount('')" value="{{$productSale->paid_amount}}">
                                 </th>
                                 <th colspan="2">
                                     Due Amount:
@@ -225,28 +226,89 @@
                 var amt = $(this).val()-0;
                 t += amt;
             });
+            $('#store_total_amount').val(t);
             $('#total_amount').val(t);
         }
+
+        // onkeyup
+        function discountAmount(){
+            var discount_type = $('#discount_type').val();
+
+            //var total = $('#total_amount').val();
+            //console.log('total= ' + total);
+            //console.log('total= ' + typeof total);
+            //total = parseInt(total);
+            //console.log('total= ' + typeof total);
+
+            var store_total_amount = $('#store_total_amount').val();
+            console.log('store_total_amount= ' + store_total_amount);
+            console.log('store_total_amount= ' + typeof store_total_amount);
+            store_total_amount = parseInt(store_total_amount);
+            console.log('total= ' + typeof store_total_amount);
+
+            var discount_amount = $('#discount_amount').val();
+            console.log('discount_amount= ' + discount_amount);
+            console.log('discount_amount= ' + typeof discount_amount);
+            discount_amount = parseInt(discount_amount);
+            console.log('discount_amount= ' + typeof discount_amount);
+
+            if(discount_type == 'flat'){
+                var final_amount = store_total_amount - discount_amount;
+            }
+            else{
+                var per = (total*discount_amount)/100;
+                var final_amount = store_total_amount-per;
+            }
+            console.log('final_amount= ' + final_amount);
+            console.log('final_amount= ' + typeof final_amount);
+
+            $('#total_amount').val(final_amount);
+            $('#due_amount').val(final_amount);
+        }
+
+        // onkeyup
+        function paidAmount(){
+            console.log('okk');
+            var total = $('#total_amount').val();
+            console.log('total= ' + total);
+            console.log('total= ' + typeof total);
+
+            var paid_amount = $('#paid_amount').val();
+            console.log('paid_amount= ' + paid_amount);
+            console.log('paid_amount= ' + typeof paid_amount);
+
+            var due = total - paid_amount;
+            console.log('due= ' + due);
+            console.log('due= ' + typeof due);
+
+            $('.backmoney').val(due);
+        }
+
         $(function () {
-            $('#discount_amount').change(function(){
-                var discount_type = $('#discount_type').val();
-                var total = $('#total_amount').val();
-                var getmoney = $(this).val();
-                if(discount_type == 'flat'){
-                    var t = total - getmoney;
-                }
-                else{
-                    var per = (total*getmoney)/100;
-                    var t = total-per;
-                }
-                $('#total_amount').val(t);
-            });
-            $('.getmoney').change(function(){
-                var total = $('#total_amount').val();
-                var getmoney = $(this).val();
-                var t = total - getmoney;
-                $('.backmoney').val(t);
-            });
+            // onblur
+            // $('#discount_amount').change(function(){
+            //     var discount_type = $('#discount_type').val();
+            //     var total = $('#total_amount').val();
+            //     var getmoney = $(this).val();
+            //     if(discount_type == 'flat'){
+            //         var t = total - getmoney;
+            //     }
+            //     else{
+            //         var per = (total*getmoney)/100;
+            //         var t = total-per;
+            //     }
+            //     $('#total_amount').val(t);
+            // });
+
+            // onblur
+            // $('.getmoney').change(function(){
+            //     var total = $('#total_amount').val();
+            //     var getmoney = $(this).val();
+            //     var t = total - getmoney;
+            //     $('.backmoney').val(t);
+            // });
+
+
             $('.add').click(function () {
                 var productCategory = $('.product_category_id').html();
                 var productSubCategory = $('.product_sub_category_id').html();
