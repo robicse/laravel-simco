@@ -22,13 +22,13 @@
                                     <th >ID</th>
                                     <th>Party</th>
                                     <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Sub Category</th>
+{{--                                    <th>Category</th>--}}
+{{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
-                                    <th>Return Condition</th>
+{{--                                    <th>Return Condition</th>--}}
                                     <th>Received Qty</th>
                                     <th>Price</th>
-                                    <th>Returned</th>
+                                    <th style="text-align:center">Returned</th>
                                 </tr>
                             </thead>
                             <tbody class="neworderbody">
@@ -48,32 +48,25 @@
                                         {{$party_name->name}}
                                     </td>
                                     <td>{{$returnable_sale_product->product->name}}</td>
-                                    <td>{{$returnable_sale_product->product->product_category->name}}</td>
-                                    <td>{{$returnable_sale_product->product->product_sub_category ? $returnable_sale_product->product->product_sub_category->name : ''}}</td>
+{{--                                    <td>{{$returnable_sale_product->product->product_category->name}}</td>--}}
+{{--                                    <td>{{$returnable_sale_product->product->product_sub_category ? $returnable_sale_product->product->product_sub_category->name : ''}}</td>--}}
                                     <td>{{$returnable_sale_product->product->product_brand->name}}</td>
-                                    <td>{{$returnable_sale_product->return_type}}</td>
+{{--                                    <td>{{$returnable_sale_product->return_type}}</td>--}}
                                     <td>{{$returnable_sale_product->qty}}</td>
                                     <td>{{$returnable_sale_product->price}}</td>
                                     <td>
-                                        <form method="post" action="{{route('sale.product.return')}}">
+                                        <form method="post" action="{{route('sale.product.return')}}" class="row">
                                             @csrf
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Qty  <small class="text-danger">*</small></label>
-                                                <div class="col-md-8">
-                                                    <input type="hidden" name="product_sale_id" class="form-control" value="{{$returnable_sale_product->product_sale_id}}">
-                                                    <input type="hidden" name="product_sale_detail_id" class="form-control" value="{{$returnable_sale_product->id}}">
-                                                    <input type="number" min="1" name="return_qty" class="form-control" required>
-                                                </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label">Qty  <small class="text-danger">*</small></label>
+                                                <input class="form-control" type="text" placeholder="Enter your name">
                                             </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Amount  <small class="text-danger">*</small></label>
-                                                <div class="col-md-8">
-                                                    <input type="number" min="1" name="total_amount" class="form-control" required>
-                                                </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label">Amount  <small class="text-danger">*</small></label>
+                                                <input type="number" min="1" name="total_amount" class="form-control" required>
                                             </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Payment Type  <small class="text-danger">*</small></label>
-                                                <div class="col-md-8">
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label">Payment Type  <small class="text-danger">*</small></label>
                                                     <select name="payment_type" id="payment_type" class="form-control" >
                                                         <option value="">Select One</option>
                                                         <option value="cash">cash</option>
@@ -81,19 +74,14 @@
                                                     </select>
                                                     <span>&nbsp;</span>
                                                     <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
-                                                </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3 text-right">Reason</label>
-                                                <div class="col-md-8">
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label">Reason</label>
                                                     <textarea class="form-control" name="reason"></textarea>
-                                                </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <label class="control-label col-md-3"></label>
-                                                <div class="col-md-8">
+                                            <div class="form-group col-md-3">
+                                                <label class="control-label"></label>
                                                     <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save</button>
-                                                </div>
                                             </div>
                                         </form>
                                     </td>

@@ -201,6 +201,9 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="write">
+                        <p class="lead"><b>In Word : {{$digit->format($productSale->total_amount)}} Only</b></p>
+                    </div>
                     <div class="row" style="">
                         <!-- accepted payments column -->
                         <div class="col-md-6">
@@ -225,6 +228,7 @@
                         </div>
                         <!-- /.col -->
                     </div>
+
                     <div class="row">
                         <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
                             <strong>Received By</strong><br>

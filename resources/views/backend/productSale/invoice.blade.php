@@ -166,7 +166,9 @@
                                     <!-- /.col -->
                                 </div>
                                 <!-- /.row -->
-
+                                <div class="write">
+                                    <p class="lead"><b>In Word : {{$digit->format($productSale->total_amount)}} Only</b></p>
+                                </div>
                                 <div class="row">
                                     <!-- accepted payments column -->
                                     <div class="col-6">

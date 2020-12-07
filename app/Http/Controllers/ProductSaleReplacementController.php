@@ -15,7 +15,6 @@ class ProductSaleReplacementController extends Controller
 
     public function create()
     {
-        //
     }
 
 
