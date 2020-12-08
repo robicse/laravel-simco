@@ -68,12 +68,13 @@
                                         $current_row = $key+1;
                                     @endphp
                                     <td width="12%">
-                                        <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" disabled required>
-                                            <option value="">Select  Product</option>
-                                            @foreach($products as $product)
-                                                <option value="{{$product->id}}" {{$product->id == $productSaleReplacementDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
-                                            @endforeach
-                                        </select>
+                                        @php
+                                            echo $product_name = \Illuminate\Support\Facades\DB::table('products')
+                                        ->where('id',$productSaleReplacementDetail->product_id)
+                                        ->pluck('name')
+                                        ->first();
+                                        @endphp
+                                        <input type="hidden" class="form-control" name="product_id[]" value="{{$productSaleReplacementDetail->product_id}}" >
                                         <input type="hidden" class="form-control" name="product_Sale_replacement_detail_id[]" value="{{$productSaleReplacementDetail->id}}" >
                                     </td>
                                     <td width="8%">

@@ -119,26 +119,26 @@ class ProductSaleReplacementController extends Controller
                     $purchase_sale_replacement_detail->price = $request->price[$i];
                     $purchase_sale_replacement_detail->save();
 
-                    //            $product_id = $request->product_id[$i];
-                    //            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
-                    //            if(!empty($check_previous_stock)){
-                    //                $previous_stock = $check_previous_stock;
-                    //            }else{
-                    //                $previous_stock = 0;
-                    //            }
-                    //            // product stock
-                    //            $stock = new Stock();
-                    //            $stock->user_id = Auth::id();
-                    //            $stock->ref_id = $insert_id;
-                    //            $stock->store_id = $request->store_id;
-                    //            $stock->date = $request->date;
-                    //            $stock->product_id = $request->product_id[$i];
-                    //            $stock->stock_type = 'sale';
-                    //            $stock->previous_stock = $previous_stock;
-                    //            $stock->stock_in = 0;
-                    //            $stock->stock_out = $request->qty[$i];
-                    //            $stock->current_stock = $previous_stock - $request->qty[$i];
-                    //            $stock->save();
+                    $product_id = $request->product_id[$i];
+                    $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+                    if(!empty($check_previous_stock)){
+                        $previous_stock = $check_previous_stock;
+                    }else{
+                        $previous_stock = 0;
+                    }
+                    // product stock
+                    $stock = new Stock();
+                    $stock->user_id = Auth::id();
+                    $stock->ref_id = $insert_id;
+                    $stock->store_id = $productSale->store_id;
+                    $stock->date = date('Y-m-d');
+                    $stock->product_id = $request->product_id[$i];
+                    $stock->stock_type = 'replace';
+                    $stock->previous_stock = $previous_stock;
+                    $stock->stock_in = 0;
+                    $stock->stock_out = $request->qty[$i];
+                    $stock->current_stock = $previous_stock - $request->qty[$i];
+                    $stock->save();
                 }
             }
         }
@@ -187,6 +187,33 @@ class ProductSaleReplacementController extends Controller
                 $purchase_sale_replacement_detail = ProductSaleReplacementDetail::find($product_Sale_replacement_detail_id);
                 $purchase_sale_replacement_detail->replace_qty = $request->replace_qty[$i];
                 $purchase_sale_replacement_detail->save();
+
+
+                $product_id = $request->product_id[$i];
+
+                // product stock
+                $stock_row = Stock::where('ref_id',$id)->where('stock_type','replace')->where('product_id',$product_id)->first();
+
+                if($stock_row->stock_out != $request->replace_qty[$i]) {
+
+                    if ($request->replace_qty[$i] > $stock_row->stock_out) {
+                        $add_or_minus_stock_out = $request->replace_qty[$i] - $stock_row->stock_out;
+                        $update_stock_out = $stock_row->stock_out + $add_or_minus_stock_out;
+                        $update_current_stock = $stock_row->current_stock - $add_or_minus_stock_out;
+                    } else {
+                        $add_or_minus_stock_out = $stock_row->stock_out - $request->replace_qty[$i];
+                        $update_stock_out = $stock_row->stock_out - $add_or_minus_stock_out;
+                        $update_current_stock = $stock_row->current_stock + $add_or_minus_stock_out;
+                    }
+
+
+                    $stock_row->user_id = Auth::user()->id;
+                    $stock_row->stock_out = $update_stock_out;
+                    $stock_row->current_stock = $update_current_stock;
+                    $stock_row->update();
+                }
+
+
             }
         }
 
