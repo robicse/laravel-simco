@@ -73,12 +73,13 @@ class ProductSaleReplacementController extends Controller
                         </thead>
                         <tbody>";
                         if(count($products) > 0):
-                            foreach($products as $item):
+                            foreach($products as $key => $item):
+                                $key += 1;
                                 $html .= "<tr>";
                                 $html .= "<th width=\"30\">1</th>";
-                                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" value=\"$item->product_id\" size=\"28\" />$item->name</th>";
-                                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" value=\"$item->qty\" size=\"28\" readonly /></th>";
-                                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"replace_qty[]\" size=\"28\" /></th>";
+                                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" />$item->name</th>";
+                                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
+                                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"replace_qty[]\" id=\"replace_qty_$key\" onkeyup=\"replace_qty($key,this);\" size=\"28\" /></th>";
                                 $html .= "</tr>";
                             endforeach;
                             //$html .= "<tr><th align=\"right\" colspan=\"7\"><input type=\"button\" class=\"btn btn-danger\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Clear Item\" onClick=\"deleteAllCart()\" /></th></tr>";
