@@ -107,7 +107,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('product-pos-sales-invoice-print/{id}','PointOfSaleController@invoicePosPrint')->name('product.pos.Sales-invoice-print');
 
 
-    Route::get('selectedform/{product_code}','ProductPosSaleController@selectedform');
+    Route::get('selectedform/{product_code}/{store_id}','ProductPosSaleController@selectedform');
     Route::get('add-to-cart','CartController@addToCart');
     Route::get('delete-cart-product/{rowId}','CartController@deleteCartProduct');
     Route::get('delete-all-cart-product','CartController@deleteAllCartProduct');

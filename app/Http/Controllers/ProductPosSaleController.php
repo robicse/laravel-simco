@@ -111,7 +111,7 @@ class ProductPosSaleController extends Controller
 
 
 
-    public function selectedform($barcode){
+    public function selectedform($barcode, $store_id){
 
         $baseurl = URL('/pos_insert');
 
@@ -192,6 +192,7 @@ class ProductPosSaleController extends Controller
                     <div class=\"form-group row\">
                     <div class=\"col-md-8\">
                     <input type=\"hidden\" name=\"_token\" value=\"".csrf_token()."\" />
+                    <input type=\"hidden\" name=\"store_id\" value=\"".$store_id."\" />
                     <table class=\"table table-striped tabel-penjualan\">
                         <thead>
                             <tr>
@@ -279,12 +280,12 @@ class ProductPosSaleController extends Controller
                         <div class=\"form-group row\">
                             <label for=\"due_amount\" class=\"col-md-4 control-label\">Payment Type</label>
                             <div class=\"col-md-8\">
-                                <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\">
+                                <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\" onchange=\"productType('')\">
                                     <option value=\"cash\">cash</option>
                                     <option value=\"check\">check</option>
                                 </select>
                                 <span>&nbsp;</span>
-                                <input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\">
+                                <input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\">
                             </div>
                         </div>
                         <div class=\"box-footer\">
@@ -389,7 +390,7 @@ class ProductPosSaleController extends Controller
         $productSale->invoice_no = $invoice_no;
         $productSale->user_id = Auth::id();
         $productSale->party_id = $customer_id;
-        $productSale->store_id = 1;
+        $productSale->store_id = $request->store_id;
         $productSale->date = date('Y-m-d');
         $productSale->delivery_service = NULL;
         $productSale->delivery_service_charge = 0;
@@ -433,7 +434,7 @@ class ProductPosSaleController extends Controller
                 $stock = new Stock();
                 $stock->user_id = Auth::id();
                 $stock->ref_id = $insert_id;
-                $stock->store_id = 1;
+                $stock->store_id = $request->store_id;
                 $stock->date = date('Y-m-d');
                 $stock->product_id = $content->id;
                 $stock->stock_type = 'sale';
@@ -449,7 +450,7 @@ class ProductPosSaleController extends Controller
             $due->invoice_no = $invoice_no;
             $due->ref_id = $insert_id;
             $due->user_id = Auth::id();
-            $due->store_id = 1;
+            $due->store_id = $request->store_id;
             $due->party_id = $customer_id;
             $due->total_amount = $total_amount;
             $due->paid_amount = $request->paid_amount;
@@ -460,7 +461,7 @@ class ProductPosSaleController extends Controller
             $transaction = new Transaction();
             $transaction->invoice_no = $invoice_no;
             $transaction->user_id = Auth::id();
-            $transaction->store_id = 1;
+            $transaction->store_id = $request->store_id;
             $transaction->party_id = $customer_id;
             $transaction->date = date('Y-m-d');
             $transaction->ref_id = $insert_id;
