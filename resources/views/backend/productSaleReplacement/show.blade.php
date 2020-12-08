@@ -16,32 +16,34 @@
 {{--                    <li class="breadcrumb-item" style="margin-left: 88%"> <a href="{!! route('productSaleReplacement-invoice',$productSaleReplacement->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Page</a></li>--}}
                 </ul>
                 <h3 class="tile-title">Product Sales Replace</h3>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>User</th>
-                        <td>{{$productSaleReplacement->user->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Store</th>
-                        <td>{{$productSaleReplacement->store->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Party</th>
-                        <td>{{$productSaleReplacement->party->name}}</td>
-                    </tr>
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>User</th>
+                            <td>{{$productSaleReplacement->user->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Store</th>
+                            <td>{{$productSaleReplacement->store->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Party</th>
+                            <td>{{$productSaleReplacement->party->name}}</td>
+                        </tr>
 
-                    <tr>
-                        <th>Date</th>
-                        <td>{{$productSaleReplacement->date}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="tile-footer">
+                        <tr>
+                            <th>Date</th>
+                            <td>{{$productSaleReplacement->date}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="tile-footer">
+                    </div>
                 </div>
             </div>
         </div>

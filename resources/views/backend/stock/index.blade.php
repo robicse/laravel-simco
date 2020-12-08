@@ -18,42 +18,44 @@
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
                         </div>
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th width="5%">#Id</th>
-                                <th width="10%">Store</th>
-                                <th width="15%">Product Type</th>
-                                <th width="12%">Brand</th>
-                                <th width="12%">Product</th>
-                                <th width="12%">Previous Stock</th>
-                                <th width="12%">Stock In</th>
-                                <th width="12%">Stock Out</th>
-                                <th width="12%">Current Stock</th>
-                                <th width="12%">Date</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $stocks = \App\Stock::where('store_id',$store->id)->latest()->get();
-                            @endphp
-                            @foreach($stocks as $key => $stock)
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $stock->store->name}}</td>
-                                    <td>{{ $stock->product->product_type}}</td>
-                                    <td>{{ $stock->product->product_brand->name}}</td>
-                                    <td>{{ $stock->product->name}}</td>
-                                    <td>{{ $stock->previous_stock}}</td>
-                                    <td>{{ $stock->stock_in}}</td>
-                                    <td>{{ $stock->stock_out}}</td>
-                                    <td>{{ $stock->current_stock}}</td>
-                                    <td>{{ $stock->date}}</td>
+                                    <th width="5%">#Id</th>
+                                    <th width="10%">Store</th>
+                                    <th width="15%">Product Type</th>
+                                    <th width="12%">Brand</th>
+                                    <th width="12%">Product</th>
+                                    <th width="12%">Previous Stock</th>
+                                    <th width="12%">Stock In</th>
+                                    <th width="12%">Stock Out</th>
+                                    <th width="12%">Current Stock</th>
+                                    <th width="12%">Date</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        <div class="tile-footer">
+                                </thead>
+                                <tbody>
+                                @php
+                                    $stocks = \App\Stock::where('store_id',$store->id)->latest()->get();
+                                @endphp
+                                @foreach($stocks as $key => $stock)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $stock->store->name}}</td>
+                                        <td>{{ $stock->product->product_type}}</td>
+                                        <td>{{ $stock->product->product_brand->name}}</td>
+                                        <td>{{ $stock->product->name}}</td>
+                                        <td>{{ $stock->previous_stock}}</td>
+                                        <td>{{ $stock->stock_in}}</td>
+                                        <td>{{ $stock->stock_out}}</td>
+                                        <td>{{ $stock->current_stock}}</td>
+                                        <td>{{ $stock->date}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <div class="tile-footer">
+                            </div>
                         </div>
                     @endforeach
                 @endif

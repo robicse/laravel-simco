@@ -193,7 +193,8 @@ class ProductPosSaleController extends Controller
                     <div class=\"col-md-8\">
                     <input type=\"hidden\" name=\"_token\" value=\"".csrf_token()."\" />
                     <input type=\"hidden\" name=\"store_id\" value=\"".$store_id."\" />
-                    <table class=\"table table-striped tabel-penjualan\">
+                    <div class=\"table-responsive\">
+                    <table class=\"table table-striped\">
                         <thead>
                             <tr>
                                 <th width=\"30\">No</th>
@@ -223,6 +224,7 @@ class ProductPosSaleController extends Controller
         endif;
         $html .= "</tbody>
                     </table>
+                    </div>
                     </div>
 
                     <div class=\"col-md-4\">

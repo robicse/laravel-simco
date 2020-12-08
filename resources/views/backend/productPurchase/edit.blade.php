@@ -70,95 +70,95 @@
                                 <input type="text" name="date" class="datepicker form-control" value="{{date('Y-m-d')}}">
                             </div>
                         </div>
-
-                        {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Sub Category</th>
-                                <th>Brand</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>MRP Price</th>
-                                <th>Sub Total</th>
-                            </tr>
-                            </thead>
-                            <tbody class="neworderbody">
-                            @foreach($productPurchaseDetails as $key => $productPurchaseDetail)
+                        <div class="table-responsive">
+                            {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
                                 <tr>
-                                    @php
-                                        $current_row = $key+1;
-                                    @endphp
-                                    <td width="12%">
-                                        <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
-                                            <option value="">Select  Product</option>
-                                            @foreach($products as $product)
-                                                <option value="{{$product->id}}" {{$product->id == $productPurchaseDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" class="form-control" name="product_purchase_detail_id[]" value="{{$productPurchaseDetail->id}}" >
-                                    </td>
-                                    <td width="12%">
-                                        <div id="product_category_id_{{$current_row}}">
-                                            <select class="form-control product_category_id" name="product_category_id[]" readonly required>
-                                                <option value="">Select  Category</option>
-                                                @foreach($productCategories as $productCategory)
-                                                    <option value="{{$productCategory->id}}" {{$productCategory->id == $productPurchaseDetail->product_category_id ? 'selected' : ''}}>{{$productCategory->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td width="12%">
-                                        <div id="product_sub_category_id_{{$current_row}}">
-                                            <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
-                                                <option value="">Select  Sub Category</option>
-                                                @foreach($productSubCategories as $productSubCategory)
-                                                    <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productPurchaseDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td width="12%">
-                                        <div id="product_brand_id_{{$current_row}}">
-                                            <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
-                                                <option value="">Select  Brand</option>
-                                                @foreach($productBrands as $productBrand)
-                                                    <option value="{{$productBrand->id}}" {{$productBrand->id == $productPurchaseDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td width="8%">
-                                        <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productPurchaseDetail->qty}}" required >
-                                    </td>
-                                    <td width="10%">
-                                        <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productPurchaseDetail->price}}" required >
-                                    </td>
-                                    <td width="10%">
-                                        <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="{{$productPurchaseDetail->mrp_price}}" required >
-                                    </td>
-                                    <td width="10%">
-                                        <input type="text" class="amount form-control" name="sub_total[]" value="{{$productPurchaseDetail->sub_total}}">
-                                    </td>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Sub Category</th>
+                                    <th>Brand</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>MRP Price</th>
+                                    <th>Sub Total</th>
                                 </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="6">
-                                    </th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Purchases</button>
+                                </thead>
+                                <tbody class="neworderbody">
+                                @foreach($productPurchaseDetails as $key => $productPurchaseDetail)
+                                    <tr>
+                                        @php
+                                            $current_row = $key+1;
+                                        @endphp
+                                        <td width="12%">
+                                            <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
+                                                <option value="">Select  Product</option>
+                                                @foreach($products as $product)
+                                                    <option value="{{$product->id}}" {{$product->id == $productPurchaseDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="hidden" class="form-control" name="product_purchase_detail_id[]" value="{{$productPurchaseDetail->id}}" >
+                                        </td>
+                                        <td width="12%">
+                                            <div id="product_category_id_{{$current_row}}">
+                                                <select class="form-control product_category_id" name="product_category_id[]" readonly required>
+                                                    <option value="">Select  Category</option>
+                                                    @foreach($productCategories as $productCategory)
+                                                        <option value="{{$productCategory->id}}" {{$productCategory->id == $productPurchaseDetail->product_category_id ? 'selected' : ''}}>{{$productCategory->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td width="12%">
+                                            <div id="product_sub_category_id_{{$current_row}}">
+                                                <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
+                                                    <option value="">Select  Sub Category</option>
+                                                    @foreach($productSubCategories as $productSubCategory)
+                                                        <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productPurchaseDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td width="12%">
+                                            <div id="product_brand_id_{{$current_row}}">
+                                                <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
+                                                    <option value="">Select  Brand</option>
+                                                    @foreach($productBrands as $productBrand)
+                                                        <option value="{{$productBrand->id}}" {{$productBrand->id == $productPurchaseDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td width="8%">
+                                            <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productPurchaseDetail->qty}}" required >
+                                        </td>
+                                        <td width="10%">
+                                            <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productPurchaseDetail->price}}" required >
+                                        </td>
+                                        <td width="10%">
+                                            <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="{{$productPurchaseDetail->mrp_price}}" required >
+                                        </td>
+                                        <td width="10%">
+                                            <input type="text" class="amount form-control" name="sub_total[]" value="{{$productPurchaseDetail->sub_total}}">
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="6">
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Purchases</button>
+                                </div>
                             </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="tile-footer">

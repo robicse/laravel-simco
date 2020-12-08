@@ -14,40 +14,41 @@
             <div class="tile">
 
                 <h3 class="tile-title">All Replacement Sale Product</h3>
-                <table id="example1" class="table table-bordered table-striped">
-
-                    <thead>
-                    <tr>
-                        <th width="5%">#Id</th>
-                        <th>Invoice</th>
-                        <th>User</th>
-                        <th>Store</th>
-                        <th>Customer</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($productSaleReplacements as $key => $productSaleReplacement)
-                    <tr>
-                        <td>{{ $key+1 }}</td>
-                        <td>{{ $productSaleReplacement->sale_invoice_no}}</td>
-                        <td>{{ $productSaleReplacement->user->name}}</td>
-                        <td>{{ $productSaleReplacement->store->name}}</td>
-                        <td>{{ $productSaleReplacement->party->name}}</td>
-                        <td>
-                            <a href="{{ route('productSaleReplacement.show',$productSaleReplacement->id) }}" class="btn btn-sm btn-info float-left">Show</a>
-                            <a href="{{ route('productSaleReplacement.edit',$productSaleReplacement->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
-                            <form method="post" action="{{ route('productSaleReplacement.destroy',$productSaleReplacement->id) }}" >
-                               @method('DELETE')
-                                @csrf
-                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="tile-footer">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th width="5%">#Id</th>
+                            <th>Invoice</th>
+                            <th>User</th>
+                            <th>Store</th>
+                            <th>Customer</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($productSaleReplacements as $key => $productSaleReplacement)
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $productSaleReplacement->sale_invoice_no}}</td>
+                            <td>{{ $productSaleReplacement->user->name}}</td>
+                            <td>{{ $productSaleReplacement->store->name}}</td>
+                            <td>{{ $productSaleReplacement->party->name}}</td>
+                            <td>
+                                <a href="{{ route('productSaleReplacement.show',$productSaleReplacement->id) }}" class="btn btn-sm btn-info float-left">Show</a>
+                                <a href="{{ route('productSaleReplacement.edit',$productSaleReplacement->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
+                                <form method="post" action="{{ route('productSaleReplacement.destroy',$productSaleReplacement->id) }}" >
+                                   @method('DELETE')
+                                    @csrf
+                                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="tile-footer">
+                    </div>
                 </div>
             </div>
 

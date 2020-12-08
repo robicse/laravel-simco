@@ -20,47 +20,49 @@
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
                         </div>
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th width="5%">#Id</th>
-                                <th width="10%">User</th>
-                                <th width="10%">Store</th>
-                                <th width="15%">Party</th>
-                                <th width="15%">Product Type</th>
-                                <th width="15%">Transaction Type</th>
-                                <th width="15%">Payment Type</th>
-                                <th width="15%">Amount</th>
-                                <th width="15%">Date</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $transactions = \App\Transaction::where('store_id',$store->id)->latest()->get();
-                            @endphp
-                            @if(!empty($transactions))
-                                @foreach($transactions as $key => $transaction)
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td>{{ $transaction->user->name}}</td>
-                                        <td>{{ $transaction->store->name}}</td>
-                                        <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
-                                        <td>{{ $transaction->transaction_product_type}}</td>
-                                        <td>{{ $transaction->transaction_type}}</td>
-                                        <td>
-                                            {{ $transaction->payment_type}}
-                                            @if($transaction->payment_type == 'check')
-                                                ( {{$transaction->check_number}} )
-                                            @endif
-                                        </td>
-                                        <td>{{ $transaction->amount}}</td>
-                                        <td>{{ $transaction->date}}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                            </tbody>
-                        </table>
-                        <div class="tile-footer">
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="5%">#Id</th>
+                                    <th width="10%">User</th>
+                                    <th width="10%">Store</th>
+                                    <th width="15%">Party</th>
+                                    <th width="15%">Product Type</th>
+                                    <th width="15%">Transaction Type</th>
+                                    <th width="15%">Payment Type</th>
+                                    <th width="15%">Amount</th>
+                                    <th width="15%">Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @php
+                                    $transactions = \App\Transaction::where('store_id',$store->id)->latest()->get();
+                                @endphp
+                                @if(!empty($transactions))
+                                    @foreach($transactions as $key => $transaction)
+                                        <tr>
+                                            <td>{{ $key+1 }}</td>
+                                            <td>{{ $transaction->user->name}}</td>
+                                            <td>{{ $transaction->store->name}}</td>
+                                            <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
+                                            <td>{{ $transaction->transaction_product_type}}</td>
+                                            <td>{{ $transaction->transaction_type}}</td>
+                                            <td>
+                                                {{ $transaction->payment_type}}
+                                                @if($transaction->payment_type == 'check')
+                                                    ( {{$transaction->check_number}} )
+                                                @endif
+                                            </td>
+                                            <td>{{ $transaction->amount}}</td>
+                                            <td>{{ $transaction->date}}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                            <div class="tile-footer">
+                            </div>
                         </div>
                     @endforeach
                 @endif

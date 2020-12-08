@@ -16,46 +16,47 @@
                     <li class="breadcrumb-item" style="margin-left: 90%"> <a href="{!! route('productPurchases-invoice') !!}" class="btn btn-sm btn-primary"  type="button">Download Page</a></li>
                 </ul>--}}
                 <h3 class="tile-title">Product Purchases</h3>
-
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>User</th>
-                        <td>{{$productPurchase->user->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Store</th>
-                        <td>{{$productPurchase->store->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Party</th>
-                        <td>{{$productPurchase->party->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Date</th>
-                        <td>{{$productPurchase->date}}</td>
-                    </tr>
-                    <tr>
-                        <th>Payment Type</th>
-                        <td>{{$transaction->payment_type}}</td>
-                    </tr>
-                    @if($transaction->payment_type == 'check')
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
                         <tr>
-                            <th>Check Number</th>
-                            <td>{{$transaction->check_number}}</td>
                         </tr>
-                    @endif
-                    <tr>
-                        <th>Amount</th>
-                        <td>{{$productPurchase->total_amount}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="tile-footer">
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>User</th>
+                            <td>{{$productPurchase->user->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Store</th>
+                            <td>{{$productPurchase->store->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Party</th>
+                            <td>{{$productPurchase->party->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{{$productPurchase->date}}</td>
+                        </tr>
+                        <tr>
+                            <th>Payment Type</th>
+                            <td>{{$transaction->payment_type}}</td>
+                        </tr>
+                        @if($transaction->payment_type == 'check')
+                            <tr>
+                                <th>Check Number</th>
+                                <td>{{$transaction->check_number}}</td>
+                            </tr>
+                        @endif
+                        <tr>
+                            <th>Amount</th>
+                            <td>{{$productPurchase->total_amount}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="tile-footer">
+                    </div>
                 </div>
             </div>
         </div>
