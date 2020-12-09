@@ -515,11 +515,6 @@
                     location.reload();
                 }
             }
-
-
-
-
-
             function modal_customer(){
                 $('#customar_modal').modal('show');
             }
