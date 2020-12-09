@@ -18,48 +18,50 @@
                         <div class="col-md-12">
                             <h1 class="text-center">{{$store->name}}</h1>
                         </div>
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th width="5%">#Id</th>
-                                <th width="10%">Store</th>
-                                <th width="15%">Product Type</th>
-                                <th width="12%">Brand</th>
-                                <th width="12%">Product</th>
-                                <th width="12%">Current Stock</th>
-                                <th width="12%">Stock In Now</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                //$stocks = \App\Stock::where('store_id',$store->id)->latest()->groupBy('product_id')->get();
-
-                                $stocks = \App\Stock::where('store_id',$store->id)
-                                ->whereIn('id', function($query) {
-                                       $query->from('stocks')->where('current_stock','<', 10)->groupBy('product_id')->selectRaw('MAX(id)');
-                                    })->latest('id')->get();
-
-                            @endphp
-                            @foreach($stocks as $key => $stock)
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
                                 <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td>{{ $stock->store->name}}</td>
-                                    <td>{{ $stock->product->product_type}}</td>
-                                    <td>{{ $stock->product->product_brand->name}}</td>
-                                    <td>{{ $stock->product->name}}</td>
-                                    <td>{{ $stock->current_stock}}</td>
-                                    <td>
-                                        @if($stock->product->product_type == 'Finish Goods')
-                                            <a href="{!! route('productPurchases.create') !!}" class="btn btn-sm btn-primary" type="button">Purchases Now</a>
-                                        @else
-                                            <a href="{!! route('productPurchaseRawMaterials.create') !!}" class="btn btn-sm btn-primary" type="button">Purchases Now</a>
-                                        @endif
-                                    </td>
+                                    <th width="5%">#Id</th>
+                                    <th width="10%">Store</th>
+                                    <th width="15%">Product Type</th>
+                                    <th width="12%">Brand</th>
+                                    <th width="12%">Product</th>
+                                    <th width="12%">Current Stock</th>
+                                    <th width="12%">Stock In Now</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        <div class="tile-footer">
+                                </thead>
+                                <tbody>
+                                @php
+                                    //$stocks = \App\Stock::where('store_id',$store->id)->latest()->groupBy('product_id')->get();
+
+                                    $stocks = \App\Stock::where('store_id',$store->id)
+                                    ->whereIn('id', function($query) {
+                                           $query->from('stocks')->where('current_stock','<', 10)->groupBy('product_id')->selectRaw('MAX(id)');
+                                        })->latest('id')->get();
+
+                                @endphp
+                                @foreach($stocks as $key => $stock)
+                                    <tr>
+                                        <td>{{ $key+1 }}</td>
+                                        <td>{{ $stock->store->name}}</td>
+                                        <td>{{ $stock->product->product_type}}</td>
+                                        <td>{{ $stock->product->product_brand->name}}</td>
+                                        <td>{{ $stock->product->name}}</td>
+                                        <td>{{ $stock->current_stock}}</td>
+                                        <td>
+                                            @if($stock->product->product_type == 'Finish Goods')
+                                                <a href="{!! route('productPurchases.create') !!}" class="btn btn-sm btn-primary" type="button">Purchases Now</a>
+                                            @else
+                                                <a href="{!! route('productPurchaseRawMaterials.create') !!}" class="btn btn-sm btn-primary" type="button">Purchases Now</a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            <div class="tile-footer">
+                            </div>
                         </div>
                     @endforeach
                 @endif

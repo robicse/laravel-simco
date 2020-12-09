@@ -14,8 +14,8 @@
             <div class="tile">
 
                 <h3 class="tile-title">Product Productions Table</h3>
-                <table id="example1" class="table table-bordered table-striped">
-
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th width="5%">#Id</th>
@@ -44,8 +44,10 @@
                             </form>
                         </td>
                     </tr>
-                @endforeach
-{{--                {{ $parties->links() }}--}}
+                    @endforeach
+                    </tbody>
+                </table>
+                </div>
             </div>
 
         </div>

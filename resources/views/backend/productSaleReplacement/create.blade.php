@@ -88,6 +88,22 @@
                     }
                 })
             })
+
+
+            // ajax
+            function replace_qty(row,sel) {
+
+                var current_row = row;
+                var current_replace_qty = sel.value;
+                //console.log(current_row);
+                //console.log(current_product_id);
+                //var current_product_id = $('#product_id_'+current_row).val();
+                var current_sale_qty = $('#qty_'+current_row).val();
+                if(current_replace_qty > current_sale_qty){
+                    alert('You have limit cross of stock qty!');
+                    $('#replace_qty_'+current_row).val(0);
+                }
+            }
         </script>
     @endpush
 

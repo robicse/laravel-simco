@@ -23,29 +23,30 @@
                         <div class="tile">
                             <h3 class="tile-title">{{ $role->name }} : Permissions</h3>
                             @if($rolePermissions->count() > 0)
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">SL</th>
-                                        <th width="10%">Controller</th>
-                                        <th width="15%">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                @if(!empty($rolePermissions))
-                                    @foreach($rolePermissions as $key => $v)
-                                        <tr>
-                                            <td width="10%">{{ $key+1 }}</td>
-                                            <td width="10%">{{ $v->controller_name }}</td>
-                                            <td width="15%">{{ $v->name }}</td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                                </tbody>
-                            </table>
-                            <div class="tile-footer">
-
-                            </div>
+                                <div class="table-responsive">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th width="10%">SL</th>
+                                                <th width="10%">Controller</th>
+                                                <th width="15%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(!empty($rolePermissions))
+                                            @foreach($rolePermissions as $key => $v)
+                                                <tr>
+                                                    <td width="10%">{{ $key+1 }}</td>
+                                                    <td width="10%">{{ $v->controller_name }}</td>
+                                                    <td width="15%">{{ $v->name }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                    <div class="tile-footer">
+                                    </div>
+                                </div>
                             @else
                                 <h3>No permission found for {{ $role->name }}!</h3>
                             @endif

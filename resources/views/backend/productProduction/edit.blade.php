@@ -61,94 +61,96 @@
                             </div>
                         </div>
 
-                        <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th >ID</th>
-                                <th>Product <small class="requiredCustom">*</small></th>
-                                <th>Category</th>
-                                <th>Sub Category</th>
-                                <th>Brand</th>
-                                <th>Stock Qty</th>
-                                <th>Qty <small class="requiredCustom">*</small></th>
-                                <th>Production</th>
-                                <th>Price <small class="requiredCustom">*</small></th>
-                                <th>Sub Total</th>
-                                <th>Action</th>
+                        <div class="table-responsive">
+                            <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th >ID</th>
+                                    <th>Product <small class="requiredCustom">*</small></th>
+                                    <th>Category</th>
+                                    <th>Sub Category</th>
+                                    <th>Brand</th>
+                                    <th>Stock Qty</th>
+                                    <th>Qty <small class="requiredCustom">*</small></th>
+                                    <th>Production</th>
+                                    <th>Price <small class="requiredCustom">*</small></th>
+                                    <th>Sub Total</th>
+                                    <th>Action</th>
 
-                            </tr>
-                            </thead>
-                            <tbody class="neworderbody">
-                            @foreach($productProductionDetails as $key => $productProductionDetail)
-                            <tr>
-                                @php
-                                    $current_row = $key+1;
-                                @endphp
-                                <td width="5%" class="no">{{$current_row}}</td>
-                                <td width="12%">
-                                    <input type="hidden" class="form-control" name="product_production_detail_id[]" value="{{$productProductionDetail->id}}" >
-                                    <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
-                                        <option value="">Select  Product</option>
-                                        @foreach($products as $product)
-                                            <option value="{{$product->id}}" {{$product->id == $productProductionDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td width="12%">
-                                    <div id="product_category_id_1">
-                                        <select class="form-control product_category_id select2" name="product_category_id[]"  required>
-                                            <option value="">Select  Category</option>
-                                            @foreach($productCategories as $productCategory)
-                                                <option value="{{$productCategory->id}}" {{$productCategory->id == $productProductionDetail->product_category_id ? 'selected' : ''}}>{{$productCategory->name}}</option>
+                                </tr>
+                                </thead>
+                                <tbody class="neworderbody">
+                                @foreach($productProductionDetails as $key => $productProductionDetail)
+                                <tr>
+                                    @php
+                                        $current_row = $key+1;
+                                    @endphp
+                                    <td width="5%" class="no">{{$current_row}}</td>
+                                    <td width="12%">
+                                        <input type="hidden" class="form-control" name="product_production_detail_id[]" value="{{$productProductionDetail->id}}" >
+                                        <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
+                                            <option value="">Select  Product</option>
+                                            @foreach($products as $product)
+                                                <option value="{{$product->id}}" {{$product->id == $productProductionDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                </td>
-                                <td width="12%">
-                                    <div id="product_sub_category_id_1">
-                                        <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
-                                            <option value="">Select  Sub Category</option>
-                                            @foreach($productSubCategories as $productSubCategory)
-                                                <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productProductionDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </td>
-                                <td width="12%">
-                                    <div id="product_brand_id_1">
-                                        <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
-                                            <option value="">Select  Brand</option>
-                                            @foreach($productBrands as $productBrand)
-                                                <option value="{{$productBrand->id}}" {{$productBrand->id == $productProductionDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </td>
-                                <td width="8%">
-                                    <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
-                                </td>
-                                <td width="8%">
-                                    <input type="number" min="1" max="" class="qty form-control" name="qty[]"  value="{{$productProductionDetail->qty}}" required >
-                                </td>
-                                <td width="8%">
-                                    <input type="text" min="1" max="" class="production form-control" name="production[]" value="{{$productProductionDetail->production}}" required >
-                                </td>
-                                <td width="12%">
-                                    <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]"  value="{{$productProductionDetail->qty}}" required >
-                                </td>
-                                <td width="12%">
-                                    <input type="text" class="amount form-control" name="sub_total[]" value="{{$productProductionDetail->sub_total}}">
-                                </td>
-                            </tr>
-                            @endforeach
-                            </tbody>
+                                    </td>
+                                    <td width="12%">
+                                        <div id="product_category_id_1">
+                                            <select class="form-control product_category_id select2" name="product_category_id[]"  required>
+                                                <option value="">Select  Category</option>
+                                                @foreach($productCategories as $productCategory)
+                                                    <option value="{{$productCategory->id}}" {{$productCategory->id == $productProductionDetail->product_category_id ? 'selected' : ''}}>{{$productCategory->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td width="12%">
+                                        <div id="product_sub_category_id_1">
+                                            <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
+                                                <option value="">Select  Sub Category</option>
+                                                @foreach($productSubCategories as $productSubCategory)
+                                                    <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productProductionDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td width="12%">
+                                        <div id="product_brand_id_1">
+                                            <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
+                                                <option value="">Select  Brand</option>
+                                                @foreach($productBrands as $productBrand)
+                                                    <option value="{{$productBrand->id}}" {{$productBrand->id == $productProductionDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td width="8%">
+                                        <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
+                                    </td>
+                                    <td width="8%">
+                                        <input type="number" min="1" max="" class="qty form-control" name="qty[]"  value="{{$productProductionDetail->qty}}" required >
+                                    </td>
+                                    <td width="8%">
+                                        <input type="text" min="1" max="" class="production form-control" name="production[]" value="{{$productProductionDetail->production}}" required >
+                                    </td>
+                                    <td width="12%">
+                                        <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]"  value="{{$productProductionDetail->qty}}" required >
+                                    </td>
+                                    <td width="12%">
+                                        <input type="text" class="amount form-control" name="sub_total[]" value="{{$productProductionDetail->sub_total}}">
+                                    </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
 
-                        </table>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Production</button>
+                            </table>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Production</button>
+                                </div>
                             </div>
                         </div>
                     </form>

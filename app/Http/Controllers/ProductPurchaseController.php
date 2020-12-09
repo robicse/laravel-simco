@@ -228,23 +228,44 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->update();
 
 
-            $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->pluck('current_stock')->first();
-            if(!empty($check_previous_stock)){
-                $previous_stock = $check_previous_stock;
-            }else{
-                $previous_stock = 0;
-            }
+//            $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->pluck('current_stock')->first();
+//            if(!empty($check_previous_stock)){
+//                $previous_stock = $check_previous_stock;
+//            }else{
+//                $previous_stock = 0;
+//            }
+//            // product stock
+//            $stock = Stock::where('ref_id',$id)->where('stock_type','purchase')->first();
+//            $stock->user_id = Auth::id();
+//            $stock->store_id = $request->store_id;
+//            $stock->product_id = $request->product_id[$i];
+//            $stock->date = $request->date;
+//            $stock->previous_stock = $previous_stock;
+//            $stock->stock_in = $request->qty[$i];
+//            $stock->stock_out = 0;
+//            $stock->current_stock = $previous_stock + $request->qty[$i];
+//            $stock->update();
+
+
             // product stock
-            $stock = Stock::where('ref_id',$id)->where('stock_type','purchase')->first();
-            $stock->user_id = Auth::id();
-            $stock->store_id = $request->store_id;
-            $stock->product_id = $request->product_id[$i];
-            $stock->date = $request->date;
-            $stock->previous_stock = $previous_stock;
-            $stock->stock_in = $request->qty[$i];
-            $stock->stock_out = 0;
-            $stock->current_stock = $previous_stock + $request->qty[$i];
-            $stock->update();
+            $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->first();
+
+            if($stock_row->stock_in != $request->qty[$i]){
+                if($request->qty[$i] > $stock_row->stock_in){
+                    $add_or_minus_stock_in = $request->qty[$i] - $stock_row->stock_in;
+                    $update_stock_in = $stock_row->stock_in + $add_or_minus_stock_in;
+                    $update_current_stock = $stock_row->current_stock + $add_or_minus_stock_in;
+                }else{
+                    $add_or_minus_stock_in =  $stock_row->stock_in - $request->qty[$i];
+                    $update_stock_in = $stock_row->stock_in - $add_or_minus_stock_in;
+                    $update_current_stock = $stock_row->current_stock - $add_or_minus_stock_in;
+                }
+
+                $stock_row->user_id = Auth::user()->id;
+                $stock_row->stock_in = $update_stock_in;
+                $stock_row->current_stock = $update_current_stock;
+                $stock_row->update();
+            }
         }
 
         // transaction

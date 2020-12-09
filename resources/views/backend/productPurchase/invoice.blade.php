@@ -88,7 +88,7 @@
                                 <!-- Table row -->
                                 <div class="row">
                                     <div class="col-12 table-responsive">
-                                        <table class="table table-striped">
+                                        <table id="example1" class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th>Qty</th>

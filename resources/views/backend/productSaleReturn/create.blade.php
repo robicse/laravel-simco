@@ -67,109 +67,111 @@
                             </div>
                         </div>
 
-                        <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th >ID</th>
-                                <th>Product <small class="text-danger">*</small></th>
-                                <th>Category</th>
-                                <th>Sub Category</th>
-                                <th>Brand</th>
-                                <th>Returnable</th>
-                                <th>Qty <small class="text-danger">*</small></th>
-                                <th>Price <small class="text-danger">*</small></th>
-                                <th>Sub Total</th>
-                                <th>Action</th>
+                        <div class="table-responsive">
+                            <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th >ID</th>
+                                    <th>Product <small class="text-danger">*</small></th>
+                                    <th>Category</th>
+                                    <th>Sub Category</th>
+                                    <th>Brand</th>
+                                    <th>Returnable</th>
+                                    <th>Qty <small class="text-danger">*</small></th>
+                                    <th>Price <small class="text-danger">*</small></th>
+                                    <th>Sub Total</th>
+                                    <th>Action</th>
 
-                            </tr>
-                            </thead>
-                            <tbody class="neworderbody">
-                            <tr>
-                                <td width="5%" class="no">1</td>
-                                <td>
-                                    <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
-                                        <option value="">Select  Product</option>
-                                        @foreach($products as $product)
-                                            <option value="{{$product->id}}">{{$product->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <div id="product_category_id_1">
-                                        <select class="form-control product_category_id select2" name="product_category_id[]"  required>
-                                            <option value="">Select  Category</option>
-                                            @foreach($productCategories as $productCategory)
-                                                <option value="{{$productCategory->id}}">{{$productCategory->name}}</option>
+                                </tr>
+                                </thead>
+                                <tbody class="neworderbody">
+                                <tr>
+                                    <td width="5%" class="no">1</td>
+                                    <td>
+                                        <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
+                                            <option value="">Select  Product</option>
+                                            @foreach($products as $product)
+                                                <option value="{{$product->id}}">{{$product->name}}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="product_sub_category_id_1">
-                                        <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
-                                            <option value="">Select  Sub Category</option>
-                                            @foreach($productSubCategories as $productSubCategory)
-                                                <option value="{{$productSubCategory->id}}">{{$productSubCategory->name}}</option>
-                                            @endforeach
+                                    </td>
+                                    <td>
+                                        <div id="product_category_id_1">
+                                            <select class="form-control product_category_id select2" name="product_category_id[]"  required>
+                                                <option value="">Select  Category</option>
+                                                @foreach($productCategories as $productCategory)
+                                                    <option value="{{$productCategory->id}}">{{$productCategory->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="product_sub_category_id_1">
+                                            <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
+                                                <option value="">Select  Sub Category</option>
+                                                @foreach($productSubCategories as $productSubCategory)
+                                                    <option value="{{$productSubCategory->id}}">{{$productSubCategory->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="product_brand_id_1">
+                                            <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
+                                                <option value="">Select  Brand</option>
+                                                @foreach($productBrands as $productBrand)
+                                                    <option value="{{$productBrand->id}}">{{$productBrand->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select name="return_type[]" id="return_type_id_1" class="form-control" >
+                                            <option value="returnable" selected>returnable</option>
+                                            <option value="not returnable">not returnable</option>
                                         </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="product_brand_id_1">
-                                        <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
-                                            <option value="">Select  Brand</option>
-                                            @foreach($productBrands as $productBrand)
-                                                <option value="{{$productBrand->id}}">{{$productBrand->name}}</option>
-                                            @endforeach
+                                    </td>
+                                    <td>
+                                        <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
+                                    </td>
+                                    <td>
+                                        <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                    </td>
+                                    <td>
+                                        <input type="text" class="amount form-control" name="sub_total[]">
+                                    </td>
+                                </tr>
+
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th colspan="2">
+                                        Discount Type:
+                                        <select name="discount_type" id="discount_type" class="form-control" >
+                                            <option value="flat" selected>flat</option>
+                                            <option value="percentage">percentage</option>
                                         </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <select name="return_type[]" id="return_type_id_1" class="form-control" >
-                                        <option value="returnable" selected>returnable</option>
-                                        <option value="not returnable">not returnable</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
-                                </td>
-                                <td>
-                                    <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
-                                </td>
-                                <td>
-                                    <input type="text" class="amount form-control" name="sub_total[]">
-                                </td>
-                            </tr>
-
-                            </tbody>
-
-                            <tfoot>
-                            <tr>
-                                <th colspan="3"></th>
-                                <th colspan="2">
-                                    Discount Type:
-                                    <select name="discount_type" id="discount_type" class="form-control" >
-                                        <option value="flat" selected>flat</option>
-                                        <option value="percentage">percentage</option>
-                                    </select>
-                                </th>
-                                <th colspan="2">
-                                    Discount Amount:
-                                    <input type="text" class="discount_amount form-control" name="discount_amount">
-                                </th>
-                                <th colspan="2">
-                                    Total:
-                                    <input type="text" class="amount form-control" name="total_amount">
-                                </th>
-                                <th>&nbsp;</th>
-                            </tr>
-                            </tfoot>
-                        </table>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
+                                    </th>
+                                    <th colspan="2">
+                                        Discount Amount:
+                                        <input type="text" class="discount_amount form-control" name="discount_amount">
+                                    </th>
+                                    <th colspan="2">
+                                        Total:
+                                        <input type="text" class="amount form-control" name="total_amount">
+                                    </th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Save Product Sale</button>
+                                </div>
                             </div>
                         </div>
                     </form>

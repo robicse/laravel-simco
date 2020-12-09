@@ -16,39 +16,41 @@
 {{--                    <li class="breadcrumb-item" style="margin-left: 88%"> <a href="{!! route('productProductions-invoice',$productProduction->id) !!}" class="btn btn-sm btn-primary"  type="button">Print Invoice Page</a></li>--}}
 {{--                </ul>--}}
                 <h3 class="tile-title">Product Productions</h3>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>User</th>
-                        <td>{{$productProduction->user->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Store</th>
-                        <td>{{$productProduction->store->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Date</th>
-                        <td>{{$productProduction->date}}</td>
-                    </tr>
-                    <tr>
-                        <th>Total Amount</th>
-                        <td>{{$productProduction->total_amount}}</td>
-                    </tr>
-{{--                    <tr>--}}
-{{--                        <th>Paid Amount</th>--}}
-{{--                        <td>{{$productProduction->paid_amount}}</td>--}}
-{{--                    </tr>--}}
-{{--                    <tr>--}}
-{{--                        <th>Due Amount</th>--}}
-{{--                        <td>{{$productProduction->due_amount}}</td>--}}
-{{--                    </tr>--}}
-                    </tbody>
-                </table>
-                <div class="tile-footer">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>User</th>
+                            <td>{{$productProduction->user->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Store</th>
+                            <td>{{$productProduction->store->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <td>{{$productProduction->date}}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Amount</th>
+                            <td>{{$productProduction->total_amount}}</td>
+                        </tr>
+    {{--                    <tr>--}}
+    {{--                        <th>Paid Amount</th>--}}
+    {{--                        <td>{{$productProduction->paid_amount}}</td>--}}
+    {{--                    </tr>--}}
+    {{--                    <tr>--}}
+    {{--                        <th>Due Amount</th>--}}
+    {{--                        <td>{{$productProduction->due_amount}}</td>--}}
+    {{--                    </tr>--}}
+                        </tbody>
+                    </table>
+                    <div class="tile-footer">
+                    </div>
                 </div>
             </div>
         </div>

@@ -53,45 +53,47 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
 
-                        {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Replace pQty</th>
-                            </tr>
-                            </thead>
-                            <tbody class="neworderbody">
-                            @foreach($productSaleReplacementDetails as $key => $productSaleReplacementDetail)
+                        <div class="table-responsive">
+                            {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
                                 <tr>
-                                    @php
-                                        $current_row = $key+1;
-                                    @endphp
-                                    <td width="12%">
-                                        <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" disabled required>
-                                            <option value="">Select  Product</option>
-                                            @foreach($products as $product)
-                                                <option value="{{$product->id}}" {{$product->id == $productSaleReplacementDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" class="form-control" name="product_Sale_replacement_detail_id[]" value="{{$productSaleReplacementDetail->id}}" >
-                                    </td>
-                                    <td width="8%">
-                                        <input type="text" min="1" max="" class="qty form-control" name="replace_qty[]" value="{{$productSaleReplacementDetail->replace_qty}}" required >
-                                    </td>
+                                    <th>Product</th>
+                                    <th>Replace pQty</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                            <tfoot>
-                            </tfoot>
-                        </table>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3"></label>
-                            <div class="col-md-8">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Sales Replace</button>
+                                </thead>
+                                <tbody class="neworderbody">
+                                @foreach($productSaleReplacementDetails as $key => $productSaleReplacementDetail)
+                                    <tr>
+                                        @php
+                                            $current_row = $key+1;
+                                        @endphp
+                                        <td width="12%">
+                                            @php
+                                                echo $product_name = \Illuminate\Support\Facades\DB::table('products')
+                                            ->where('id',$productSaleReplacementDetail->product_id)
+                                            ->pluck('name')
+                                            ->first();
+                                            @endphp
+                                            <input type="hidden" class="form-control" name="product_id[]" value="{{$productSaleReplacementDetail->product_id}}" >
+                                            <input type="hidden" class="form-control" name="product_Sale_replacement_detail_id[]" value="{{$productSaleReplacementDetail->id}}" >
+                                        </td>
+                                        <td width="8%">
+                                            <input type="text" min="1" max="" class="qty form-control" name="replace_qty[]" value="{{$productSaleReplacementDetail->replace_qty}}" required >
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3"></label>
+                                <div class="col-md-8">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Update Product Sales Replace</button>
+                                </div>
                             </div>
                         </div>
-
                     </form>
                 </div>
                 <div class="tile-footer">

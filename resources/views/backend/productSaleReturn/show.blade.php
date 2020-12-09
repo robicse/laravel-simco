@@ -13,43 +13,45 @@
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">Product Sales Returns</h3>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th>User</th>
-                        <td>{{$productSaleReturn->user->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Store</th>
-                        <td>{{$productSaleReturn->store->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Party</th>
-                        <td>{{$productSaleReturn->party->name}}</td>
-                    </tr>
-                    <tr>
-                        <th>Payment Type</th>
-                        <td>{{$productSaleReturn->payment_type}}</td>
-                    </tr>
-                    <tr>
-                        <th>Discount Type</th>
-                        <td>{{$productSaleReturn->discount_type}}</td>
-                    </tr>
-                    <tr>
-                        <th>Discount Amount</th>
-                        <td>{{$productSaleReturn->discount_amount}}</td>
-                    </tr>
-                    <tr>
-                        <th>Amount</th>
-                        <td>{{$productSaleReturn->total_amount}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="tile-footer">
+                <div class="table-responsive">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>User</th>
+                            <td>{{$productSaleReturn->user->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Store</th>
+                            <td>{{$productSaleReturn->store->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Party</th>
+                            <td>{{$productSaleReturn->party->name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Payment Type</th>
+                            <td>{{$productSaleReturn->payment_type}}</td>
+                        </tr>
+                        <tr>
+                            <th>Discount Type</th>
+                            <td>{{$productSaleReturn->discount_type}}</td>
+                        </tr>
+                        <tr>
+                            <th>Discount Amount</th>
+                            <td>{{$productSaleReturn->discount_amount}}</td>
+                        </tr>
+                        <tr>
+                            <th>Amount</th>
+                            <td>{{$productSaleReturn->total_amount}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="tile-footer">
+                    </div>
                 </div>
             </div>
         </div>
