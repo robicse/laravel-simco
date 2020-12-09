@@ -69,7 +69,7 @@ class ProductSaleReturnController extends Controller
     }
 
     public function saleProductReturn(Request $request){
-        dd($request->all());
+        //dd($request->all());
         $productSale = ProductSale::find($request->product_sale_id);
         $productSaleDetail = ProductSaleDetail::find($request->product_sale_detail_id);
         //dd($productSaleDetail);

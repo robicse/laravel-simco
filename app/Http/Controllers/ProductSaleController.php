@@ -179,7 +179,8 @@ class ProductSaleController extends Controller
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $request->payment_type;
             $transaction->check_number = $request->check_number ? $request->check_number : '';
-            $transaction->amount = $total_amount;
+            //$transaction->amount = $total_amount;
+            $transaction->amount = $request->paid_amount;
             $transaction->save();
         }
 
@@ -435,25 +436,25 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
         $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-        return view('backend.productSale.invoice', compact('productSale','productSaleDetails','transaction','store','party','digit'));
+        return view('backend.productSale.invoice', compact('productSale','productSaleDetails','transactions','store','party','digit'));
     }
     public function invoicePrint($id)
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
         $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-        return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transaction','store','party','digit'));
+        return view('backend.productSale.invoice-print', compact('productSale','productSaleDetails','transactions','store','party','digit'));
 
     }
 

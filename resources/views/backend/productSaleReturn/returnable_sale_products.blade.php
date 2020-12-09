@@ -63,6 +63,8 @@
                                             @csrf
                                             <div class="form-group col-md-6">
                                                 <label class="control-label">Qty  <small class="text-danger">*</small></label>
+                                                <input class="form-control" type="hidden" name="product_sale_id" value="{{$returnable_sale_product->product_sale_id}}">
+                                                <input class="form-control" type="hidden" name="product_sale_detail_id" value="{{$returnable_sale_product->id}}">
                                                 <input class="form-control" type="hidden" name="qty" id="qty_{{$key}}" value="{{$returnable_sale_product->qty}}">
                                                 <input class="form-control" type="text" name="return_qty" id="return_qty_{{$key}}" onkeyup="return_qty1({{$key}},this);" placeholder="Enter return qty">
                                             </div>
