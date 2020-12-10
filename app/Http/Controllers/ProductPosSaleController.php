@@ -470,7 +470,7 @@ class ProductPosSaleController extends Controller
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $payment_type;
             $transaction->check_number = $check_number ? $check_number : '';
-            $transaction->amount = $total_amount;
+            $transaction->amount = $paid_amount;
             $transaction->save();
 
             // session add product sale id

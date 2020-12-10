@@ -184,7 +184,7 @@
                                                             ( Check Number: {{$transaction->check_number}} )
                                                         @endif
                                                         :
-                                                        {{$transaction->amount}}
+                                                        Tk.{{$transaction->amount}} ({{$transaction->created_at}})
                                                     </li>
                                                 @endforeach
                                             </ul>

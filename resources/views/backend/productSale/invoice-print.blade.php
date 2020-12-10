@@ -54,7 +54,8 @@
                         bottom: 0 !important;
                         border-top: 1px solid #000000;
                         width:100%;
-                        font-size: 12px !important;
+                        font-size: 10px !important;
+                        padding-bottom: 20px;
                     }
 
                     /* default settings */
@@ -88,7 +89,7 @@
 
                 </style>
                 <div class="panel-body">
-                    <div class="row" style="border-bottom: 1px solid #000000;">
+                    <div class="row" style="padding-top: 20px;">
                         <div class="col-md-6" style="width: 80%; float: left;display: inline-block">&nbsp;</div>
                         <div class="col-md-6" style="text-align: right; width: 20%; display: inline-block">
                             <div class="invoice-logo">

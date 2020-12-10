@@ -38,9 +38,9 @@ class ProductSaleController extends Controller
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin"){
-            $productSales = ProductSale::latest()->get();
+            $productSales = ProductSale::where('sale_type','whole')->latest()->get();
         }else{
-            $productSales = ProductSale::where('user_id',$auth_user_id)->latest()->get();
+            $productSales = ProductSale::where('sale_type','whole')->where('user_id',$auth_user_id)->latest()->get();
         }
         return view('backend.productSale.index',compact('productSales'));
     }
@@ -112,6 +112,7 @@ class ProductSaleController extends Controller
         $productSale->total_amount = $total_amount;
         $productSale->paid_amount = $request->paid_amount;
         $productSale->due_amount = $request->due_amount;
+        $productSale->sale_type = 'whole';
         $productSale->save();
         $insert_id = $productSale->id;
         if($insert_id)

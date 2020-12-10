@@ -62,7 +62,7 @@
     {{--                        <td>{{ $productSale->payment_type}}</td>--}}
                             <td>{{ $productSale->total_amount}}</td>
     {{--                        <td>{{ $productSale->paid_amount}}</td>--}}
-                            <td>{{ $productSale->date}}</td>
+                            <td>{{ $productSale->created_at}}</td>
                             <td>
                                 {{ $productSale->due_amount}}
                                 @if($productSale->total_amount != $productSale->paid_amount)

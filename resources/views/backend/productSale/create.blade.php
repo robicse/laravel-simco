@@ -193,7 +193,7 @@
                                             </select>
                                         </th>
                                         <th>
-                                            Discount:
+                                            Discount(Flat):
                                             <input type="text" id="discount_amount" class="form-control" name="discount_amount" onkeyup="discountAmount('')" value="0">
                                         </th>
                                         <th>
