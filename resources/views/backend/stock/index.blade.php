@@ -27,6 +27,7 @@
                                     <th width="15%">Product Type</th>
                                     <th width="12%">Brand</th>
                                     <th width="12%">Product</th>
+                                    <th width="12%">Stock Type</th>
                                     <th width="12%">Previous Stock</th>
                                     <th width="12%">Stock In</th>
                                     <th width="12%">Stock Out</th>
@@ -45,11 +46,12 @@
                                         <td>{{ $stock->product->product_type}}</td>
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>
+                                        <td>{{ $stock->stock_type}}</td>
                                         <td>{{ $stock->previous_stock}}</td>
                                         <td>{{ $stock->stock_in}}</td>
                                         <td>{{ $stock->stock_out}}</td>
                                         <td>{{ $stock->current_stock}}</td>
-                                        <td>{{ $stock->date}}</td>
+                                        <td>{{ $stock->created_at}}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>

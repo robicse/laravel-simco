@@ -137,8 +137,8 @@ class ProductSaleReplacementController extends Controller
                     $stock->stock_type = 'replace';
                     $stock->previous_stock = $previous_stock;
                     $stock->stock_in = 0;
-                    $stock->stock_out = $request->qty[$i];
-                    $stock->current_stock = $previous_stock - $request->qty[$i];
+                    $stock->stock_out = $request->replace_qty[$i];
+                    $stock->current_stock = $previous_stock - $request->replace_qty[$i];
                     $stock->save();
                 }
             }

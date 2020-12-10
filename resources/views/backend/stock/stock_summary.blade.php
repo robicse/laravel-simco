@@ -28,7 +28,7 @@
                                     <th width="12%">Brand</th>
                                     <th width="12%">Product</th>
                                     <th width="12%">Current Stock</th>
-                                    <th width="12%">Date</th>
+{{--                                    <th width="12%">Date</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -49,7 +49,7 @@
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>
                                         <td>{{ $stock->current_stock}}</td>
-                                        <td>{{ $stock->date}}</td>
+{{--                                        <td>{{ $stock->date}}</td>--}}
                                     </tr>
                                 @endforeach
                                 </tbody>
