@@ -301,15 +301,15 @@
     @push('js')
         <script>
 
-            function totalAmount(){
-                var t = 0;
-                $('.amount').each(function(i,e){
-                    var amt = $(this).val()-0;
-                    t += amt;
-                });
-                $('#store_total_amount').val(t);
-                $('#total_amount').val(t);
-            }
+                function totalAmount(){
+                    var t = 0;
+                    $('.amount').each(function(i,e){
+                        var amt = $(this).val()-0;
+                        t += amt;
+                    });
+                    $('#store_total_amount').val(t);
+                    $('#total_amount').val(t);
+                }
 
             // onkeyup
             function discountAmount(){

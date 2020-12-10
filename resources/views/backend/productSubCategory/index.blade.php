@@ -27,7 +27,7 @@
                         @foreach($productSubCategories as $key => $productSubCategory)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $productSubCategory->product_category_id}}</td>
+                            <td>{{ $productSubCategory->product_category->name}}</td>
                             <td>{{ $productSubCategory->name}}</td>
                             <td>
                                 <a href="{{ route('productSubCategories.edit',$productSubCategory->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
