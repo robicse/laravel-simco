@@ -69,7 +69,7 @@ class ProductSaleReturnController extends Controller
     }
 
     public function saleProductReturn(Request $request){
-        dd($request->all());
+        //dd($request->all());
         $productSale = ProductSale::find($request->product_sale_id);
         $productSaleDetail = ProductSaleDetail::find($request->product_sale_detail_id);
         //dd($productSaleDetail);
@@ -118,7 +118,7 @@ class ProductSaleReturnController extends Controller
             $product_id = $productSaleDetail->product_id;
 
 
-            $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
+            $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
             }else{

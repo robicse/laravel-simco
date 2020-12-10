@@ -34,14 +34,14 @@
 
             </ul>
         </li>
-        <li class="treeview{{Request::is('productPosSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">POS Sale/Stock Out </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('productPosSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">POS Sale(FG)/Stock Out </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPosSales.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPosSales.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create</span></a></li>
                 {{--                <li class="custom_li_bg"><a class="app-menu__item" href="{{ route('productPosSales.customer.due') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Customer Due</span></a></li>--}}
             </ul>
         </li>
-        <li class="treeview{{Request::is('productSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-down"></i><span class="app-menu__label">FG Whole Sale/Stock Out </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('productSales*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-down"></i><span class="app-menu__label">Whole Sale(FG)/Stock Out </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSales.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSales.create') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create</span></a></li>
@@ -54,22 +54,6 @@
         {{--                <li><a class="app-menu__item" href="{{ route('productSales.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
         {{--            </ul>--}}
         {{--        </li>--}}
-        <li class="treeview{{Request::is('productSaleReturns*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-up"></i><span class="app-menu__label">FG Sale Return/Stock In</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('returnable.sale.product') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create </span></a></li>
-                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSaleReturns.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
-                {{--                <li><a class="app-menu__item" href="{{ route('productSaleReturns.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
-
-            </ul>
-        </li>
-        <li class="treeview{{Request::is('productSaleReplacement*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-up"></i><span class="app-menu__label"> Product Replacement</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-            <ul class="treeview-menu">
-                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSaleReplacement.create') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create </span></a></li>
-                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSaleReplacement.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
-                {{--                <li><a class="app-menu__item" href="{{ route('productSaleReturns.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
-
-            </ul>
-        </li>
         <li class="treeview{{Request::is('productPurchaseRawMaterials*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-basket"></i><span class="app-menu__label">Raw Materials Stock In </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchaseRawMaterials.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
@@ -77,10 +61,26 @@
 
             </ul>
         </li>
-        <li class="treeview{{Request::is('productProductions*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-thumb-tack"></i><span class="app-menu__label">Raw Materials Production </span><i class="treeview-indicator fa fa-angle-right"></i></a>
+        <li class="treeview{{Request::is('productProductions*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-thumb-tack"></i><span class="app-menu__label">Production(Raw Materials) </span><i class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productProductions.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productProductions.create') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create</span></a></li>
+            </ul>
+        </li>
+        <li class="treeview{{Request::is('productSaleReturns*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-up"></i><span class="app-menu__label">Return/Stock In</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('returnable.sale.product') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create </span></a></li>
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSaleReturns.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
+                {{--                <li><a class="app-menu__item" href="{{ route('productSaleReturns.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
+
+            </ul>
+        </li>
+        <li class="treeview{{Request::is('productSaleReplacement*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-up"></i><span class="app-menu__label"> Replace/Stock Out</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+            <ul class="treeview-menu">
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSaleReplacement.create') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create </span></a></li>
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productSaleReplacement.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
+                {{--                <li><a class="app-menu__item" href="{{ route('productSaleReturns.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Product Sale Create</span></a></li>--}}
+
             </ul>
         </li>
         <li class="treeview{{Request::is('stock*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-sort-amount-asc"></i><span class="app-menu__label">Stock </span><i class="treeview-indicator fa fa-angle-right"></i></a>

@@ -24,6 +24,7 @@
                             <th>Party</th>
                             <th>Payment Type</th>
                             <th>Total Amount</th>
+                            <th>date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -34,8 +35,14 @@
                             <td>{{ $productSaleReturn->user->name}}</td>
                             <td>{{ $productSaleReturn->store->name}}</td>
                             <td>{{ $productSaleReturn->party->name}}</td>
-                            <td>{{ $productSaleReturn->payment_type}}</td>
+                            <td>
+                                @php
+                                  echo $payment_type = \Illuminate\Support\Facades\DB::table('transactions')
+                                ->where('ref_id',$productSaleReturn->id)->pluck('payment_type')->first();
+                                @endphp
+                            </td>
                             <td>{{ $productSaleReturn->total_amount}}</td>
+                            <td>{{ $productSaleReturn->created_at}}</td>
                             <td>
                                 <a href="{{ route('productSaleReturns.show',$productSaleReturn->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             </td>

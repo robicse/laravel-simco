@@ -183,7 +183,7 @@
                                                             ( Check Number: {{$transaction->check_number}} )
                                                         @endif
                                                         :
-                                                        {{$transaction->amount}}
+                                                        {{$transaction->amount}} ({{$transaction->created_at}})
                                                     </li>
                                                 @endforeach
                                                 </ul>

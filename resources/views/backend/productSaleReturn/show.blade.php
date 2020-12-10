@@ -34,7 +34,12 @@
                         </tr>
                         <tr>
                             <th>Payment Type</th>
-                            <td>{{$productSaleReturn->payment_type}}</td>
+                            <td>
+                                @php
+                                    echo $payment_type = \Illuminate\Support\Facades\DB::table('transactions')
+                                  ->where('ref_id',$productSaleReturn->id)->pluck('payment_type')->first();
+                                @endphp
+                            </td>
                         </tr>
                         <tr>
                             <th>Discount Type</th>
