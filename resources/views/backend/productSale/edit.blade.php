@@ -387,6 +387,7 @@
                 $('#content').removeClass('hidden');
                 $('#content').addClass('show');
                 $('#content').toggle('show');
+
             });
 
 

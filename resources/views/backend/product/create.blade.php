@@ -97,9 +97,9 @@
                             <div class="col-md-8">
                                 <select name="product_unit_id" id="product_unit_id" class="form-control">
                                     <option value="">Select One</option>
-{{--                                    @foreach($productUnits as $productUnit)--}}
-{{--                                        <option value="{{$productUnit->id}}">{{$productUnit->name}}</option>--}}
-{{--                                    @endforeach--}}
+                                    @foreach($productUnits as $productUnit)
+                                        <option value="{{$productUnit->id}}">{{$productUnit->name}}</option>
+                                    @endforeach
                                 </select>
                                 @if ($errors->has('product_unit_id'))
                                     <span class="invalid-feedback" role="alert">
