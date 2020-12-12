@@ -56,8 +56,7 @@
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
-                                    <option value="">Select One</option>
-                                    <option value="cash">cash</option>
+                                    <option value="cash" selected>cash</option>
                                     <option value="check">check</option>
                                 </select>
                                 <span>&nbsp;</span>
@@ -131,10 +130,10 @@
                                         </div>
                                     </td>
                                     <td width="8%">
-                                        <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
+                                        <input type="text" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                     </td>
                                     <td width="10%">
-                                        <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                        <input type="text" min="1" max="" class="price form-control" name="price[]" value="" required >
                                     </td>
                                     <td width="10%">
                                         <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="" required >
@@ -268,7 +267,7 @@
                     '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
                     '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
-                    '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
+                    '<td><input type="text" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +

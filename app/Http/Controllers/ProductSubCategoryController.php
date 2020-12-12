@@ -20,8 +20,9 @@ class ProductSubCategoryController extends Controller
 
     public function index()
     {
-        $productCategories = ProductCategory::all();
+//        $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::latest()->get();
+        //dd($productSubCategories);
         return view('backend.productSubCategory.index', compact('productSubCategories','productCategories'));
     }
 
