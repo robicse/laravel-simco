@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,6 +48,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'store_id' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
@@ -59,6 +61,8 @@ class UserController extends Controller
 
 
         $user = User::create($input);
+        $user->store_id = $request->store_id;
+        $user->update();
         $user->assignRole($request->input('roles'));
 
 
@@ -76,23 +80,27 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        $stores = Store::all();
         $user = User::find($id);
         //$roles = Role::pluck('name','name')->all();
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin") {
-            $roles = Role::pluck('name','name')->all();
+            //$roles = Role::pluck('name','name')->all();
+            $roles = Role::all();
         }else{
-            $roles = Role::where('name', '!=', 'Admin')->pluck('name', 'name')->all();
+            //$roles = Role::where('name', '!=', 'Admin')->pluck('name', 'name')->all();
+            $roles = Role::where('name', '!=', 'Admin')->all();
         }
-        $userRole = $user->roles->pluck('name','name')->all();
+        $userRole = $user->roles->pluck('name','name')->first();
 
 
-        return view('backend.user.edit',compact('user','roles','userRole'));
+        return view('backend.user.edit',compact('user','roles','userRole','stores'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'store_id' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
@@ -109,6 +117,10 @@ class UserController extends Controller
 
 
         $user = User::find($id);
+        $user->store_id = $request->store_id;
+        $user->update();
+
+        // second
         $user->update($input);
         DB::table('model_has_roles')->where('model_id',$id)->delete();
 

@@ -59,12 +59,12 @@
                                     {
                                         $sale_total_qty = $productSaleDetails->qty;
                                         $sum_sale_price += $productSaleDetails->sub_total;
-                                        $sale_average_price = $productSaleDetails->sub_total/$productSaleDetails->qty;
+                                        //$sale_average_price = $productSaleDetails->sub_total/ (int) $productSaleDetails->qty;
 
-                                        if($sale_total_qty > 0){
-                                            $loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
-                                            $sum_loss_or_profit += $loss_or_profit;
-                                        }
+                                        //if($sale_total_qty > 0){
+                                            //$loss_or_profit = ($sale_average_price*$sale_total_qty) - ($purchase_average_price*$sale_total_qty);
+                                            //$sum_loss_or_profit += $loss_or_profit;
+                                        //}
                                     }
 
                                     // sale return

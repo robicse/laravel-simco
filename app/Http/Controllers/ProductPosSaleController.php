@@ -82,13 +82,13 @@ class ProductPosSaleController extends Controller
 
 
 
-        $auth_user_id = Auth::user()->id;
+        $auth = Auth::user();
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
         if($auth_user == "Admin"){
             $stores = Store::all();
         }else{
-            $stores = Store::where('user_id',$auth_user_id)->get();
+            $stores = Store::where('id',$auth->store_id)->get();
         }
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
