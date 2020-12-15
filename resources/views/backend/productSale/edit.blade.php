@@ -67,22 +67,22 @@
                         </div>
 
                         {{--                        <div class="form-group row">--}}
-{{--                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>--}}
-{{--                            <div class="col-md-8">--}}
-{{--                                <select name="delivery_service" id="delivery_service" class="form-control" >--}}
-{{--                                    <option value="">Select One</option>--}}
-{{--                                    <option value="Sundorban Kuriar Service" {{'Sundorban Kuriar Service' == $productSale->delivery_service ? 'selected' : ''}}>Sundorban Kuriar Service</option>--}}
-{{--                                    <option value="SA Paribahan" {{'SA Paribahan' == $productSale->delivery_service ? 'selected' : ''}}>SA Paribahan</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        {{--                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>--}}
+                        {{--                            <div class="col-md-8">--}}
+                        {{--                                <select name="delivery_service" id="delivery_service" class="form-control" >--}}
+                        {{--                                    <option value="">Select One</option>--}}
+                        {{--                                    <option value="Sundorban Kuriar Service" {{'Sundorban Kuriar Service' == $productSale->delivery_service ? 'selected' : ''}}>Sundorban Kuriar Service</option>--}}
+                        {{--                                    <option value="SA Paribahan" {{'SA Paribahan' == $productSale->delivery_service ? 'selected' : ''}}>SA Paribahan</option>--}}
+                        {{--                                </select>--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
 
-{{--                        <div class="form-group row">--}}
-{{--                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>--}}
-{{--                            <div class="col-md-8">--}}
-{{--                                <input type="number" class="form-control" name="delivery_service_charge" value="{{$productSale->delivery_service_charge}}" />--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        {{--                        <div class="form-group row">--}}
+                        {{--                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>--}}
+                        {{--                            <div class="col-md-8">--}}
+                        {{--                                <input type="number" class="form-control" name="delivery_service_charge" value="{{$productSale->delivery_service_charge}}" />--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
                         <div class="table-responsive">
                             {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                             <table id="example1" class="table table-bordered table-striped">
@@ -256,8 +256,8 @@
                 var final_amount = store_total_amount - discount_amount;
             }
             else{
-                var per = (total*discount_amount)/100;
-                var final_amount = store_total_amount-per;
+                var per = (store_total_amount*discount_amount)/100;
+                var final_amount = store_total_amount - per;
             }
             console.log('final_amount= ' + final_amount);
             console.log('final_amount= ' + typeof final_amount);
@@ -283,7 +283,6 @@
 
             $('.backmoney').val(due);
         }
-
         $(function () {
             // onblur
             // $('#discount_amount').change(function(){
