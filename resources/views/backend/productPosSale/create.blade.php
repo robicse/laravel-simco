@@ -378,8 +378,8 @@
 
         function productType(){
             var arr = $('#payment_type').val();
-            if(arr == "cash"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "check"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "check"){ $("#check_number").removeAttr("readonly"); }
+            if(arr == "cash"){ $("#check_number").attr("readonly", "readonly"); }
         }
 
     </script>
