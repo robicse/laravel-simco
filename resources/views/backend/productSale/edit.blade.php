@@ -67,22 +67,22 @@
                         </div>
 
                         {{--                        <div class="form-group row">--}}
-                        {{--                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>--}}
-                        {{--                            <div class="col-md-8">--}}
-                        {{--                                <select name="delivery_service" id="delivery_service" class="form-control" >--}}
-                        {{--                                    <option value="">Select One</option>--}}
-                        {{--                                    <option value="Sundorban Kuriar Service" {{'Sundorban Kuriar Service' == $productSale->delivery_service ? 'selected' : ''}}>Sundorban Kuriar Service</option>--}}
-                        {{--                                    <option value="SA Paribahan" {{'SA Paribahan' == $productSale->delivery_service ? 'selected' : ''}}>SA Paribahan</option>--}}
-                        {{--                                </select>--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
+{{--                            <label class="control-label col-md-3 text-right">Delivery Services  <small class="requiredCustom">*</small></label>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                                <select name="delivery_service" id="delivery_service" class="form-control" >--}}
+{{--                                    <option value="">Select One</option>--}}
+{{--                                    <option value="Sundorban Kuriar Service" {{'Sundorban Kuriar Service' == $productSale->delivery_service ? 'selected' : ''}}>Sundorban Kuriar Service</option>--}}
+{{--                                    <option value="SA Paribahan" {{'SA Paribahan' == $productSale->delivery_service ? 'selected' : ''}}>SA Paribahan</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        {{--                        <div class="form-group row">--}}
-                        {{--                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>--}}
-                        {{--                            <div class="col-md-8">--}}
-                        {{--                                <input type="number" class="form-control" name="delivery_service_charge" value="{{$productSale->delivery_service_charge}}" />--}}
-                        {{--                            </div>--}}
-                        {{--                        </div>--}}
+{{--                        <div class="form-group row">--}}
+{{--                            <label class="control-label col-md-3 text-right">Delivery Services Charge <small class="requiredCustom">*</small></label>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                                <input type="number" class="form-control" name="delivery_service_charge" value="{{$productSale->delivery_service_charge}}" />--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="table-responsive">
                             {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                             <table id="example1" class="table table-bordered table-striped">
@@ -283,30 +283,6 @@
 
             $('.backmoney').val(due);
         }
-        $(function () {
-            // onblur
-            // $('#discount_amount').change(function(){
-            //     var discount_type = $('#discount_type').val();
-            //     var total = $('#total_amount').val();
-            //     var getmoney = $(this).val();
-            //     if(discount_type == 'flat'){
-            //         var t = total - getmoney;
-            //     }
-            //     else{
-            //         var per = (total*getmoney)/100;
-            //         var t = total-per;
-            //     }
-            //     $('#total_amount').val(t);
-            // });
-
-            // onblur
-            // $('.getmoney').change(function(){
-            //     var total = $('#total_amount').val();
-            //     var getmoney = $(this).val();
-            //     var t = total - getmoney;
-            //     $('.backmoney').val(t);
-            // });
-
 
             $('.add').click(function () {
                 var productCategory = $('.product_category_id').html();

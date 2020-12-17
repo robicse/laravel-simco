@@ -194,7 +194,7 @@
                                         </th>
                                         <th>
                                             Discount(Flat):
-                                            <input type="text" id="discount_amount" class="form-control" name="discount_amount" onkeyup="discountAmount('')" value="0">
+                                                <input type="text" id="discount_amount" class="form-control" name="discount_amount" onkeyup="discountAmount('')" value="0">
                                         </th>
                                         <th>
                                             Total:
@@ -347,23 +347,23 @@
                 $('#due_amount').val(final_amount);
             }
 
-            // onkeyup
-            function paidAmount(){
-                console.log('okk');
-                var total = $('#total_amount').val();
-                console.log('total= ' + total);
-                console.log('total= ' + typeof total);
+                // onkeyup
+                function paidAmount(){
+                    console.log('okk');
+                    var total = $('#total_amount').val();
+                    console.log('total= ' + total);
+                    console.log('total= ' + typeof total);
 
-                var paid_amount = $('#paid_amount').val();
-                console.log('paid_amount= ' + paid_amount);
-                console.log('paid_amount= ' + typeof paid_amount);
+                    var paid_amount = $('#paid_amount').val();
+                    console.log('paid_amount= ' + paid_amount);
+                    console.log('paid_amount= ' + typeof paid_amount);
 
-                var due = total - paid_amount;
-                console.log('due= ' + due);
-                console.log('due= ' + typeof due);
+                    var due = total - paid_amount;
+                    console.log('due= ' + due);
+                    console.log('due= ' + typeof due);
 
-                $('.backmoney').val(due);
-            }
+                    $('.backmoney').val(due);
+                }
 
             $(function () {
                 // onblur

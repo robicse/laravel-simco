@@ -188,8 +188,8 @@
                                                     </li>
                                                 @endforeach
                                             </ul>
-                                            @endif
-                                            </p>
+                                        @endif
+                                        </p>
                                     </div>
                                     <!-- /.col -->
                                     <div class="row">
