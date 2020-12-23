@@ -75,9 +75,8 @@
                                             <div class="form-group col-md-6">
                                                 <label class="control-label">Payment Type  <small class="text-danger">*</small></label>
                                                     <select name="payment_type" id="payment_type_{{$key}}" class="form-control" onchange="productType({{$key}},this)">
-                                                        <option value="">Select One</option>
-                                                        <option value="cash">cash</option>
-                                                        <option value="check">check</option>
+                                                        <option value="cash" selected>Cash</option>
+                                                        <option value="check">Check</option>
                                                     </select>
                                                     <span>&nbsp;</span>
                                                     <input type="text" name="check_number" id="check_number_{{$key}}" class="form-control" placeholder="Check Number" readonly="readonly">

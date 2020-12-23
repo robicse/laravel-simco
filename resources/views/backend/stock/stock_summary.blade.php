@@ -23,7 +23,7 @@
                                 <thead>
                                 <tr>
                                     <th width="5%">#Id</th>
-                                    <th width="10%">Store</th>
+{{--                                    <th width="10%">Store</th>--}}
                                     <th width="15%">Product Type</th>
                                     <th width="12%">Brand</th>
                                     <th width="12%">Product</th>
@@ -44,7 +44,7 @@
                                 @foreach($stocks as $key => $stock)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
-                                        <td>{{ $stock->store->name}}</td>
+{{--                                        <td>{{ $stock->store->name}}</td>--}}
                                         <td>{{ $stock->product->product_type}}</td>
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>

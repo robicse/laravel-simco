@@ -85,7 +85,7 @@
                         <thead>
                         <tr>
                             <th>Category</th>
-                            <th>Sub Category</th>
+{{--                            <th>Sub Category</th>--}}
                             <th>Brand</th>
                             <th>Return Condition</th>
                             <th>Product Image</th>
@@ -99,9 +99,9 @@
                         @foreach($productSaleDetails as $productSaleDetail)
                             <tr>
                                 <td>{{$productSaleDetail->product->product_category->name}}</td>
-                                <td>
-                                    {{$productSaleDetail->product->product_sub_category ? $productSaleDetail->product->product_sub_category->name : ''}}
-                                </td>
+{{--                                <td>--}}
+{{--                                    {{$productSaleDetail->product->product_sub_category ? $productSaleDetail->product->product_sub_category->name : ''}}--}}
+{{--                                </td>--}}
                                 <td>{{$productSaleDetail->product->product_brand->name}}</td>
                                 <td>{{$productSaleDetail->return_type}}</td>
                                 <td>

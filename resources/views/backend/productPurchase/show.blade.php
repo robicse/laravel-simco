@@ -68,7 +68,7 @@
                         <thead>
                         <tr>
                             <th>Category</th>
-                            <th>Sub Category</th>
+{{--                            <th>Sub Category</th>--}}
                             <th>Brand</th>
                             <th>Product Image</th>
                             <th>Product</th>
@@ -82,9 +82,9 @@
                             @foreach($productPurchaseDetails as $productPurchaseDetail)
                                 <tr>
                                     <td>{{$productPurchaseDetail->product->product_category->name}}</td>
-                                    <td>
-                                        {{$productPurchaseDetail->product->product_sub_category ? $productPurchaseDetail->product->product_sub_category->name : ''}}
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        {{$productPurchaseDetail->product->product_sub_category ? $productPurchaseDetail->product->product_sub_category->name : ''}}--}}
+{{--                                    </td>--}}
                                     <td>{{$productPurchaseDetail->product->product_brand->name}}</td>
                                     <td>
                                         <img src="{{asset('uploads/product/'.$productPurchaseDetail->product->image)}}" width="50" height="50" />

@@ -42,7 +42,7 @@
                         <tr>
                             <th width="5%">#Id</th>
                             <th>Sale User</th>
-                            <th>Store</th>
+                            <th>Invoice No</th>
                             <th>Customer</th>
     {{--                        <th>Payment Type</th>--}}
                             <th>Total Amount</th>
@@ -57,7 +57,7 @@
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $productSale->user->name}}</td>
-                            <td>{{ $productSale->store->name}}</td>
+                            <td>{{ $productSale->invoice_no}}</td>
                             <td>{{ $productSale->party->name}}</td>
     {{--                        <td>{{ $productSale->payment_type}}</td>--}}
                             <td>{{ $productSale->total_amount}}</td>

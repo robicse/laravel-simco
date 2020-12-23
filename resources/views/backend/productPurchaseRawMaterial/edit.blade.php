@@ -57,8 +57,8 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="cash" {{'cash' == $transaction->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="check" {{'check' == $transaction->payment_type ? 'selected' : ''}}>check</option>
+                                    <option value="cash" {{'cash' == $transaction->payment_type ? 'selected' : ''}}>Cash</option>
+                                    <option value="check" {{'check' == $transaction->payment_type ? 'selected' : ''}}>Check</option>
                                 </select>
                                 <span>&nbsp;</span>
                                 <input type="text" name="check_number" id="check_number" class="form-control" value="{{$transaction->check_number}}" placeholder="Check Number">
@@ -78,7 +78,7 @@
                                 <tr>
                                     <th>Product</th>
                                     <th>Category</th>
-                                    <th>Sub Category</th>
+{{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Qty</th>
                                     <th>Price</th>
@@ -110,16 +110,16 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td width="12%">
-                                            <div id="product_sub_category_id_{{$current_row}}">
-                                                <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>
-                                                    <option value="">Select  Sub Category</option>
-                                                    @foreach($productSubCategories as $productSubCategory)
-                                                        <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productPurchaseDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </td>
+{{--                                        <td width="12%">--}}
+{{--                                            <div id="product_sub_category_id_{{$current_row}}">--}}
+{{--                                                <select class="form-control product_sub_category_id" name="product_sub_category_id[]" readonly>--}}
+{{--                                                    <option value="">Select  Sub Category</option>--}}
+{{--                                                    @foreach($productSubCategories as $productSubCategory)--}}
+{{--                                                        <option value="{{$productSubCategory->id}}" {{$productSubCategory->id == $productPurchaseDetail->product_sub_category_id ? 'selected' : ''}}>{{$productSubCategory->name}}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </select>--}}
+{{--                                            </div>--}}
+{{--                                        </td>--}}
                                         <td width="12%">
                                             <div id="product_brand_id_{{$current_row}}">
                                                 <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
@@ -195,7 +195,7 @@
                 var tr = '<tr><td class="no">' + n + '</td>' +
                     '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                     '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
+                    // '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +

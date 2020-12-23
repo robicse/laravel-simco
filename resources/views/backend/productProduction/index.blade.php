@@ -20,7 +20,7 @@
                     <tr>
                         <th width="5%">#Id</th>
                         <th>Production User</th>
-                        <th>Store</th>
+{{--                        <th>Store</th>--}}
                         <th>Total Amount</th>
                         <th>Date</th>
                         <th>Action</th>
@@ -31,9 +31,9 @@
                     <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $productProduction->user->name}}</td>
-                        <td>{{ $productProduction->store->name}}</td>
+{{--                        <td>{{ $productProduction->store->name}}</td>--}}
                         <td>{{ $productProduction->total_amount}}</td>
-                        <td>{{ $productProduction->date}}</td>
+                        <td>{{ $productProduction->created_at}}</td>
                         <td>
                             <a href="{{ route('productProductions.show',$productProduction->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                             <a href="{{ route('productProductions.edit',$productProduction->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>

@@ -52,8 +52,8 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="cash" {{'cash' == $transaction->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="check" {{'check' == $transaction->payment_type ? 'selected' : ''}}>check</option>
+                                    <option value="cash" {{'cash' == $transaction->payment_type ? 'selected' : ''}}>Cash</option>
+                                    <option value="check" {{'check' == $transaction->payment_type ? 'selected' : ''}}>Check</option>
                                 </select>
                                 <span>&nbsp;</span>
                                 <input type="text" name="check_number" id="check_number" class="form-control" value="{{$transaction->check_number}}" placeholder="Check Number">

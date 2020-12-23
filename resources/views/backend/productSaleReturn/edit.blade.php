@@ -51,8 +51,8 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="cash" {{'cash' == $productSale->payment_type ? 'selected' : ''}}>cash</option>
-                                    <option value="online" {{'online' == $productSale->payment_type ? 'selected' : ''}}>online</option>
+                                    <option value="cash" {{'cash' == $productSale->payment_type ? 'selected' : ''}}>Cash</option>
+                                    <option value="online" {{'online' == $productSale->payment_type ? 'selected' : ''}}>Online</option>
                                 </select>
                             </div>
                         </div>

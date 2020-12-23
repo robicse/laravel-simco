@@ -56,8 +56,8 @@
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
-                                    <option value="cash" selected>cash</option>
-                                    <option value="check">check</option>
+                                    <option value="cash" selected>Cash</option>
+                                    <option value="check">Check</option>
                                 </select>
                                 <span>&nbsp;</span>
                                 <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
@@ -78,7 +78,7 @@
                                     <th >ID</th>
                                     <th>Product <small class="requiredCustom">*</small></th>
                                     <th>Category</th>
-                                    <th>Sub Category</th>
+{{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Qty <small class="requiredCustom">*</small></th>
                                     <th>Price <small class="requiredCustom">*</small></th>
@@ -90,7 +90,7 @@
                                 <tbody class="neworderbody">
                                 <tr>
                                     <td width="5%" class="no">1</td>
-                                    <td width="12%">
+                                    <td width="18%">
                                         <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                             <option value="">Select  Product</option>
                                             @foreach($products as $product)
@@ -98,7 +98,7 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td width="12%">
+                                    <td width="15%">
                                         <div id="product_category_id_1">
                                             <select class="form-control product_category_id select2" name="product_category_id[]"  required>
                                                 <option value="">Select  Category</option>
@@ -108,17 +108,17 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="12%">
-                                        <div id="product_sub_category_id_1">
-                                            <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">
-                                                <option value="">Select  Sub Category</option>
-                                                @foreach($productSubCategories as $productSubCategory)
-                                                    <option value="{{$productSubCategory->id}}">{{$productSubCategory->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td width="12%">
+{{--                                    <td width="12%">--}}
+{{--                                        <div id="product_sub_category_id_1">--}}
+{{--                                            <select class="form-control product_sub_category_id select2" name="product_sub_category_id[]">--}}
+{{--                                                <option value="">Select  Sub Category</option>--}}
+{{--                                                @foreach($productSubCategories as $productSubCategory)--}}
+{{--                                                    <option value="{{$productSubCategory->id}}">{{$productSubCategory->name}}</option>--}}
+{{--                                                @endforeach--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </td>--}}
+                                    <td width="15%">
                                         <div id="product_brand_id_1">
                                             <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
                                                 <option value="">Select  Brand</option>
@@ -261,7 +261,7 @@
                 var tr = '<tr><td class="no">' + n + '</td>' +
                     '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                     '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
+                    // '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +

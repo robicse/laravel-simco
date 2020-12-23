@@ -21,7 +21,7 @@
                             <th width="5%">#Id</th>
                             <th>Invoice</th>
                             <th>User</th>
-                            <th>Store</th>
+{{--                            <th>Store</th>--}}
                             <th>Customer</th>
                             <th>Action</th>
                         </tr>
@@ -32,7 +32,7 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $productSaleReplacement->sale_invoice_no}}</td>
                             <td>{{ $productSaleReplacement->user->name}}</td>
-                            <td>{{ $productSaleReplacement->store->name}}</td>
+{{--                            <td>{{ $productSaleReplacement->store->name}}</td>--}}
                             <td>{{ $productSaleReplacement->party->name}}</td>
                             <td>
                                 <a href="{{ route('productSaleReplacement.show',$productSaleReplacement->id) }}" class="btn btn-sm btn-info float-left">Show</a>

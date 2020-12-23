@@ -20,7 +20,7 @@
                         <tr>
                             <th width="5%">#Id</th>
                             <th>User</th>
-                            <th>Store</th>
+{{--                            <th>Store</th>--}}
                             <th>Party</th>
                             <th>Payment Type</th>
                             <th>Total Amount</th>
@@ -33,7 +33,7 @@
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $productSaleReturn->user->name}}</td>
-                            <td>{{ $productSaleReturn->store->name}}</td>
+{{--                            <td>{{ $productSaleReturn->store->name}}</td>--}}
                             <td>{{ $productSaleReturn->party->name}}</td>
                             <td>
                                 @php

@@ -22,7 +22,7 @@
                             <th width="10%">Barcode</th>
                             <th width="10%">Product Name</th>
                             <th width="10%">Category Name</th>
-                            <th width="10%">Sub Category Name</th>
+{{--                            <th width="10%">Sub Category Name</th>--}}
                             <th width="10%">Brand Name</th>
                             <th width="10%">Unit Name</th>
                             <th width="10%">Image</th>
@@ -37,7 +37,7 @@
                                 <td>{{ $product->barcode}}</td>
                                 <td>{{ $product->name}}</td>
                                 <td>{{ $product->product_category ? $product->product_category->name : ''}}</td>
-                                <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>
+{{--                                <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>--}}
                                 <td>{{ $product->product_brand ? $product->product_brand->name : ''}}</td>
                                 <td>{{ $product->product_unit ? $product->product_unit->name : ''}}</td>
                                 <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="100px;"></td>

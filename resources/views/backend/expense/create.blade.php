@@ -57,9 +57,8 @@
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" required>
-                                    <option value="">Select One</option>
-                                    <option value="cash">cash</option>
-                                    <option value="check">check</option>
+                                    <option value="cash" selected>Cash</option>
+                                    <option value="check">Check</option>
                                 </select>
                                 <span>&nbsp;</span>
                                 <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">

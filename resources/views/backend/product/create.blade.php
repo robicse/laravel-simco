@@ -60,22 +60,22 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Product Sub Category <span style="color: red">*</span></label>
-                            <div class="col-md-8">
-                                <select name="product_sub_category_id" id="product_sub_category_id" class="form-control">
-                                    <option value="">Select One</option>
-                                    @foreach($productSubCategories as $productSubCategory)
-                                        <option value="{{$productSubCategory->id}}">{{$productSubCategory->name}}</option>
-                                    @endforeach()
-                                </select>
-                                @if ($errors->has('product_sub_category_id'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('product_sub_category_id') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label class="control-label col-md-3 text-right">Product Sub Category <span style="color: red">*</span></label>--}}
+{{--                            <div class="col-md-8">--}}
+{{--                                <select name="product_sub_category_id" id="product_sub_category_id" class="form-control">--}}
+{{--                                    <option value="">Select One</option>--}}
+{{--                                    @foreach($productSubCategories as $productSubCategory)--}}
+{{--                                        <option value="{{$productSubCategory->id}}">{{$productSubCategory->name}}</option>--}}
+{{--                                    @endforeach()--}}
+{{--                                </select>--}}
+{{--                                @if ($errors->has('product_sub_category_id'))--}}
+{{--                                    <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $errors->first('product_sub_category_id') }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Product Brand <span style="color: red">*</span></label>
                             <div class="col-md-8">

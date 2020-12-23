@@ -26,7 +26,7 @@
                                 <tr>
                                     <th width="5%">#Id</th>
                                     <th width="10%">User</th>
-                                    <th width="10%">Store</th>
+{{--                                    <th width="10%">Store</th>--}}
                                     <th width="15%">Party</th>
                                     <th width="15%">Product Type</th>
                                     <th width="15%">Transaction Type</th>
@@ -44,7 +44,7 @@
                                         <tr>
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $transaction->user->name}}</td>
-                                            <td>{{ $transaction->store->name}}</td>
+{{--                                            <td>{{ $transaction->store->name}}</td>--}}
                                             <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
                                             <td>{{ $transaction->transaction_product_type}}</td>
                                             <td>{{ $transaction->transaction_type}}</td>
@@ -55,7 +55,7 @@
                                                 @endif
                                             </td>
                                             <td>{{ $transaction->amount}}</td>
-                                            <td>{{ $transaction->date}}</td>
+                                            <td>{{ $transaction->created_at}}</td>
                                         </tr>
                                     @endforeach
                                 @endif

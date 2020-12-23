@@ -19,7 +19,7 @@
                         <tr>
                             <th width="5%">#Id</th>
                             <th>Purchase User</th>
-                            <th>Store</th>
+{{--                            <th>Store</th>--}}
                             <th>Supplier</th>
     {{--                        <th>Payment Type</th>--}}
                             <th>Product Type</th>
@@ -33,12 +33,12 @@
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $productPurches->user->name}}</td>
-                            <td>{{ $productPurches->store->name}}</td>
+{{--                            <td>{{ $productPurches->store->name}}</td>--}}
                             <td>{{ $productPurches->party->name}}</td>
     {{--                        <td>{{ $productPurches->payment_type}}</td>--}}
                             <td>{{ $productPurches->purchase_product_type}}</td>
                             <td>{{ $productPurches->total_amount}}</td>
-                            <td>{{ $productPurches->date}}</td>
+                            <td>{{ $productPurches->created_at}}</td>
                             <td>
                                 <a href="{{ route('productPurchaseRawMaterials.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left">Show</a>
                                 <a href="{{ route('productPurchaseRawMaterials.edit',$productPurches->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
