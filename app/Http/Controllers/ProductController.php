@@ -43,6 +43,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'model' => 'required',
             'name' => 'required',
             'barcode' => 'required',
             'product_category_id' => 'required',
@@ -50,11 +51,15 @@ class ProductController extends Controller
             'product_brand_id' => 'required',
         ]);
 
+
+        $product_name = $request->name . '.' . $request->model;
         $product = new Product;
         $product->product_type = $request->product_type;
         $product->barcode = $request->barcode;
-        $product->name = $request->name;
-        $product->slug = Str::slug($request->name);
+        //$product->name = $request->name;
+        $product->name = $product_name;
+        //$product->slug = Str::slug($request->name);
+        $product->slug = Str::slug($product_name);
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;
@@ -108,11 +113,14 @@ class ProductController extends Controller
             'product_brand_id' => 'required',
         ]);
 
+        $product_name = $request->name . '.' . $request->model;
         $product = Product::find($id);
         $product->product_type = $request->product_type;
-        $product->name = $request->name;
+        //$product->name = $request->name;
+        $product->name = $product_name;
+        //$product->slug = Str::slug($request->name);
+        $product->slug = Str::slug($product_name);
         $product->barcode = $request->barcode;
-        $product->slug = Str::slug($request->name);
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
         $product->product_brand_id = $request->product_brand_id;

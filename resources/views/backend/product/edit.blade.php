@@ -34,14 +34,35 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Name <span style="color: red">*</span></label>
+                            <label class="control-label col-md-3 text-right">Product Name <span style="color: red">*</span></label>
                             <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="Name" name="name" value="{{$product->name}}">
+                                @php
+                                    $explode_name = explode(".",$product->name);
+                                @endphp
+                                <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="Name" name="name" id="name" value="{{$explode_name[0]}}">
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Product Model <span style="color: red">*</span></label>
+                            <div class="col-md-8">
+                                <input class="form-control{{ $errors->has('model') ? ' is-invalid' : '' }}" type="text" placeholder="Model" name="model" id="model" value="{{$product->model}}">
+                                @if ($errors->has('model'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('model') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Final Product Name <span style="color: red">*</span></label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="final_name" id="final_name" value="{{$product->name}}" readonly>
+                                <span><strong>ProductName.ProductModel</strong></span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -120,18 +141,6 @@
                                 @endif
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Model</label>
-                            <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('model') ? ' is-invalid' : '' }}" type="text" placeholder="Model" name="model" value="{{$product->model}}">
-                                @if ($errors->has('model'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('model') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Description</label>
                             <div class="col-md-8">
@@ -201,6 +210,51 @@
                 }
             })
         })
+
+        $('#barcode').keyup(function(){
+            var barcode = $(this).val();
+
+            $.ajax({
+                url : "{{URL('check-barcode')}}",
+                method : "get",
+                data : {
+                    barcode : barcode
+                },
+                success : function (res){
+                    console.log(res)
+                    if(res.data == 'Found'){
+                        $('#barcode').val('')
+                        alert('Barcode already exists, please add another!')
+                        return false
+                    }
+                },
+                error : function (err){
+                    console.log(err)
+                }
+            })
+        })
+
+        $('#name').keyup(function(){
+            var name = $('#name').val();
+            var model = $('#model').val();
+
+            var final_name = name + '.' + model
+            $('#final_name').val(final_name);
+        })
+
+        $('#model').keyup(function(){
+            var name = $('#name').val();
+            var model = $('#model').val();
+
+            if(name == ''){
+                alert('Name is empty!');
+                $('#model').val('');
+            }
+
+            var final_name = name + '.' + model
+            $('#final_name').val(final_name);
+        })
+
     </script>
 @endpush
 
