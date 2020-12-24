@@ -66,7 +66,6 @@
         <script>
             $('#sale_invoice_no').change(function(){
                 $('#loadForm').html('');
-
                 var sale_id = $(this).val();
                 console.log(sale_invoice_no);
 

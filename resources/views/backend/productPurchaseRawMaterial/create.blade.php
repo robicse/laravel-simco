@@ -128,13 +128,13 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="8%">
+                                    <td width="15%">
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                     </td>
-                                    <td width="10%">
+                                    <td width="15%">
                                         <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
                                     </td>
-                                    <td width="10%">
+                                    <td width="15%">
                                         <input type="text" class="amount form-control" name="sub_total[]">
                                     </td>
                                 </tr>

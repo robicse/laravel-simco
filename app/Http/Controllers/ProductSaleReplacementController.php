@@ -39,6 +39,7 @@ class ProductSaleReplacementController extends Controller
 
     public function create()
     {
+       // dd('kk');
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
@@ -67,7 +68,7 @@ class ProductSaleReplacementController extends Controller
                             <tr>
                                 <th width=\"30\">No</th>
                                 <th>Product Name</th>
-                                <th align=\"right\">Sale Quantity</th>
+                                <th align=\"right\"> Quantity</th>
                                 <th>Replace Quantity</th>
                             </tr>
                         </thead>
