@@ -462,19 +462,20 @@ class ProductSaleController extends Controller
     public function invoiceEdit($id)
     {
         $productSale = ProductSale::find($id);
-        $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $productSaleDetails = ProductSaleDetail::where('product_sale_id',$productSale->id)->get();
+        $transactions = Transaction::where('ref_id',$id)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
         $party = Party::find($party_id);
+        //dd($productSaleDetails);
 
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $products = Product::where('product_type','Finish Goods')->get();
         $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-        return view('backend.productSale.invoice-edit', compact('productSale','productSaleDetails','transaction','store','party','productCategories','productSubCategories','productBrands','products'));
+        return view('backend.productSale.invoice-edit', compact('productSale','productSaleDetails','transactions','store','party','productCategories','productSubCategories','productBrands','products'));
     }
 
     public function updateInvoice(Request $request, $id){
@@ -528,6 +529,7 @@ class ProductSaleController extends Controller
             $stock->stock_in = 0;
             $stock->stock_out = $request->qty[$i];
             $stock->current_stock = $previous_stock - $request->qty[$i];
+            $stock->date = date('Y-m-d');
             $stock->save();
         }
 
