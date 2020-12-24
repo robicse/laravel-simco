@@ -166,16 +166,16 @@
                                                 <option value="not returnable">not returnable</option>
                                             </select>
                                         </td>
-                                        <td width="8%">
+                                        <td width="13%">
                                             <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
                                         </td>
-                                        <td width="8%">
+                                        <td width="13%">
                                             <input type="text" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                         </td>
-                                        <td width="10%">
+                                        <td width="15%">
                                             <input type="text" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" required >
                                         </td>
-                                        <td width="10%">
+                                        <td width="15%">
                                             <input type="text" class="amount form-control" name="sub_total[]">
                                         </td>
                                     </tr>
