@@ -15242,7 +15242,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .custom_li_bg > a {
-    color: black !important;
+    color: white !important;
 }
 
 .custom_li_a_position {
