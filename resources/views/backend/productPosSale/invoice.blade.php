@@ -53,7 +53,7 @@
                                     <div class="col-12">
                                         <h4 style="float: right">
                                             <img class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="200px"><br><br>
-                                            <small class="float-right"> {{date('d-m-Y')}}</small><br>
+                                            <small class="float-right"> {{$productSale->created_at}}</small><br>
                                             <small class="float-right">Invoice #{{$productSale->invoice_no}}</small><br>
                                         </h4>
                                     </div>
@@ -77,8 +77,8 @@
                                                     <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
-                                                    <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">DateTime:</td>
+                                                    <td style="text-align: left;font-size: 16px;">{{$productSale->created_at}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>

@@ -85,15 +85,16 @@
 {{--                        </div>--}}
                         <div class="table-responsive">
                             {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>Product</th>
                                     <th style="display: none">Category</th>
                                     <th style="display: none">Sub Category</th>
-                                    <th style="display: none">Brand</th>
-                                    <th>Unit</th>
+                                    <th>Brand</th>
+                                    <th style="display: none">Unit</th>
                                     <th>Returnable</th>
+                                    <th>Stock Qty</th>
                                     <th>Qty</th>
                                     <th>Price</th>
                                     <th>Sub Total</th>
@@ -101,11 +102,14 @@
                                 </thead>
                                 <tbody class="neworderbody">
                                 @foreach($productSaleDetails as $key => $productSaleDetail)
+                                    @php
+                                        $current_stock = \App\Stock::where('product_id',$productSaleDetail->product_id)->latest()->pluck('current_stock')->first();
+                                    @endphp
                                     <tr>
                                         @php
                                             $current_row = $key+1;
                                         @endphp
-                                        <td width="12%">
+                                        <td width="20%">
                                             <select class="form-control product_id select2" name="product_id[]" onchange="getval({{$current_row}},this);" required>
                                                 <option value="">Select  Product</option>
                                                 @foreach($products as $product)
@@ -134,7 +138,7 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td width="12%" style="display: none">
+                                        <td width="12%">
                                             <div id="product_brand_id_{{$current_row}}">
                                                 <select class="form-control product_brand_id" name="product_brand_id[]" readonly required>
                                                     <option value="">Select  Brand</option>
@@ -144,7 +148,7 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td width="12%">
+                                        <td style="display: none">
                                             <div id="product_unit_id_{{$current_row}}">
                                                 <select class="form-control product_unit_id" name="product_unit_id[]" readonly required>
                                                     <option value="">Select  Unit</option>
@@ -160,13 +164,16 @@
                                                 <option value="not returnable" {{'not returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>not returnable</option>
                                             </select>
                                         </td>
+                                        <td width="10%">
+                                            <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="{{$current_stock}}" readonly >
+                                        </td>
                                         <td width="8%">
                                             <input type="text" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
                                         </td>
-                                        <td width="10%">
+                                        <td width="12%">
                                             <input type="text" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
                                         </td>
-                                        <td width="10%">
+                                        <td width="12%">
                                             <input type="text" class="amount form-control" name="sub_total[]" value="{{$productSaleDetail->sub_total}}">
                                         </td>
                                     </tr>
@@ -174,7 +181,7 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>
+                                    <th width="10%">
                                         Type:
                                         <select name="discount_type" id="discount_type" class="form-control" >
                                             <option value="flat" {{'flat' == $productSale->return_type ? 'selected' : ''}}>flat</option>
@@ -194,7 +201,7 @@
                                         Paid Amount:
                                         <input type="text" id="paid_amount" class="getmoney form-control" name="paid_amount" onkeyup="paidAmount('')" value="{{$productSale->paid_amount}}">
                                     </th>
-                                    <th colspan="2">
+                                    <th>
                                         Due Amount:
                                         <input type="text" id="due_amount" class="backmoney form-control" name="due_amount" value="{{$productSale->due_amount}}">
                                     </th>
@@ -284,88 +291,85 @@
             $('.backmoney').val(due);
         }
 
-            $('.add').click(function () {
-                var productCategory = $('.product_category_id').html();
-                var productSubCategory = $('.product_sub_category_id').html();
-                var productBrand = $('.product_brand_id').html();
-                var productUnit = $('.product_unit_id').html();
-                var product = $('.product_id').html();
-                var n = ($('.neworderbody tr').length - 0) + 1;
-                var tr = '<tr><td class="no">' + n + '</td>' +
-                    '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
-                    '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
-                    '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
-                    '<td style="display: none"><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
-                    '<td><div id="product_unit_id_'+n+'"><select class="form-control product_unit_id select2" name="product_unit_id[]" id="product_unit_id_'+n+'" required>' + productUnit + '</select></div></td>' +
-                    '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
-                    '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
-                    //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
-                    '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
-                    '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
+        $('.add').click(function () {
+            var productCategory = $('.product_category_id').html();
+            var productSubCategory = $('.product_sub_category_id').html();
+            var productBrand = $('.product_brand_id').html();
+            var productUnit = $('.product_unit_id').html();
+            var product = $('.product_id').html();
+            var n = ($('.neworderbody tr').length - 0) + 1;
+            var tr = '<tr><td class="no">' + n + '</td>' +
+                '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
+                '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
+                '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
+                '<td style="display: none"><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
+                '<td><div id="product_unit_id_'+n+'"><select class="form-control product_unit_id select2" name="product_unit_id[]" id="product_unit_id_'+n+'" required>' + productUnit + '</select></div></td>' +
+                '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
+                '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
+                //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
+                '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
+                '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
 
-                $('.neworderbody').append(tr);
+            $('.neworderbody').append(tr);
 
-                //initSelect2();
+            //initSelect2();
 
-                $('.select2').select2();
+            $('.select2').select2();
 
+        });
+
+        $('.neworderbody').delegate('.delete', 'click', function () {
+            $(this).parent().parent().remove();
+            totalAmount();
+        });
+
+        $('.neworderbody').delegate('.qty, .price', 'keyup', function () {
+            var gr_tot = 0;
+            var tr = $(this).parent().parent();
+            if(tr.find('.qty').val() && isNaN(tr.find('.qty').val())){
+                alert("Must input numbers");
+                tr.find('.qty').val('')
+                return false;
+            }
+            var qty = tr.find('.qty').val() - 0;
+            var stock_qty = tr.find('.stock_qty').val() - 0;
+            if(qty > stock_qty){
+                alert('You have limit cross of stock qty!');
+                tr.find('.qty').val(0)
+            }
+
+            //var dis = tr.find('.dis').val() - 0;
+            var price = tr.find('.price').val() - 0;
+
+            //var total = (qty * price) - ((qty * price)/100);
+            //var total = (qty * price) - ((qty * price * dis)/100);
+            //var total = price - ((price * dis)/100);
+            //var total = price - dis;
+            var total = (qty * price);
+
+            tr.find('.amount').val(total);
+            //Total Price
+            $(".amount").each(function() {
+                isNaN(this.value) || 0 == this.value.length || (gr_tot += parseFloat(this.value))
             });
-            $('.neworderbody').delegate('.delete', 'click', function () {
-                $(this).parent().parent().remove();
-                totalAmount();
-            });
+            var final_total = gr_tot;
+            console.log(final_total);
+            var discount = $("#discount_amount").val();
+            var final_total     = gr_tot - discount;
+            //$("#total_amount").val(final_total.toFixed(2,2));
+            $("#total_amount").val(final_total);
+            var t = $("#total_amount").val(),
+                a = $("#paid_amount").val(),
+                e = t - a;
+            //$("#remaining_amnt").val(e.toFixed(2,2));
+            $("#due_amount").val(e);
+            totalAmount();
+        });
 
-            $('.neworderbody').delegate('.qty, .price', 'keyup', function () {
-                var gr_tot = 0;
-                var tr = $(this).parent().parent();
-                if(tr.find('.qty').val() && isNaN(tr.find('.qty').val())){
-                    alert("Must input numbers");
-                    tr.find('.qty').val('')
-                    return false;
-                }
-                var qty = tr.find('.qty').val() - 0;
-                var stock_qty = tr.find('.stock_qty').val() - 0;
-                if(qty > stock_qty){
-                    alert('You have limit cross of stock qty!');
-                    tr.find('.qty').val(0)
-                }
-
-                //var dis = tr.find('.dis').val() - 0;
-                var price = tr.find('.price').val() - 0;
-
-                //var total = (qty * price) - ((qty * price)/100);
-                //var total = (qty * price) - ((qty * price * dis)/100);
-                //var total = price - ((price * dis)/100);
-                //var total = price - dis;
-                var total = (qty * price);
-
-                tr.find('.amount').val(total);
-                //Total Price
-                $(".amount").each(function() {
-                    isNaN(this.value) || 0 == this.value.length || (gr_tot += parseFloat(this.value))
-                });
-                var final_total = gr_tot;
-                console.log(final_total);
-                var discount = $("#discount_amount").val();
-                var final_total     = gr_tot - discount;
-                //$("#total_amount").val(final_total.toFixed(2,2));
-                $("#total_amount").val(final_total);
-                var t = $("#total_amount").val(),
-                    a = $("#paid_amount").val(),
-                    e = t - a;
-                //$("#remaining_amnt").val(e.toFixed(2,2));
-                $("#due_amount").val(e);
-                totalAmount();
-            });
-
-            $('#hideshow').on('click', function(event) {
-                $('#content').removeClass('hidden');
-                $('#content').addClass('show');
-                $('#content').toggle('show');
-
-            });
-
-
+        $('#hideshow').on('click', function(event) {
+            $('#content').removeClass('hidden');
+            $('#content').addClass('show');
+            $('#content').toggle('show');
 
         });
 

@@ -72,12 +72,12 @@
 
                         <div class="table-responsive">
                             <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th >ID</th>
                                     <th>Product <small class="requiredCustom">*</small></th>
-                                    <th>Category</th>
+                                    <th style="display: none">Category</th>
 {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Qty <small class="requiredCustom">*</small></th>
@@ -90,7 +90,7 @@
                                 <tbody class="neworderbody">
                                 <tr>
                                     <td width="5%" class="no">1</td>
-                                    <td width="18%">
+                                    <td width="30%">
                                         <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                             <option value="">Select  Product</option>
                                             @foreach($products as $product)
@@ -98,7 +98,7 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td width="15%">
+                                    <td style="display: none">
                                         <div id="product_category_id_1">
                                             <select class="form-control product_category_id select2" name="product_category_id[]"  required>
                                                 <option value="">Select  Category</option>

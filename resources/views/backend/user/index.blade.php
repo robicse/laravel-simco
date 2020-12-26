@@ -36,7 +36,7 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th width="10%">SL</th>
+                            <th width="10%">SL NO</th>
                             <th width="10%">Store Name</th>
                             <th width="10%">Name</th>
                             <th width="10%">Email</th>

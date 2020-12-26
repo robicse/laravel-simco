@@ -37,8 +37,17 @@ class ProductSaleController extends Controller
     {
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
+        $productSales = [];
         if($auth_user == "Admin"){
-            $productSales = ProductSale::where('sale_type','whole')->latest()->get();
+            //$productSales = ProductSale::where('sale_type','whole')->latest()->get();
+            $data = ProductSale::where('sale_type','whole')->select('id', 'invoice_no')->get()->toArray();
+            $alldata = array();
+            foreach($data as $single){
+                $alldata[] = array($single['id'], $single['invoice_no']);
+            }
+            $Response = array('data' => $alldata );
+            //return response()->json(['data' => $alldata]);
+            return response()->json($Response);
         }else{
             $productSales = ProductSale::where('sale_type','whole')->where('user_id',$auth_user_id)->latest()->get();
         }

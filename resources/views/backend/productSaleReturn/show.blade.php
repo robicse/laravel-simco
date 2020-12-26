@@ -21,6 +21,10 @@
                         </thead>
                         <tbody>
                         <tr>
+                            <th>Invoice NO</th>
+                            <td>{{$productSaleReturn->invoice_no}}</td>
+                        </tr>
+                        <tr>
                             <th>User</th>
                             <td>{{$productSaleReturn->user->name}}</td>
                         </tr>
@@ -69,7 +73,8 @@
                         <th>Category</th>
 {{--                        <th>Sub Category</th>--}}
                         <th>Brand</th>
-                        <th>Return Condition</th>
+{{--                        <th>Return Condition</th>--}}
+                        <th>Reason</th>
                         <th>Product Image</th>
                         <th>Product</th>
                         <th>Qty</th>
@@ -84,7 +89,8 @@
 {{--                                {{$productSaleReturnDetail->product->product_sub_category ? $productSaleReturnDetail->product->product_sub_category->name : ''}}--}}
 {{--                            </td>--}}
                             <td>{{$productSaleReturnDetail->product->product_brand->name}}</td>
-                            <td>{{$productSaleReturnDetail->return_type}}</td>
+{{--                            <td>{{$productSaleReturnDetail->return_type}}</td>--}}
+                            <td>{{$productSaleReturnDetail->reason}}</td>
                             <td>
                                 <img src="{{asset('uploads/product/'.$productSaleReturnDetail->product->image)}}" width="50" height="50" />
                             </td>

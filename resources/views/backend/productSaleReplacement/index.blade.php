@@ -18,7 +18,7 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th width="5%">#Id</th>
+                            <th width="5%">SL NO</th>
                             <th>Invoice</th>
                             <th>User</th>
 {{--                            <th>Store</th>--}}

@@ -13998,7 +13998,8 @@ be a descendant of the grid when it is being dragged.
     position: absolute;
     top: 0;
     left: 50px;
-    min-width: 180px;
+    /*min-width: 180px;*/
+    min-width: 190px;
     padding: 12px 5px 12px 20px;
     margin-left: -3px;
     line-height: 1;
@@ -14028,7 +14029,8 @@ be a descendant of the grid when it is being dragged.
   .sidebar-mini.sidenav-toggled .treeview-menu {
     position: absolute;
     left: 50px;
-    min-width: 180px;
+    /*min-width: 180px;*/
+    min-width: 190px;
     padding: 12px 0;
     opacity: 0;
     border-bottom-right-radius: 4px;

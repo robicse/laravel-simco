@@ -73,11 +73,11 @@
 
                         {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                         <div class="table-responsive">
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>Product</th>
-                                    <th>Category</th>
+                                    <th style="display: none">Category</th>
 {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Qty</th>
@@ -100,7 +100,7 @@
                                             </select>
                                             <input type="hidden" class="form-control" name="product_purchase_detail_id[]" value="{{$productPurchaseDetail->id}}" >
                                         </td>
-                                        <td width="12%">
+                                        <td style="display: none">
                                             <div id="product_category_id_{{$current_row}}">
                                                 <select class="form-control product_category_id" name="product_category_id[]" readonly required>
                                                     <option value="">Select  Category</option>
@@ -130,13 +130,13 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td width="8%">
+                                        <td width="12%">
                                             <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productPurchaseDetail->qty}}" required >
                                         </td>
-                                        <td width="8%">
+                                        <td width="12%">
                                             <input type="number" min="1" max="" class="price form-control" name="price[]" value="{{$productPurchaseDetail->price}}" required >
                                         </td>
-                                        <td width="8%">
+                                        <td width="12%">
                                             <input type="text" class="amount form-control" name="sub_total[]" value="{{$productPurchaseDetail->sub_total}}">
                                         </td>
                                     </tr>

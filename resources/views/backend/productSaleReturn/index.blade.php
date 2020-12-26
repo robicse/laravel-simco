@@ -18,7 +18,8 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th width="5%">#Id</th>
+                            <th width="5%">SL NO</th>
+                            <th>Invoice NO</th>
                             <th>User</th>
 {{--                            <th>Store</th>--}}
                             <th>Party</th>
@@ -32,6 +33,7 @@
                         @foreach($productSaleReturns as $key => $productSaleReturn)
                         <tr>
                             <td>{{ $key+1 }}</td>
+                            <td>{{ $productSaleReturn->invoice_no}}</td>
                             <td>{{ $productSaleReturn->user->name}}</td>
 {{--                            <td>{{ $productSaleReturn->store->name}}</td>--}}
                             <td>{{ $productSaleReturn->party->name}}</td>

@@ -101,7 +101,7 @@
                         <div class="col-md-6" style="width: 100%; float: left;display: inline-block">&nbsp;</div>
                         <div class="col-md-6" style="text-align: right; width: 100%; display: inline-block">
                             <div class="invoice-logo">
-                                <span style="font-size: 16px;"> {{date('d-m-Y')}}</span><br>
+                                <span style="font-size: 16px;"> {{$productSale->created_at}}</span><br>
                                 <small class="float-right" style="font-size: 16px;">Invoice #{{$productSale->invoice_no}}</small><br>
                             </div>
                         </div>
@@ -121,8 +121,8 @@
                                         <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
-                                        <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">DateTime:</td>
+                                        <td style="text-align: left;font-size: 16px;">{{$productSale->created_at}}</td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>

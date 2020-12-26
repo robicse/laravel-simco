@@ -121,8 +121,8 @@
                                         <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Date:</td>
-                                        <td style="text-align: left;font-size: 16px;">{{date('d-m-Y')}}</td>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">DateTime:</td>
+                                        <td style="text-align: left;font-size: 16px;">{{$productSale->created_at}}</td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>

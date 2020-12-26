@@ -22,7 +22,7 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th width="5%">#Id</th>
+                                    <th width="5%">SL NO</th>
 {{--                                    <th width="10%">Store</th>--}}
                                     <th width="15%">Product Type</th>
                                     <th width="12%">Brand</th>
