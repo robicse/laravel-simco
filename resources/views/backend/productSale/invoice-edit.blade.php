@@ -217,24 +217,24 @@
                                     <th>Category</th>
                                     <th style="display: none">Sub Category</th>
                                     <th>Brand</th>
-                                    <th>Return</th>
+                                    <th style="display: none">Return</th>
                                     <th>Stock Qty</th>
                                     <th>Qty <small class="requiredCustom">*</small></th>
-                                    <th>Price <small class="requiredCustom">*</small></th>
-                                    <th>Sub Total</th>
+                                    <th >Price <small class="requiredCustom">*</small></th>
+                                    <th colspan="2">Sub Total</th>
                                     <th>Action</th>
 
                                 </tr>
                                 </thead>
                                 <tbody class="neworderbody">
                                 @if(!empty($productSaleDetails))
-                                    @foreach($productSaleDetails as $productSaleDetail)
+                                    @foreach($productSaleDetails as $key=>$productSaleDetail)
                                         @php
                                             $current_stock = \App\Stock::where('product_id',$productSaleDetail->product_id)->latest()->pluck('current_stock')->first();
                                         @endphp
                                         <tr>
-                                            <td width="5%" class="no">1</td>
-                                            <td>
+                                            <td width="5%" class="no">{{$key+1}}</td>
+                                            <td width="13%">
                                                 <input type="hidden" name="store_id" id="store_id" value="{{$store->id}}">
                                                 <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                                     <option value="">Select  Product</option>
@@ -243,7 +243,7 @@
                                                     @endforeach
                                                 </select>
                                             </td>
-                                            <td>
+                                            <td width="13%">
                                                 <div id="product_category_id_1">
                                                     <select class="form-control product_category_id select2" name="product_category_id[]"  required>
                                                         <option value="">Select  Category</option>
@@ -263,7 +263,7 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td width="13%">
                                                 <div id="product_brand_id_1">
                                                     <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
                                                         <option value="">Select  Brand</option>
@@ -273,22 +273,22 @@
                                                     </select>
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td style="display: none">
                                                 <select name="return_type[]" id="return_type_id_1" class="form-control" >
                                                     <option value="returnable"  {{$productSaleDetail->return_type == 'returnable' ? 'selected' : ''}}>returnable</option>
                                                     <option value="not returnable" {{$productSaleDetail->return_type == 'not returnable' ? 'selected' : ''}}>not returnable</option>
                                                 </select>
                                             </td>
-                                            <td>
+                                            <td width="10%">
                                                 <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="{{$current_stock}}" readonly >
                                             </td>
-                                            <td>
+                                            <td width="10%">
                                                 <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="{{$productSaleDetail->qty}}" required >
                                             </td>
-                                            <td>
+                                            <td width="10%">
                                                 <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]" value="{{$productSaleDetail->price}}" required >
                                             </td>
-                                            <td>
+                                            <td  width="13%">
                                                 <input type="text" class="amount form-control" name="sub_total[]" value="{{$productSaleDetail->sub_total}}">
                                             </td>
                                         </tr>
@@ -421,12 +421,12 @@
                     '<td><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
                     '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
-                    '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
+                     '<td style="display: none"><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
                     '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
-                    '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
+                    '<td width="13%"><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
 
                 $('.neworderbody').append(tr);
