@@ -29,35 +29,6 @@
                     @endif
                     <form method="post" action="{{ route('productProductions.store') }}">
                         @csrf
-                        <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
-                            <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-8">
-                                <select name="store_id" id="store_id" class="form-control" >
-{{--                                    <option value="">Select One</option>--}}
-                                    @foreach($stores as $store)
-                                        <option value="{{$store->id}}" {{Auth::user()->roles[0]->name == 'User' ? 'selected':''}}>{{$store->name}} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row" style="display: none">
-                            <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-8">
-                                <select name="payment_type" id="payment_type" class="form-control" required>
-                                    <option value="">Select One</option>
-                                    <option value="cash" selected>cash</option>
-                                    <option value="check">check</option>
-                                </select>
-                                <span>&nbsp;</span>
-                                <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Date <small class="requiredCustom">*</small></label>
-                            <div class="col-md-8">
-                                <input type="text" name="date" class="datepicker form-control" value="{{date('Y-m-d')}}">
-                            </div>
-                        </div>
 
                         <div class="table-responsive">
                             <input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">
@@ -66,12 +37,12 @@
                                 <tr>
                                     <th >ID</th>
                                     <th>Product <small class="requiredCustom">*</small></th>
-                                    <th>Category</th>
+                                    <th style="display: none">Category</th>
 {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Stock Qty</th>
-                                    <th>Qty <small class="requiredCustom">*</small></th>
-                                    <th>Production</th>
+                                    <th>Qty (Stock Out) <small class="requiredCustom">*</small></th>
+                                    <th style="display: none">Production</th>
                                     <th>Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
                                     <th>Action</th>
@@ -81,7 +52,7 @@
                                 <tbody class="neworderbody">
                                 <tr>
                                     <td width="5%" class="no">1</td>
-                                    <td width="18%">
+                                    <td width="20%">
                                         <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                             <option value="">Select  Product</option>
                                             @foreach($products as $product)
@@ -119,19 +90,19 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="8%">
+                                    <td width="12%">
                                         <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
                                     </td>
                                     <td width="12%">
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                     </td>
-                                    <td width="12%">
-                                        <input type="text" min="1" max="" class="qty form-control" name="production[]" value="" required >
+                                    <td width="8%" style="display: none">
+                                        <input type="text" min="1" max="" class="qty form-control" name="production[]" value="">
                                     </td>
-                                    <td width="10%">
+                                    <td width="15%">
                                         <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]" value="" required >
                                     </td>
-                                    <td width="10%">
+                                    <td width="15%">
                                         <input type="text" class="amount form-control" name="sub_total[]">
                                     </td>
                                 </tr>
@@ -139,6 +110,263 @@
                                 </tbody>
 
                             </table>
+
+                            <div>&nbsp;</div>
+
+
+
+
+                            <div id="myRadioGroup" style="text-align: center">
+                                <input type="radio" name="products" checked="checked" value="2"  /> Existing Finish Goods Product
+                                <input type="radio" name="products" value="3" /> New Finish Goods Product
+
+                                <div>&nbsp;</div>
+
+
+                                <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
+                                    <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
+                                    <div class="col-md-8">
+                                        <select name="store_id" id="store_id" class="form-control" >
+                                            {{--                                    <option value="">Select One</option>--}}
+                                            @foreach($stores as $store)
+                                                <option value="{{$store->id}}" {{Auth::user()->roles[0]->name == 'User' ? 'selected':''}}>{{$store->name}} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row" style="display: none">
+                                    <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
+                                    <div class="col-md-8">
+                                        <select name="payment_type" id="payment_type" class="form-control">
+                                            <option value="">Select One</option>
+                                            <option value="cash" selected>cash</option>
+                                            <option value="check">check</option>
+                                        </select>
+                                        <span>&nbsp;</span>
+                                        <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 text-right">Date <small class="requiredCustom">*</small></label>
+                                    <div class="col-md-8">
+                                        <input type="text" name="date" class="datepicker form-control" value="{{date('Y-m-d')}}">
+                                    </div>
+                                </div>
+
+                                <div id="Products2" class="desc">
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Existing Product <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <select name="existing_product_id" id="existing_product_id" class="form-control">
+                                                <option value="">Select One</option>
+                                                @foreach($FinishGoodProducts as $FinishGoodProduct)
+                                                    <option value="{{$FinishGoodProduct->id}}">{{$FinishGoodProduct->name}}</option>
+                                                @endforeach()
+                                            </select>
+                                            @if ($errors->has('existing_product_id'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('existing_product_id') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Qty (Stock In) <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('existing_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="existing_qty" id="existing_qty">
+                                            @if ($errors->has('existing_qty'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('existing_qty') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Price <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('existing_price') ? ' is-invalid' : '' }}" type="text" placeholder="Price" name="existing_price" id="existing_price">
+                                            @if ($errors->has('existing_price'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('existing_price') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">M.R.P Price <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('existing_mrp_price') ? ' is-invalid' : '' }}" type="text" placeholder="M.R.P Price" name="existing_mrp_price" id="existing_mrp_price">
+                                            @if ($errors->has('existing_mrp_price'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('existing_mrp_price') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="Products3" class="desc" style="display: none;">
+                                    <div class="form-group row" style="display: none">
+                                        <label class="control-label col-md-3 text-right">Product Type <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <select name="product_type" id="product_type" class="form-control">
+                                                <option value="Finish Goods" selected>Finish Goods</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Product Name <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="Name" name="name" id="name">
+                                            @if ($errors->has('name'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('name') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Product Model <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('model') ? ' is-invalid' : '' }}" type="text" placeholder="Model" name="model" id="model">
+                                            @if ($errors->has('model'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('model') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Final Product Name <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" type="text" name="final_name" id="final_name" readonly>
+                                            <span><strong>ProductName.ProductModel</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Qty (Stock In) <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('new_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="new_qty" id="new_qty">
+                                            @if ($errors->has('new_qty'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('new_qty') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Price <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('new_price') ? ' is-invalid' : '' }}" type="text" placeholder="Price" name="new_price" id="new_price">
+                                            @if ($errors->has('new_price'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('new_price') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">M.R.P Price <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('new_mrp_price') ? ' is-invalid' : '' }}" type="text" placeholder="M.R.P Price" name="new_mrp_price" id="new_mrp_price">
+                                            @if ($errors->has('new_mrp_price'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('new_mrp_price') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Product Category <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <select name="new_product_category_id" id="new_product_category_id" class="form-control">
+                                                <option value="">Select One</option>
+                                                @foreach($productCategories as $productCategory)
+                                                    <option value="{{$productCategory->id}}">{{$productCategory->name}}</option>
+                                                @endforeach()
+                                            </select>
+                                            @if ($errors->has('new_product_category_id'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('new_product_category_id') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Product Brand <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <select name="new_product_brand_id" id="new_product_brand_id" class="form-control">
+                                                <option value="">Select One</option>
+                                                @foreach($productBrands as $productBrand)
+                                                    <option value="{{$productBrand->id}}">{{$productBrand->name}}</option>
+                                                @endforeach()
+                                            </select>
+                                            @if ($errors->has('new_product_brand_id'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('new_product_brand_id') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Product Unit <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <select name="new_product_unit_id" id="new_product_unit_id" class="form-control">
+                                                <option value="">Select One</option>
+                                                @foreach($productUnits as $productUnit)
+                                                    <option value="{{$productUnit->id}}">{{$productUnit->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('new_product_unit_id'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('new_product_unit_id') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Description</label>
+                                        <div class="col-md-8">
+                                            <textarea rows="4" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" type="text" placeholder="description" name="description"> </textarea>
+                                            @if ($errors->has('description'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('description') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Image <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input type="file" id="image" name="image" class="form-control-file">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="Barcode" name="barcode" id="barcode">
+                                            @if ($errors->has('barcode'))
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('barcode') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3 text-right">Status <span style="color: red">*</span></label>
+                                        <div class="col-md-8">
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="1">Stock In</option>
+                                                <option value="0">Stock Out</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             <div class="form-group row">
                                 <label class="control-label col-md-3"></label>
                                 <div class="col-md-8">
@@ -186,7 +414,7 @@
                     // '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
-                    '<td><input type="text" min="1" max="" class="qty form-control" name="production[]" required></td>' +
+                    '<td style="display: none"><input type="text" min="1" max="" class="qty form-control" name="production[]"></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
@@ -281,6 +509,38 @@
                 location.reload();
             }
         }
+
+
+
+        $(document).ready(function() {
+            $("input[name$='products']").click(function() {
+                var test = $(this).val();
+
+                $("div.desc").hide();
+                $("#Products" + test).show();
+            });
+        });
+
+        $('#name').keyup(function(){
+            var name = $('#name').val();
+            var model = $('#model').val();
+
+            var final_name = name + '.' + model
+            $('#final_name').val(final_name);
+        })
+
+        $('#model').keyup(function(){
+            var name = $('#name').val();
+            var model = $('#model').val();
+
+            if(name == ''){
+                alert('Name is empty!');
+                $('#model').val('');
+            }
+
+            var final_name = name + '.' + model
+            $('#final_name').val(final_name);
+        })
     </script>
 @endpush
 

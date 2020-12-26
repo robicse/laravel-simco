@@ -11,14 +11,18 @@ use App\ProductPurchaseDetail;
 use App\ProductProduction;
 use App\ProductProductionDetail;
 use App\ProductSubCategory;
+use App\ProductUnit;
 use App\Stock;
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class ProductProductionController extends Controller
 {
@@ -39,6 +43,7 @@ class ProductProductionController extends Controller
         }else{
             $productProductions = ProductProduction::where('user_id',$auth_user_id)->latest()->get();
         }
+
         return view('backend.productProduction.index',compact('productProductions'));
     }
 
@@ -55,54 +60,104 @@ class ProductProductionController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
+        $productUnits = ProductUnit::all();
         $products = Product::where('product_type','Raw Materials')->get();
-        return view('backend.productProduction.create',compact('stores','products','productCategories','productSubCategories','productBrands'));
+        $FinishGoodProducts = Product::where('product_type','Finish Goods')->get();
+        return view('backend.productProduction.create',compact('stores','products','productCategories','productSubCategories','productBrands','productUnits','FinishGoodProducts'));
     }
 
 
     public function store(Request $request)
     {
         //dd($request->all());
-        $this->validate($request, [
-            'store_id'=> 'required',
-        ]);
 
-        $row_count = count($request->product_id);
-        $total_amount = 0;
-        for($i=0; $i<$row_count;$i++)
-        {
-            $total_amount += $request->sub_total[$i];
-        }
+        if($request->products == 2){
+            $this->validate($request, [
+                'store_id'=> 'required',
+                'product_id'=> 'required',
+                'qty'=> 'required',
+                'existing_product_id'=> 'required',
+                'existing_qty'=> 'required',
+                'existing_price'=> 'required',
+                'existing_mrp_price'=> 'required',
+            ]);
 
-        // product Production
-        $productProduction = new ProductProduction();
-        $productProduction->user_id = Auth::id();
-        $productProduction->store_id = $request->store_id;
-        $productProduction->total_amount = $total_amount;
-        $productProduction->paid_amount = 0;
-        $productProduction->due_amount = $total_amount;
-        $productProduction->date = $request->date;
-        $productProduction->save();
-        $insert_id = $productProduction->id;
-        if($insert_id)
-        {
+            $row_count = count($request->product_id);
+            $total_amount = 0;
             for($i=0; $i<$row_count;$i++)
             {
-                // product production detail
-                $purchase_production_detail = new ProductProductionDetail();
-                $purchase_production_detail->product_production_id = $insert_id;
-                $purchase_production_detail->product_category_id = $request->product_category_id[$i];
-                $purchase_production_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
-                $purchase_production_detail->product_brand_id = $request->product_brand_id[$i];
-                $purchase_production_detail->product_id = $request->product_id[$i];
-                $purchase_production_detail->qty = $request->qty[$i];
-                $purchase_production_detail->production = $request->production[$i];
-                $purchase_production_detail->price = $request->price[$i];
-                $purchase_production_detail->sub_total = $request->qty[$i]*$request->price[$i];
-                $purchase_production_detail->save();
+                $total_amount += $request->sub_total[$i];
+            }
 
-                $product_id = $request->product_id[$i];
-                $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+            // product Production
+            $productProduction = new ProductProduction();
+            $productProduction->user_id = Auth::id();
+            $productProduction->store_id = $request->store_id;
+            $productProduction->total_amount = $total_amount;
+            $productProduction->paid_amount = 0;
+            $productProduction->due_amount = $total_amount;
+            $productProduction->date = $request->date;
+            $productProduction->save();
+            $insert_id = $productProduction->id;
+            if($insert_id)
+            {
+                for($i=0; $i<$row_count;$i++)
+                {
+                    // product production detail
+                    $purchase_production_detail = new ProductProductionDetail();
+                    $purchase_production_detail->product_production_id = $insert_id;
+                    $purchase_production_detail->product_category_id = $request->product_category_id[$i];
+                    $purchase_production_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                    $purchase_production_detail->product_brand_id = $request->product_brand_id[$i];
+                    $purchase_production_detail->product_id = $request->product_id[$i];
+                    $purchase_production_detail->qty = $request->qty[$i];
+                    $purchase_production_detail->production = $request->production[$i];
+                    $purchase_production_detail->price = $request->price[$i];
+                    $purchase_production_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                    $purchase_production_detail->save();
+
+                    $product_id = $request->product_id[$i];
+                    $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+                    if(!empty($check_previous_stock)){
+                        $previous_stock = $check_previous_stock;
+                    }else{
+                        $previous_stock = 0;
+                    }
+                    // product stock
+                    $stock = new Stock();
+                    $stock->user_id = Auth::id();
+                    $stock->ref_id = $insert_id;
+                    $stock->store_id = $request->store_id;
+                    $stock->date = $request->date;
+                    $stock->product_id = $request->product_id[$i];
+                    $stock->stock_product_type = 'Raw Materials';
+                    $stock->stock_type = 'production';
+                    $stock->previous_stock = $previous_stock;
+                    $stock->stock_in = 0;
+                    $stock->stock_out = $request->qty[$i];
+                    $stock->current_stock = $previous_stock - $request->qty[$i];
+                    $stock->save();
+                }
+
+                // transaction
+                $transaction = new Transaction();
+                $transaction->invoice_no = NULL;
+                $transaction->user_id = Auth::id();
+                $transaction->store_id = $request->store_id;
+                $transaction->party_id = NULL;
+                $transaction->date = $request->date;
+                $transaction->ref_id = $insert_id;
+                $transaction->transaction_type = 'production';
+                $transaction->payment_type = $request->payment_type;
+                $transaction->check_number = $request->check_number ? $request->check_number : '';
+                $transaction->amount = $total_amount;
+                $transaction->save();
+
+
+
+                // for stock in
+                $existing_product_id = $request->existing_product_id;
+                $check_previous_stock = Stock::where('product_id',$existing_product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
                 }else{
@@ -114,33 +169,196 @@ class ProductProductionController extends Controller
                 $stock->ref_id = $insert_id;
                 $stock->store_id = $request->store_id;
                 $stock->date = $request->date;
-                $stock->product_id = $request->product_id[$i];
-                $stock->stock_product_type = 'Raw Materials';
+                $stock->product_id = $existing_product_id;
+                $stock->stock_product_type = 'Finish Goods';
                 $stock->stock_type = 'production';
                 $stock->previous_stock = $previous_stock;
-                $stock->stock_in = 0;
-                $stock->stock_out = $request->qty[$i];
-                $stock->current_stock = $previous_stock - $request->qty[$i];
+                $stock->stock_in = $request->existing_qty;
+                $stock->stock_out = 0;
+                $stock->current_stock = $previous_stock - $request->existing_qty;
                 $stock->save();
+
+                // transaction
+                $transaction = new Transaction();
+                $transaction->invoice_no = NULL;
+                $transaction->user_id = Auth::id();
+                $transaction->store_id = $request->store_id;
+                $transaction->party_id = NULL;
+                $transaction->date = $request->date;
+                $transaction->ref_id = $insert_id;
+                $transaction->transaction_type = 'production';
+                $transaction->payment_type = $request->payment_type;
+                $transaction->check_number = $request->check_number ? $request->check_number : '';
+                $transaction->amount = $request->existing_price;
+                $transaction->save();
             }
 
-            // transaction
-            $transaction = new Transaction();
-            $transaction->invoice_no = NULL;
-            $transaction->user_id = Auth::id();
-            $transaction->store_id = $request->store_id;
-            $transaction->party_id = NULL;
-            $transaction->date = $request->date;
-            $transaction->ref_id = $insert_id;
-            $transaction->transaction_type = 'production';
-            $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
-            $transaction->amount = $total_amount;
-            $transaction->save();
-        }
+            Toastr::success('Product Production Created Successfully', 'Success');
+            return redirect()->route('productProductions.index');
+        }elseif($request->products == 3){
+            $this->validate($request, [
+                'store_id'=> 'required',
+                'model' => 'required',
+                'name' => 'required',
+                'barcode' => 'required',
+                'new_qty' => 'required',
+                'new_price' => 'required',
+                'new_mrp_price' => 'required',
+                'new_product_category_id' => 'required',
+                //'product_sub_category_id' => 'required',
+                'new_product_brand_id' => 'required',
+                'new_product_unit_id' => 'required',
+            ]);
 
-        Toastr::success('Product Production Created Successfully', 'Success');
-        return redirect()->route('productProductions.index');
+            $row_count = count($request->product_id);
+            $total_amount = 0;
+            for($i=0; $i<$row_count;$i++)
+            {
+                $total_amount += $request->sub_total[$i];
+            }
+
+            // product Production
+            $productProduction = new ProductProduction();
+            $productProduction->user_id = Auth::id();
+            $productProduction->store_id = $request->store_id;
+            $productProduction->total_amount = $total_amount;
+            $productProduction->paid_amount = 0;
+            $productProduction->due_amount = $total_amount;
+            $productProduction->date = $request->date;
+            $productProduction->save();
+            $insert_id = $productProduction->id;
+            if($insert_id)
+            {
+                for($i=0; $i<$row_count;$i++)
+                {
+                    // product production detail
+                    $purchase_production_detail = new ProductProductionDetail();
+                    $purchase_production_detail->product_production_id = $insert_id;
+                    $purchase_production_detail->product_category_id = $request->product_category_id[$i];
+                    $purchase_production_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                    $purchase_production_detail->product_brand_id = $request->product_brand_id[$i];
+                    $purchase_production_detail->product_id = $request->product_id[$i];
+                    $purchase_production_detail->qty = $request->qty[$i];
+                    $purchase_production_detail->production = $request->production[$i];
+                    $purchase_production_detail->price = $request->price[$i];
+                    $purchase_production_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                    $purchase_production_detail->save();
+
+                    $product_id = $request->product_id[$i];
+                    $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+                    if(!empty($check_previous_stock)){
+                        $previous_stock = $check_previous_stock;
+                    }else{
+                        $previous_stock = 0;
+                    }
+                    // product stock
+                    $stock = new Stock();
+                    $stock->user_id = Auth::id();
+                    $stock->ref_id = $insert_id;
+                    $stock->store_id = $request->store_id;
+                    $stock->date = $request->date;
+                    $stock->product_id = $request->product_id[$i];
+                    $stock->stock_product_type = 'Raw Materials';
+                    $stock->stock_type = 'production';
+                    $stock->previous_stock = $previous_stock;
+                    $stock->stock_in = 0;
+                    $stock->stock_out = $request->qty[$i];
+                    $stock->current_stock = $previous_stock - $request->qty[$i];
+                    $stock->save();
+                }
+
+                // transaction
+                $transaction = new Transaction();
+                $transaction->invoice_no = NULL;
+                $transaction->user_id = Auth::id();
+                $transaction->store_id = $request->store_id;
+                $transaction->party_id = NULL;
+                $transaction->date = $request->date;
+                $transaction->ref_id = $insert_id;
+                $transaction->transaction_type = 'production';
+                $transaction->payment_type = $request->payment_type;
+                $transaction->check_number = $request->check_number ? $request->check_number : '';
+                $transaction->amount = $total_amount;
+                $transaction->save();
+
+
+
+
+
+
+                // new product create
+                $product_name = $request->name . '.' . $request->model;
+                $product = new Product;
+                $product->product_type = $request->product_type;
+                $product->barcode = $request->barcode;
+                //$product->name = $request->name;
+                $product->name = $product_name;
+                //$product->slug = Str::slug($request->name);
+                $product->slug = Str::slug($product_name);
+                $product->product_category_id = $request->new_product_category_id;
+                $product->product_sub_category_id = Null;
+                $product->product_brand_id = $request->new_product_brand_id;
+                $product->product_unit_id = $request->new_product_unit_id;
+                $product->description = $request->description;
+                $product->model = $request->model;
+                $product->status = $request->status;
+                $image = $request->file('image');
+                if (isset($image)) {
+                    //make unique name for image
+                    $currentDate = Carbon::now()->toDateString();
+                    $imagename = $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+//            resize image for hospital and upload
+                    $proImage =Image::make($image)->resize(300, 300)->save($image->getClientOriginalExtension());
+                    Storage::disk('public')->put('uploads/product/'.$imagename, $proImage);
+
+
+                }else {
+                    $imagename = "default.png";
+                }
+
+                $product->image = $imagename;
+                //dd($product);
+                $product->save();
+                $new_product_insert_id = $product->id;
+
+                if($new_product_insert_id){
+                    // for stock in
+                    // product stock
+                    $stock = new Stock();
+                    $stock->user_id = Auth::id();
+                    $stock->ref_id = $insert_id;
+                    $stock->store_id = $request->store_id;
+                    $stock->date = $request->date;
+                    $stock->product_id = $new_product_insert_id;
+                    $stock->stock_product_type = 'Finish Goods';
+                    $stock->stock_type = 'production';
+                    $stock->previous_stock = 0;
+                    $stock->stock_in = $request->new_qty;
+                    $stock->stock_out = 0;
+                    $stock->current_stock = $request->new_qty;
+                    $stock->save();
+
+                    // transaction
+                    $transaction = new Transaction();
+                    $transaction->invoice_no = NULL;
+                    $transaction->user_id = Auth::id();
+                    $transaction->store_id = $request->store_id;
+                    $transaction->party_id = NULL;
+                    $transaction->date = $request->date;
+                    $transaction->ref_id = $insert_id;
+                    $transaction->transaction_type = 'production';
+                    $transaction->payment_type = $request->payment_type;
+                    $transaction->check_number = $request->check_number ? $request->check_number : '';
+                    $transaction->amount = $request->new_price;
+                    $transaction->save();
+                }
+            }
+
+            Toastr::success('Product Production Created Successfully', 'Success');
+            return redirect()->route('productProductions.index');
+        }else{
+            return redirect()->back();
+        }
 
     }
 
