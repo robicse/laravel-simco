@@ -55,12 +55,12 @@
                             <td>{{ $expense->amount}}</td>
                             <td>{{ $expense->date}}</td>
                             <td>
-    {{--                            <a href="{{ route('expenses.show',$expense->id) }}" class="btn btn-sm btn-info float-left">Show</a>--}}
-                                <a href="{{ route('expenses.edit',$expense->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
+    {{--                            <a href="{{ route('expenses.show',$expense->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>--}}
+                                <a href="{{ route('expenses.edit',$expense->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
                                 <form method="post" action="{{ route('expenses.destroy',$expense->id) }}" >
                                    @method('DELETE')
                                     @csrf
-                                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 5px" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

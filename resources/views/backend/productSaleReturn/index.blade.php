@@ -46,7 +46,7 @@
                             <td>{{ $productSaleReturn->total_amount}}</td>
                             <td>{{ $productSaleReturn->created_at}}</td>
                             <td>
-                                <a href="{{ route('productSaleReturns.show',$productSaleReturn->id) }}" class="btn btn-sm btn-info float-left">Show</a>
+                                <a href="{{ route('productSaleReturns.show',$productSaleReturn->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
                             </td>
                         </tr>
                             @endforeach

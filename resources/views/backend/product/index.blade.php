@@ -44,11 +44,11 @@
                                 <td>{{ $product->product_unit ? $product->product_unit->name : ''}}</td>
                                 <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="100px;"></td>
                                 <td class="d-inline-flex">
-                                    <a href="{{ route('products.edit',$product->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
+                                    <a href="{{ route('products.edit',$product->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
                                     <form method="post" action="{{ route('products.destroy',$product->id) }}" >
                                         @method('DELETE')
                                         @csrf
-                                        <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                                        <button class="btn btn-sm btn-danger" style="margin-left: 5px" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
                                     </form>
                                 </td>
                             </tr>

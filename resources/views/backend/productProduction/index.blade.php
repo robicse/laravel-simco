@@ -35,13 +35,13 @@
                         <td>{{ $productProduction->total_amount}}</td>
                         <td>{{ $productProduction->created_at}}</td>
                         <td>
-{{--                            <a href="{{ route('productProductions.show',$productProduction->id) }}" class="btn btn-sm btn-info float-left">Show</a>--}}
-{{--                            <a href="{{ route('productProductions.edit',$productProduction->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>--}}
-{{--                            <form method="post" action="{{ route('productProductions.destroy',$productProduction->id) }}" >--}}
-{{--                               @method('DELETE')--}}
-{{--                                @csrf--}}
-{{--                                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>--}}
-{{--                            </form>--}}
+                            <a href="{{ route('productProductions.show',$productProduction->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
+                            <a href="{{ route('productProductions.edit',$productProduction->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
+                            <form method="post" action="{{ route('productProductions.destroy',$productProduction->id) }}" >
+                               @method('DELETE')
+                                @csrf
+                                <button class="btn btn-sm btn-danger" style="margin-left: 5px" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

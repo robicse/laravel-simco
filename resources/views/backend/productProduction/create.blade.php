@@ -159,8 +159,8 @@
                                         <div class="col-md-8">
                                             <select name="existing_product_id" id="existing_product_id" class="form-control">
                                                 <option value="">Select One</option>
-                                                @foreach($FinishGoodProducts as $FinishGoodProduct)
-                                                    <option value="{{$FinishGoodProduct->id}}">{{$FinishGoodProduct->name}}</option>
+                                                @foreach($finishGoodProducts as $finishGoodProduct)
+                                                    <option value="{{$finishGoodProduct->id}}">{{$finishGoodProduct->name}}</option>
                                                 @endforeach()
                                             </select>
                                             @if ($errors->has('existing_product_id'))

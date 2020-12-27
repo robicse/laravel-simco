@@ -35,12 +35,12 @@
 {{--                            <td>{{ $productSaleReplacement->store->name}}</td>--}}
                             <td>{{ $productSaleReplacement->party->name}}</td>
                             <td>
-                                <a href="{{ route('productSaleReplacement.show',$productSaleReplacement->id) }}" class="btn btn-sm btn-info float-left">Show</a>
-                                <a href="{{ route('productSaleReplacement.edit',$productSaleReplacement->id) }}" class="btn btn-sm btn-primary float-left"><i class="fa fa-edit"></i></a>
+                                <a href="{{ route('productSaleReplacement.show',$productSaleReplacement->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
+                                <a href="{{ route('productSaleReplacement.edit',$productSaleReplacement->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
                                 <form method="post" action="{{ route('productSaleReplacement.destroy',$productSaleReplacement->id) }}" >
                                    @method('DELETE')
                                     @csrf
-                                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 5px" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
                                 </form>
                             </td>
                         </tr>
