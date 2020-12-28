@@ -36,7 +36,7 @@
                             <td>{{$productProduction->date}}</td>
                         </tr>
                         <tr>
-                            <th>Total Amount</th>
+                            <th>Total Costing Amount</th>
                             <td>{{$productProduction->total_amount}}</td>
                         </tr>
     {{--                    <tr>--}}
@@ -66,7 +66,7 @@
                         <th>Product Image</th>
                         <th>Product</th>
                         <th>Qty</th>
-                        <th>Price</th>
+                        <th>Costing Price</th>
                         <th>Sub Total</th>
                     </tr>
                     </thead>

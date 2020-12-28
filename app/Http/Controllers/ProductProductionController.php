@@ -176,6 +176,7 @@ class ProductProductionController extends Controller
                 $productPurchase ->date = $request->date;
                 $productPurchase ->total_amount = $total_amount;
                 $productPurchase ->purchase_product_type = 'Finish Goods';
+                $productPurchase->ref_id = $insert_id;
                 $productPurchase->save();
                 $purchase_insert_id = $productPurchase->id;
                 if($purchase_insert_id)
@@ -483,7 +484,7 @@ class ProductProductionController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        //dd($request->all());
 
 
         $own_party_id = Party::where('type','own')->pluck('id')->first();
@@ -503,7 +504,7 @@ class ProductProductionController extends Controller
                 'existing_mrp_price'=> 'required',
             ]);
 
-            $stock_id = $request->stock_id;
+            $store_id = $request->store_id;
             $row_count = count($request->product_id);
             $total_amount = 0;
             for($i=0; $i<$row_count;$i++)
@@ -514,8 +515,9 @@ class ProductProductionController extends Controller
             // product Production
             $productProduction = ProductProduction::find($id);
             $productProduction->user_id = Auth::id();
-            $productProduction->store_id = $request->store_id;
+            $productProduction->store_id = $store_id;
             $productProduction->total_amount = $total_amount;
+            $productProduction->due_amount = $total_amount;
             $productProduction->date = $request->date;
             $productProduction->update();
 
@@ -560,7 +562,7 @@ class ProductProductionController extends Controller
             // transaction
             $transaction = Transaction::where('ref_id',$id)->where('transaction_type','production')->where('transaction_product_type','Raw Materials')->first();
             $transaction->user_id = Auth::id();
-            $transaction->store_id = $request->store_id;
+            $transaction->store_id = $store_id;
             $transaction->date = $request->date;
             $transaction->transaction_product_type = 'Raw Materials';
             $transaction->transaction_type = 'production';
@@ -576,43 +578,41 @@ class ProductProductionController extends Controller
 
             // product purchase
             $productPurchase = ProductPurchase::where('ref_id',$id)->where('purchase_product_type','Finish Goods')->first();
-            $productPurchase ->party_id = $own_party_id;
-            $productPurchase ->store_id = $request->store_id;
-            $productPurchase ->user_id = Auth::id();
-            $productPurchase ->date = $request->date;
-            $productPurchase ->total_amount = $total_amount;
-            $productPurchase ->purchase_product_type = 'Finish Goods';
+            $productPurchase->store_id = $store_id;
+            $productPurchase->user_id = Auth::id();
+            $productPurchase->date = $request->date;
+            $productPurchase->total_amount = $request->existing_qty*$request->existing_price;
             $productPurchase->update();
 
             $product_info = Product::where('id',$request->existing_product_id)->first();
 
             // product purchase detail
-            $purchase_purchase_detail = new ProductPurchaseDetail();
-            $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
+            $purchase_purchase_detail = ProductPurchaseDetail::where('ref_id',$id)->first();
+            $purchase_purchase_detail->product_purchase_id = $productPurchase->id;
             $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
-            $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
             $purchase_purchase_detail->product_brand_id = $product_info->product_brand_id;
             $purchase_purchase_detail->product_id = $product_info->id;
             $purchase_purchase_detail->qty = $request->existing_qty;
             $purchase_purchase_detail->price = $request->existing_price;
             $purchase_purchase_detail->mrp_price = $request->existing_mrp_price;
             $purchase_purchase_detail->sub_total = $request->existing_qty*$request->existing_price;
-            $purchase_purchase_detail->barcode = $product_info->barcode;
             $purchase_purchase_detail->update();
 
             // product stock in
-            $stock_row = Stock::where('ref_id',$id)->where('stock_type','production')->where('stock_product_type','Finish Goods')->first();
+            $stock_row = Stock::where('ref_id',$id)->where('stock_type','production')->where('stock_product_type','Finish Goods')->latest()->first();
 
             if($stock_row->stock_in != $request->existing_qty){
 
                 if($request->existing_qty > $stock_row->stock_in){
                     $add_or_minus_stock_in = $request->existing_qty - $stock_row->stock_in;
                     $update_stock_in = $stock_row->stock_in + $add_or_minus_stock_in;
-                    $update_current_stock = $stock_row->current_stock + $add_or_minus_stock_in;
+                    //$update_current_stock = $stock_row->current_stock + $add_or_minus_stock_in;
+                    $update_current_stock = $stock_row->current_stock + $update_stock_in;
                 }else{
                     $add_or_minus_stock_in =  $stock_row->stock_in - $request->existing_qty;
                     $update_stock_in = $stock_row->stock_in - $add_or_minus_stock_in;
-                    $update_current_stock = $stock_row->current_stock - $add_or_minus_stock_in;
+                    //$update_current_stock = $stock_row->current_stock - $add_or_minus_stock_in;
+                    $update_current_stock = $stock_row->current_stock - $update_stock_in;
                 }
 
                 $stock_row->user_id = Auth::user()->id;
@@ -625,7 +625,7 @@ class ProductProductionController extends Controller
             // transaction
             $transaction = Transaction::where('ref_id',$id)->where('transaction_type','production')->where('transaction_product_type','Finish Goods')->first();
             $transaction->user_id = Auth::id();
-            $transaction->store_id = $request->store_id;
+            $transaction->store_id = $store_id;
             $transaction->date = $request->date;
             $transaction->amount = $request->existing_price;
             $transaction->update();
@@ -843,6 +843,9 @@ class ProductProductionController extends Controller
         $productProduction->delete();
 
         DB::table('product_production_details')->where('product_production_id',$id)->delete();
+        DB::table('product_purchases')->where('ref',$id)->where('purchase_product_type','Finish Goods')->delete();
+        $product_purchase_id = DB::table('product_purchases')->where('ref',$id)->where('purchase_product_type','Finish Goods')->pluck('id')->first();
+        DB::table('product_purchase_details')->where('ref',$id)->where('product_purchase_id',$product_purchase_id)->delete();
         DB::table('stocks')->where('ref_id',$id)->delete();
         DB::table('transactions')->where('ref_id',$id)->delete();
 

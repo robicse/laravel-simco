@@ -43,7 +43,7 @@
                                     <th>Stock Qty</th>
                                     <th>Qty (Stock Out) <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
-                                    <th>Price <small class="requiredCustom">*</small></th>
+                                    <th>Costing Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
                                     <th>Action</th>
 

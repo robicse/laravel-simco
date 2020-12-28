@@ -44,7 +44,7 @@
                                     <th>Stock Qty</th>
                                     <th>Qty <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
-                                    <th>Price <small class="requiredCustom">*</small></th>
+                                    <th>Costing Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
                                     <th>Action</th>
 
@@ -127,7 +127,7 @@
 
                             <div id="myRadioGroup" style="text-align: center">
                                 <input type="radio" name="products" checked="checked" value="2" /> Existing Finish Goods Product
-                                <input type="radio" name="products" value="3" /> New Finish Goods Product
+{{--                                <input type="radio" name="products" value="3" /> New Finish Goods Product--}}
 
                                 <div>&nbsp;</div>
 
