@@ -283,8 +283,8 @@ class ProductPosSaleController extends Controller
                             <label for=\"due_amount\" class=\"col-md-4 control-label\">Payment Type</label>
                             <div class=\"col-md-8\">
                                 <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\" onchange=\"productType('')\">
-                                    <option value=\"cash\">Cash</option>
-                                    <option value=\"check\">Check</option>
+                                    <option value=\"Cash\">Cash</option>
+                                    <option value=\"Check\">Check</option>
                                 </select>
                                 <span>&nbsp;</span>
                                 <input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\">

@@ -139,8 +139,8 @@
                                     <div class="col-md-8">
                                         <select name="payment_type" id="payment_type" class="form-control">
                                             <option value="">Select One</option>
-                                            <option value="cash" selected>cash</option>
-                                            <option value="check">check</option>
+                                            <option value="Cash" selected>Cash</option>
+                                            <option value="Check">Check</option>
                                         </select>
                                         <span>&nbsp;</span>
                                         <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">

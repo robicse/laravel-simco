@@ -49,7 +49,7 @@
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="text-danger">*</small></label>
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
-                                    <option value="cash" selected>Cash</option>
+                                    <option value="Cash" selected>Cash</option>
                                     <option value="online">Online</option>
                                 </select>
                             </div>

@@ -50,7 +50,7 @@
                                             <td>{{ $transaction->transaction_type}}</td>
                                             <td>
                                                 {{ $transaction->payment_type}}
-                                                @if($transaction->payment_type == 'check')
+                                                @if($transaction->payment_type == 'Check')
                                                     ( {{$transaction->check_number}} )
                                                 @endif
                                             </td>

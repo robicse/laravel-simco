@@ -116,8 +116,8 @@ class ProductSaleReturnController extends Controller
             endforeach;
             $html .= "<tr>";
             $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
-                    <option value=\"cash\" selected>Cash</option>
-                    <option value=\"check\">Check</option>
+                    <option value=\"Cash\" selected>Cash</option>
+                    <option value=\"Check\">Check</option>
             </select> </th>";
             $html .= "<th><input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\"  size=\"28\" ></th>";
             $html .= "</tr>";

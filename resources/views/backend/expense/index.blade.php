@@ -48,7 +48,7 @@
                             <td>{{ $expense->office_costing_category->name}}</td>
                             <td>
                                 {{ $expense->payment_type}}
-                                @if($expense->payment_type == 'check')
+                                @if($expense->payment_type == 'Check')
                                     ({{ $expense->check_number}})
                                 @endif
                             </td>

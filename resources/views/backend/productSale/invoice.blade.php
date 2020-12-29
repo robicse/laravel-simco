@@ -179,7 +179,7 @@
                                                 @foreach($transactions as $transaction)
                                                     <li>
                                                         {{$transaction->payment_type}}
-                                                        @if($transaction->payment_type == 'check')
+                                                        @if($transaction->payment_type == 'Check')
                                                             ( Check Number: {{$transaction->check_number}} )
                                                         @endif
                                                         :

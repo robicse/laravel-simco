@@ -58,8 +58,8 @@
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" required>
-                                    <option value="cash" @if($expense->payment_type == 'cash') selected @endif>Cash</option>
-                                    <option value="check" @if($expense->payment_type == 'check') selected @endif>Check</option>
+                                    <option value="Cash" @if($expense->payment_type == 'Cash') selected @endif>Cash</option>
+                                    <option value="Check" @if($expense->payment_type == 'Check') selected @endif>Check</option>
                                 </select>
                                 <span>&nbsp;</span>
                                 <input type="text" name="check_number" id="check_number" class="form-control" value="{{$expense->check_number}}">
@@ -201,12 +201,12 @@
 
         $(function() {
             <?php
-            if($expense->payment_type == 'cash'){
+            if($expense->payment_type == 'Cash'){
             ?>
             $('#check_number').hide();
             <?php } ?>
             $('#payment_type').change(function(){
-                if($('#payment_type').val() == 'check') {
+                if($('#payment_type').val() == 'Check') {
                     $('#check_number').show();
                 } else {
                     $('#check_number').val('');

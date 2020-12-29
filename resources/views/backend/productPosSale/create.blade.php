@@ -367,7 +367,7 @@
         //     $('#check_number').hide();
         //     $('#payment_type').change(function(){
         //         console.log('okk');
-        //         if($('#payment_type').val() == 'check') {
+        //         if($('#payment_type').val() == 'Check') {
         //             $('#check_number').show();
         //         } else {
         //             $('#check_number').val('');
@@ -378,8 +378,8 @@
 
         function productType(){
             var arr = $('#payment_type').val();
-            if(arr == "check"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "cash"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
+            if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
         }
 
     </script>

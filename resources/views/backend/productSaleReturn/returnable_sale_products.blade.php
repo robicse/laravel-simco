@@ -114,8 +114,8 @@
 {{--                                            <div class="form-group col-md-6">--}}
 {{--                                                <label class="control-label">Payment Type  <small class="text-danger">*</small></label>--}}
 {{--                                                    <select name="payment_type" id="payment_type_{{$key}}" class="form-control" onchange="productType({{$key}},this)">--}}
-{{--                                                        <option value="cash" selected>Cash</option>--}}
-{{--                                                        <option value="check">Check</option>--}}
+{{--                                                        <option value="Cash" selected>Cash</option>--}}
+{{--                                                        <option value="Check">Check</option>--}}
 {{--                                                    </select>--}}
 {{--                                                    <span>&nbsp;</span>--}}
 {{--                                                    <input type="text" name="check_number" id="check_number_{{$key}}" class="form-control" placeholder="Check Number" readonly="readonly">--}}
@@ -172,8 +172,8 @@
         function productType(){
             var arr = $('#payment_type').val();
             console.log(arr);
-            if(arr == "check"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "cash"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
+            if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
         }
         // ajax
         function return_qty(row,sel) {
@@ -219,7 +219,7 @@
 {{--            var current_row = row;--}}
 {{--            var arr = $('#payment_type_'+current_row).val();--}}
 {{--            if(arr == "check"){ $("#check_number_"+current_row).removeAttr("readonly"); }--}}
-{{--            if(arr == "cash"){ $("#check_number_"+current_row).attr("readonly", "readonly"); }--}}
+{{--            if(arr == "Cash"){ $("#check_number_"+current_row).attr("readonly", "readonly"); }--}}
 {{--        }--}}
 
 {{--    </script>--}}
