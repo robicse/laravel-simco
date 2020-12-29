@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('ref_id'); // purchase id or sale id or sale return id
             $table->enum('transaction_product_type',['Finish Goods','Raw Materials'])->nullable();
             $table->enum('transaction_type', ['purchase','sale','delivery charge','sale return','expense','production']);
-            $table->enum('payment_type',['cash','online']);
+            $table->enum('payment_type',['Cash','Check']);
             $table->float('amount', 8,2);
             $table->string('date');
             $table->timestamps();

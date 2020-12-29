@@ -18,7 +18,7 @@ class CreateExpensesTable extends Migration
             $table->integer('user_id');
             $table->bigInteger('store_id')->unsigned();
             $table->bigInteger('office_costing_category_id')->unsigned();
-            $table->enum('payment_type',['cash','check']);
+            $table->enum('payment_type',['Cash','Check']);
             $table->string('check_number')->nullable();
             $table->float('amount', 8,2);
             $table->string('date');
