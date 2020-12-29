@@ -45,8 +45,14 @@
                             </td>
                             <td>{{ $productSaleReturn->total_amount}}</td>
                             <td>{{ $productSaleReturn->created_at}}</td>
-                            <td>
+                            <td class="d-inline-flex">
                                 <a href="{{ route('productSaleReturns.show',$productSaleReturn->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
+                                <a href="{{ route('productSaleReturns.edit',$productSaleReturn->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
+                                <form method="post" action="{{ route('productSaleReturns.destroy',$productSaleReturn->id) }}" >
+                                    @method('DELETE')
+                                    @csrf
+                                    <button class="btn btn-sm btn-danger" style="margin-left: 5px" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>
+                                </form>
                             </td>
                         </tr>
                             @endforeach

@@ -59,6 +59,7 @@
                         <th>Image</th>
                         <th>Product</th>
                         <th>Qty</th>
+                        <th>Reason</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,6 +75,7 @@
                             </td>
                             <td>{{$productSaleReplacementDetail->product->name}}</td>
                             <td>{{$productSaleReplacementDetail->replace_qty}}</td>
+                            <td>{{$productSaleReplacementDetail->reason}}</td>
                         </tr>
                     @endforeach
                     </tbody>

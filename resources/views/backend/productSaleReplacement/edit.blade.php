@@ -55,11 +55,12 @@
 
                         <div class="table-responsive">
                             {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
-                            <table id="example1" class="table table-bordered table-striped">
+                            <table class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th>Product</th>
                                     <th>Replace pQty</th>
+                                    <th>Reason</th>
                                 </tr>
                                 </thead>
                                 <tbody class="neworderbody">
@@ -80,6 +81,9 @@
                                         </td>
                                         <td width="8%">
                                             <input type="text" min="1" max="" class="qty form-control" name="replace_qty[]" value="{{$productSaleReplacementDetail->replace_qty}}" required >
+                                        </td>
+                                        <td width="8%">
+                                            <textarea rows="3" class="form-control" name="reason[]">{{$productSaleReplacementDetail->reason}}</textarea>
                                         </td>
                                     </tr>
                                 @endforeach

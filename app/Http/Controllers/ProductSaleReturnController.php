@@ -52,7 +52,10 @@ class ProductSaleReturnController extends Controller
 
     public function edit($id)
     {
-        //
+        $productSaleReturn = ProductSaleReturn::find($id);
+        $productSaleReturnDetails = ProductSaleReturnDetail::where('product_sale_return_id',$id)->get();
+
+        return view('backend.productSaleReturn.edit_returnable_sale_products', compact('productSaleReturn','productSaleReturnDetails'));
     }
 
     public function update(Request $request, $id)
@@ -62,7 +65,15 @@ class ProductSaleReturnController extends Controller
 
     public function destroy($id)
     {
-        //
+        $productSaleReturn = ProductSaleReturn::find($id);
+        $productSaleReturn->delete();
+
+        DB::table('product_sale_return_details')->where('product_sale_return_id',$id)->delete();
+        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale return')->delete();
+        DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale return')->delete();
+
+        Toastr::success('Product Sale Return Deleted Successfully', 'Success');
+        return redirect()->route('productSaleReturn.index');
     }
 
     public function returnableSaleProduct(){
@@ -111,7 +122,7 @@ class ProductSaleReturnController extends Controller
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  size=\"28\" /></th>";
-                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason $key\"  size=\"28\" ></textarea> </th>";
+                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" ></textarea> </th>";
                 $html .= "</tr>";
             endforeach;
             $html .= "<tr>";

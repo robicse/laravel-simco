@@ -19,6 +19,7 @@ class CreateProductSaleReplacementDetailsTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->string('replace_qty')->nullable();
             $table->float('price',8,2)->nullable();
+            $table->longText('reason')->nullable();
             $table->foreign('p_s_replacement_id')->references('id')->on('product_sale_replacements')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();

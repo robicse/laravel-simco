@@ -70,6 +70,7 @@ class ProductSaleReplacementController extends Controller
                                 <th>Product Name</th>
                                 <th align=\"right\"> Quantity</th>
                                 <th>Replace Quantity</th>
+                                <th>Reason</th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -81,6 +82,7 @@ class ProductSaleReplacementController extends Controller
                                 $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" />$item->name</th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"replace_qty[]\" id=\"replace_qty_$key\" onkeyup=\"replace_qty($key,this);\" size=\"28\" /></th>";
+                                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" ></textarea> </th>";
                                 $html .= "</tr>";
                             endforeach;
                             //$html .= "<tr><th align=\"right\" colspan=\"7\"><input type=\"button\" class=\"btn btn-danger\" name=\"remove\" id=\"remove\" size=\"28\" value=\"Clear Item\" onClick=\"deleteAllCart()\" /></th></tr>";
@@ -119,6 +121,7 @@ class ProductSaleReplacementController extends Controller
                     $purchase_sale_replacement_detail->product_id = $request->product_id[$i];
                     $purchase_sale_replacement_detail->replace_qty = $request->replace_qty[$i];
                     $purchase_sale_replacement_detail->price = $request->price[$i];
+                    $purchase_sale_replacement_detail->reason = $request->reason[$i];
                     $purchase_sale_replacement_detail->save();
 
                     $product_id = $request->product_id[$i];
@@ -188,6 +191,7 @@ class ProductSaleReplacementController extends Controller
                 $product_Sale_replacement_detail_id = $request->product_Sale_replacement_detail_id[$i];
                 $purchase_sale_replacement_detail = ProductSaleReplacementDetail::find($product_Sale_replacement_detail_id);
                 $purchase_sale_replacement_detail->replace_qty = $request->replace_qty[$i];
+                $purchase_sale_replacement_detail->reason = $request->reason[$i];
                 $purchase_sale_replacement_detail->save();
 
 
@@ -230,7 +234,7 @@ class ProductSaleReplacementController extends Controller
         $productSaleReplacement->delete();
 
         DB::table('product_sale_replacement_details')->where('p_s_replacement_id',$id)->delete();
-        //DB::table('stocks')->where('ref_id',$id)->delete();
+        DB::table('stocks')->where('ref_id',$id)->where('stock_type','replace')->delete();
         //DB::table('transactions')->where('ref_id',$id)->delete();
 
         Toastr::success('Product Sale Replacement Deleted Successfully', 'Success');
