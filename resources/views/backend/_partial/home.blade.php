@@ -193,6 +193,52 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-md-3 ">
+                            <a href="{{ route('productCategories.create') }}">
+                                <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                    <div class="info">
+                                        <h4>Product Category</h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('productBrands.create') }}">
+                                <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                    <div class="info">
+                                        <h4>Product Brand</h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('productUnits.create') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                                    <div class="info">
+                                        <h4>Product Unit</h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3 ">
+                            <a href="{{ route('products.create') }}">
+                                <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                    <div class="info">
+                                        <h4>Product </h4>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('party.create') }}">
+                                <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                    <div class="info">
+                                        <h4>Party</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         <div class="col-md-3">
                             <a href="{{ route('productPurchases.create') }}">
                                 <div class="widget-small info coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
@@ -204,7 +250,8 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('productPosSales.create') }}">
-                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i> <div class="info">
+                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>
+                                    <div class="info">
                                         <h4>POS Sale/Stock Out</h4>
                                         <p><b></b></p>
                                     </div>
@@ -230,9 +277,30 @@
                             </a>
                         </div>
                         <div class="col-md-3">
+                            <a href="{{ route('productSaleReplacement.create') }}">
+                                <div class="widget-small info coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i>
+                                    <div class="info">
+                                        <h4>FG Sale Replace</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
                             <a  href="{{ route('productPurchaseRawMaterials.create') }}">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-shopping-basket"></i> <div class="info">
+                                <div class="widget-small info coloured-icon"><i class="icon fa fa-shopping-basket"></i>
+                                    <div class="info">
                                         <h4>Raw Materials Stock In</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a  href="{{ route('productProductions.create') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>
+                                    <div class="info">
+                                        <h4> Production Raw Materials</h4>
                                         <p><b></b></p>
                                     </div>
                                 </div>
