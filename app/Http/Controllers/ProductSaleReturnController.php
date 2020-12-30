@@ -60,7 +60,28 @@ class ProductSaleReturnController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        //dd($request->all());
+
+        $count = count($request->qty);
+        $total_amount = 0;
+
+        for($i=0; $i<$count; $i++){
+            $product_sale_return_detail_id = $request->product_sale_return_detail_id[$i];
+            $productSaleReturnDetail = ProductSaleReturnDetail::find($product_sale_return_detail_id);
+            $productSaleReturnDetail->qty = $request->qty[$i];
+            $productSaleReturnDetail->price = $request->price[$i];
+            $productSaleReturnDetail->reason = $request->reason[$i];
+            $productSaleReturnDetail->update();
+
+            $total_amount += $request->price[$i];
+        }
+
+        $productSaleReturn = ProductSaleReturn::find($request->product_sale_return_id);
+        $productSaleReturn->total_amount = $total_amount;
+        $productSaleReturn->update();
+
+        Toastr::success('Product Sale Return Updated Successfully', 'Success');
+        return redirect()->route('productSaleReturns.index');
     }
 
     public function destroy($id)
@@ -73,7 +94,7 @@ class ProductSaleReturnController extends Controller
         DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale return')->delete();
 
         Toastr::success('Product Sale Return Deleted Successfully', 'Success');
-        return redirect()->route('productSaleReturn.index');
+        return redirect()->route('productSaleReturns.index');
     }
 
     public function returnableSaleProduct(){

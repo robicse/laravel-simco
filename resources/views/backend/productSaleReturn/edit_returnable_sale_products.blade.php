@@ -21,12 +21,13 @@
                             {{ session('response') }}
                         </div>
                     @endif
-                    <form method="post" action="{{route('sale.product.return')}}">
+                    <form method="post" action="{{ route('productSaleReturns.update',$productSaleReturn->id) }}">
+                        @method('PUT')
                         @csrf
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Invoice  <small class="requiredCustom">*</small></label>
                             <div class="col-md-5">
-                                <input class="form-control" type="text" name="product_sale_return_id" value="{{$productSaleReturn->id}}">
+                                <input class="form-control" type="hidden" name="product_sale_return_id" value="{{$productSaleReturn->id}}">
                                 <input class="form-control" type="text" name="sale_invoice_no" value="{{$productSaleReturn->sale_invoice_no}}" readonly>
                             </div>
                         </div>
@@ -48,22 +49,30 @@
                                     @foreach($productSaleReturnDetails as $key => $productSaleReturnDetail)
                                         @php
                                             $key += 1;
+
+                                            $sale_qty = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                            ->where('product_sales.invoice_no',$productSaleReturn->sale_invoice_no)
+                                            ->where('product_sale_details.product_id',$productSaleReturnDetail->product_id)
+                                        ->pluck('product_sale_details.qty')
+                                        ->first();
                                         @endphp
                                         <tr>
                                             <td width="5%" class="no">1</td>
                                             <td>
-                                                <input class="form-control" type="text" name="product_sale_return_detail_id" value="{{$productSaleReturnDetail->id}}">
+                                                <input class="form-control" type="hidden" name="product_sale_return_detail_id[]" value="{{$productSaleReturnDetail->id}}">
+                                                <input class="form-control" type="hidden" name="product_id[]" value="{{$productSaleReturnDetail->product_id}}">
                                                 {{$productSaleReturnDetail->product->name}}
                                             </td>
-                                            <td>{{$productSaleReturnDetail->price}}</td>
+                                            <td>{{$sale_qty}}</td>
                                             <td>
-                                                <input class="form-control" type="text" name="qty" value="{{$productSaleReturnDetail->qty}}">
+                                                <input class="form-control" type="text" name="qty[]" value="{{$productSaleReturnDetail->qty}}">
                                             </td>
                                             <td>
-                                                <input class="form-control" type="text" name="qty" value="{{$productSaleReturnDetail->price}}">
+                                                <input class="form-control" type="text" name="price[]" value="{{$productSaleReturnDetail->price}}">
                                             </td>
                                             <td>
-                                                <textarea class="form-control" rows="3" name="reason">{{$productSaleReturnDetail->reason}}</textarea>
+                                                <textarea class="form-control" rows="3" name="reason[]">{{$productSaleReturnDetail->reason}}</textarea>
                                             </td>
                                         </tr>
                                     @endforeach
