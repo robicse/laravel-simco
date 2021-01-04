@@ -414,7 +414,7 @@ class ProductProductionController extends Controller
                         $stock->previous_stock = $previous_stock;
                         $stock->stock_in = $request->new_qty;
                         $stock->stock_out = 0;
-                        $stock->current_stock = $previous_stock - $request->new_qty;
+                        $stock->current_stock = $previous_stock + $request->new_qty;
                         $stock->save();
 
 

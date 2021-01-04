@@ -36,12 +36,12 @@
                                 <thead>
                                 <tr>
                                     <th >ID</th>
-                                    <th>Product <small class="requiredCustom">*</small></th>
+                                    <th>Raw Product <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Category</th>
 {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Stock Qty</th>
-                                    <th>Qty (Stock Out) <small class="requiredCustom">*</small></th>
+                                    <th>Used Qty (Stock Out) <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
                                     <th>Costing Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
@@ -155,7 +155,7 @@
 
                                 <div id="Products2" class="desc">
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Existing Product <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">Existing FG Product <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <select name="existing_product_id" id="existing_product_id" class="form-control">
                                                 <option value="">Select One</option>
@@ -215,7 +215,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Product Name <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">FG Product Name <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <input class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" type="text" placeholder="Name" name="name" id="name">
                                             @if ($errors->has('name'))
@@ -226,7 +226,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Product Model <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">FG Product Model <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <input class="form-control{{ $errors->has('model') ? ' is-invalid' : '' }}" type="text" placeholder="Model" name="model" id="model">
                                             @if ($errors->has('model'))
@@ -237,14 +237,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Final Product Name <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">Final FG Product Name <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <input class="form-control" type="text" name="final_name" id="final_name" readonly>
                                             <span><strong>ProductName.ProductModel</strong></span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Qty (Stock In) <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">FG Qty (Stock In) <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <input class="form-control{{ $errors->has('new_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="new_qty" id="new_qty">
                                             @if ($errors->has('new_qty'))

@@ -37,12 +37,12 @@
                                 <thead>
                                 <tr>
                                     <th >ID</th>
-                                    <th>Product <small class="requiredCustom">*</small></th>
+                                    <th>Raw Product <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Category</th>
                                     {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
                                     <th>Stock Qty</th>
-                                    <th>Qty <small class="requiredCustom">*</small></th>
+                                    <th>Used Qty <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
                                     <th>Costing Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
@@ -165,7 +165,7 @@
 
                                 <div id="Products2" class="desc">
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Existing Product <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">Existing FG Product <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <select name="existing_product_id" id="existing_product_id" class="form-control">
                                                 <option value="">Select One</option>
@@ -181,7 +181,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="control-label col-md-3 text-right">Qty (Stock In) <span style="color: red">*</span></label>
+                                        <label class="control-label col-md-3 text-right">FG Qty (Stock In) <span style="color: red">*</span></label>
                                         <div class="col-md-8">
                                             <input class="form-control{{ $errors->has('existing_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="existing_qty" id="existing_qty" value="{{$stock_finish_goods->stock_in}}">
                                             @if ($errors->has('existing_qty'))
