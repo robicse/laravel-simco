@@ -96,6 +96,40 @@
 {{--                </div>--}}
             </div>
         </div>
+
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Product Finish Good Details</h3>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Product Image</th>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>M.R.P Price</th>
+                        <th>Sub Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{$productPurchaseDetail->product->product_category->name}}</td>
+                            <td>{{$productPurchaseDetail->product->product_brand->name}}</td>
+                            <td>
+                                <img src="{{asset('uploads/product/'.$productPurchaseDetail->product->image)}}" width="50" height="50" />
+                            </td>
+                            <td>{{$productPurchaseDetail->product->name}}</td>
+                            <td>{{$productPurchaseDetail->qty}}</td>
+                            <td>{{$productPurchaseDetail->price}}</td>
+                            <td>{{$productPurchaseDetail->mrp_price}}</td>
+                            <td>{{$productPurchaseDetail->sub_total}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
 @endsection
 

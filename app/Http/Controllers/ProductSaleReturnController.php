@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Party;
+use App\ProductPurchase;
+use App\ProductPurchaseDetail;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;

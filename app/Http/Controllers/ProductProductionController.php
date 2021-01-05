@@ -216,7 +216,7 @@ class ProductProductionController extends Controller
                     $stock->previous_stock = $previous_stock;
                     $stock->stock_in = $request->existing_qty;
                     $stock->stock_out = 0;
-                    $stock->current_stock = $previous_stock - $request->existing_qty;
+                    $stock->current_stock = $previous_stock + $request->existing_qty;
                     $stock->save();
 
 
@@ -451,7 +451,10 @@ class ProductProductionController extends Controller
         $productProductionDetails = ProductProductionDetail::where('product_production_id',$id)->get();
         $transactions = Transaction::where('ref_id',$id)->get();
 
-        return view('backend.productProduction.show', compact('productProduction','productProductionDetails','transactions'));
+        $productPurchase = ProductPurchase::where('ref_id',$id)->first();
+        $productPurchaseDetail = ProductPurchaseDetail::where('ref_id',$id)->first();
+
+        return view('backend.productProduction.show', compact('productProduction','productProductionDetails','transactions','productPurchase','productPurchaseDetail'));
     }
 
 
