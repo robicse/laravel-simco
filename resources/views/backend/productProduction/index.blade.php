@@ -21,6 +21,7 @@
                         <th width="5%">SL NO</th>
                         <th>Production User</th>
 {{--                        <th>Store</th>--}}
+                        <th>Finish Good</th>
                         <th>Total Amount</th>
                         <th>Date</th>
                         <th>Action</th>
@@ -32,6 +33,15 @@
                         <td>{{ $key+1 }}</td>
                         <td>{{ $productProduction->user->name}}</td>
 {{--                        <td>{{ $productProduction->store->name}}</td>--}}
+                        <td>
+                            @php
+                                echo $product_name = \Illuminate\Support\Facades\DB::table('products')
+                                                    ->join('product_purchase_details','product_purchase_details.product_id','products.id')
+                                                    ->where('product_purchase_details.ref_id',$productProduction->id)
+                                                    ->pluck('products.name')
+                                                    ->first();
+                            @endphp
+                        </td>
                         <td>{{ $productProduction->total_amount}}</td>
                         <td>{{ $productProduction->created_at}}</td>
                         <td>
