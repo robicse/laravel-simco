@@ -120,7 +120,7 @@ class ProductSaleReturnController extends Controller
         $products = DB::table('product_sale_details')
             ->join('products','product_sale_details.product_id','=','products.id')
             ->where('product_sale_details.product_sale_id',$sale_id)
-            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','products.name')
+            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','products.name')
             ->get();
 
         $html = "<table class=\"table table-striped tabel-penjualan\">
@@ -144,7 +144,7 @@ class ProductSaleReturnController extends Controller
 //                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_sale_id[]\" id=\"product_sale_id_$key\" value=\"$item->product_sale_id\" size=\"28\" /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
-                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
                 $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" ></textarea> </th>";
                 $html .= "</tr>";
             endforeach;

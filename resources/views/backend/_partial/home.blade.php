@@ -32,6 +32,8 @@
                                 ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
                                 ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
                                 ->where('product_purchases.store_id',$store->id)
+                                //->where('product_purchases.ref_id',NULL)
+                                //->where('product_purchases.purchase_product_type','Finish Goods')
                                 ->groupBy('product_id')
                                 ->groupBy('product_category_id')
                                 ->groupBy('product_sub_category_id')
@@ -96,9 +98,9 @@
                                         if($sale_return_total_qty > 0){
                                             $amount = $sale_return_average_price - ($purchase_average_price*$sale_return_total_qty);
                                             if($amount > 0){
-                                                $sum_profit_amount += $amount;
+                                                $sum_profit_amount -= $amount;
                                             }else{
-                                                $sum_loss_amount -= $amount;
+                                                $sum_loss_amount += $amount;
                                             }
                                         }
                                     }
@@ -137,9 +139,9 @@
                         $total_expense = \App\Transaction::where('store_id',$store->id)->where('transaction_type','expense')->sum('amount');
                         //$final_loss_or_profit = $sum_loss_or_profit - $total_expense;
                         if($total_expense > 0){
-                            $sum_profit_amount += $total_expense;
+                            $sum_profit_amount -= $total_expense;
                         }else{
-                            $sum_loss_amount -= $total_expense;
+                            $sum_loss_amount += $total_expense;
                         }
                         @endphp
 
@@ -188,7 +190,7 @@
                                 <div class="info">
                                     <h4>Final Loss/Profit</h4>
                                     <p><b>Profit:{{number_format($sum_profit_amount, 2, '.', '')}}</b></p>
-                                    <p><b>Loss:{{number_format($sum_loss_amount, 2, '.', '')}}</b></p>
+{{--                                    <p><b>Loss:{{number_format($sum_loss_amount, 2, '.', '')}}</b></p>--}}
                                 </div>
                             </div>
                         </div>

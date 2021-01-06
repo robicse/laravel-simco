@@ -269,8 +269,16 @@
             console.log('final_amount= ' + final_amount);
             console.log('final_amount= ' + typeof final_amount);
 
+            var paid_amount = $('#paid_amount').val();
+            console.log('paid_amount= ' + paid_amount);
+            console.log('paid_amount= ' + typeof paid_amount);
+            paid_amount = parseInt(paid_amount);
+            console.log('paid_amount= ' + typeof paid_amount);
+
+            var due_amount = final_amount - paid_amount;
+
             $('#total_amount').val(final_amount);
-            $('#due_amount').val(final_amount);
+            $('#due_amount').val(due_amount);
         }
 
         // onkeyup
