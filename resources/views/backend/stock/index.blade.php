@@ -46,7 +46,21 @@
                                         <td>{{ $stock->product->product_type}}</td>
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>
-                                        <td>{{ $stock->stock_type}}</td>
+                                        <td>
+{{--                                            {{ $stock->stock_type}}--}}
+                                            @if($stock->product->product_type == 'Raw Materials' && $stock->stock_type == 'production')
+                                                {{ $stock->stock_type}} =>
+                                                <?php
+                                                echo $finish_good_product = \Illuminate\Support\Facades\DB::table('products')
+                                                    ->join('product_purchase_details','product_purchase_details.product_id','products.id')
+                                                    ->where('product_purchase_details.ref_id',$stock->ref_id)
+                                                    ->pluck('products.name')
+                                                    ->first();
+                                                ?>
+                                            @else
+                                                {{ $stock->stock_type}}
+                                            @endif
+                                        </td>
                                         <td>{{ $stock->previous_stock}}</td>
                                         <td>{{ $stock->stock_in}}</td>
                                         <td>{{ $stock->stock_out}}</td>
