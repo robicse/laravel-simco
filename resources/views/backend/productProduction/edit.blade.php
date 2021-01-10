@@ -60,8 +60,8 @@
                                         @endphp
                                         <td width="5%" class="no">{{$current_row}}</td>
                                         <td width="20%">
-                                            <input type="hidden" class="form-control" name="product_production_detail_id[]" value="{{$productProductionDetail->id}}" >
-                                            <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
+                                            <input type="hidden" class="form-control" name="product_production_detail_id[]" id="product_production_detail_id_{{$key}}" value="{{$productProductionDetail->id}}" >
+                                            <select class="form-control product_id select2" name="product_id[]" id="product_id_{{$key}}" onchange="getval(1,this);" required>
                                                 <option value="">Select  Product</option>
                                                 @foreach($products as $product)
                                                     <option value="{{$product->id}}" {{$product->id == $productProductionDetail->product_id ? 'selected' : ''}}>{{$product->name}}</option>
@@ -99,20 +99,22 @@
                                             </div>
                                         </td>
                                         <td width="12%">
-                                            <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="{{$current_stock}}" readonly >
+                                            <input type="number" id="stock_qty_{{$key}}" class="stock_qty form-control" name="stock_qty[]" value="{{$current_stock}}" readonly >
                                         </td>
                                         <td width="12%">
-                                            <input type="number" min="1" max="" class="qty form-control" name="qty[]"  value="{{$productProductionDetail->qty}}" required >
+                                            <input type="number" id="qty_{{$key}}" min="1" max="" class="qty form-control" name="qty[]"  value="{{$productProductionDetail->qty}}" required >
                                         </td>
 {{--                                        <td width="12%" style="display: none">--}}
 {{--                                            <input type="text" min="1" max="" class="production form-control" name="production[]" value="{{$productProductionDetail->production}}" required >--}}
 {{--                                        </td>--}}
                                         <td width="15%">
-                                            <input type="number" id="price_1" min="1" max="" class="price form-control" name="price[]"  value="{{$productProductionDetail->price}}" required >
+                                            <input type="number" id="price_{{$key}}" min="1" max="" class="price form-control" name="price[]"  value="{{$productProductionDetail->price}}" required >
                                         </td>
                                         <td width="15%">
-                                            <input type="text" class="amount form-control" name="sub_total[]" value="{{$productProductionDetail->sub_total}}">
+                                            <input type="text" id="sub_total_{{$key}}" class="amount form-control" name="sub_total[]" value="{{$productProductionDetail->sub_total}}">
                                         </td>
+{{--                                        <td><input type="button"  class="btn btn-danger" onclick="ConfirmDelete({{$key}})" value="Delete"></td>--}}
+                                        <td><input type="button" class="btn btn-danger delete" value="x"></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -519,6 +521,16 @@
                         location.reload();
                     }
                 }
+
+                // function ConfirmDelete(row)
+                // {
+                //     if (confirm("Delete Account?")){
+                //         // console.log(row)
+                //         var price = $('#price_'+row).val();
+                //         var price = $('#price_'+row).val();
+                //         console.log(price)
+                //     }
+                // }
             </script>
     @endpush
 
