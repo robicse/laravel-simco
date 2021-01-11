@@ -679,7 +679,7 @@ class ProductProductionController extends Controller
                     $purchase_production_detail->product_brand_id = $request->product_brand_id[$i];
                     $purchase_production_detail->product_id = $request->product_id[$i];
                     $purchase_production_detail->qty = $request->qty[$i];
-                    $purchase_production_detail->production = $request->production[$i];
+                    //$purchase_production_detail->production = $request->production[$i];
                     $purchase_production_detail->price = $request->price[$i];
                     $purchase_production_detail->sub_total = $request->qty[$i]*$request->price[$i];
                     $purchase_production_detail->save();

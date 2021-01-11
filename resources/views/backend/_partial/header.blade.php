@@ -48,7 +48,7 @@
     <!-- Navbar Right Menu-->
     <ul class="app-nav">
         <!-- User Menu-->
-        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">{{ Auth::user()->name }}<i class="fa fa-user fa-lg"></i></a>
+        <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
             <ul class="dropdown-menu settings-menu dropdown-menu-right">
                 {{--<li><a class="dropdown-item" href="{{route('password.Change')}}" ><i class="fa fa-user fa-lg"></i> Change Password</a></li>--}}
                  <li> <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
