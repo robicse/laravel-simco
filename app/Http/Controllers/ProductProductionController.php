@@ -44,6 +44,7 @@ class ProductProductionController extends Controller
         }else{
             $productProductions = ProductProduction::where('user_id',$auth_user_id)->latest()->get();
         }
+        //dd($productProductions);
 
         return view('backend.productProduction.index',compact('productProductions'));
     }

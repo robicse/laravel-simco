@@ -249,7 +249,7 @@ class ProductPurchaseController extends Controller
 
             // product stock
             $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->first();
-
+//dd($stock_row);
             if($stock_row->stock_in != $request->qty[$i]){
                 if($request->qty[$i] > $stock_row->stock_in){
                     $add_or_minus_stock_in = $request->qty[$i] - $stock_row->stock_in;
