@@ -39,9 +39,21 @@
                             <td>{{ $productSaleReturn->party->name}}</td>
                             <td>
                                 @php
-                                  echo $payment_type = \Illuminate\Support\Facades\DB::table('transactions')
-                                ->where('ref_id',$productSaleReturn->id)->pluck('payment_type')->first();
+                                    $transaction = \Illuminate\Support\Facades\DB::table('transactions')
+                                    ->where('invoice_no',$productSaleReturn->invoice_no)
+                                    ->where('ref_id',$productSaleReturn->id)
+                                    ->first();
                                 @endphp
+                                @php
+                                    $transaction = \Illuminate\Support\Facades\DB::table('transactions')
+                                  ->where('invoice_no',$productSaleReturn->invoice_no)
+                                  ->where('ref_id',$productSaleReturn->id)
+                                  ->first();
+                                @endphp
+                                {{$transaction->payment_type}}
+                                @if($transaction->payment_type == 'Check')
+                                    ( Check Number: {{$transaction->check_number}} )
+                                @endif
                             </td>
                             <td>{{ $productSaleReturn->total_amount}}</td>
                             <td>{{ $productSaleReturn->created_at}}</td>

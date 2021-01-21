@@ -27,6 +27,7 @@
                             $sum_production_price = 0;
                             $sum_profit_amount = 0;
                             $sum_loss_amount = 0;
+                            $sum_discount_amount = 0;
 
                             $productPurchaseDetails = DB::table('product_purchase_details')
                                 ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
@@ -143,6 +144,11 @@
                         }else{
                             $sum_loss_amount += $total_expense;
                         }
+
+                        // discount
+                        $productSaleDiscount = DB::table('product_sales')
+                            ->select( DB::raw('SUM(discount_amount) as total_discount'))
+                            ->first();
                         @endphp
 
                         <div class="col-md-3 ">
@@ -182,6 +188,14 @@
                                 <div class="info">
                                     <h4>Total Expense</h4>
                                     <p><b>{{number_format($total_expense, 2, '.', '')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                <div class="info">
+                                    <h4>Total Discount</h4>
+                                    <p><b>{{number_format($productSaleDiscount->total_discount, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>

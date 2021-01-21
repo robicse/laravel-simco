@@ -241,6 +241,7 @@ class ProductSaleReturnController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale return';
             $transaction->payment_type = $request->payment_type;
+            $transaction->check_number = $request->check_number;
             $transaction->date = date('Y-m-d');
             $transaction->amount = $total_amount;
             $transaction->save();

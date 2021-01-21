@@ -328,7 +328,7 @@ class ProductSaleController extends Controller
         $transaction->date = $request->date;
         $transaction->payment_type = $request->payment_type;
         $transaction->check_number = $request->check_number ? $request->check_number : '';
-        $transaction->amount = $total_amount;
+        $transaction->amount = $request->paid_amount;
         $transaction->update();
 
         Toastr::success('Product Sale Updated Successfully', 'Success');
