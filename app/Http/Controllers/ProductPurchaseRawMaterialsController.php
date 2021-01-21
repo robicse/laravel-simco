@@ -99,7 +99,7 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $purchase_purchase_detail->save();
 
                 $product_id = $request->product_id[$i];
-                $check_previous_stock = Stock::where('product_id',$product_id)->pluck('current_stock')->first();
+                $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
                 }else{
@@ -129,7 +129,7 @@ class ProductPurchaseRawMaterialsController extends Controller
             $transaction->party_id = $request->party_id;
             $transaction->date = $request->date;
             $transaction->ref_id = $insert_id;
-            $transaction->transaction_product_type = 'Finish Goods';
+            $transaction->transaction_product_type = 'Raw Materials';
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
             $transaction->check_number = $request->check_number ? $request->check_number : '';
@@ -241,7 +241,7 @@ class ProductPurchaseRawMaterialsController extends Controller
 //            $stock->update();
 
             // product stock
-            $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->first();
+            $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->latest()->first();
 
             if($stock_row->stock_in != $request->qty[$i]){
                 if($request->qty[$i] > $stock_row->stock_in){
