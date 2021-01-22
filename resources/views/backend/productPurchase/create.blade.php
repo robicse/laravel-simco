@@ -320,6 +320,15 @@
             //alert(sel.value);
             var current_row = row;
             var current_product_id = sel.value;
+            if(current_row > 1){
+                var previous_row = current_row - 1;
+                var previous_product_id = $('#product_id_'+previous_row).val();
+                if(previous_product_id === current_product_id){
+                    $('#product_id_'+current_row).val('');
+                    alert('You selected same product, Please selected another product!');
+                    return false
+                }
+            }
 
             $.ajax({
                 url : "{{URL('product-relation-data')}}",

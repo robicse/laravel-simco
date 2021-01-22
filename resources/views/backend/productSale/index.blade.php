@@ -14,6 +14,21 @@
             <div class="tile">
 
                 <h3 class="tile-title">Product Sales Table</h3>
+                <form class="form-inline" action="{{ route('productSales.index') }}">
+                    <div class="form-group col-md-4">
+                        <label for="start_date">Start Date:</label>
+                        <input type="text" name="start_date" class="datepicker form-control" value="{{$start_date}}">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="end_date">End Date:</label>
+                        <input type="text" name="end_date" class="datepicker form-control" value="{{$end_date}}">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <a href="{!! route('productSales.index') !!}" class="btn btn-primary" type="button">Reset</a>
+                    </div>
+                </form>
+                <div>&nbsp;</div>
                 <table id="example1" class="table table-bordered table-striped">
 
                     <thead>
@@ -35,7 +50,7 @@
                     <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $productSale->user->name}}</td>
-                        <td>{{ $productSale->invoice_no}}</td>
+                        <td @if($productSale->discount_amount > 0) style="color: red;" @endif>{{ $productSale->invoice_no}}</td>
                         <td>{{ $productSale->party->name}}</td>
 {{--                        <td>{{ $productSale->payment_type}}</td>--}}
                         <td>{{ $productSale->total_amount}}</td>

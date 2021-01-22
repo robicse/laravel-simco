@@ -33,16 +33,26 @@ class ProductSaleController extends Controller
         $this->middleware('permission:product-sale-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
-        if($auth_user == "Admin"){
-            $productSales = ProductSale::where('sale_type','whole')->latest()->get();
+        $start_date = $request->start_date ? $request->start_date : '';
+        $end_date = $request->end_date ? $request->end_date : '';
+        if($start_date && $end_date) {
+            if ($auth_user == "Admin") {
+                $productSales = ProductSale::where('date', '>=', $start_date)->where('date', '<=', $end_date)->where('sale_type', 'whole')->latest()->get();
+            } else {
+                $productSales = ProductSale::where('date', '>=', $start_date)->where('date', '<=', $end_date)->where('sale_type', 'whole')->where('user_id', $auth_user_id)->latest()->get();
+            }
         }else{
-            $productSales = ProductSale::where('sale_type','whole')->where('user_id',$auth_user_id)->latest()->get();
+            if ($auth_user == "Admin") {
+                $productSales = ProductSale::where('sale_type', 'whole')->latest()->get();
+            } else {
+                $productSales = ProductSale::where('sale_type', 'whole')->where('user_id', $auth_user_id)->latest()->get();
+            }
         }
-        return view('backend.productSale.index',compact('productSales'));
+        return view('backend.productSale.index',compact('productSales','start_date','end_date'));
     }
 
 
@@ -343,7 +353,7 @@ class ProductSaleController extends Controller
 
         DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
         DB::table('stocks')->where('ref_id',$id)->delete();
-        DB::table('transactions')->where('ref_id',$id)->delete();
+        DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
 
         Toastr::success('Product Sale Deleted Successfully', 'Success');
         return redirect()->route('productSales.index');
@@ -437,7 +447,7 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transactions = Transaction::where('ref_id',$id)->get();
+        $transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
@@ -449,7 +459,7 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transactions = Transaction::where('ref_id',$id)->get();
+        $transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
@@ -463,7 +473,7 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$productSale->id)->get();
-        $transactions = Transaction::where('ref_id',$id)->get();
+        $transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);

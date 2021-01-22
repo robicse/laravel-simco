@@ -17,9 +17,16 @@ class ExpenseController extends Controller
     {
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-        if($start_date && $end_date){
+        $start_date = $request->start_date ? $request->start_date : '';
+        $end_date = $request->end_date ? $request->end_date : '';
+        $office_costing_category_id = $request->office_costing_category_id ? $request->office_costing_category_id : '';
+        if($start_date && $end_date && $office_costing_category_id){
+            if($auth_user == "Admin"){
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('office_costing_category_id',$office_costing_category_id)->latest()->get();
+            }else{
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('office_costing_category_id',$office_costing_category_id)->where('user_id',$auth_user_id)->get();
+            }
+        }elseif($start_date && $end_date){
             if($auth_user == "Admin"){
                 $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->latest()->get();
             }else{
@@ -32,7 +39,8 @@ class ExpenseController extends Controller
                 $expenses = Expense::where('user_id',$auth_user_id)->get();
             }
         }
-        return view('backend.expense.index',compact('expenses'));
+        $officeCostingCategories = OfficeCostingCategory::all();
+        return view('backend.expense.index',compact('expenses','officeCostingCategories','start_date','end_date','office_costing_category_id'));
     }
 
     public function create()

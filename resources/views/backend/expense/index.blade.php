@@ -15,15 +15,26 @@
 
                 <h3 class="tile-title">Expenses Table</h3>
                 <form class="form-inline" action="{{ route('expenses.index') }}">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="start_date">Start Date:</label>
-                        <input type="text" name="start_date" class="datepicker form-control" value="">
+                        <input type="text" name="start_date" class="datepicker form-control" value="{{$start_date}}" required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="end_date">End Date:</label>
-                        <input type="text" name="end_date" class="datepicker form-control" value="">
+                        <input type="text" name="end_date" class="datepicker form-control" value="{{$end_date}}" required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
+                        <label for="end_date">Category:</label>
+                        <select class="form-control" name="office_costing_category_id">
+                            @if($officeCostingCategories)
+                                <option value="">select one</option>
+                                @foreach($officeCostingCategories as $officeCostingCategory)
+                                    <option value="{{$officeCostingCategory->id}}" {{$officeCostingCategory->id == $office_costing_category_id ? 'selected' : ''}}>{{$officeCostingCategory->name}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
                         <button type="submit" class="btn btn-success">Submit</button>
                         <a href="{!! route('expenses.index') !!}" class="btn btn-primary" type="button">Reset</a>
                     </div>
@@ -42,7 +53,13 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @php
+                            $sum = 0;
+                        @endphp
                         @foreach($expenses as $key => $expense)
+                            @php
+                                $sum += $expense->amount;
+                            @endphp
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $expense->office_costing_category->name}}</td>
@@ -67,7 +84,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="tile-footer">
+                    <div class="tile-footer text-right">
+                        <strong><span style="margin-right: 50px;">Total: {{$sum}}</span></strong>
                     </div>
                 </div>
             </div>

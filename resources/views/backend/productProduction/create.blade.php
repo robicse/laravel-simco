@@ -173,7 +173,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-3 text-right">Qty (Stock In) <span style="color: red">*</span></label>
                                         <div class="col-md-8">
-                                            <input class="form-control{{ $errors->has('existing_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="existing_qty" id="existing_qty">
+                                            <input class="form-control{{ $errors->has('existing_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="existing_qty" id="existing_qty" min="1">
                                             @if ($errors->has('existing_qty'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('existing_qty') }}</strong>
@@ -246,7 +246,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-3 text-right">FG Qty (Stock In) <span style="color: red">*</span></label>
                                         <div class="col-md-8">
-                                            <input class="form-control{{ $errors->has('new_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="new_qty" id="new_qty">
+                                            <input class="form-control{{ $errors->has('new_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="new_qty" id="new_qty" min="1">
                                             @if ($errors->has('new_qty'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('new_qty') }}</strong>
@@ -482,6 +482,15 @@
                 //alert(sel.value);
                 var current_row = row;
                 var current_product_id = sel.value;
+                if(current_row > 1){
+                    var previous_row = current_row - 1;
+                    var previous_product_id = $('#product_id_'+previous_row).val();
+                    if(previous_product_id === current_product_id){
+                        $('#product_id_'+current_row).val('');
+                        alert('You selected same product, Please selected another product!');
+                        return false
+                    }
+                }
 
                 $.ajax({
                     url : "{{URL('product-production-relation-data')}}",
