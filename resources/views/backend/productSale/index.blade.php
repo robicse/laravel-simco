@@ -46,7 +46,17 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @php
+                        $sum_total_amount = 0;
+                        $sum_paid_amount = 0;
+                        $sum_due_amount = 0;
+                    @endphp
                     @foreach($productSales as $key => $productSale)
+                        @php
+                            $sum_total_amount += $productSale->total_amount;
+                            $sum_paid_amount += $productSale->paid_amount;
+                            $sum_due_amount += $productSale->due_amount;
+                        @endphp
                     <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $productSale->user->name}}</td>
@@ -127,9 +137,11 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="tile-footer">
+                <div class="tile-footer text-right">
+                    <h3><strong><span style="margin-right: 50px;">Total Amount: {{$sum_total_amount}}</span></strong></h3>
+                    <h3><strong><span style="margin-right: 50px;">Paid Amount: {{$sum_paid_amount}}</span></strong></h3>
+                    <h3><strong><span style="margin-right: 50px;">Due Amount: {{$sum_due_amount}}</span></strong></h3>
                 </div>
-{{--                {{ $parties->links() }}--}}
             </div>
 
         </div>
