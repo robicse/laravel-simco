@@ -85,7 +85,7 @@
                         </tbody>
                     </table>
                     <div class="tile-footer text-right">
-                        <strong><span style="margin-right: 50px;">Total: {{$sum}}</span></strong>
+                        <h3><strong><span style="margin-right: 50px;">Total: {{$sum}}</span></strong></h3>
                     </div>
                 </div>
             </div>

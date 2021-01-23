@@ -41,15 +41,15 @@ class ProductSaleController extends Controller
         $end_date = $request->end_date ? $request->end_date : '';
         if($start_date && $end_date) {
             if ($auth_user == "Admin") {
-                $productSales = ProductSale::where('date', '>=', $start_date)->where('date', '<=', $end_date)->where('sale_type', 'whole')->latest()->get();
+                $productSales = ProductSale::where('date', '>=', $start_date)->where('date', '<=', $end_date)->where('sale_type', 'whole')->latest('id','desc')->get();
             } else {
-                $productSales = ProductSale::where('date', '>=', $start_date)->where('date', '<=', $end_date)->where('sale_type', 'whole')->where('user_id', $auth_user_id)->latest()->get();
+                $productSales = ProductSale::where('date', '>=', $start_date)->where('date', '<=', $end_date)->where('sale_type', 'whole')->where('user_id', $auth_user_id)->latest('id','desc')->get();
             }
         }else{
             if ($auth_user == "Admin") {
-                $productSales = ProductSale::where('sale_type', 'whole')->latest()->get();
+                $productSales = ProductSale::where('sale_type', 'whole')->latest('id','desc')->get();
             } else {
-                $productSales = ProductSale::where('sale_type', 'whole')->where('user_id', $auth_user_id)->latest()->get();
+                $productSales = ProductSale::where('sale_type', 'whole')->where('user_id', $auth_user_id)->latest('id','desc')->get();
             }
         }
         return view('backend.productSale.index',compact('productSales','start_date','end_date'));
@@ -268,9 +268,6 @@ class ProductSaleController extends Controller
         $productSale->user_id = Auth::id();
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
-        $productSale->date = $request->date;
-        //$productSale->payment_type = $request->payment_type;
-        //$productSale->check_number = $request->check_number ? $request->check_number : '';
         $productSale->delivery_service = $request->delivery_service;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
@@ -309,7 +306,6 @@ class ProductSaleController extends Controller
             $stock = Stock::where('ref_id',$id)->where('stock_type','sale')->first();
             $stock->user_id = Auth::id();
             $stock->store_id = $request->store_id;
-            $stock->date = $request->date;
             $stock->product_id = $request->product_id[$i];
             $stock->previous_stock = $previous_stock;
             $stock->stock_in = 0;
@@ -323,8 +319,6 @@ class ProductSaleController extends Controller
         $due->user_id = Auth::id();
         $due->store_id = $request->store_id;
         $due->party_id = $request->party_id;
-        //$due->payment_type = $request->payment_type;
-        //$due->check_number = $request->check_number ? $request->check_number : '';
         $due->total_amount = $total_amount;
         $due->paid_amount = $request->paid_amount;
         $due->due_amount = $request->due_amount;
@@ -335,7 +329,6 @@ class ProductSaleController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->store_id = $request->store_id;
         $transaction->party_id = $request->party_id;
-        $transaction->date = $request->date;
         $transaction->payment_type = $request->payment_type;
         $transaction->check_number = $request->check_number ? $request->check_number : '';
         $transaction->amount = $request->paid_amount;
@@ -447,7 +440,8 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
+        //$transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
+        $transactions = Transaction::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
@@ -459,7 +453,8 @@ class ProductSaleController extends Controller
     {
         $productSale = ProductSale::find($id);
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
-        $transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
+        //$transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
+        $transactions = Transaction::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->get();
         $store_id = $productSale->store_id;
         $party_id = $productSale->party_id;
         $store = Store::find($store_id);
