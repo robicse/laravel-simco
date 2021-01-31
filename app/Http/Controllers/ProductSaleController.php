@@ -253,7 +253,7 @@ class ProductSaleController extends Controller
             $total_amount = ($total_amount*$request->discount_amount)/100;
         }
 
-        // product purchase
+        // product sale
         $productSale = ProductSale::find($id);
         $productSale->user_id = Auth::id();
         $productSale->party_id = $request->party_id;
