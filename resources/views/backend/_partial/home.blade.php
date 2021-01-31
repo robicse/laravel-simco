@@ -25,9 +25,8 @@
                             $sum_sale_price = 0;
                             $sum_sale_return_price = 0;
                             $sum_production_price = 0;
-                            $sum_profit_amount = 0;
-                            $sum_loss_amount = 0;
                             $sum_discount_amount = 0;
+                            $sum_profit_amount = 0;
 
                             $productPurchaseDetails = DB::table('product_purchase_details')
                                 ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
@@ -70,7 +69,7 @@
                                             if($amount > 0){
                                                 $sum_profit_amount += $amount;
                                             }else{
-                                                $sum_loss_amount -= $amount;
+                                                $sum_profit_amount -= $amount;
                                             }
 
                                         }
@@ -101,7 +100,7 @@
                                             if($amount > 0){
                                                 $sum_profit_amount -= $amount;
                                             }else{
-                                                $sum_loss_amount += $amount;
+                                                $sum_profit_amount += $amount;
                                             }
                                         }
                                     }
@@ -130,7 +129,7 @@
                                             if($amount > 0){
                                                 $sum_profit_amount += $amount;
                                             }else{
-                                                $sum_loss_amount -= $amount;
+                                                $sum_profit_amount -= $amount;
                                             }
                                         }
                                     }
@@ -138,11 +137,11 @@
                             }
 
                         $total_expense = \App\Transaction::where('store_id',$store->id)->where('transaction_type','expense')->sum('amount');
-                        //$final_loss_or_profit = $sum_loss_or_profit - $total_expense;
+
                         if($total_expense > 0){
                             $sum_profit_amount -= $total_expense;
                         }else{
-                            $sum_loss_amount += $total_expense;
+                            $sum_profit_amount += $total_expense;
                         }
 
                         // discount
@@ -204,7 +203,6 @@
                                 <div class="info">
                                     <h4>Final Loss/Profit</h4>
                                     <p><b>Profit:{{number_format($sum_profit_amount, 2, '.', '')}}</b></p>
-{{--                                    <p><b>Loss:{{number_format($sum_loss_amount, 2, '.', '')}}</b></p>--}}
                                 </div>
                             </div>
                         </div>

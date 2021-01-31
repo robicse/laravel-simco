@@ -23,6 +23,7 @@
                             <th>User</th>
 {{--                            <th>Store</th>--}}
                             <th>Customer</th>
+                            <th>date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -34,6 +35,7 @@
                             <td>{{ $productSaleReplacement->user->name}}</td>
 {{--                            <td>{{ $productSaleReplacement->store->name}}</td>--}}
                             <td>{{ $productSaleReplacement->party->name}}</td>
+                            <td>{{ $productSaleReplacement->created_at}}</td>
                             <td>
                                 <a href="{{ route('productSaleReplacement.show',$productSaleReplacement->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
                                 <a href="{{ route('productSaleReplacement.edit',$productSaleReplacement->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>

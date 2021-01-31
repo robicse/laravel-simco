@@ -258,7 +258,7 @@
                                     <div class="form-group row">
                                         <label class="control-label col-md-3 text-right">Qty (Stock In) <span style="color: red">*</span></label>
                                         <div class="col-md-8">
-                                            <input class="form-control{{ $errors->has('new_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="new_qty" id="new_qty">
+                                            <input class="form-control{{ $errors->has('new_qty') ? ' is-invalid' : '' }}" type="text" placeholder="Stock IN Qty" name="new_qty" id="new_qty" min="1">
                                             @if ($errors->has('new_qty'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('new_qty') }}</strong>

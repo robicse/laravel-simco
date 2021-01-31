@@ -119,6 +119,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('get-returnable-product/{sale_id}','ProductSaleReturnController@getReturnableProduct');
 
 
+    // stock sync
+    Route::get('stock_sync','StockController@stock_sync')->name('stock_sync');
+
+
 
 
     //excel

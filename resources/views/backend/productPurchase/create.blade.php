@@ -31,7 +31,7 @@
                         @csrf
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <select name="party_id" id="supplier" class="form-control select2">
                                     <option value="">Select One</option>
                                     @foreach($parties as $party)
@@ -39,7 +39,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3"><a type="button" class="test btn btn-primary btn-sm" onclick="modal_supplier()" data-toggle="modal"><i class="fa fa-plus"></i></a></div>
+                            <div class="col-md-1"><a type="button" class="test btn btn-primary btn-sm" onclick="modal_supplier()" data-toggle="modal"><i class="fa fa-plus"></i></a></div>
                         </div>
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
@@ -320,6 +320,15 @@
             //alert(sel.value);
             var current_row = row;
             var current_product_id = sel.value;
+            if(current_row > 1){
+                var previous_row = current_row - 1;
+                var previous_product_id = $('#product_id_'+previous_row).val();
+                if(previous_product_id === current_product_id){
+                    $('#product_id_'+current_row).val('');
+                    alert('You selected same product, Please selected another product!');
+                    return false
+                }
+            }
 
             $.ajax({
                 url : "{{URL('product-relation-data')}}",
