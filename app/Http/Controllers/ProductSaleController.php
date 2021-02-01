@@ -345,7 +345,7 @@ class ProductSaleController extends Controller
         $productSale->delete();
 
         DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->delete();
+        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale')->delete();
         DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
 
         Toastr::success('Product Sale Deleted Successfully', 'Success');
@@ -621,9 +621,10 @@ class ProductSaleController extends Controller
         $total_amount=$product_sale->total_amount;
         $paid_amount=$product_sale->paid_amount;
 
-        $product_sale->paid_amount=$paid_amount+$request->new_paid;
-        $product_sale->due_amount=$total_amount-($paid_amount+$request->new_paid);
-        $product_sale->update();
+        $update_product_sale = ProductSale::find($product_sale_id);
+        $update_product_sale->paid_amount=$paid_amount+$request->new_paid;
+        $update_product_sale->due_amount=$total_amount-($paid_amount+$request->new_paid);
+        $affectedRow = $update_product_sale->update();
 
         $due = new Due();
         $due->invoice_no=$product_sale->invoice_no;
@@ -651,7 +652,9 @@ class ProductSaleController extends Controller
         $transaction->date = date('Y-m-d');
         $transaction->save();
 
-        Toastr::success('Due Pay Successfully', 'Success');
+        if($affectedRow){
+            Toastr::success('Due Pay Successfully', 'Success');
+        }
         return redirect()->back();
 
     }

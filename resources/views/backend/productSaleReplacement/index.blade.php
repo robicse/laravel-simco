@@ -23,7 +23,7 @@
                             <th>User</th>
 {{--                            <th>Store</th>--}}
                             <th>Customer</th>
-                            <th>date</th>
+                            <th>Date</th>
                             <th>Action</th>
                         </tr>
                         </thead>

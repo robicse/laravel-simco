@@ -27,29 +27,72 @@
                                     <th width="15%">Product Type</th>
                                     <th width="12%">Brand</th>
                                     <th width="12%">Product</th>
+                                    <th width="12%">Average Purchase Price</th>
+                                    <th width="12%">Average Sale Price</th>
                                     <th width="12%">Current Stock</th>
-{{--                                    <th width="12%">Date</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @php
-                                    //$stocks = \App\Stock::where('store_id',$store->id)->latest()->groupBy('product_id')->get();
-
                                     $stocks = \App\Stock::where('store_id',$store->id)
                                     ->whereIn('id', function($query) {
                                            $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
                                         })->latest('id')->get();
-
                                 @endphp
                                 @foreach($stocks as $key => $stock)
                                     <tr>
                                         <td>{{ $key+1 }}</td>
-{{--                                        <td>{{ $stock->store->name}}</td>--}}
                                         <td>{{ $stock->product->product_type}}</td>
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>
+                                        <td>
+{{--                                            {{ $stock->product->id}}--}}
+                                            @php
+                                                $purchase_average_price = 0;
+                                                $sale_average_price = 0;
+
+                                                $productPurchaseDetails = DB::table('product_purchase_details')
+                                                ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+                                                ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+                                                ->where('product_purchases.store_id',$store->id)
+                                                ->where('product_purchase_details.product_id',$stock->product->id)
+                                                ->groupBy('product_id')
+                                                ->groupBy('product_category_id')
+                                                ->groupBy('product_sub_category_id')
+                                                ->groupBy('product_brand_id')
+                                                ->get();
+
+                                                if(!empty($productPurchaseDetails)){
+                                                    foreach($productPurchaseDetails as $key => $productPurchaseDetail){
+                                                        $purchase_average_price = $productPurchaseDetail->sub_total/$productPurchaseDetail->qty;
+
+
+                                                        // sale
+                                                        $productSaleDetails = DB::table('product_sale_details')
+                                                            ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+                                                            ->where('product_id',$productPurchaseDetail->product_id)
+                                                            ->where('product_category_id',$productPurchaseDetail->product_category_id)
+                                                            ->where('product_sub_category_id',$productPurchaseDetail->product_sub_category_id)
+                                                            ->where('product_brand_id',$productPurchaseDetail->product_brand_id)
+                                                            ->groupBy('product_id')
+                                                            ->groupBy('product_category_id')
+                                                            ->groupBy('product_sub_category_id')
+                                                            ->groupBy('product_brand_id')
+                                                            ->first();
+
+                                                        if(!empty($productSaleDetails))
+                                                        {
+                                                            $sale_total_qty = $productSaleDetails->qty;
+                                                            //$sum_sale_price += $productSaleDetails->sub_total;
+                                                            $sale_average_price = $productSaleDetails->sub_total/ (int) $productSaleDetails->qty;
+                                                        }
+                                                    }
+                                                }
+                                            @endphp
+                                            {{number_format($purchase_average_price, 2, '.', '')}}
+                                        </td>
+                                        <td>{{number_format($sale_average_price, 2, '.', '')}}</td>
                                         <td>{{ $stock->current_stock}}</td>
-{{--                                        <td>{{ $stock->date}}</td>--}}
                                     </tr>
                                 @endforeach
                                 </tbody>

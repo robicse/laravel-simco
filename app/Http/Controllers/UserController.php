@@ -182,6 +182,7 @@ class UserController extends Controller
         ]);
         //$hashedPassword = Auth::user()->password;
         $hashedPassword = User::where('id',$request->user_id)->pluck('password')->first();
+        //dd($request->user_id);
 
         if (\Illuminate\Support\Facades\Hash::check($request->old_password, $hashedPassword)) {
             if (!Hash::check($request->password, $hashedPassword)) {
