@@ -22,11 +22,11 @@
                 <form class="form-inline" action="{{ route('transaction.lossProfit') }}">
                     <div class="form-group col-md-4">
                         <label for="start_date">Start Date:</label>
-                        <input type="text" name="start_date" class="datepicker form-control" value="">
+                        <input type="text" name="start_date" class="datepicker form-control" value="{{$start_date}}">
                     </div>
                     <div class="form-group col-md-4">
                         <label for="end_date">End Date:</label>
-                        <input type="text" name="end_date" class="datepicker form-control" value="">
+                        <input type="text" name="end_date" class="datepicker form-control" value="{{$end_date}}">
                     </div>
                     <div class="form-group col-md-4">
                         <button type="submit" class="btn btn-success">Submit</button>

@@ -146,14 +146,14 @@
                         }
 
                         // discount
-                        /*
+
                         $productSaleDiscount = DB::table('product_sales')
                             ->select( DB::raw('SUM(discount_amount) as total_discount'))
                             ->first();
 
                         if($productSaleDiscount){
                             $sum_total_discount = $productSaleDiscount->total_discount;
-                        }*/
+                        }
                         @endphp
 
 {{--                        <div class="col-md-12">--}}
@@ -204,14 +204,6 @@
                                 </div>
                             </div>
                         </div>
-{{--                        <div class="col-md-3">--}}
-{{--                            <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>--}}
-{{--                                <div class="info">--}}
-{{--                                    <h4>Total Discount</h4>--}}
-{{--                                    <p><b>{{number_format($productSaleDiscount->total_discount, 2, '.', '')}}</b></p>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                         <div class="col-md-3">
                             <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
                                 <div class="info">
@@ -231,7 +223,14 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-md-3">
+                            <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                <div class="info">
+                                    <h4>Total Discount</h4>
+                                    <p><b>{{number_format($productSaleDiscount->total_discount, 2, '.', '')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <a href="{{ route('stock.summary.list') }}">
                                 <div class="widget-small primary coloured-icon"><i class="icon fas fa-money-check-alt "></i>
