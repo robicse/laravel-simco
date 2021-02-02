@@ -64,6 +64,7 @@
                                     <th>Product Type</th>
                                     <th>Brand</th>
                                     <th>Product</th>
+                                    <th>Party</th>
                                     <th>Stock Type</th>
                                     <th>Previous Stock</th>
                                     <th>Stock In</th>
@@ -143,10 +144,43 @@
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>
                                         <td>
+                                            @php
+                                                if($stock->stock_type == 'purchase'){
+                                                    echo $party_name = DB::table('stocks')
+                                                    ->join('product_purchases','stocks.ref_id','product_purchases.id')
+                                                    ->join('parties','product_purchases.party_id','parties.id')
+                                                    ->where('stocks.id',$stock->id)
+                                                    ->pluck('parties.name')
+                                                    ->first();
+                                                }elseif($stock->stock_type == 'sale'){
+                                                    echo $party_name = DB::table('stocks')
+                                                    ->join('product_sales','stocks.ref_id','product_sales.id')
+                                                    ->join('parties','product_sales.party_id','parties.id')
+                                                    ->where('stocks.id',$stock->id)
+                                                    ->pluck('parties.name')
+                                                    ->first();
+                                                }elseif($stock->stock_type == 'sale return'){
+                                                    echo $party_name = DB::table('stocks')
+                                                    ->join('product_sale_returns','stocks.ref_id','product_sale_returns.id')
+                                                    ->join('parties','product_sale_returns.party_id','parties.id')
+                                                    ->where('stocks.id',$stock->id)
+                                                    ->pluck('parties.name')
+                                                    ->first();
+                                                }elseif($stock->stock_type == 'replace'){
+                                                    echo $party_name = DB::table('stocks')
+                                                    ->join('product_sale_replacements','stocks.ref_id','product_sale_replacements.id')
+                                                    ->join('parties','product_sale_replacements.party_id','parties.id')
+                                                    ->where('stocks.id',$stock->id)
+                                                    ->pluck('parties.name')
+                                                    ->first();
+                                                }else{}
+                                            @endphp
+                                        </td>
+                                        <td>
                                             @if($stock->product->product_type == 'Raw Materials' && $stock->stock_type == 'production')
                                                 {{ $stock->stock_type}} =>
                                                 <?php
-                                                echo $finish_good_product = \Illuminate\Support\Facades\DB::table('products')
+                                                echo $finish_good_product = DB::table('products')
                                                     ->join('product_purchase_details','product_purchase_details.product_id','products.id')
                                                     ->where('product_purchase_details.ref_id',$stock->ref_id)
                                                     ->pluck('products.name')

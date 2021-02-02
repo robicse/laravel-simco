@@ -44,7 +44,7 @@
                         </td>
                         <td>{{ $productProduction->total_amount}}</td>
                         <td>{{ $productProduction->created_at}}</td>
-                        <td>
+                        <td class="d-inline-flex">
                             <a href="{{ route('productProductions.show',$productProduction->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
                             <a href="{{ route('productProductions.edit',$productProduction->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
                             <form method="post" action="{{ route('productProductions.destroy',$productProduction->id) }}" >
