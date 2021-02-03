@@ -243,7 +243,7 @@ class ProductProductionController extends Controller
             $this->validate($request, [
                 'store_id'=> 'required',
                 'model' => 'required',
-                'name' => 'required',
+                'name' => 'required|unique:products,name',
                 'barcode' => 'required',
                 'new_qty' => 'required',
                 'new_price' => 'required',
