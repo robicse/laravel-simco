@@ -149,13 +149,17 @@ class StockController extends Controller
                 $store_id = $data->store_id;
                 $this->product_store_stock_sync($product_id,$store_id);
             }
-            Toastr::success('Stock Synchronize Successfully Updated!', 'Success');
+            //Toastr::success('Stock Synchronize Successfully Updated!', 'Success');
         }
         return redirect()->back();
     }
 
 
     public function stockList(){
+        // stock sync
+        $this->stock_sync();
+
+
 
         $stock_product_type = Input::get('stock_product_type') ? Input::get('stock_product_type') : '';
         $stock_type = Input::get('stock_type') ? Input::get('stock_type') : '';
@@ -173,6 +177,9 @@ class StockController extends Controller
     }
 
     public function stockSummaryList(){
+        // stock sync
+        $this->stock_sync();
+
         $stores = Store::latest()->get();
         return view('backend.stock.stock_summary', compact('stores'));
     }

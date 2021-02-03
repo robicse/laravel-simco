@@ -396,7 +396,7 @@ class ProductProductionController extends Controller
                         $purchase_purchase_detail->ref_id = $insert_id;
                         $purchase_purchase_detail->save();
 
-                        $check_previous_stock = Stock::where('product_id',$new_product_insert_id->id)->latest()->pluck('current_stock')->first();
+                        $check_previous_stock = Stock::where('product_id',$new_product_insert_id)->latest()->pluck('current_stock')->first();
                         if(!empty($check_previous_stock)){
                             $previous_stock = $check_previous_stock;
                         }else{
@@ -961,7 +961,7 @@ class ProductProductionController extends Controller
 //                        $purchase_purchase_detail->barcode = $product_info->barcode;
 //                        $purchase_purchase_detail->save();
 //
-//                        $check_previous_stock = Stock::where('product_id',$new_product_insert_id->id)->latest()->pluck('current_stock')->first();
+//                        $check_previous_stock = Stock::where('product_id',$new_product_insert_id)->latest()->pluck('current_stock')->first();
 //                        if(!empty($check_previous_stock)){
 //                            $previous_stock = $check_previous_stock;
 //                        }else{

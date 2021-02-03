@@ -50,12 +50,12 @@
 
                 @if(!empty($stores))
                     @foreach($stores as $store)
-                        <div class="col-md-12">
-                            <h1 class="text-center">
-                                {{$store->name}}
-                                <a href="{{ route('stock_sync') }}" class="btn btn-sm btn-success float-right p-2" role="button">Stock Synchronize</a>
-                            </h1>
-                        </div>
+{{--                        <div class="col-md-12">--}}
+{{--                            <h1 class="text-center">--}}
+{{--                                {{$store->name}}--}}
+{{--                                <a href="{{ route('stock_sync') }}" class="btn btn-sm btn-success float-right p-2" role="button">Stock Synchronize</a>--}}
+{{--                            </h1>--}}
+{{--                        </div>--}}
                         <div class="table-responsive">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
@@ -173,7 +173,12 @@
                                                     ->where('stocks.id',$stock->id)
                                                     ->pluck('parties.name')
                                                     ->first();
-                                                }else{}
+                                                }else{
+                                                    echo $party_name = DB::table('parties')
+                                                    ->where('type','own')
+                                                    ->pluck('name')
+                                                    ->first();
+                                                }
                                             @endphp
                                         </td>
                                         <td>
