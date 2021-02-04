@@ -39,16 +39,16 @@
                             <th>Date</th>
                             <td>{{$productPurchase->date}}</td>
                         </tr>
-                        <tr>
-                            <th>Payment Type</th>
-                            <td>{{$transaction->payment_type}}</td>
-                        </tr>
-                        @if($transaction->payment_type == 'Check')
-                            <tr>
-                                <th>Check Number</th>
-                                <td>{{$transaction->check_number}}</td>
-                            </tr>
-                        @endif
+{{--                        <tr>--}}
+{{--                            <th>Payment Type</th>--}}
+{{--                            <td>{{$transaction->payment_type}}</td>--}}
+{{--                        </tr>--}}
+{{--                        @if($transaction->payment_type == 'Check')--}}
+{{--                            <tr>--}}
+{{--                                <th>Check Number</th>--}}
+{{--                                <td>{{$transaction->check_number}}</td>--}}
+{{--                            </tr>--}}
+{{--                        @endif--}}
                         <tr>
                             <th>Amount</th>
                             <td>{{$productPurchase->total_amount}}</td>

@@ -56,8 +56,147 @@ class ProductSaleController extends Controller
     }
 
 
+    function product_store_stock_sync($product_id,$store_id){
+
+        $stock_data = Stock::where('product_id',$product_id)->where('store_id',$store_id)->get();
+        $row_count = count($stock_data);
+        if($row_count > 0){
+            $store_previous_row_current_stock = null;
+            $stock_in_flag = 0;
+            $stock_out_flag = 0;
+
+            foreach ($stock_data as $key => $data){
+
+                $id = $data->id;
+                $previous_stock = $data->previous_stock;
+                $stock_in = $data->stock_in;
+                $stock_out = $data->stock_out;
+                $current_stock = $data->current_stock;
+
+
+
+                if($key == 0){
+//                    echo 'row_id =>'.$id.'<br/>';
+//                    echo 'product_id =>'.$product_id.'<br/>';
+//                    echo 'store_id =>'.$store_id.'<br/>';
+//
+//                    echo 'store_previous_row_current_stock '.$store_previous_row_current_stock.'<br/>';
+//                    echo 'this_row_current_stock =>'.$current_stock.'<br/>';
+//                    echo '<br/>';
+
+                    $stock = Stock::find($id);
+                    $stock->previous_stock = 0;
+                    $stock->current_stock = $stock_in;
+                    $affectedRow = $stock->update();
+                    if($affectedRow){
+//                        echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+//                        echo '<br/>';
+                        $current_stock = $stock->current_stock;
+                    }
+
+                }else{
+//                    echo 'row_id =>'.$id.'<br/>';
+//                    echo 'product_id =>'.$product_id.'<br/>';
+//                    echo 'store_id =>'.$store_id.'<br/>';
+//
+//                    echo 'store_previous_row_current_stock '.$store_previous_row_current_stock.'<br/>';
+//                    echo 'this_row_current_stock =>'.$current_stock.'<br/>';
+//                    echo '<br/>';
+
+                    // update part
+                    if($stock_in > 0){
+                        if($stock_in_flag == 1){
+                            $stock = Stock::find($id);
+                            $stock->previous_stock = $store_previous_row_current_stock;
+                            $stock->current_stock = $store_previous_row_current_stock + $stock_in;
+                            $affectedRow = $stock->update();
+                            if($affectedRow){
+//                                echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+//                                echo '<br/>';
+                                $current_stock = $stock->current_stock;
+                            }
+                        }else if($previous_stock != $store_previous_row_current_stock){
+                            $stock_in_flag = 1;
+
+                            $stock = Stock::find($id);
+                            $stock->previous_stock = $store_previous_row_current_stock;
+                            $stock->current_stock = $store_previous_row_current_stock + $stock_in;
+                            $affectedRow = $stock->update();
+                            if($affectedRow){
+//                                echo 'this_row_current_stock => updated => '.$stock_in.'<br/>';
+//                                echo '<br/>';
+                                $current_stock = $stock->current_stock;
+                            }
+                        }else{
+//                            echo 'this_row_current_stock => nothing => '.$stock_in.'<br/>';
+//                            echo '<br/>';
+                        }
+                    }else if($stock_out > 0){
+                        if($stock_out_flag == 1) {
+                            $stock = Stock::find($id);
+                            $stock->previous_stock = $store_previous_row_current_stock;
+                            $stock->current_stock = $store_previous_row_current_stock - $stock_out;
+                            $affectedRow = $stock->update();
+                            if ($affectedRow) {
+//                                echo 'This Row('.$id.') Current Stock => updated => ' . $stock_out . '<br/>';
+//                                echo '<br/>';
+                                $current_stock = $stock->current_stock;
+                            }
+                        }else if($previous_stock != $store_previous_row_current_stock) {
+                            $stock_out_flag = 1;
+
+                            $stock = Stock::find($id);
+                            $stock->previous_stock = $store_previous_row_current_stock;
+                            $stock->current_stock = $store_previous_row_current_stock - $stock_out;
+                            $affectedRow = $stock->update();
+                            if ($affectedRow) {
+//                                echo 'This Row('.$id.') Current Stock => updated =>' . $stock_out . '<br/>';
+//                                echo '<br/>';
+                                $current_stock = $stock->current_stock;
+                            }
+                        }else{
+//                            echo 'this_row_current_stock => nothing => '.$stock_out.'<br/>';
+//                            echo '<br/>';
+                        }
+                    }else{
+//                        echo 'this_row_current_stock => nothing<br/>';
+//                        echo '<br/>';
+                    }
+//                    echo '<br/>';
+                }
+                $store_previous_row_current_stock = $current_stock;
+            }
+        }else{
+//            echo 'no found!'.'<br/>';
+        }
+    }
+
+
+    function stock_sync(){
+        $stock_data = Stock::whereIn('id', function($query) {
+            $query->from('stocks')->groupBy('store_id')->groupBy('product_id')->selectRaw('MIN(id)');
+        })->get();
+
+        $row_count = count($stock_data);
+        if($row_count > 0){
+            foreach ($stock_data as $key => $data){
+                $product_id = $data->product_id;
+                $store_id = $data->store_id;
+                $this->product_store_stock_sync($product_id,$store_id);
+            }
+            //Toastr::success('Stock Synchronize Successfully Updated!', 'Success');
+        }
+        return redirect()->back();
+    }
+
+
     public function create()
     {
+
+        // stock sync
+        $this->stock_sync();
+
+
         $auth = Auth::user();
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
@@ -345,7 +484,7 @@ class ProductSaleController extends Controller
         $productSale->delete();
 
         DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->delete();
+        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale')->delete();
         DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
 
         Toastr::success('Product Sale Deleted Successfully', 'Success');
@@ -621,9 +760,10 @@ class ProductSaleController extends Controller
         $total_amount=$product_sale->total_amount;
         $paid_amount=$product_sale->paid_amount;
 
-        $product_sale->paid_amount=$paid_amount+$request->new_paid;
-        $product_sale->due_amount=$total_amount-($paid_amount+$request->new_paid);
-        $product_sale->update();
+        $update_product_sale = ProductSale::find($product_sale_id);
+        $update_product_sale->paid_amount=$paid_amount+$request->new_paid;
+        $update_product_sale->due_amount=$total_amount-($paid_amount+$request->new_paid);
+        $affectedRow = $update_product_sale->update();
 
         $due = new Due();
         $due->invoice_no=$product_sale->invoice_no;
@@ -651,7 +791,9 @@ class ProductSaleController extends Controller
         $transaction->date = date('Y-m-d');
         $transaction->save();
 
-        Toastr::success('Due Pay Successfully', 'Success');
+        if($affectedRow){
+            Toastr::success('Due Pay Successfully', 'Success');
+        }
         return redirect()->back();
 
     }

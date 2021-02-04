@@ -44,7 +44,7 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'model' => 'required',
-            'name' => 'required',
+            'name' => 'required|unique:products,name',
             'barcode' => 'required',
             'product_category_id' => 'required',
             //'product_sub_category_id' => 'required',

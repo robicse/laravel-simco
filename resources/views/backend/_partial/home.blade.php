@@ -76,6 +76,7 @@
                                     }
 
                                     // sale return
+
                                     $productSaleReturnDetails = DB::table('product_sale_return_details')
                                         ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'))
                                         ->where('product_id',$productPurchaseDetail->product_id)
@@ -106,6 +107,7 @@
                                     }
 
                                     // product production
+                                    /*
                                     $productProductionDetails = DB::table('product_production_details')
                                         ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
                                         ->where('product_id',$productPurchaseDetail->product_id)
@@ -133,22 +135,34 @@
                                             }
                                         }
                                     }
+                                    */
                                 }
                             }
 
                         $total_expense = \App\Transaction::where('store_id',$store->id)->where('transaction_type','expense')->sum('amount');
 
-                        if($total_expense > 0){
+                        if($total_expense){
                             $sum_profit_amount -= $total_expense;
-                        }else{
-                            $sum_profit_amount += $total_expense;
                         }
 
                         // discount
+
                         $productSaleDiscount = DB::table('product_sales')
                             ->select( DB::raw('SUM(discount_amount) as total_discount'))
                             ->first();
+
+                        if($productSaleDiscount){
+                            $sum_total_discount = $productSaleDiscount->total_discount;
+                        }
                         @endphp
+
+{{--                        <div class="col-md-12">--}}
+{{--                            <h6>Total Purchase: {{number_format($sum_purchase_price, 2, '.', '')}}</h6>--}}
+{{--                            <h6>Total Sale: {{number_format($sum_sale_price, 2, '.', '')}}</h6>--}}
+{{--                            <h6>Purchase Sale Profit:{{$sum_purchase_price}} - {{$sum_sale_price}} = {{number_format($purchase_sale_profit = $sum_purchase_price - $sum_sale_price, 2, '.', '')}}</h6>--}}
+{{--                            <h6>Profit after Expense:{{$purchase_sale_profit}} - {{$sum_profit_amount}} = {{number_format($profit_after_expense = $purchase_sale_profit - $sum_profit_amount, 2, '.', '')}}</h6>--}}
+{{--                            <h6>Profit after Discount:{{$profit_after_expense}} - {{$sum_total_discount}} = {{ number_format($profit_after_discount = $profit_after_expense - $sum_total_discount, 2, '.', '')}}</h6>--}}
+{{--                        </div>--}}
 
                         <div class="col-md-3 ">
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
@@ -174,19 +188,38 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 ">
-                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
-                                <div class="info">
-                                    <h4>Total Production</h4>
-                                    <p><b>{{number_format($sum_production_price, 2, '.', '')}}</b></p>
-                                </div>
-                            </div>
-                        </div>
+{{--                        <div class="col-md-3 ">--}}
+{{--                            <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>--}}
+{{--                                <div class="info">--}}
+{{--                                    <h4>Total Production</h4>--}}
+{{--                                    <p><b>{{number_format($sum_production_price, 2, '.', '')}}</b></p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="col-md-3">
                             <div class="widget-small warning coloured-icon"><i class="icon fas fa-file-invoice-dollar"></i>
                                 <div class="info">
                                     <h4>Total Expense</h4>
                                     <p><b>{{number_format($total_expense, 2, '.', '')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                                <div class="info">
+                                    <h4>Final Loss/Profit</h4>
+                                    <p>
+                                        <b>
+                                            @if($sum_profit_amount > 0)
+                                                Profit:
+                                            @elseif($sum_profit_amount < 0)
+                                                Loss:
+                                            @else
+
+                                            @endif
+                                                {{number_format($sum_profit_amount, 2, '.', '')}}
+                                        </b>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -198,15 +231,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
-                                <div class="info">
-                                    <h4>Final Loss/Profit</h4>
-                                    <p><b>Profit:{{number_format($sum_profit_amount, 2, '.', '')}}</b></p>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-md-3">
                             <a href="{{ route('stock.summary.list') }}">
                                 <div class="widget-small primary coloured-icon"><i class="icon fas fa-money-check-alt "></i>
