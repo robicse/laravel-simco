@@ -40,20 +40,19 @@
                             <td>
                                 @php
                                     $transaction = \Illuminate\Support\Facades\DB::table('transactions')
-                                    ->where('invoice_no',$productSaleReturn->invoice_no)
-                                    ->where('ref_id',$productSaleReturn->id)
-                                    ->first();
-                                @endphp
-                                @php
-                                    $transaction = \Illuminate\Support\Facades\DB::table('transactions')
                                   ->where('invoice_no',$productSaleReturn->invoice_no)
                                   ->where('ref_id',$productSaleReturn->id)
                                   ->first();
+
+                                if($transaction){
+                                    echo $transaction->payment_type;
+
+                                    if($transaction->payment_type == 'Check'){
+                                        echo "( Check Number: ". $transaction->check_number .")";
+                                    }
+                                }
                                 @endphp
-                                {{$transaction->payment_type}}
-                                @if($transaction->payment_type == 'Check')
-                                    ( Check Number: {{$transaction->check_number}} )
-                                @endif
+
                             </td>
                             <td>{{ $productSaleReturn->total_amount}}</td>
                             <td>{{ $productSaleReturn->created_at}}</td>
