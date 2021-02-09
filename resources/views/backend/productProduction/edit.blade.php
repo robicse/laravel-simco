@@ -126,7 +126,7 @@
 
 
 
-
+                            @if($stock_finish_goods != null)
                             <div id="myRadioGroup" style="text-align: center">
                                 <input type="radio" name="products" checked="checked" value="2" /> Existing Finish Goods Product
 {{--                                <input type="radio" name="products" value="3" /> New Finish Goods Product--}}
@@ -376,6 +376,10 @@
                                     </div>
                                 </div>
                             </div>
+                            @else
+                                <h1>You Have Finish Goods Deleted.</h1>
+                            @endif
+
 
 
 

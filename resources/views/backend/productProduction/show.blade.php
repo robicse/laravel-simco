@@ -114,6 +114,7 @@
                     </tr>
                     </thead>
                     <tbody>
+                        @if($productPurchaseDetail)
                         <tr>
                             <td>{{$productPurchaseDetail->product->product_category->name}}</td>
                             <td>{{$productPurchaseDetail->product->product_brand->name}}</td>
@@ -126,6 +127,11 @@
                             <td>{{$productPurchaseDetail->mrp_price}}</td>
                             <td>{{$productPurchaseDetail->sub_total}}</td>
                         </tr>
+                        @else
+                            <tr>
+                                <h1>No details data found!</h1>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

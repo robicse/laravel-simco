@@ -515,6 +515,8 @@ class ProductSaleController extends Controller
             'unitOptions' => '',
         ];
 
+
+
         if($product_category_id){
             $categories = ProductCategory::where('id',$product_category_id)->get();
             if(count($categories) > 0){

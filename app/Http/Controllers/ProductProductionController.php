@@ -452,7 +452,10 @@ class ProductProductionController extends Controller
         $transactions = Transaction::where('ref_id',$id)->get();
 
         $productPurchase = ProductPurchase::where('ref_id',$id)->first();
-        $productPurchaseDetail = ProductPurchaseDetail::where('ref_id',$id)->first();
+        //$productPurchaseDetail = ProductPurchaseDetail::where('ref_id',$id)->first();
+        $productPurchaseDetail = ProductPurchaseDetail::where('product_purchase_id',$productPurchase->id)->first();
+        //$productPurchaseDetail = ProductPurchaseDetail::where('product_purchase_id',$productPurchase->id)->get();
+        //dd($productPurchase);
 
         return view('backend.productProduction.show', compact('productProduction','productProductionDetails','transactions','productPurchase','productPurchaseDetail'));
     }
@@ -479,7 +482,7 @@ class ProductProductionController extends Controller
         $transaction = Transaction::where('ref_id',$id)->first();
         $stock_finish_goods = Stock::where('ref_id',$id)->where('stock_type','production')->where('stock_product_type','Finish Goods')->first();
         $productPurchaseDetails = ProductPurchaseDetail::where('ref_id',$id)->latest()->first();
-        //dd($productPurchaseDetails);
+        //dd($stock_finish_goods);
 
         return view('backend.productProduction.edit',compact('stores','products','finishGoodProducts','productProduction','productProductionDetails','productCategories','productSubCategories','productBrands','productUnits','transaction','stock_finish_goods','productPurchaseDetails'));
     }
