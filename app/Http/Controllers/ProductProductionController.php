@@ -518,8 +518,9 @@ class ProductProductionController extends Controller
             DB::table('product_purchases')->where('ref_id',$id)->where('purchase_product_type','Finish Goods')->delete();
             $product_purchase_id = DB::table('product_purchases')->where('ref_id',$id)->where('purchase_product_type','Finish Goods')->pluck('id')->first();
             DB::table('product_purchase_details')->where('ref_id',$id)->where('product_purchase_id',$product_purchase_id)->delete();
-            DB::table('stocks')->where('ref_id',$id)->delete();
-            DB::table('transactions')->where('ref_id',$id)->delete();
+            DB::table('stocks')->where('ref_id',$id)->where('stock_type','production')->delete();
+            DB::table('transactions')->where('ref_id',$id)->where('transaction_type','production')->delete();
+
 
             $row_count = count($request->product_id);
             $total_amount = 0;
