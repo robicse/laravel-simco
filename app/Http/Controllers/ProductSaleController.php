@@ -481,14 +481,15 @@ class ProductSaleController extends Controller
 
     public function destroy($id)
     {
-        $productSale = ProductSale::find($id);
-        $productSale->delete();
-
-        DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale')->delete();
-        DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
-
-        Toastr::success('Product Sale Deleted Successfully', 'Success');
+//        $productSale = ProductSale::find($id);
+//        $productSale->delete();
+//
+//        DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
+//        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale')->delete();
+//        DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
+//
+//        Toastr::success('Product Sale Deleted Successfully', 'Success');
+        Toastr::warning('Product Sale Permanently Deleted Not Possible, Please Contact With Administrator.', 'Warning');
         return redirect()->route('productSales.index');
     }
 

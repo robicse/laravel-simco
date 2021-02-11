@@ -287,14 +287,15 @@ class ProductPurchaseController extends Controller
 
     public function destroy($id)
     {
-        $productPurchase = ProductPurchase::find($id);
-        $productPurchase->delete();
-
-        DB::table('product_purchase_details')->where('product_purchase_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->delete();
-        DB::table('transactions')->where('ref_id',$id)->delete();
-
-        Toastr::success('Product purchase Deleted Successfully', 'Success');
+//        $productPurchase = ProductPurchase::find($id);
+//        $productPurchase->delete();
+//
+//        DB::table('product_purchase_details')->where('product_purchase_id',$id)->delete();
+//        DB::table('stocks')->where('ref_id',$id)->delete();
+//        DB::table('transactions')->where('ref_id',$id)->delete();
+//
+//        Toastr::success('Product purchase Deleted Successfully', 'Success');
+        Toastr::warning('Product Purchase Permanently Deleted Not Possible, Please Contact With Administrator.', 'Warning');
         return redirect()->route('productPurchases.index');
     }
 

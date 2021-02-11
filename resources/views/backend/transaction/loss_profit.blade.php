@@ -4,7 +4,7 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class=""></i>Loss Profit</h1>
+                <h1><i class=""></i>Loss/Profit</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item">
@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Loss Profit Table</h3>
+                <h3 class="tile-title">Loss/Profit Table</h3>
                 <form class="form-inline" action="{{ route('transaction.lossProfit') }}">
                     <div class="form-group col-md-4">
                         <label for="start_date">Start Date:</label>
