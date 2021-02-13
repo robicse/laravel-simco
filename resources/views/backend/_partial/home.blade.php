@@ -141,9 +141,9 @@
 
                         $total_expense = \App\Transaction::where('store_id',$store->id)->where('transaction_type','expense')->sum('amount');
 
-                        if($total_expense){
+                        /*if($total_expense){
                             $sum_profit_amount -= $total_expense;
-                        }
+                        }*/
 
                         // discount
 

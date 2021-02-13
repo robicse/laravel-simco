@@ -326,6 +326,7 @@ class ProductSaleController extends Controller
             $transaction->party_id = $request->party_id;
             $transaction->date = $request->date;
             $transaction->ref_id = $insert_id;
+            $transaction->transaction_product_type = 'Finish Goods';
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $request->payment_type;
             $transaction->check_number = $request->check_number ? $request->check_number : '';
@@ -480,14 +481,15 @@ class ProductSaleController extends Controller
 
     public function destroy($id)
     {
-        $productSale = ProductSale::find($id);
-        $productSale->delete();
-
-        DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale')->delete();
-        DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
-
-        Toastr::success('Product Sale Deleted Successfully', 'Success');
+//        $productSale = ProductSale::find($id);
+//        $productSale->delete();
+//
+//        DB::table('product_sale_details')->where('product_sale_id',$id)->delete();
+//        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale')->delete();
+//        DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale')->delete();
+//
+//        Toastr::success('Product Sale Deleted Successfully', 'Success');
+        Toastr::warning('Product Sale Permanently Deleted Not Possible, Please Contact With Administrator.', 'Warning');
         return redirect()->route('productSales.index');
     }
 
@@ -497,9 +499,9 @@ class ProductSaleController extends Controller
         $current_stock = Stock::where('store_id',$store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
         $mrp_price = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
             ->where('store_id',$store_id)->where('product_id',$product_id)
-            ->latest('product_purchase_details.id')
-            ->pluck('product_purchase_details.mrp_price')
-            ->first();
+            ->max('product_purchase_details.mrp_price');
+            //->pluck('product_purchase_details.mrp_price')
+            //->first();
 
         $product_category_id = Product::where('id',$product_id)->pluck('product_category_id')->first();
         $product_sub_category_id = Product::where('id',$product_id)->pluck('product_sub_category_id')->first();
@@ -513,6 +515,8 @@ class ProductSaleController extends Controller
             'brandOptions' => '',
             'unitOptions' => '',
         ];
+
+
 
         if($product_category_id){
             $categories = ProductCategory::where('id',$product_category_id)->get();
@@ -754,8 +758,10 @@ class ProductSaleController extends Controller
 
     public function payDue(Request $request){
         //dd($request->all());
+
         $product_sale_id = $request->product_sale_id;
         $product_sale = ProductSale::find($product_sale_id);
+        $transaction_product_type = Transaction::where('invoice_no',$product_sale->invoice_no)->pluck('transaction_product_type')->first();
 
         $total_amount=$product_sale->total_amount;
         $paid_amount=$product_sale->paid_amount;
@@ -784,6 +790,7 @@ class ProductSaleController extends Controller
         $transaction->store_id = $product_sale->store_id;
         $transaction->party_id = $product_sale->party_id;
         $transaction->ref_id = $product_sale->id;
+        $transaction->transaction_product_type = $transaction_product_type;
         $transaction->transaction_type = 'due';
         $transaction->payment_type = $request->payment_type;
         $transaction->check_number = $request->check_number ? $request->check_number : '';

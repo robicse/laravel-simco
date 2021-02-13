@@ -232,6 +232,8 @@ class ProductSaleReturnController extends Controller
                 }
             }
 
+            $transaction_product_type = Transaction::where('invoice_no',$productSale->invoice_no)->pluck('transaction_product_type')->first();
+
             // transaction
             $transaction = new Transaction();
             $transaction->invoice_no = 'return-' . $productSale->invoice_no;
@@ -239,6 +241,7 @@ class ProductSaleReturnController extends Controller
             $transaction->store_id = $productSale->store_id;
             $transaction->party_id = $productSale->party_id;
             $transaction->ref_id = $insert_id;
+            $transaction->transaction_product_type = $transaction_product_type;
             $transaction->transaction_type = 'sale return';
             $transaction->payment_type = $request->payment_type;
             $transaction->check_number = $request->check_number;
