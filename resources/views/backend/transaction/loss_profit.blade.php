@@ -50,7 +50,7 @@
                                     ->groupBy('product_id')
                                     ->groupBy('product_category_id')
                                     ->groupBy('product_sub_category_id')
-                                    ->groupBy('product_brand_id')
+                                     ->groupBy('product_brand_id')
                                     ->get();
 
 

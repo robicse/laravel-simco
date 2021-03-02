@@ -15,6 +15,7 @@
 
                 <h3 class="tile-title">Product Sales Table</h3>
                 <form class="form-inline" action="{{ route('productSales.index') }}">
+                    @csrf
                     <div class="form-group col-md-4">
                         <label for="start_date">Start Date:</label>
                         <input type="text" name="start_date" class="datepicker form-control" value="{{$start_date}}">
