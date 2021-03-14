@@ -45,8 +45,24 @@
                                             <td>{{ $key+1 }}</td>
                                             <td>{{ $transaction->user->name}}</td>
 {{--                                            <td>{{ $transaction->store->name}}</td>--}}
-                                            <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
-                                            <td>{{ $transaction->transaction_product_type}}</td>
+                                            <td>
+                                                @php
+                                                    if($transaction->transaction_type == 'expense'){
+                                                        echo 'Inhouse';
+                                                    }else{
+                                                        echo $transaction->party ? $transaction->party->name : '';
+                                                    }
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                @php
+                                                    if($transaction->transaction_type == 'expense'){
+                                                        echo 'Cost';
+                                                    }else{
+                                                        echo $transaction->transaction_product_type;
+                                                    }
+                                                @endphp
+                                            </td>
                                             <td>{{ $transaction->transaction_type}}</td>
                                             <td>
                                                 {{ $transaction->payment_type}}
