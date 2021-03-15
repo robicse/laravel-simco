@@ -65,7 +65,7 @@
                             </td>
                             <td class="d-inline-flex">
                                 <a class="btn btn-primary" style="margin-left: 5px" href="{{ route('users.edit',$user->id) }}">Edit</a>
-                                <a class="btn btn-info" style="margin-left: 5px" href="{{ route('password.change_password',$user->id) }}">Edit Password</a>
+{{--                                <a class="btn btn-info" style="margin-left: 5px" href="{{ route('password.change_password',$user->id) }}">Edit Password</a>--}}
                                 {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline;margin-left: 5px']) !!}
                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger','style'=>'margin-left: 5px']) !!}
                                 {!! Form::close() !!}
