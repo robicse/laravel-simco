@@ -230,7 +230,7 @@
                         <!-- /.col -->
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="margin-top: 10%">
                         <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
                             <strong>Received By</strong><br>
                             <strong>Customer signature</strong>
