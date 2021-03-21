@@ -160,13 +160,13 @@
                                 <td style="text-align: left">{{$productSaleDetail->product->name}}</td>
                                 <td>{{$productSaleDetail->qty}}</td>
                                 <td>{{$productSaleDetail->product_unit->name}}</td>
-                                <td>{{$productSaleDetail->price}}</td>
-                                <td>
+                                <td style="text-align: right">{{$productSaleDetail->price}}</td>
+                                <td style="text-align: right">
                                     @php
                                         $sub_total=$productSaleDetail->qty*$productSaleDetail->price;
                                         $sum_sub_total += $sub_total;
                                     @endphp
-                                    {{$sub_total}}
+                                    {{number_format($sub_total, 2, '.', '')}}
                                 </td>
                             </tr>
                         @endforeach
@@ -177,28 +177,28 @@
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
-                            <th>Subtotal:</th>
-                            <th>{{$sum_sub_total}}</th>
+                            <th style="text-align: right">Subtotal:</th>
+                            <th style="text-align: right">{{number_format($sum_sub_total, 2, '.', '')}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
-                            <th>Discount:</th>
-                            <th>-{{$productSale->discount_amount}}</th>
+                            <th style="text-align: right">Discount:</th>
+                            <th style="text-align: right">-{{$productSale->discount_amount}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
-                            <th>Total Amount</th>
-                            <th>{{$productSale->total_amount}}</th>
+                            <th style="text-align: right">Total Amount</th>
+                            <th style="text-align: right">{{$productSale->total_amount}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
-                            <th>Paid Amount:</th>
-                            <th>{{$productSale->paid_amount}}</th>
+                            <th style="text-align: right">Paid Amount:</th>
+                            <th style="text-align: right">{{$productSale->paid_amount}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
-                            <th>Due Amount:</th>
-                            <th>{{$productSale->due_amount}}</th>
+                            <th style="text-align: right">Due Amount:</th>
+                            <th style="text-align: right">{{$productSale->due_amount}}</th>
                         </tr>
                         </tbody>
                     </table>
