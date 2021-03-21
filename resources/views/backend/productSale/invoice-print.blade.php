@@ -157,7 +157,7 @@
                         @foreach($productSaleDetails as $key => $productSaleDetail)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$productSaleDetail->product->name}}</td>
+                                <td style="text-align: left">{{$productSaleDetail->product->name}}</td>
                                 <td>{{$productSaleDetail->qty}}</td>
                                 <td>{{$productSaleDetail->product_unit->name}}</td>
                                 <td>{{$productSaleDetail->price}}</td>
@@ -220,7 +220,7 @@
                                                 ( Check Number: {{$transaction->check_number}} )
                                             @endif
                                             :
-                                            {{$transaction->amount}}
+                                            Tk.{{$transaction->amount}} ({{$transaction->created_at}})
                                         </li>
                                     @endforeach
                                 </ul>
