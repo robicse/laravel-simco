@@ -126,7 +126,8 @@
                                     </tr>
                                     <tr>
                                         <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>
-                                        <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>
+{{--                                        <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>--}}
+                                        <td style="text-align: left;font-size: 16px;">02-9662755</td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Creditor BY:</td>
@@ -160,13 +161,13 @@
                                 <td style="text-align: left">{{$productSaleDetail->product->name}}</td>
                                 <td>{{$productSaleDetail->qty}}</td>
                                 <td>{{$productSaleDetail->product_unit->name}}</td>
-                                <td style="text-align: right">{{$productSaleDetail->price}}</td>
+                                <td style="text-align: right">{{number_format($productSaleDetail->price,2)}}</td>
                                 <td style="text-align: right">
                                     @php
                                         $sub_total=$productSaleDetail->qty*$productSaleDetail->price;
                                         $sum_sub_total += $sub_total;
                                     @endphp
-                                    {{number_format($sub_total, 2, '.', '')}}
+                                    {{number_format($sub_total,2)}}
                                 </td>
                             </tr>
                         @endforeach
@@ -178,27 +179,27 @@
                         <tr>
                             <th colspan="4">&nbsp;</th>
                             <th style="text-align: right">Subtotal:</th>
-                            <th style="text-align: right">{{number_format($sum_sub_total, 2, '.', '')}}</th>
+                            <th style="text-align: right">{{number_format($sum_sub_total, 2)}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
                             <th style="text-align: right">Discount:</th>
-                            <th style="text-align: right">-{{$productSale->discount_amount}}</th>
+                            <th style="text-align: right">-{{number_format($productSale->discount_amount,2)}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
                             <th style="text-align: right">Total Amount</th>
-                            <th style="text-align: right">{{$productSale->total_amount}}</th>
+                            <th style="text-align: right">{{number_format($productSale->total_amount,2)}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
                             <th style="text-align: right">Paid Amount:</th>
-                            <th style="text-align: right">{{$productSale->paid_amount}}</th>
+                            <th style="text-align: right">{{number_format($productSale->paid_amount,2)}}</th>
                         </tr>
                         <tr>
                             <th colspan="4">&nbsp;</th>
                             <th style="text-align: right">Due Amount:</th>
-                            <th style="text-align: right">{{$productSale->due_amount}}</th>
+                            <th style="text-align: right">{{number_format($productSale->due_amount,2)}}</th>
                         </tr>
                         </tbody>
                     </table>
@@ -220,7 +221,7 @@
                                                 ( Check Number: {{$transaction->check_number}} )
                                             @endif
                                             :
-                                            Tk.{{$transaction->amount}} ({{$transaction->created_at}})
+                                            Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})
                                         </li>
                                     @endforeach
                                 </ul>
