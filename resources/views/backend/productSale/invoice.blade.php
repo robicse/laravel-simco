@@ -148,7 +148,7 @@
                                             </tr>
                                             <tr>
                                                 <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Total Amount</th>
+                                                <th style="text-align: right">Total Amount:</th>
                                                 <th style="text-align: right">{{number_format($productSale->total_amount,2)}}</th>
                                             </tr>
                                             <tr>
