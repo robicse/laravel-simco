@@ -464,7 +464,8 @@ class ProductSaleController extends Controller
         $due->due_amount = $request->due_amount;
         $due->update();
 
-        $transaction_row = Transaction::where('ref_id',$id)->get();
+        //$transaction_row = Transaction::where('ref_id',$id)->get();
+        $transaction_row = Transaction::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->get();
         $transaction_row_count = count($transaction_row);
         if($transaction_row_count == 1){
             // transaction
