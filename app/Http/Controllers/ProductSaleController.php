@@ -464,15 +464,19 @@ class ProductSaleController extends Controller
         $due->due_amount = $request->due_amount;
         $due->update();
 
-        // transaction
-        $transaction = Transaction::where('ref_id',$id)->where('transaction_type','sale')->first();
-        $transaction->user_id = Auth::id();
-        $transaction->store_id = $request->store_id;
-        $transaction->party_id = $request->party_id;
-        $transaction->payment_type = $request->payment_type;
-        $transaction->check_number = $request->check_number ? $request->check_number : '';
-        $transaction->amount = $request->paid_amount;
-        $transaction->update();
+        $transaction_row = Transaction::where('ref_id',$id)->get();
+        $transaction_row_count = count($transaction_row);
+        if($transaction_row_count == 1){
+            // transaction
+            $transaction = Transaction::where('ref_id',$id)->where('transaction_type','sale')->first();
+            $transaction->user_id = Auth::id();
+            $transaction->store_id = $request->store_id;
+            $transaction->party_id = $request->party_id;
+            $transaction->payment_type = $request->payment_type;
+            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->amount = $request->paid_amount;
+            $transaction->update();
+        }
 
         Toastr::success('Product Sale Updated Successfully', 'Success');
         return redirect()->route('productSales.index');
