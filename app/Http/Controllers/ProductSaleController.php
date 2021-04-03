@@ -387,7 +387,6 @@ class ProductSaleController extends Controller
         $this->validate($request, [
             'party_id'=> 'required',
             'store_id'=> 'required',
-
         ]);
 
         $stock_id = $request->stock_id;
@@ -421,23 +420,22 @@ class ProductSaleController extends Controller
 
         for($i=0; $i<$row_count;$i++)
         {
+            $product_id = $request->product_id[$i];
+
             // product purchase detail
             $product_sale_detail_id = $request->product_Sale_detail_id[$i];
-            //dd($product_sale_detail_id);
             $purchase_sale_detail = ProductsaleDetail::findOrFail($product_sale_detail_id);
-            //dd($purchase_sale_detail);
             $purchase_sale_detail->return_type = $request->return_type[$i];
             $purchase_sale_detail->product_category_id = $request->product_category_id[$i];
             $purchase_sale_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
             $purchase_sale_detail->product_brand_id = $request->product_brand_id[$i];
-            $purchase_sale_detail->product_id = $request->product_id[$i];
+            $purchase_sale_detail->product_id = $product_id;
             $purchase_sale_detail->qty = $request->qty[$i];
             $purchase_sale_detail->price = $request->price[$i];
             $purchase_sale_detail->sub_total = $request->qty[$i]*$request->price[$i];
             $purchase_sale_detail->update();
 
 
-            $product_id = $request->product_id[$i];
             $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->latest()->pluck('current_stock')->first();
             if(!empty($check_previous_stock)){
                 $previous_stock = $check_previous_stock;
@@ -445,10 +443,10 @@ class ProductSaleController extends Controller
                 $previous_stock = 0;
             }
             // product stock
-            $stock = Stock::where('ref_id',$id)->where('stock_type','sale')->first();
+            $stock = Stock::where('ref_id',$id)->where('product_id',$product_id)->where('stock_type','sale')->first();
             $stock->user_id = Auth::id();
             $stock->store_id = $request->store_id;
-            $stock->product_id = $request->product_id[$i];
+            $stock->product_id = $product_id;
             $stock->previous_stock = $previous_stock;
             $stock->stock_in = 0;
             $stock->stock_out = $request->qty[$i];
