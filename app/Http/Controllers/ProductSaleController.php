@@ -268,6 +268,8 @@ class ProductSaleController extends Controller
         {
             for($i=0; $i<$row_count;$i++)
             {
+                $product_id = $request->product_id[$i];
+
                 // product purchase detail
                 $purchase_sale_detail = new ProductSaleDetail();
                 $purchase_sale_detail->product_sale_id = $insert_id;
@@ -276,13 +278,13 @@ class ProductSaleController extends Controller
                 $purchase_sale_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
                 $purchase_sale_detail->product_brand_id = $request->product_brand_id[$i];
                 $purchase_sale_detail->product_unit_id = $request->product_unit_id[$i];
-                $purchase_sale_detail->product_id = $request->product_id[$i];
+                $purchase_sale_detail->product_id = $product_id;
                 $purchase_sale_detail->qty = $request->qty[$i];
                 $purchase_sale_detail->price = $request->price[$i];
                 $purchase_sale_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_sale_detail->save();
 
-                $product_id = $request->product_id[$i];
+
                 $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
@@ -295,7 +297,7 @@ class ProductSaleController extends Controller
                 $stock->ref_id = $insert_id;
                 $stock->store_id = $request->store_id;
                 $stock->date = $request->date;
-                $stock->product_id = $request->product_id[$i];
+                $stock->product_id = $product_id;
                 $stock->stock_type = 'sale';
                 $stock->previous_stock = $previous_stock;
                 $stock->stock_in = 0;

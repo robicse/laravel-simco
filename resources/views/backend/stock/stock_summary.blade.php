@@ -39,9 +39,12 @@
                                            $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
                                         })->latest('id')->get();
                                 @endphp
+                                @php $i = 0; @endphp
                                 @foreach($stocks as $key => $stock)
+                                    @php $i++; @endphp
                                     <tr>
-                                        <td>{{ $key+1 }}</td>
+{{--                                        <td>{{ $key+1 }}</td>--}}
+                                        <td>{{$i }}</td>
                                         <td>{{ $stock->product->product_type}}</td>
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>

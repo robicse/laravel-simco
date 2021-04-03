@@ -132,14 +132,18 @@
                                         ->get();
                                     }else{
                                         $stocks = \App\Stock::where('store_id',$store->id)
-                                        ->latest()
+                                        ->latest('id')
                                         ->get();
+                                        //dd($stocks);
                                     }
                                 @endphp
+                                @php $i = 0; @endphp
                                 @foreach($stocks as $key => $stock)
+                                    @php $i++; @endphp
                                     <tr>
 {{--                                        <td>{{ $key+1 }}</td>--}}
-                                        <td>{{ $stock->id }}</td>
+{{--                                        <td>{{ $stock->id }}</td>--}}
+                                        <td>{{$i }}</td>
                                         <td>{{ $stock->product->product_type}}</td>
                                         <td>{{ $stock->product->product_brand->name}}</td>
                                         <td>{{ $stock->product->name}}</td>
