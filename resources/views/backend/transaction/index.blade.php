@@ -48,7 +48,7 @@
                                             <td>
                                                 @php
                                                     if($transaction->transaction_type == 'expense'){
-                                                        echo 'Inhouse';
+                                                        echo 'In House';
                                                     }else{
                                                         echo $transaction->party ? $transaction->party->name : '';
                                                     }
@@ -57,7 +57,16 @@
                                             <td>
                                                 @php
                                                     if($transaction->transaction_type == 'expense'){
-                                                        echo 'Cost';
+
+                                                        $expense_category = \Illuminate\Support\Facades\DB::table('transactions')
+                                                        ->join('expenses','transactions.ref_id','expenses.id')
+                                                        ->join('office_costing_categories','expenses.office_costing_category_id','office_costing_categories.id')
+                                                        ->where('transactions.ref_id',$transaction->ref_id)
+                                                        ->where('transactions.transaction_type','expense')
+                                                        ->pluck('office_costing_categories.name')
+                                                        ->first();
+
+                                                        echo $expense_category;
                                                     }else{
                                                         echo $transaction->transaction_product_type;
                                                     }
