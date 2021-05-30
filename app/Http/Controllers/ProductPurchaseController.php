@@ -123,6 +123,7 @@ class ProductPurchaseController extends Controller
                 $stock->stock_in = $request->qty[$i];
                 $stock->stock_out = 0;
                 $stock->current_stock = $previous_stock + $request->qty[$i];
+                $stock->date = date('Y-m-d');
                 $stock->save();
             }
 

@@ -156,6 +156,8 @@ if (!function_exists('loss_profit')) {
             ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
             ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
             ->where('product_purchases.store_id',$store_id)
+            ->where('product_purchases.created_at','>=',$start_date.' 00:00:00')
+            ->where('product_purchases.created_at','>=',$end_date.' 23:59:59')
             //->where('product_purchases.ref_id',NULL)
             //->where('product_purchases.purchase_product_type','Finish Goods')
             ->groupBy('product_id')

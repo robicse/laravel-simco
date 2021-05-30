@@ -25,7 +25,15 @@
                 <td>{{ $key+1 }}</td>
                 <td>{{ $transaction->user ? $transaction->user->name : ''}}</td>
                 <td>{{ $transaction->store ? $transaction->store->name : ''}}</td>
-                <td>{{ $transaction->party ? $transaction->party->name : ''}}</td>
+                <td>
+                    @php
+                        if($transaction->transaction_type == 'expense'){
+                            echo 'In House';
+                        }else{
+                            echo $transaction->party ? $transaction->party->name : '';
+                        }
+                    @endphp
+                </td>
                 <td>{{ $transaction->transaction_type ? $transaction->transaction_type : ''}}</td>
                 <td>{{ $transaction->payment_type ? $transaction->payment_type : ''}}</td>
                 <td>{{ $transaction->amount ? $transaction->amount : ''}}</td>
