@@ -18,6 +18,7 @@
                         <thead>
                         <tr>
                             <th width="5%">SL NO</th>
+                            <th>Invoice NO</th>
                             <th>Purchase User</th>
 {{--                            <th>Store</th>--}}
                             <th>Supplier</th>
@@ -32,6 +33,7 @@
                         @foreach($productPurchases as $key => $productPurches)
                         <tr>
                             <td>{{ $key+1 }}</td>
+                            <td>{{ $productPurches->invoice_no}}</td>
                             <td>{{ $productPurches->user->name}}</td>
 {{--                            <td>{{ $productPurches->store->name}}</td>--}}
                             <td>{{ $productPurches->party->name}}</td>

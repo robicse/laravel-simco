@@ -24,6 +24,10 @@
                         </thead>
                         <tbody>
                         <tr>
+                            <th>Invoice NO</th>
+                            <td>{{$productPurchase->invoice_no}}</td>
+                        </tr>
+                        <tr>
                             <th>User</th>
                             <td>{{$productPurchase->user->name}}</td>
                         </tr>

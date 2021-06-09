@@ -94,7 +94,7 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th >ID</th>
+{{--                                        <th >ID</th>--}}
                                         <th>Product <small class="requiredCustom">*</small></th>
                                         <th style="display: none">Category</th>
                                         <th style="display: none">Sub Category</th>
@@ -111,7 +111,7 @@
                                     </thead>
                                     <tbody class="neworderbody">
                                     <tr>
-                                        <td width="5%" class="no">1</td>
+{{--                                        <td width="5%" class="no">1</td>--}}
                                         <td width="20%">
                                             <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                                 <option value="">Select  Product</option>
@@ -399,8 +399,8 @@
                     var productUnit = $('.product_unit_id').html();
                     var product = $('.product_id').html();
                     var n = ($('.neworderbody tr').length - 0) + 1;
-                    var tr = '<tr><td class="no">' + n + '</td>' +
-                        '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
+                    //var tr = '<tr><td class="no">' + n + '</td>' +
+                    var tr = '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                         '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
                         '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                         '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +

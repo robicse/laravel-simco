@@ -71,8 +71,20 @@ class ProductPurchaseController extends Controller
             $total_amount += $request->sub_total[$i];
         }
 
+        $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
+        //dd($get_invoice_no);
+        if(!empty($get_invoice_no)){
+            $get_invoice = str_replace("purchase-","",$get_invoice_no);
+            //$invoice_no = $get_invoice_no+1;
+            $invoice_no = $get_invoice+1;
+        }else{
+            $invoice_no = 1000;
+        }
+        //dd($invoice_no);
+
         // product purchase
         $productPurchase = new ProductPurchase();
+        $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
@@ -93,6 +105,7 @@ class ProductPurchaseController extends Controller
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
+                $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;;
                 $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
                 $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
@@ -100,6 +113,7 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->qty = $request->qty[$i];
                 $purchase_purchase_detail->price = $request->price[$i];
                 $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
+                $purchase_purchase_detail->profit_amount = $request->mrp_price[$i] - $request->price[$i];
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_purchase_detail->barcode = $barcode;
                 $purchase_purchase_detail->save();

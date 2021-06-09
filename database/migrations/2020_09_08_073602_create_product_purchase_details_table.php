@@ -16,6 +16,7 @@ class CreateProductPurchaseDetailsTable extends Migration
         Schema::create('product_purchase_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('product_purchase_id')->unsigned();
+            $table->string('invoice_no')->nullable();
             $table->integer('product_category_id');
             $table->integer('product_sub_category_id')->nullable();
             $table->integer('product_brand_id');
@@ -24,6 +25,7 @@ class CreateProductPurchaseDetailsTable extends Migration
             $table->float('price',8,2);
             $table->float('mrp_price',8,2);
             $table->float('sub_total',8,2);
+            $table->float('profit_amount',8,2);
             $table->string('expired_date')->nullable();
             $table->timestamps();
             $table->foreign('product_purchase_id')->references('id')->on('product_purchases')->onDelete('cascade');
