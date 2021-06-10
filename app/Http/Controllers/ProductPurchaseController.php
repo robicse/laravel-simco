@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\InvoiceStock;
 use App\Party;
 use App\Product;
 use App\ProductBrand;
@@ -11,6 +12,7 @@ use App\ProductPurchaseDetail;
 use App\ProductSubCategory;
 use App\Stock;
 use App\Transaction;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
@@ -105,7 +107,7 @@ class ProductPurchaseController extends Controller
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
-                $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;;
+                $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                 $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
                 $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
@@ -118,6 +120,7 @@ class ProductPurchaseController extends Controller
                 $purchase_purchase_detail->barcode = $barcode;
                 $purchase_purchase_detail->save();
 
+                // product wise stock
                 $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
@@ -139,11 +142,39 @@ class ProductPurchaseController extends Controller
                 $stock->current_stock = $previous_stock + $request->qty[$i];
                 $stock->date = date('Y-m-d');
                 $stock->save();
+
+                // invoice wise stock
+                $check_previous_invoice_stock = InvoiceStock::where('product_id',$product_id)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+                if(!empty($check_previous_invoice_stock)){
+                    $previous_invoice_stock = $check_previous_invoice_stock;
+                }else{
+                    $previous_invoice_stock = 0;
+                }
+                // product stock
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $insert_id;
+                $invoice_stock->purchase_invoice_no = 'purchase-'.$invoice_no;
+                $invoice_stock->invoice_no = NULL;
+                $invoice_stock->store_id = $request->store_id;
+                $invoice_stock->date = $request->date;
+                $invoice_stock->product_id = $request->product_id[$i];
+                $invoice_stock->stock_product_type = 'Finish Goods';
+                $invoice_stock->stock_type = 'purchase';
+                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->stock_in = $request->qty[$i];
+                $invoice_stock->stock_out = 0;
+                $invoice_stock->current_stock = $previous_invoice_stock + $request->qty[$i];
+                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->save();
             }
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = Null;
+            $transaction->invoice_no = $productPurchase->invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
@@ -264,7 +295,7 @@ class ProductPurchaseController extends Controller
 
             // product stock
             $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->first();
-//dd($stock_row);
+            //dd($stock_row);
             if($stock_row->stock_in != $request->qty[$i]){
                 if($request->qty[$i] > $stock_row->stock_in){
                     $add_or_minus_stock_in = $request->qty[$i] - $stock_row->stock_in;
@@ -280,6 +311,31 @@ class ProductPurchaseController extends Controller
                 $stock_row->stock_in = $update_stock_in;
                 $stock_row->current_stock = $update_current_stock;
                 $stock_row->update();
+            }
+
+
+            // invoice wise product stock
+            $invoice_stock_row = InvoiceStock::where('ref_id',$id)
+                ->where('purchase_invoice_no',$productPurchase->invoice_no)
+                ->where('stock_type','purchase')
+                ->where('product_id',$product_id)
+                ->first();
+            //dd($stock_row);
+            if($invoice_stock_row->stock_in != $request->qty[$i]){
+                if($request->qty[$i] > $invoice_stock_row->stock_in){
+                    $add_or_minus_invoice_stock_in = $request->qty[$i] - $invoice_stock_row->stock_in;
+                    $update_invoice_stock_in = $invoice_stock_row->stock_in + $add_or_minus_invoice_stock_in;
+                    $update_current_invoice_stock = $invoice_stock_row->current_stock + $add_or_minus_invoice_stock_in;
+                }else{
+                    $add_or_minus_invoice_stock_in =  $invoice_stock_row->stock_in - $request->qty[$i];
+                    $update_invoice_stock_in = $invoice_stock_row->stock_in - $add_or_minus_invoice_stock_in;
+                    $update_current_invoice_stock = $invoice_stock_row->current_stock - $add_or_minus_invoice_stock_in;
+                }
+
+                $invoice_stock_row->user_id = Auth::user()->id;
+                $invoice_stock_row->stock_in = $update_invoice_stock_in;
+                $invoice_stock_row->current_stock = $update_current_invoice_stock;
+                $invoice_stock_row->update();
             }
         }
 

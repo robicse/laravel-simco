@@ -101,6 +101,7 @@
                                         <th>Brand</th>
                                         <th style="display: none">Unit</th>
                                         <th>Return</th>
+                                        <th>Purchase Invoice</th>
                                         <th>Stock Qty</th>
                                         <th>Qty <small class="requiredCustom">*</small></th>
                                         <th>Price <small class="requiredCustom">*</small></th>
@@ -165,6 +166,13 @@
                                                 <option value="returnable" selected>returnable</option>
                                                 <option value="not returnable">not returnable</option>
                                             </select>
+                                        </td>
+                                        <td>
+                                            <div id="invoice_no_1">
+                                                <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>
+
+                                                </select>
+                                            </div>
                                         </td>
                                         <td width="8%">
                                             <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
@@ -397,6 +405,7 @@
                     var productSubCategory = $('.product_sub_category_id').html();
                     var productBrand = $('.product_brand_id').html();
                     var productUnit = $('.product_unit_id').html();
+                    var invoiceNo = $('.invoice_no').html();
                     var product = $('.product_id').html();
                     var n = ($('.neworderbody tr').length - 0) + 1;
                     //var tr = '<tr><td class="no">' + n + '</td>' +
@@ -406,6 +415,7 @@
                         '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                         '<td style="display: none"><div id="product_unit_id_'+n+'"><select class="form-control product_unit_id select2" name="product_unit_id[]" id="product_unit_id_'+n+'" required>' + productUnit + '</select></div></td>' +
                         '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
+                        '<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
                         '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
                         '<td><input type="text" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                         '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
@@ -505,6 +515,7 @@
                         data : {
                             store_id : store_id,
                             current_product_id : current_product_id,
+                            current_row : current_row
                         },
                         success : function (res){
                             //console.log(res)
@@ -514,6 +525,53 @@
                             $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                             $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                             $("#product_unit_id_"+current_row).html(res.data.unitOptions);
+                            $("#invoice_no_"+current_row).html(res.data.invoiceNos);
+                            //$("#stock_qty_"+current_row).val(res.data.current_stock);
+                            //$("#price_"+current_row).val(res.data.mrp_price);
+                        },
+                        error : function (err){
+                            console.log(err)
+                        }
+                    })
+                }else{
+                    alert('Please select first store!');
+                    location.reload();
+                }
+            }
+
+            function getInvoiceVal(row,sel)
+            {
+                var store_id = $('#store_id').val();
+                var current_product_id = $('#product_id_'+row).val();
+                if(store_id){
+                    // console.log(store_id)
+                    // console.log(row)
+                    // console.log(sel.value)
+
+                    var current_row = row;
+                    var current_invoice_no = sel.value;
+                    if(current_row > 1){
+                        var previous_row = current_row - 1;
+                        var previous_product_id = $('#product_id_'+previous_row).val();
+                        if(previous_product_id === current_product_id){
+                            $('#product_id_'+current_row).val('');
+                            alert('You selected same product, Please selected another product!');
+                            return false
+                        }
+                    }
+
+                    $.ajax({
+                        url : "{{URL('product-sale-invoice-data')}}",
+                        method : "get",
+                        data : {
+                            store_id : store_id,
+                            current_product_id : current_product_id,
+                            current_invoice_no : current_invoice_no,
+                            current_row : current_row,
+                        },
+                        success : function (res){
+                            //console.log(res)
+                            console.log(res.data)
                             $("#stock_qty_"+current_row).val(res.data.current_stock);
                             $("#price_"+current_row).val(res.data.mrp_price);
                         },
@@ -526,6 +584,7 @@
                     location.reload();
                 }
             }
+
             function modal_customer(){
                 $('#customar_modal').modal('show');
             }

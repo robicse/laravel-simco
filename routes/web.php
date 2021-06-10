@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('check-barcode','ProductController@checkBarcode');
     Route::get('product-relation-data','ProductPurchaseController@productRelationData');
     Route::get('product-sale-relation-data','ProductSaleController@productSaleRelationData');
+    Route::get('product-sale-invoice-data','ProductSaleController@productSaleInvoiceRelationData');
     Route::get('stock-list','StockController@stockList')->name('stock.index');
     Route::get('stock-summary-list','StockController@stockSummaryList')->name('stock.summary.list');
     Route::get('stock-low-list','StockController@stockLowList')->name('stock.low.list');

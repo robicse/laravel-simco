@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Due;
+use App\InvoiceStock;
 use App\Party;
 use App\Product;
 use App\ProductBrand;
@@ -12,8 +13,10 @@ use App\ProductSale;
 use App\ProductSaleDetail;
 use App\ProductSubCategory;
 use App\ProductUnit;
+use App\Profit;
 use App\Stock;
 use App\Transaction;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
@@ -269,6 +272,7 @@ class ProductSaleController extends Controller
             for($i=0; $i<$row_count;$i++)
             {
                 $product_id = $request->product_id[$i];
+                $purchase_invoice_no = $request->invoice_no[$i];
 
                 // product purchase detail
                 $purchase_sale_detail = new ProductSaleDetail();
@@ -285,7 +289,8 @@ class ProductSaleController extends Controller
                 $purchase_sale_detail->save();
 
 
-                $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+                // product stock
+                $check_previous_stock = Stock::where('store_id',$request->store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
                 }else{
@@ -304,6 +309,58 @@ class ProductSaleController extends Controller
                 $stock->stock_out = $request->qty[$i];
                 $stock->current_stock = $previous_stock - $request->qty[$i];
                 $stock->save();
+
+
+
+                // invoice wise product stock
+                $check_previous_invoice_stock = InvoiceStock::where('store_id',$request->store_id)
+                    ->where('purchase_invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$product_id)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+
+                if(!empty($check_previous_invoice_stock)){
+                    $previous_invoice_stock = $check_previous_invoice_stock;
+                }else{
+                    $previous_invoice_stock = 0;
+                }
+                // product stock
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $insert_id;
+                $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
+                $invoice_stock->invoice_no = $invoice_no;
+                $invoice_stock->store_id = $request->store_id;
+                $invoice_stock->date = $request->date;
+                $invoice_stock->product_id = $product_id;
+                $invoice_stock->stock_type = 'sale';
+                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->stock_in = 0;
+                $invoice_stock->stock_out = $request->qty[$i];
+                $invoice_stock->current_stock = $previous_invoice_stock - $request->qty[$i];
+                $invoice_stock->save();
+
+
+                $profit_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$product_id)
+                    ->pluck('profit_amount')
+                    ->first();
+
+                // profit table
+                $profit = new Profit();
+                $profit->ref_id = $insert_id;
+                $profit->purchase_invoice_no = $purchase_invoice_no;
+                $profit->invoice_no =$invoice_no;;
+                $profit->user_id = Auth::id();
+                $profit->store_id = $request->store_id;
+                $profit->type = 'Sale';
+                $profit->product_id = $product_id;
+                $profit->qty = $request->qty[$i];
+                $profit->profit_amount = $profit_amount*$request->qty[$i];
+                $profit->date = $request->date;
+                $profit->save();
+
             }
 
             // due
@@ -501,10 +558,11 @@ class ProductSaleController extends Controller
     public function productSaleRelationData(Request $request){
         $store_id = $request->store_id;
         $product_id = $request->current_product_id;
-        $current_stock = Stock::where('store_id',$store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
-        $mrp_price = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
-            ->where('store_id',$store_id)->where('product_id',$product_id)
-            ->max('product_purchase_details.mrp_price');
+        $current_row = $request->current_row;
+//        $current_stock = Stock::where('store_id',$store_id)->where('product_id',$product_id)->latest()->pluck('current_stock')->first();
+//        $mrp_price = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
+//            ->where('store_id',$store_id)->where('product_id',$product_id)
+//            ->max('product_purchase_details.mrp_price');
             //->pluck('product_purchase_details.mrp_price')
             //->first();
 
@@ -513,12 +571,13 @@ class ProductSaleController extends Controller
         $product_brand_id = Product::where('id',$product_id)->pluck('product_brand_id')->first();
         $product_unit_id = Product::where('id',$product_id)->pluck('product_unit_id')->first();
         $options = [
-            'mrp_price' => $mrp_price,
-            'current_stock' => $current_stock,
+            //'mrp_price' => $mrp_price,
+            //'current_stock' => $current_stock,
             'categoryOptions' => '',
             'subCategoryOptions' => '',
             'brandOptions' => '',
             'unitOptions' => '',
+            'invoiceNos' => '',
         ];
 
 
@@ -580,6 +639,70 @@ class ProductSaleController extends Controller
             $options['unitOptions'] .= "<option value=''>No Data Found!</option>";
             $options['unitOptions'] .= "</select>";
         }
+
+
+//        $invoice_nos = InvoiceStock::where('store_id',$store_id)
+//            ->where('product_id',$product_id)
+//            ->where('current_stock','>',0)
+//            ->select('invoice_no','store_id','product_id')
+//            ->groupBy('invoice_no','store_id','product_id')
+//            ->get();
+
+        $invoice_nos = DB::table('product_purchases')
+            ->leftJoin('invoice_stocks','product_purchases.invoice_no','invoice_stocks.invoice_no')
+            ->where('product_purchases.store_id',$store_id)
+            ->where('invoice_stocks.product_id',$product_id)
+            ->where('invoice_stocks.current_stock','>',0)
+            ->select('invoice_stocks.invoice_no','invoice_stocks.store_id','invoice_stocks.product_id')
+            ->orderBy('product_purchases.invoice_no')
+            ->groupBy('product_purchases.invoice_no','invoice_stocks.store_id','invoice_stocks.product_id')
+            ->get();
+
+        if(count($invoice_nos) > 0){
+            $options['invoiceNos'] = "<select class='form-control invoice_no select2' id='invoice_no_$current_row' onchange='getInvoiceVal($current_row,this);' name='invoice_no[]'>";
+            $options['invoiceNos'] .= "<option value=''>Select One</option>";
+            foreach($invoice_nos as $data){
+                $current_stock = InvoiceStock::where('store_id',$data->store_id)
+                    ->where('product_id',$data->product_id)
+                    ->where('invoice_no',$data->invoice_no)
+                    ->where('current_stock','>',0)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+                $options['invoiceNos'] .= "<option value='$data->invoice_no'>$data->invoice_no ($current_stock)</option>";
+            }
+            $options['invoiceNos'] .= "</select>";
+        }else{
+            $options['invoiceNos'] = "<select class='form-control' name='invoice_no[]'>";
+            $options['invoiceNos'] .= "<option value=''>No Data Found!</option>";
+            $options['invoiceNos'] .= "</select>";
+        }
+
+        return response()->json(['success'=>true,'data'=>$options]);
+    }
+
+    public function productSaleInvoiceRelationData(Request $request){
+        //dd($request->all());
+        $current_store_id = $request->store_id;
+        $current_product_id = $request->current_product_id;
+        $current_invoice_no = $request->current_invoice_no;
+        $current_row = $request->current_row;
+        $current_stock = InvoiceStock::where('store_id',$current_store_id)
+            ->where('product_id',$current_product_id)
+            ->where('purchase_invoice_no',$current_invoice_no)
+            ->latest()
+            ->pluck('current_stock')
+            ->first();
+        $mrp_price = ProductPurchaseDetail::join('product_purchases', 'product_purchase_details.product_purchase_id', '=', 'product_purchases.id')
+            ->where('product_purchases.store_id',$current_store_id)
+            ->where('product_purchases.invoice_no',$current_invoice_no)
+            ->where('product_purchase_details.product_id',$current_product_id)
+            ->max('product_purchase_details.mrp_price');
+
+        $options = [
+            'mrp_price' => $mrp_price,
+            'current_stock' => $current_stock,
+        ];
 
         return response()->json(['success'=>true,'data'=>$options]);
     }
