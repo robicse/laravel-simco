@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Due;
+use App\InvoiceStock;
 use App\Party;
 use App\Product;
 use App\ProductBrand;
@@ -16,6 +17,7 @@ use App\ProductUnit;
 use App\Stock;
 use App\Transaction;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
@@ -79,6 +81,25 @@ class ProductProductionController extends Controller
             return redirect()->route('productProductions.index');
         }
 
+
+        // purchase invoice no
+        $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
+        if(!empty($get_invoice_no)){
+            $get_invoice = str_replace("purchase-","",$get_invoice_no);
+            $invoice_no = $get_invoice+1;
+        }else{
+            $invoice_no = 1000;
+        }
+
+        // production invoice no
+        $get_invoice_no_product_production = ProductProduction::latest()->pluck('invoice_no')->first();
+        if(!empty($get_invoice_no_product_production)){
+            $get_invoice_no_product_production = str_replace("production-","",$get_invoice_no_product_production);
+            $invoice_no_product_production = $get_invoice_no_product_production+1;
+        }else{
+            $invoice_no_product_production = 1000;
+        }
+
         if($request->products == 2){
             $this->validate($request, [
                 'store_id'=> 'required',
@@ -97,8 +118,11 @@ class ProductProductionController extends Controller
                 $total_amount += $request->sub_total[$i];
             }
 
+
+
             // product Production
             $productProduction = new ProductProduction();
+            $productProduction->invoice_no = 'production-'.$invoice_no_product_production;
             $productProduction->user_id = Auth::id();
             $productProduction->store_id = $request->store_id;
             $productProduction->total_amount = $total_amount;
@@ -113,6 +137,7 @@ class ProductProductionController extends Controller
                 {
                     // product production detail
                     $purchase_production_detail = new ProductProductionDetail();
+                    $purchase_production_detail->invoice_no = 'production-'.$invoice_no_product_production;
                     $purchase_production_detail->product_production_id = $insert_id;
                     $purchase_production_detail->product_category_id = $request->product_category_id[$i];
                     $purchase_production_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
@@ -171,11 +196,12 @@ class ProductProductionController extends Controller
 
                 // product purchase
                 $productPurchase = new ProductPurchase();
+                $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
                 $productPurchase ->party_id = $own_party_id;
                 $productPurchase ->store_id = $request->store_id;
                 $productPurchase ->user_id = Auth::id();
                 $productPurchase ->date = $request->date;
-                $productPurchase ->total_amount = $total_amount;
+                $productPurchase ->total_amount = $request->existing_qty*$request->existing_price;
                 $productPurchase ->purchase_product_type = 'Finish Goods';
                 $productPurchase->ref_id = $insert_id;
                 $productPurchase->save();
@@ -186,6 +212,7 @@ class ProductProductionController extends Controller
 
                     // product purchase detail
                     $purchase_purchase_detail = new ProductPurchaseDetail();
+                    $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                     $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
                     $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
                     $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
@@ -195,6 +222,7 @@ class ProductProductionController extends Controller
                     $purchase_purchase_detail->price = $request->existing_price;
                     $purchase_purchase_detail->mrp_price = $request->existing_mrp_price;
                     $purchase_purchase_detail->sub_total = $request->existing_qty*$request->existing_price;
+                    $purchase_purchase_detail->profit_amount = $request->existing_mrp_price - $request->existing_qty;
                     $purchase_purchase_detail->barcode = $product_info->barcode;
                     $purchase_purchase_detail->ref_id = $insert_id;
                     $purchase_purchase_detail->save();
@@ -219,6 +247,24 @@ class ProductProductionController extends Controller
                     $stock->stock_out = 0;
                     $stock->current_stock = $previous_stock + $request->existing_qty;
                     $stock->save();
+
+
+                    // invoice wise stock
+                    $invoice_stock = new InvoiceStock();
+                    $invoice_stock->user_id = Auth::id();
+                    $invoice_stock->ref_id = $insert_id;
+                    $invoice_stock->purchase_invoice_no = 'purchase-'.$invoice_no;
+                    $invoice_stock->invoice_no = NULL;
+                    $invoice_stock->store_id = $request->store_id;
+                    $invoice_stock->product_id = $product_info->id;
+                    $invoice_stock->stock_product_type = 'Finish Goods';
+                    $invoice_stock->stock_type = 'purchase';
+                    $invoice_stock->previous_stock = 0;
+                    $invoice_stock->stock_in = $request->existing_qty;
+                    $invoice_stock->stock_out = 0;
+                    $invoice_stock->current_stock = 0 + $request->existing_qty;
+                    $invoice_stock->date = $request->date;
+                    $invoice_stock->save();
 
 
                     // transaction
@@ -290,6 +336,7 @@ class ProductProductionController extends Controller
                     $purchase_production_detail->save();
 
                     $product_id = $request->product_id[$i];
+                    // product stock
                     $check_previous_stock = Stock::where('product_id',$product_id)->latest('id','desc')->pluck('current_stock')->first();
                     if(!empty($check_previous_stock)){
                         $previous_stock = $check_previous_stock;
@@ -370,12 +417,13 @@ class ProductProductionController extends Controller
                     // for stock in
                     // product purchase
                     $productPurchase = new ProductPurchase();
-                    $productPurchase ->party_id = $own_party_id;
-                    $productPurchase ->store_id = $request->store_id;
-                    $productPurchase ->user_id = Auth::id();
-                    $productPurchase ->date = $request->date;
-                    $productPurchase ->total_amount = $request->new_price;
-                    $productPurchase ->purchase_product_type = 'Finish Goods';
+                    $productPurchase->invoice_no = 'purchase-'.$invoice_no;
+                    $productPurchase->party_id = $own_party_id;
+                    $productPurchase->store_id = $request->store_id;
+                    $productPurchase->user_id = Auth::id();
+                    $productPurchase->date = $request->date;
+                    $productPurchase->total_amount = $request->new_qty*$request->new_mrp_price;
+                    $productPurchase->purchase_product_type = 'Finish Goods';
                     $productPurchase->save();
                     $purchase_insert_id = $productPurchase->id;
                     if($purchase_insert_id)
@@ -384,6 +432,7 @@ class ProductProductionController extends Controller
 
                         // product purchase detail
                         $purchase_purchase_detail = new ProductPurchaseDetail();
+                        $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                         $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
                         $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
                         $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
@@ -393,6 +442,7 @@ class ProductProductionController extends Controller
                         $purchase_purchase_detail->price = $request->new_price;
                         $purchase_purchase_detail->mrp_price = $request->new_mrp_price;
                         $purchase_purchase_detail->sub_total = $request->new_qty*$request->new_mrp_price;
+                        $purchase_purchase_detail->profit_amount = $request->new_mrp_price - $request->new_qty;
                         $purchase_purchase_detail->barcode = $product_info->barcode;
                         $purchase_purchase_detail->ref_id = $insert_id;
                         $purchase_purchase_detail->save();
@@ -417,6 +467,23 @@ class ProductProductionController extends Controller
                         $stock->stock_out = 0;
                         $stock->current_stock = $previous_stock + $request->new_qty;
                         $stock->save();
+
+                        // invoice wise stock
+                        $invoice_stock = new InvoiceStock();
+                        $invoice_stock->user_id = Auth::id();
+                        $invoice_stock->ref_id = $insert_id;
+                        $invoice_stock->purchase_invoice_no = 'purchase-'.$invoice_no;
+                        $invoice_stock->invoice_no = NULL;
+                        $invoice_stock->store_id = $request->store_id;
+                        $invoice_stock->product_id = $product_info->id;
+                        $invoice_stock->stock_product_type = 'Finish Goods';
+                        $invoice_stock->stock_type = 'purchase';
+                        $invoice_stock->previous_stock = 0;
+                        $invoice_stock->stock_in = $request->new_qty;
+                        $invoice_stock->stock_out = 0;
+                        $invoice_stock->current_stock = 0 + $request->new_qty;
+                        $invoice_stock->date = $request->date;
+                        $invoice_stock->save();
 
 
                         // transaction

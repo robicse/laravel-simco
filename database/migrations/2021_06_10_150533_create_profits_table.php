@@ -23,6 +23,9 @@ class CreateProfitsTable extends Migration
             $table->enum('type', ['purchase','sale','sale return','production']);
             $table->bigInteger('product_id')->unsigned();
             $table->integer('qty');
+            $table->float('price',8,2);
+            $table->float('sub_total',8,2);
+            $table->float('discount_amount',8,2);
             $table->float('profit_amount',8,2);
             $table->string('date');
             $table->timestamps();

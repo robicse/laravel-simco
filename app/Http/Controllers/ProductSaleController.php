@@ -227,6 +227,24 @@ class ProductSaleController extends Controller
         ]);
 
         $row_count = count($request->product_id);
+        // minus stock validation
+        for($i=0; $i<$row_count;$i++)
+        {
+            $product_id = $request->product_id[$i];
+
+            // product stock
+            $check_previous_stock = Stock::where('store_id',$request->store_id)
+                ->where('product_id',$product_id)
+                ->latest()
+                ->pluck('current_stock')
+                ->first();
+            if(!empty($check_previous_stock) && $check_previous_stock == 0){
+                Toastr::success('Product Sale Created Successfully', 'Success');
+                return redirect()->back();
+            }
+
+        }
+
         $total_amount = 0;
         for($i=0; $i<$row_count;$i++)
         {
@@ -357,7 +375,10 @@ class ProductSaleController extends Controller
                 $profit->type = 'Sale';
                 $profit->product_id = $product_id;
                 $profit->qty = $request->qty[$i];
-                $profit->profit_amount = $profit_amount*$request->qty[$i];
+                $profit->price = $request->price[$i];
+                $profit->sub_total = $request->qty[$i]*$request->price[$i];
+                $profit->discount_amount = $request->discount_amount;
+                $profit->profit_amount = ($profit_amount*$request->qty[$i]) - $request->discount_amount;
                 $profit->date = $request->date;
                 $profit->save();
 
@@ -448,6 +469,24 @@ class ProductSaleController extends Controller
 
         $stock_id = $request->stock_id;
         $row_count = count($request->product_id);
+        // minus stock validation
+        for($i=0; $i<$row_count;$i++)
+        {
+            $product_id = $request->product_id[$i];
+
+            // product stock
+            $check_previous_stock = Stock::where('store_id',$request->store_id)
+                ->where('product_id',$product_id)
+                ->latest()
+                ->pluck('current_stock')
+                ->first();
+            if(!empty($check_previous_stock) && $check_previous_stock == 0){
+                Toastr::success('Product Sale Created Successfully', 'Success');
+                return redirect()->back();
+            }
+
+        }
+
         $total_amount = 0;
         for($i=0; $i<$row_count;$i++)
         {
@@ -649,13 +688,14 @@ class ProductSaleController extends Controller
 //            ->get();
 
         $invoice_nos = DB::table('product_purchases')
-            ->leftJoin('invoice_stocks','product_purchases.invoice_no','invoice_stocks.invoice_no')
+            ->join('invoice_stocks','product_purchases.invoice_no','invoice_stocks.purchase_invoice_no')
             ->where('product_purchases.store_id',$store_id)
             ->where('invoice_stocks.product_id',$product_id)
             ->where('invoice_stocks.current_stock','>',0)
-            ->select('invoice_stocks.invoice_no','invoice_stocks.store_id','invoice_stocks.product_id')
+            ->where('invoice_stocks.stock_product_type','Finish Goods')
+            ->select('product_purchases.invoice_no','product_purchases.store_id','invoice_stocks.product_id')
             ->orderBy('product_purchases.invoice_no')
-            ->groupBy('product_purchases.invoice_no','invoice_stocks.store_id','invoice_stocks.product_id')
+            ->groupBy('product_purchases.invoice_no','product_purchases.store_id','invoice_stocks.product_id')
             ->get();
 
         if(count($invoice_nos) > 0){
@@ -664,7 +704,7 @@ class ProductSaleController extends Controller
             foreach($invoice_nos as $data){
                 $current_stock = InvoiceStock::where('store_id',$data->store_id)
                     ->where('product_id',$data->product_id)
-                    ->where('invoice_no',$data->invoice_no)
+                    ->where('purchase_invoice_no',$data->invoice_no)
                     ->where('current_stock','>',0)
                     ->latest()
                     ->pluck('current_stock')

@@ -6,12 +6,12 @@ use App\Exports\DeliveryExport;
 use App\Exports\LossProfitExport;
 use App\Exports\LossProfitExportFilter;
 use App\Exports\TransactionExport;
+use App\Party;
 use App\Store;
 use Illuminate\Http\Request;
 use App\Transaction;
 use App\ProductPurchaseDetail;
-//use Illuminate\Support\Facades\DB;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionController extends Controller
@@ -47,6 +47,18 @@ class TransactionController extends Controller
         $end_date = $request->end_date ? $request->end_date : '';
         $stores = Store::all();
         return view('backend.transaction.loss_profit', compact('stores','start_date','end_date'));
+    }
+
+    public function partyDiscount(Request $request){
+        $party_id = $request->party_id ? $request->party_id : '';
+        $start_date = $request->start_date ? $request->start_date : '';
+        $end_date = $request->end_date ? $request->end_date : '';
+        $stores = Store::all();
+        $party = Party::all();
+
+
+
+        return view('backend.transaction.party_discount', compact('party','party_id','start_date','end_date','stores','party_discounts'));
     }
 
     public function deliveryList(){

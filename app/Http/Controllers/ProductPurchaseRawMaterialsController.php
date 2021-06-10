@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\InvoiceStock;
 use App\Party;
 use App\Product;
 use App\ProductBrand;
@@ -11,6 +12,7 @@ use App\ProductPurchaseDetail;
 use App\ProductSubCategory;
 use App\Stock;
 use App\Transaction;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
@@ -69,8 +71,17 @@ class ProductPurchaseRawMaterialsController extends Controller
             $total_amount += $request->sub_total[$i];
         }
 
+        $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
+        if(!empty($get_invoice_no)){
+            $get_invoice = str_replace("purchase-","",$get_invoice_no);
+            $invoice_no = $get_invoice+1;
+        }else{
+            $invoice_no = 1000;
+        }
+
         // product purchase
         $productPurchase = new ProductPurchase();
+        $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
@@ -88,6 +99,7 @@ class ProductPurchaseRawMaterialsController extends Controller
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
+                $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                 $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
                 $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
@@ -119,6 +131,24 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $stock->stock_out = 0;
                 $stock->current_stock = $previous_stock + $request->qty[$i];
                 $stock->save();
+
+                // invoice wise stock
+//                $invoice_stock = new InvoiceStock();
+//                $invoice_stock->user_id = Auth::id();
+//                $invoice_stock->ref_id = $insert_id;
+//                $invoice_stock->purchase_invoice_no = 'purchase-'.$invoice_no;
+//                $invoice_stock->invoice_no = NULL;
+//                $invoice_stock->store_id = $request->store_id;
+//                $invoice_stock->date = $request->date;
+//                $invoice_stock->product_id = $request->product_id[$i];
+//                $invoice_stock->stock_product_type = 'Raw Materials';
+//                $invoice_stock->stock_type = 'purchase';
+//                $invoice_stock->previous_stock = 0;
+//                $invoice_stock->stock_in = $request->qty[$i];
+//                $invoice_stock->stock_out = 0;
+//                $invoice_stock->current_stock = 0 + $request->qty[$i];
+//                $invoice_stock->date = date('Y-m-d');
+//                $invoice_stock->save();
             }
 
             // transaction

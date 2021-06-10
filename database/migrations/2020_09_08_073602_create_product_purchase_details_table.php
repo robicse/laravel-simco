@@ -25,7 +25,7 @@ class CreateProductPurchaseDetailsTable extends Migration
             $table->float('price',8,2);
             $table->float('mrp_price',8,2);
             $table->float('sub_total',8,2);
-            $table->float('profit_amount',8,2);
+            $table->float('profit_amount',8,2)->nullable();
             $table->string('expired_date')->nullable();
             $table->timestamps();
             $table->foreign('product_purchase_id')->references('id')->on('product_purchases')->onDelete('cascade');

@@ -74,15 +74,12 @@ class ProductPurchaseController extends Controller
         }
 
         $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
-        //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
             $get_invoice = str_replace("purchase-","",$get_invoice_no);
-            //$invoice_no = $get_invoice_no+1;
             $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
-        //dd($invoice_no);
 
         // product purchase
         $productPurchase = new ProductPurchase();
@@ -144,31 +141,21 @@ class ProductPurchaseController extends Controller
                 $stock->save();
 
                 // invoice wise stock
-                $check_previous_invoice_stock = InvoiceStock::where('product_id',$product_id)
-                    ->latest()
-                    ->pluck('current_stock')
-                    ->first();
-                if(!empty($check_previous_invoice_stock)){
-                    $previous_invoice_stock = $check_previous_invoice_stock;
-                }else{
-                    $previous_invoice_stock = 0;
-                }
-                // product stock
+
                 $invoice_stock = new InvoiceStock();
                 $invoice_stock->user_id = Auth::id();
                 $invoice_stock->ref_id = $insert_id;
                 $invoice_stock->purchase_invoice_no = 'purchase-'.$invoice_no;
                 $invoice_stock->invoice_no = NULL;
                 $invoice_stock->store_id = $request->store_id;
-                $invoice_stock->date = $request->date;
                 $invoice_stock->product_id = $request->product_id[$i];
                 $invoice_stock->stock_product_type = 'Finish Goods';
                 $invoice_stock->stock_type = 'purchase';
-                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->previous_stock = 0;
                 $invoice_stock->stock_in = $request->qty[$i];
                 $invoice_stock->stock_out = 0;
-                $invoice_stock->current_stock = $previous_invoice_stock + $request->qty[$i];
-                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->current_stock = 0 + $request->qty[$i];
+                $invoice_stock->date = $request->date;
                 $invoice_stock->save();
             }
 

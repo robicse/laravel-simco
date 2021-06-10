@@ -100,6 +100,7 @@
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('transaction.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">Transaction List</span></a></li>
                 {{--                <li class="custom_li_bg"><a class="app-menu__item" href="{{ route('delivery.index') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Delivery Charge List</span></a></li>--}}
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('transaction.partyDiscount') }}"><i class="app-menu__icon fas fa fa-circle"></i> <span class="app-menu__label">Party Discount</span></a></li>
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('transaction.lossProfit') }}"><i class="app-menu__icon fas fa fa-circle"></i> <span class="app-menu__label">Loss/Profit</span></a></li>
             </ul>
         </li>

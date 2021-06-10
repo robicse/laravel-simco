@@ -31,11 +31,22 @@
                         <div class="col-md-3 ">
                             <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                 <div class="info">
-                                    <h4>Total Purchase</h4>
+                                    <h4>Total FG Purchases</h4>
                                     @php
-                                        $sum_purchase_price = sum_purchase_price($store->id);
+                                        $sum_finish_goods_purchase_price = sum_finish_goods_purchase_price($store->id);
                                     @endphp
-                                    <p><b>{{number_format($sum_purchase_price, 2, '.', '')}}</b></p>
+                                    <p><b>{{number_format($sum_finish_goods_purchase_price, 2, '.', '')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                <div class="info">
+                                    <h4>Total RM Purchases</h4>
+                                    @php
+                                        $sum_finish_raw_materials_price = sum_finish_raw_materials_price($store->id);
+                                    @endphp
+                                    <p><b>{{number_format($sum_finish_raw_materials_price, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +81,7 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
                         <div class="col-md-3">
-                            <div class="widget-small warning coloured-icon"><i class="icon fas fa-file-invoice-dollar"></i>
+                            <div class="widget-small primary coloured-icon"><i class="icon fas fa-file-invoice-dollar"></i>
                                 <div class="info">
                                     <h4>Total Expense</h4>
                                     @php
@@ -81,7 +92,7 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                            <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
                                 <div class="info">
                                     <h4>Final Loss/Profit</h4>
                                     <p>
@@ -103,19 +114,21 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
-                                <div class="info">
-                                    <h4>Total Discount</h4>
-                                    @php
-                                        $product_sale_discount = product_sale_discount($store->id);
-                                    @endphp
-                                    <p><b>{{number_format($product_sale_discount, 2, '.', '')}}</b></p>
+                            <a  href="{{ route('transaction.partyDiscount') }}">
+                                <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                    <div class="info">
+                                        <h4>Total Discount</h4>
+                                        @php
+                                            $product_sale_discount = product_sale_discount($store->id);
+                                        @endphp
+                                        <p><b>{{number_format($product_sale_discount, 2, '.', '')}}</b></p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('stock.summary.list') }}">
-                                <div class="widget-small primary coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                <div class="widget-small info coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                     <div class="info">
                                         <h4>Stock Summary</h4>
                                         <p><b></b></p>
@@ -125,7 +138,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('stock.low.list') }}">
-                                <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
+                                <div class="widget-small primary coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                     <div class="info">
                                         <h4>Stock Low</h4>
                                         <p><b></b></p>
@@ -135,7 +148,7 @@
                         </div>
                         <div class="col-md-3 ">
                             <a href="{{ route('productCategories.create') }}">
-                                <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                <div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                     <div class="info">
                                         <h4>Product Category</h4>
                                     </div>
@@ -171,7 +184,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('party.create') }}">
-                                <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+                                <div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                                     <div class="info">
                                         <h4>Party</h4>
                                         <p><b></b></p>
@@ -181,7 +194,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('productPurchases.create') }}">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
+                                <div class="widget-small danger coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
                                         <h4>FG Stock In</h4>
                                         <p><b></b></p>
                                     </div>
@@ -200,7 +213,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('productSales.create') }}">
-                                <div class="widget-small info coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i> <div class="info">
+                                <div class="widget-small primary coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i> <div class="info">
                                         <h4>FG Whole Sale</h4>
                                         <p><b></b></p>
                                     </div>
@@ -209,7 +222,7 @@
                         </div>
                         <div class="col-md-3">
                             <a  href="{{ route('returnable.sale.product') }}">
-                                <div class="widget-small info coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
+                                <div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
                                         <h4>FG Sale Return</h4>
                                         <p><b></b></p>
                                     </div>
@@ -218,7 +231,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('productSaleReplacement.create') }}">
-                                <div class="widget-small info coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i>
+                                <div class="widget-small danger coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i>
                                     <div class="info">
                                         <h4>FG Sale Replace</h4>
                                         <p><b></b></p>
@@ -238,7 +251,7 @@
                         </div>
                         <div class="col-md-3">
                             <a  href="{{ route('productProductions.create') }}">
-                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>
+                                <div class="widget-small primary coloured-icon"><i class="icon fas fa-file-invoice"></i>
                                     <div class="info">
                                         <h4> Production Raw Materials</h4>
                                         <p><b></b></p>

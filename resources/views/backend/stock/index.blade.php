@@ -196,7 +196,7 @@
                                                     ->first();
                                                 ?>
                                             @else
-                                                {{ $stock->stock_type}}
+                                                {{ ucfirst($stock->stock_type)}}
                                             @endif
                                         </td>
                                         <td>{{ $stock->previous_stock}}</td>
