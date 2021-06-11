@@ -32,10 +32,10 @@ if (!function_exists('sum_finish_goods_purchase_price')) {
     }
 }
 
-if (!function_exists('sum_finish_raw_materials_price')) {
-    function sum_finish_raw_materials_price($store_id)
+if (!function_exists('sum_raw_materials_price')) {
+    function sum_raw_materials_price($store_id)
     {
-        $sum_finish_raw_materials_price = 0;
+        $sum_raw_materials_price = 0;
         $productPurchaseDetails = DB::table('product_purchase_details')
             ->join('product_purchases', 'product_purchases.id', '=', 'product_purchase_details.product_purchase_id')
             ->select('product_id', 'product_category_id', 'product_sub_category_id', 'product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
@@ -48,13 +48,20 @@ if (!function_exists('sum_finish_raw_materials_price')) {
             ->groupBy('product_brand_id')
             ->get();
 
+        $product_productions = DB::table('product_productions')
+            ->select(DB::raw('SUM(total_amount) as sum_production_total_amount'))
+            ->where('store_id',$store_id)
+            ->first();
+
+        $sum_production_total_amount = $product_productions->sum_production_total_amount;
+
         if (!empty($productPurchaseDetails)) {
             foreach ($productPurchaseDetails as $key => $productPurchaseDetail) {
-                $sum_finish_raw_materials_price += $productPurchaseDetail->sub_total;
+                $sum_raw_materials_price += $productPurchaseDetail->sub_total;
             }
         }
 
-        return $sum_finish_raw_materials_price;
+        return $sum_raw_materials_price - $sum_production_total_amount;
     }
 }
 

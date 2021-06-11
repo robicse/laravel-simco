@@ -44,7 +44,7 @@
                                     <th>Stock Qty</th>
                                     <th>Used Qty <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
-                                    <th>Costing Price <small class="requiredCustom">*</small></th>
+                                    <th>Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
                                     <th>Action</th>
 
@@ -108,10 +108,10 @@
 {{--                                            <input type="text" min="1" max="" class="production form-control" name="production[]" value="{{$productProductionDetail->production}}" required >--}}
 {{--                                        </td>--}}
                                         <td width="15%">
-                                            <input type="number" id="price_{{$key}}" min="1" max="" class="price form-control" name="price[]"  value="{{$productProductionDetail->price}}" required >
+                                            <input type="number" id="price_{{$key}}" min="1" max="" class="price form-control" name="price[]"  value="{{$productProductionDetail->price}}" readonly required >
                                         </td>
                                         <td width="15%">
-                                            <input type="text" id="sub_total_{{$key}}" class="amount form-control" name="sub_total[]" value="{{$productProductionDetail->sub_total}}">
+                                            <input type="text" id="sub_total_{{$key}}" class="amount form-control" name="sub_total[]" value="{{$productProductionDetail->sub_total}}" readonly>
                                         </td>
 {{--                                        <td><input type="button"  class="btn btn-danger" onclick="ConfirmDelete({{$key}})" value="Delete"></td>--}}
                                         <td><input type="button" class="btn btn-danger delete" value="x"></td>
@@ -515,6 +515,8 @@
                                 $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                                 $("#stock_qty_"+current_row).val(res.data.current_stock);
                                 $("#price_"+current_row).val(res.data.mrp_price);
+                                $("#existing_price").val(res.data.mrp_price);
+                                $("#new_price").val(res.data.mrp_price);
                             },
                             error : function (err){
                                 console.log(err)

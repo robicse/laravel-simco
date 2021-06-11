@@ -44,9 +44,9 @@
                                 <div class="info">
                                     <h4>Total RM Purchases</h4>
                                     @php
-                                        $sum_finish_raw_materials_price = sum_finish_raw_materials_price($store->id);
+                                        $sum_raw_materials_price = sum_raw_materials_price($store->id);
                                     @endphp
-                                    <p><b>{{number_format($sum_finish_raw_materials_price, 2, '.', '')}}</b></p>
+                                    <p><b>{{number_format($sum_raw_materials_price, 2, '.', '')}}</b></p>
                                 </div>
                             </div>
                         </div>
