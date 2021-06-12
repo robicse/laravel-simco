@@ -377,10 +377,7 @@ class ProductSaleController extends Controller
                 $invoice_stock->save();
 
 
-                $profit_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
-                    ->where('product_id',$product_id)
-                    ->pluck('profit_amount')
-                    ->first();
+                $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
 
                 // profit table
                 $profit = new Profit();
@@ -536,6 +533,7 @@ class ProductSaleController extends Controller
         {
             $product_id = $request->product_id[$i];
             $purchase_invoice_no = $request->invoice_no[$i];
+            $request_qty = $request->qty[$i];
 
             $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
             $purchase_qty = $product_purchase_details_info->qty;
@@ -556,14 +554,19 @@ class ProductSaleController extends Controller
 
 
             // update purchase details table stock status
-            $total_sale_qty = $purchase_previous_sale_qty + $request->qty[$i];
-            $product_purchase_details_info->sale_qty = $total_sale_qty;
-            if($total_sale_qty == $purchase_qty){
-                $product_purchase_details_info->qty_stock_status = 'Not Available';
-            }else{
-                $product_purchase_details_info->qty_stock_status = 'Available';
+            if($request_qty != $purchase_previous_sale_qty){
+                if($request_qty == $purchase_qty){
+                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+                }else{
+                    $product_purchase_details_info->qty_stock_status = 'Available';
+                }
+                $product_purchase_details_info->sale_qty = $request_qty;
+                $product_purchase_details_info->save();
             }
-            $product_purchase_details_info->save();
+
+
+
+
 
 
 
@@ -578,7 +581,7 @@ class ProductSaleController extends Controller
             $stock_out = $stock_row->stock_out;
             //$current_stock = $stock_row->current_stock;
 
-            $request_qty = $request->qty[$i];
+
             if($stock_out != $request_qty){
                 $stock_row->user_id = Auth::id();
                 $stock_row->store_id = $request->store_id;
@@ -586,13 +589,8 @@ class ProductSaleController extends Controller
                 $stock_row->previous_stock = $previous_stock;
                 $stock_row->stock_in = 0;
                 $stock_row->stock_out = $request_qty;
-                if($request_qty > $stock_out){
-                    $new_stock_out = $request_qty - $stock_out;
-                    $stock_row->current_stock = $new_stock_out;
-                }else{
-                    $new_stock_out = $stock_out - $request_qty;
-                    $stock_row->current_stock = $new_stock_out;
-                }
+                $new_stock_out = $previous_stock - $request_qty;
+                $stock_row->current_stock = $new_stock_out;
                 $stock_row->update();
             }
 
@@ -603,9 +601,7 @@ class ProductSaleController extends Controller
             $previous_invoice_stock = $invoice_stock_row->previous_stock;
             $invoice_stock_out = $invoice_stock_row->stock_out;
 
-            $request_qty = $request->qty[$i];
             if($invoice_stock_out != $request_qty){
-
                 $invoice_stock_row->user_id = Auth::id();
                 $invoice_stock_row->store_id = $store_id;
                 $invoice_stock_row->date = $request->date;
@@ -613,13 +609,8 @@ class ProductSaleController extends Controller
                 $invoice_stock_row->previous_stock = $previous_invoice_stock;
                 $invoice_stock_row->stock_in = 0;
                 $invoice_stock_row->stock_out = $request_qty;
-                if($request_qty > $stock_out){
-                    $new_stock_out = $request_qty - $stock_out;
-                    $invoice_stock_row->current_stock = $new_stock_out;
-                }else{
-                    $new_stock_out = $stock_out - $request_qty;
-                    $invoice_stock_row->current_stock = $new_stock_out;
-                }
+                $new_stock_out = $previous_invoice_stock - $request_qty;
+                $invoice_stock_row->current_stock = $new_stock_out;
                 $invoice_stock_row->update();
             }
 

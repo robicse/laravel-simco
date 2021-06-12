@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\InvoiceStock;
 use App\Party;
 use App\ProductPurchase;
 use App\ProductPurchaseDetail;
+use App\Profit;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\ProductSale;
 use App\ProductSaleDetail;
@@ -75,12 +78,112 @@ class ProductSaleReturnController extends Controller
             $productSaleReturnDetail->reason = $request->reason[$i];
             $productSaleReturnDetail->update();
 
-            $total_amount += $request->price[$i];
+            $total_amount += $request->price[$i]*$request->price[$i];
+            $request_qty = $request->qty[$i];
+
+
+
+            $product_id = $productSaleReturnDetail->product_id;
+            $product_sale_return = ProductSaleReturn::find($request->product_sale_return_id);
+            $invoice_no = $product_sale_return->invoice_no;
+            $sale_invoice_no = $product_sale_return->sale_invoice_no;
+            $purchase_invoice_no = DB::table('product_sale_details')
+                ->join('product_sales','product_sale_details.product_sale_id','product_sales.id')
+                ->where('product_sales.invoice_no',$sale_invoice_no)
+                ->latest('product_sale_details.purchase_invoice_no')
+                ->pluck('product_sale_details.purchase_invoice_no')
+                ->first();
+
+            // update purchase details table stock status
+            $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+            $purchase_qty = $product_purchase_details_info->qty;
+            $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+            $total_sale_qty = $purchase_previous_sale_qty - $request->qty[$i];
+            $product_purchase_details_info->sale_qty = $total_sale_qty;
+            if($total_sale_qty == $purchase_qty){
+                $product_purchase_details_info->qty_stock_status = 'Not Available';
+            }else{
+                $product_purchase_details_info->qty_stock_status = 'Available';
+            }
+            $product_purchase_details_info->save();
+
+
+            // product stock
+            $store_id=$product_sale_return->store_id;
+            $stock_row = current_stock_row($store_id,'Finish Goods','sale return',$product_id);
+            $previous_stock = $stock_row->previous_stock;
+            $stock_out = $stock_row->stock_out;
+            //$current_stock = $stock_row->current_stock;
+
+
+            if($stock_out != $request_qty){
+                $stock_row->user_id = Auth::id();
+                $stock_row->store_id = $store_id;
+                $stock_row->product_id = $product_id;
+                $stock_row->previous_stock = $previous_stock;
+                $stock_row->stock_in = $request_qty;
+                $stock_row->stock_out = 0;
+                $new_stock_out = $previous_stock + $request_qty;
+                $stock_row->current_stock = $new_stock_out;
+                $stock_row->update();
+            }
+
+
+
+            // invoice stock
+            $invoice_stock_row = current_invoice_stock_row($store_id,'Finish Goods','sale return',$product_id,$purchase_invoice_no,$invoice_no);
+            $previous_invoice_stock = $invoice_stock_row->previous_stock;
+            $invoice_stock_out = $invoice_stock_row->stock_out;
+
+            if($invoice_stock_out != $request_qty){
+                $invoice_stock_row->user_id = Auth::id();
+                $invoice_stock_row->store_id = $store_id;
+                $invoice_stock_row->date = date('Y-m-d');
+                $invoice_stock_row->product_id = $product_id;
+                $invoice_stock_row->previous_stock = $previous_invoice_stock;
+                $invoice_stock_row->stock_in = $request_qty;
+                $invoice_stock_row->stock_out = 0;
+                $new_stock_out = $previous_invoice_stock + $request_qty;
+                $invoice_stock_row->current_stock = $new_stock_out;
+                $invoice_stock_row->update();
+            }
+
+
+
+
+
+            $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+
+            // profit table
+            $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
+            $profit->user_id = Auth::id();
+            $profit->store_id = $store_id;
+            $profit->product_id = $product_id;
+            $profit->qty = $request_qty;
+            $profit->price = $request->price[$i];
+            $profit->sub_total = $request_qty*$request->price[$i];
+            $profit->discount_amount = 0;
+            $profit->profit_amount = -($profit_amount*$request_qty);
+            $profit->date = date('Y-m-d');
+            $profit->update();
         }
 
         $productSaleReturn = ProductSaleReturn::find($request->product_sale_return_id);
         $productSaleReturn->total_amount = $total_amount;
         $productSaleReturn->update();
+
+
+
+
+        // transaction
+        $transaction = Transaction::where('invoice_no',$productSaleReturn->invoice_no)->first();
+        $transaction->user_id = Auth::id();
+        $transaction->store_id = $store_id;
+        //$transaction->payment_type = $request->payment_type;
+        //$transaction->check_number = $request->check_number;
+        $transaction->date = date('Y-m-d');
+        $transaction->amount = $total_amount;
+        $transaction->save();
 
         Toastr::success('Product Sale Return Updated Successfully', 'Success');
         return redirect()->route('productSaleReturns.index');
@@ -165,6 +268,7 @@ class ProductSaleReturnController extends Controller
         //dd($request->all());
         $row_count = count($request->return_qty);
         $productSale = ProductSale::where('id',$request->product_sale_id)->first();
+        $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->pluck('purchase_invoice_no')->first();
         //dd($row_count);
 
         $total_amount = 0;
@@ -207,6 +311,19 @@ class ProductSaleReturnController extends Controller
 
                     $product_id = $productSaleDetail->product_id;
 
+                    // update purchase details table stock status
+                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                    $purchase_qty = $product_purchase_details_info->qty;
+                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+                    $total_sale_qty = $purchase_previous_sale_qty - $request->return_qty[$i];
+                    $product_purchase_details_info->sale_qty = $total_sale_qty;
+                    if($total_sale_qty == $purchase_qty){
+                        $product_purchase_details_info->qty_stock_status = 'Not Available';
+                    }else{
+                        $product_purchase_details_info->qty_stock_status = 'Available';
+                    }
+                    $product_purchase_details_info->save();
+
 
                     $check_previous_stock = Stock::where('product_id', $product_id)->latest()->pluck('current_stock')->first();
                     if (!empty($check_previous_stock)) {
@@ -228,6 +345,55 @@ class ProductSaleReturnController extends Controller
                     $stock->current_stock = $previous_stock + $request->return_qty[$i];
                     $stock->date = date('Y-m-d');
                     $stock->save();
+
+                    // invoice wise product stock
+                    $check_previous_invoice_stock = InvoiceStock::where('store_id',$productSale->store_id)
+                        ->where('purchase_invoice_no',$purchase_invoice_no)
+                        ->where('product_id',$product_id)
+                        ->latest()
+                        ->pluck('current_stock')
+                        ->first();
+
+                    if(!empty($check_previous_invoice_stock)){
+                        $previous_invoice_stock = $check_previous_invoice_stock;
+                    }else{
+                        $previous_invoice_stock = 0;
+                    }
+                    // product stock
+                    $invoice_stock = new InvoiceStock();
+                    $invoice_stock->user_id = Auth::id();
+                    $invoice_stock->ref_id = $insert_id;
+                    $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
+                    $invoice_stock->invoice_no = 'return-'.$productSale->invoice_no;
+                    $invoice_stock->store_id = $productSale->store_id;
+                    $invoice_stock->date = $request->date;
+                    $invoice_stock->product_id = $product_id;
+                    $invoice_stock->stock_type = 'sale return';
+                    $invoice_stock->previous_stock = $previous_invoice_stock;
+                    $invoice_stock->stock_in = $request->return_qty[$i];
+                    $invoice_stock->stock_out = 0;
+                    $invoice_stock->current_stock = $previous_invoice_stock + $request->return_qty[$i];
+                    $invoice_stock->save();
+
+
+                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+
+                    // profit table
+                    $profit = new Profit();
+                    $profit->ref_id = $insert_id;
+                    $profit->purchase_invoice_no = $purchase_invoice_no;
+                    $profit->invoice_no ='return-'.$productSale->invoice_no;
+                    $profit->user_id = Auth::id();
+                    $profit->store_id = $productSale->store_id;
+                    $profit->type = 'Sale';
+                    $profit->product_id = $product_id;
+                    $profit->qty = $request->return_qty[$i];
+                    $profit->price = $request->total_amount[$i];
+                    $profit->sub_total = $request->return_qty[$i]*$request->total_amount[$i];
+                    $profit->discount_amount = 0;
+                    $profit->profit_amount = -($profit_amount*$request->return_qty[$i]);
+                    $profit->date = date('Y-m-d');
+                    $profit->save();
 
                 }
             }
