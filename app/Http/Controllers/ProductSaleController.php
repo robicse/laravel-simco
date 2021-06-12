@@ -292,8 +292,14 @@ class ProductSaleController extends Controller
                 $product_id = $request->product_id[$i];
                 $purchase_invoice_no = $request->invoice_no[$i];
 
+
+                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                $purchase_qty = $product_purchase_details_info->qty;
+                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+
                 // product purchase detail
                 $purchase_sale_detail = new ProductSaleDetail();
+                $purchase_sale_detail->purchase_invoice_no = $purchase_invoice_no;
                 $purchase_sale_detail->product_sale_id = $insert_id;
                 $purchase_sale_detail->return_type = $request->return_type[$i];
                 $purchase_sale_detail->product_category_id = $request->product_category_id[$i];
@@ -305,6 +311,17 @@ class ProductSaleController extends Controller
                 $purchase_sale_detail->price = $request->price[$i];
                 $purchase_sale_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_sale_detail->save();
+
+
+                // update purchase details table stock status
+                $total_sale_qty = $purchase_previous_sale_qty + $request->qty[$i];
+                $product_purchase_details_info->sale_qty = $total_sale_qty;
+                if($total_sale_qty == $purchase_qty){
+                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+                }else{
+                    $product_purchase_details_info->qty_stock_status = 'Available';
+                }
+                $product_purchase_details_info->save();
 
 
                 // product stock
@@ -455,6 +472,7 @@ class ProductSaleController extends Controller
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
         $transaction = Transaction::where('ref_id',$id)->first();
         $stock_id = Stock::where('ref_id',$id)->where('stock_type','purchase')->pluck('id')->first();
+
         return view('backend.productSale.edit',compact('parties','stores','products','productSale','productSaleDetails','productCategories','productSubCategories','productBrands','productUnits','transaction','stock_id'));
     }
 
@@ -517,6 +535,11 @@ class ProductSaleController extends Controller
         for($i=0; $i<$row_count;$i++)
         {
             $product_id = $request->product_id[$i];
+            $purchase_invoice_no = $request->invoice_no[$i];
+
+            $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+            $purchase_qty = $product_purchase_details_info->qty;
+            $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
 
             // product purchase detail
             $product_sale_detail_id = $request->product_Sale_detail_id[$i];
@@ -532,22 +555,92 @@ class ProductSaleController extends Controller
             $purchase_sale_detail->update();
 
 
-            $check_previous_stock = Stock::where('product_id',$product_id)->where('id','!=',$stock_id)->latest()->pluck('current_stock')->first();
-            if(!empty($check_previous_stock)){
-                $previous_stock = $check_previous_stock;
+            // update purchase details table stock status
+            $total_sale_qty = $purchase_previous_sale_qty + $request->qty[$i];
+            $product_purchase_details_info->sale_qty = $total_sale_qty;
+            if($total_sale_qty == $purchase_qty){
+                $product_purchase_details_info->qty_stock_status = 'Not Available';
             }else{
-                $previous_stock = 0;
+                $product_purchase_details_info->qty_stock_status = 'Available';
             }
+            $product_purchase_details_info->save();
+
+
+
+
+
+
             // product stock
-            $stock = Stock::where('ref_id',$id)->where('product_id',$product_id)->where('stock_type','sale')->first();
-            $stock->user_id = Auth::id();
-            $stock->store_id = $request->store_id;
-            $stock->product_id = $product_id;
-            $stock->previous_stock = $previous_stock;
-            $stock->stock_in = 0;
-            $stock->stock_out = $request->qty[$i];
-            $stock->current_stock = $previous_stock - $request->qty[$i];
-            $stock->update();
+            $store_id=$productSale->store_id;
+            $invoice_no=$productSale->invoice_no;
+            $stock_row = current_stock_row($store_id,'Finish Goods','sale',$product_id);
+            $previous_stock = $stock_row->previous_stock;
+            $stock_out = $stock_row->stock_out;
+            //$current_stock = $stock_row->current_stock;
+
+            $request_qty = $request->qty[$i];
+            if($stock_out != $request_qty){
+                $stock_row->user_id = Auth::id();
+                $stock_row->store_id = $request->store_id;
+                $stock_row->product_id = $product_id;
+                $stock_row->previous_stock = $previous_stock;
+                $stock_row->stock_in = 0;
+                $stock_row->stock_out = $request_qty;
+                if($request_qty > $stock_out){
+                    $new_stock_out = $request_qty - $stock_out;
+                    $stock_row->current_stock = $new_stock_out;
+                }else{
+                    $new_stock_out = $stock_out - $request_qty;
+                    $stock_row->current_stock = $new_stock_out;
+                }
+                $stock_row->update();
+            }
+
+
+
+            // invoice stock
+            $invoice_stock_row = current_invoice_stock_row($store_id,'Finish Goods','sale',$product_id,$purchase_invoice_no,$invoice_no);
+            $previous_invoice_stock = $invoice_stock_row->previous_stock;
+            $invoice_stock_out = $invoice_stock_row->stock_out;
+
+            $request_qty = $request->qty[$i];
+            if($invoice_stock_out != $request_qty){
+
+                $invoice_stock_row->user_id = Auth::id();
+                $invoice_stock_row->store_id = $store_id;
+                $invoice_stock_row->date = $request->date;
+                $invoice_stock_row->product_id = $product_id;
+                $invoice_stock_row->previous_stock = $previous_invoice_stock;
+                $invoice_stock_row->stock_in = 0;
+                $invoice_stock_row->stock_out = $request_qty;
+                if($request_qty > $stock_out){
+                    $new_stock_out = $request_qty - $stock_out;
+                    $invoice_stock_row->current_stock = $new_stock_out;
+                }else{
+                    $new_stock_out = $stock_out - $request_qty;
+                    $invoice_stock_row->current_stock = $new_stock_out;
+                }
+                $invoice_stock_row->update();
+            }
+
+
+
+
+
+            $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+
+            // profit table
+            $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
+            $profit->user_id = Auth::id();
+            $profit->store_id = $request->store_id;
+            $profit->product_id = $product_id;
+            $profit->qty = $request_qty;
+            $profit->price = $request->price[$i];
+            $profit->sub_total = $request_qty*$request->price[$i];
+            $profit->discount_amount = $request->discount_amount;
+            $profit->profit_amount = ($profit_amount*$request_qty) - $request->discount_amount;
+            $profit->date = $request->date;
+            $profit->update();
         }
 
         // due
@@ -680,30 +773,23 @@ class ProductSaleController extends Controller
         }
 
 
-//        $invoice_nos = InvoiceStock::where('store_id',$store_id)
-//            ->where('product_id',$product_id)
-//            ->where('current_stock','>',0)
-//            ->select('invoice_no','store_id','product_id')
-//            ->groupBy('invoice_no','store_id','product_id')
+//        $invoice_nos = DB::table('product_purchases')
+//            ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
+//            ->where('product_purchase_details.qty_stock_status','Available')
+//            ->where('product_purchases.purchase_product_type','Finish Goods')
+//            ->where('product_purchases.store_id',$store_id)
+//            ->where('product_purchase_details.product_id',$product_id)
+//            ->select('product_purchases.invoice_no')
 //            ->get();
-
-        $invoice_nos = DB::table('product_purchases')
-            ->join('invoice_stocks','product_purchases.invoice_no','invoice_stocks.purchase_invoice_no')
-            ->where('product_purchases.store_id',$store_id)
-            ->where('invoice_stocks.product_id',$product_id)
-            ->where('invoice_stocks.current_stock','>',0)
-            ->where('invoice_stocks.stock_product_type','Finish Goods')
-            ->select('product_purchases.invoice_no','product_purchases.store_id','invoice_stocks.product_id')
-            ->orderBy('product_purchases.invoice_no')
-            ->groupBy('product_purchases.invoice_no','product_purchases.store_id','invoice_stocks.product_id')
-            ->get();
+        $invoice_nos = purchase_invoice_nos($store_id,$product_id);
+        //dd($invoice_nos);
 
         if(count($invoice_nos) > 0){
             $options['invoiceNos'] = "<select class='form-control invoice_no select2' id='invoice_no_$current_row' onchange='getInvoiceVal($current_row,this);' name='invoice_no[]'>";
             $options['invoiceNos'] .= "<option value=''>Select One</option>";
             foreach($invoice_nos as $data){
-                $current_stock = InvoiceStock::where('store_id',$data->store_id)
-                    ->where('product_id',$data->product_id)
+                $current_stock = InvoiceStock::where('store_id',$store_id)
+                    ->where('product_id',$product_id)
                     ->where('purchase_invoice_no',$data->invoice_no)
                     ->where('current_stock','>',0)
                     ->latest()

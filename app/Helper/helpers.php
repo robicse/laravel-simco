@@ -1,5 +1,10 @@
 <?php
 
+use App\InvoiceStock;
+use App\ProductPurchaseDetail;
+use App\ProductSaleDetail;
+use App\Stock;
+use App\Profit;
 use Illuminate\Support\Facades\DB;
 
 function store_test($store_id){
@@ -351,6 +356,115 @@ if (!function_exists('party_discounts')) {
                 ->select('product_sales.invoice_no','product_sales.discount_amount','product_sales.date','parties.name')
                 ->get();
         }
+    }
+}
+
+if (!function_exists('purchase_invoice_nos')) {
+    function purchase_invoice_nos($store_id=null,$product_id=null)
+    {
+        if($store_id != null && $product_id != null){
+            return $invoice_nos = DB::table('product_purchases')
+                ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
+                ->where('product_purchase_details.qty_stock_status','Available')
+                ->where('product_purchases.purchase_product_type','Finish Goods')
+                ->where('product_purchases.store_id',$store_id)
+                ->where('product_purchase_details.product_id',$product_id)
+                ->select('product_purchases.invoice_no')
+                ->get();
+        }else{
+            return $invoice_nos = DB::table('product_purchases')
+                ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
+                ->where('product_purchase_details.qty_stock_status','Available')
+                ->where('product_purchases.purchase_product_type','Finish Goods')
+                ->select('product_purchases.invoice_no')
+                ->get();
+        }
+    }
+}
+
+if (!function_exists('current_stock_row')) {
+    function current_stock_row($store_id,$stock_product_type,$stock_type,$product_id)
+    {
+        return $current_stock_row = Stock::where('store_id',$store_id)
+            ->where('stock_type',$stock_type)
+            ->where('stock_product_type',$stock_product_type)
+            ->where('product_id',$product_id)
+            ->latest()->first();
+    }
+}
+
+
+if (!function_exists('current_invoice_stock_row')) {
+    function current_invoice_stock_row($store_id,$stock_product_type,$stock_type,$product_id,$purchase_invoice_no,$invoice_no=null)
+    {
+        if($invoice_no != null){
+            return $current_stock_row = InvoiceStock::where('store_id',$store_id)
+                ->where('stock_type',$stock_type)
+                ->where('stock_product_type',$stock_product_type)
+                ->where('purchase_invoice_no',$purchase_invoice_no)
+                ->where('invoice_no',$invoice_no)
+                ->where('product_id',$product_id)
+                ->first();
+
+        }else{
+            return $current_stock_row = InvoiceStock::where('store_id',$store_id)
+                ->where('stock_type',$stock_type)
+                ->where('stock_product_type',$stock_product_type)
+                ->where('purchase_invoice_no',$purchase_invoice_no)
+                ->where('product_id',$product_id)
+                ->first();
+        }
+    }
+}
+
+if (!function_exists('get_profit_amount')) {
+    function get_profit_amount($purchase_invoice_no,$product_id)
+    {
+        return $get_profit_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+            ->where('product_id',$product_id)
+            ->pluck('profit_amount')
+            ->first();
+    }
+}
+
+if (!function_exists('get_profit_amount_row')) {
+    function get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id)
+    {
+        return $get_profit_amount = Profit::where('store_id',$store_id)
+            ->where('purchase_invoice_no',$purchase_invoice_no)
+            ->where('invoice_no',$invoice_no)
+            ->where('product_id',$product_id)
+            ->first();
+    }
+}
+
+if (!function_exists('edited_current_invoice_stock')) {
+    function edited_current_invoice_stock($store_id,$purchase_invoice_no,$product_id,$invoice_no,$product_sale_detail_id)
+    {
+        $purchase_qty = DB::table('product_purchase_details')
+            ->join('product_purchases','product_purchase_details.product_purchase_id','product_purchases.id')
+            ->where('product_purchases.store_id',$store_id)
+            ->where('product_purchases.invoice_no',$purchase_invoice_no)
+            ->where('product_purchase_details.product_id',$product_id)
+            ->pluck('product_purchase_details.qty')
+            ->first();
+
+        $previous_sale_qty = DB::table('product_sale_details')
+            ->join('product_sales','product_sale_details.product_sale_id','product_sales.id')
+            ->where('product_sales.store_id',$store_id)
+            ->where('product_sale_details.purchase_invoice_no',$purchase_invoice_no)
+            ->where('product_sales.invoice_no','!=',$invoice_no)
+            ->where('product_sale_details.product_id',$product_id)
+            ->select(DB::raw('SUM(product_sale_details.qty) as sum_qty'))
+            ->first();
+        $previous_sale_sum_qty = $previous_sale_qty->sum_qty;
+        if($previous_sale_sum_qty != null){
+            return $purchase_qty - $previous_sale_sum_qty;
+        }else{
+            return $purchase_qty;
+        }
+
+        //$current_qty = ProductSaleDetail::where('id',$product_sale_detail_id)->pluck('qty')->first();
     }
 }
 

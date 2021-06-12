@@ -341,7 +341,7 @@
                     console.log(res.data)
                     //console.log(res.data.categoryOptions)
                     $("#product_category_id_"+current_row).html(res.data.categoryOptions);
-                    $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
+                    //$("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                     $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                 },
                 error : function (err){

@@ -140,7 +140,7 @@ class ProductProductionController extends Controller
                     $purchase_production_detail->invoice_no = 'production-'.$invoice_no_product_production;
                     $purchase_production_detail->product_production_id = $insert_id;
                     $purchase_production_detail->product_category_id = $request->product_category_id[$i];
-                    $purchase_production_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                    $purchase_production_detail->product_sub_category_id = NULL;
                     $purchase_production_detail->product_brand_id = $request->product_brand_id[$i];
                     $purchase_production_detail->product_id = $request->product_id[$i];
                     $purchase_production_detail->qty = $request->qty[$i];
@@ -215,7 +215,7 @@ class ProductProductionController extends Controller
                     $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                     $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
                     $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
-                    $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
+                    $purchase_purchase_detail->product_sub_category_id = NULL;
                     $purchase_purchase_detail->product_brand_id = $product_info->product_brand_id;
                     $purchase_purchase_detail->product_id = $product_info->id;
                     $purchase_purchase_detail->qty = $request->existing_qty;
@@ -326,7 +326,7 @@ class ProductProductionController extends Controller
                     $purchase_production_detail = new ProductProductionDetail();
                     $purchase_production_detail->product_production_id = $insert_id;
                     $purchase_production_detail->product_category_id = $request->product_category_id[$i];
-                    $purchase_production_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                    $purchase_production_detail->product_sub_category_id = NULL;
                     $purchase_production_detail->product_brand_id = $request->product_brand_id[$i];
                     $purchase_production_detail->product_id = $request->product_id[$i];
                     $purchase_production_detail->qty = $request->qty[$i];
@@ -435,7 +435,7 @@ class ProductProductionController extends Controller
                         $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                         $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
                         $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
-                        $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
+                        $purchase_purchase_detail->product_sub_category_id = NULL;
                         $purchase_purchase_detail->product_brand_id = $product_info->product_brand_id;
                         $purchase_purchase_detail->product_id = $new_product_insert_id;
                         $purchase_purchase_detail->qty = $request->new_qty;
@@ -688,7 +688,7 @@ class ProductProductionController extends Controller
                     $purchase_purchase_detail = new ProductPurchaseDetail();
                     $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
                     $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
-                    $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
+                    $purchase_purchase_detail->product_sub_category_id = NULL;
                     $purchase_purchase_detail->product_brand_id = $product_info->product_brand_id;
                     $purchase_purchase_detail->product_id = $product_info->id;
                     $purchase_purchase_detail->qty = $request->existing_qty;
@@ -891,7 +891,7 @@ class ProductProductionController extends Controller
 //                        $purchase_purchase_detail = new ProductPurchaseDetail();
 //                        $purchase_purchase_detail->product_purchase_id = $purchase_insert_id;
 //                        $purchase_purchase_detail->product_category_id = $product_info->product_category_id;
-//                        $purchase_purchase_detail->product_sub_category_id = $product_info->product_sub_category_id ? $product_info->product_sub_category_id : NULL;
+//                        $purchase_purchase_detail->product_sub_category_id = NULL;
 //                        $purchase_purchase_detail->product_brand_id = $product_info->product_brand_id;
 //                        $purchase_purchase_detail->product_id = $new_product_insert_id;
 //                        $purchase_purchase_detail->qty = $request->new_qty;

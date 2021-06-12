@@ -94,6 +94,7 @@
                                     <th>Brand</th>
                                     <th style="display: none">Unit</th>
                                     <th>Returnable</th>
+                                    <th>Purchase Invoice</th>
                                     <th>Stock Qty</th>
                                     <th>Qty</th>
                                     <th>Price</th>
@@ -103,7 +104,8 @@
                                 <tbody class="neworderbody">
                                 @foreach($productSaleDetails as $key => $productSaleDetail)
                                     @php
-                                        $current_stock = \App\Stock::where('product_id',$productSaleDetail->product_id)->latest()->pluck('current_stock')->first();
+                                        $current_stock = edited_current_invoice_stock($productSale->store_id,$productSaleDetail->purchase_invoice_no,$productSaleDetail->product_id,$productSale->invoice_no,$productSaleDetail->id);
+                                        //dd($current_stock);
                                     @endphp
                                     <tr>
                                         @php
@@ -163,6 +165,18 @@
                                                 <option value="returnable"  {{'returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>returnable</option>
                                                 <option value="not returnable" {{'not returnable' == $productSaleDetail->return_type ? 'selected' : ''}}>not returnable</option>
                                             </select>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $purchase_invoice_nos = purchase_invoice_nos($productSale->store_id,$productSaleDetail->product_id)
+                                            @endphp
+                                            <div id="invoice_no_1">
+                                                <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>
+                                                    @foreach($purchase_invoice_nos as $purchase_invoice_no)
+                                                        <option value="{{$purchase_invoice_no->invoice_no}}" {{$purchase_invoice_no->invoice_no == $productSaleDetail->purchase_invoice_no}}>{{$purchase_invoice_no->invoice_no}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </td>
                                         <td width="10%">
                                             <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="{{$current_stock}}" readonly >
@@ -312,6 +326,7 @@
                 '<td style="display: none"><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                 '<td style="display: none"><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                 '<td><div id="product_unit_id_'+n+'"><select class="form-control product_unit_id select2" name="product_unit_id[]" id="product_unit_id_'+n+'" required>' + productUnit + '</select></div></td>' +
+                '<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
                 '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                 '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                 //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
@@ -408,6 +423,52 @@
                     console.log(err)
                 }
             })
+        }
+
+        function getInvoiceVal(row,sel)
+        {
+            var store_id = $('#store_id').val();
+            var current_product_id = $('#product_id_'+row).val();
+            if(store_id){
+                // console.log(store_id)
+                // console.log(row)
+                // console.log(sel.value)
+
+                var current_row = row;
+                var current_invoice_no = sel.value;
+                if(current_row > 1){
+                    var previous_row = current_row - 1;
+                    var previous_product_id = $('#product_id_'+previous_row).val();
+                    if(previous_product_id === current_product_id){
+                        $('#product_id_'+current_row).val('');
+                        alert('You selected same product, Please selected another product!');
+                        return false
+                    }
+                }
+
+                $.ajax({
+                    url : "{{URL('product-sale-invoice-data')}}",
+                    method : "get",
+                    data : {
+                        store_id : store_id,
+                        current_product_id : current_product_id,
+                        current_invoice_no : current_invoice_no,
+                        current_row : current_row,
+                    },
+                    success : function (res){
+                        //console.log(res)
+                        console.log(res.data)
+                        $("#stock_qty_"+current_row).val(res.data.current_stock);
+                        $("#price_"+current_row).val(res.data.mrp_price);
+                    },
+                    error : function (err){
+                        console.log(err)
+                    }
+                })
+            }else{
+                alert('Please select first store!');
+                location.reload();
+            }
         }
 
         $(function() {

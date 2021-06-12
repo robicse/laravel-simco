@@ -101,7 +101,7 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
                 $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
                 $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
-                $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+                $purchase_purchase_detail->product_sub_category_id = NULL;
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
                 $purchase_purchase_detail->product_id = $request->product_id[$i];
                 $purchase_purchase_detail->qty = $request->qty[$i];
