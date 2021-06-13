@@ -83,7 +83,7 @@ class ProductPurchaseController extends Controller
 
         // product purchase
         $productPurchase = new ProductPurchase();
-        $productPurchase ->invoice_no = 'purchase-'.$invoice_no;
+        $productPurchase ->invoice_no = 'pur-'.$invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
@@ -104,7 +104,7 @@ class ProductPurchaseController extends Controller
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
-                $purchase_purchase_detail->invoice_no = 'purchase-'.$invoice_no;
+                $purchase_purchase_detail->invoice_no = 'pur-'.$invoice_no;
                 $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
                 $purchase_purchase_detail->product_sub_category_id = NULL;
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
@@ -145,7 +145,7 @@ class ProductPurchaseController extends Controller
                 $invoice_stock = new InvoiceStock();
                 $invoice_stock->user_id = Auth::id();
                 $invoice_stock->ref_id = $insert_id;
-                $invoice_stock->purchase_invoice_no = 'purchase-'.$invoice_no;
+                $invoice_stock->purchase_invoice_no = 'pur-'.$invoice_no;
                 $invoice_stock->invoice_no = NULL;
                 $invoice_stock->store_id = $request->store_id;
                 $invoice_stock->product_id = $request->product_id[$i];

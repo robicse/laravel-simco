@@ -15,11 +15,12 @@ if (!function_exists('sum_finish_goods_purchase_price')) {
     function sum_finish_goods_purchase_price($store_id)
     {
         $sum_finish_goods_purchase_price = 0;
+
         $productPurchaseDetails = DB::table('product_purchase_details')
             ->join('product_purchases', 'product_purchases.id', '=', 'product_purchase_details.product_purchase_id')
             ->select('product_id', 'product_category_id', 'product_sub_category_id', 'product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
             ->where('product_purchases.store_id', $store_id)
-            //->where('product_purchases.ref_id',NULL)
+            ->where('product_purchases.ref_id',NULL)
             ->where('product_purchases.purchase_product_type','Finish Goods')
             ->groupBy('product_id')
             ->groupBy('product_category_id')
@@ -31,6 +32,15 @@ if (!function_exists('sum_finish_goods_purchase_price')) {
             foreach ($productPurchaseDetails as $key => $productPurchaseDetail) {
                 $sum_finish_goods_purchase_price += $productPurchaseDetail->sub_total;
             }
+        }
+
+
+        $sum_total_amount = DB::table('product_productions')
+            ->join('product_purchases','product_productions.id','product_purchases.ref_id')
+            ->select(DB::raw('SUM(product_productions.total_amount) as sum_total_amount'))
+            ->first();
+        if($sum_total_amount){
+            $sum_finish_goods_purchase_price += $sum_total_amount->sum_total_amount;
         }
 
         return $sum_finish_goods_purchase_price;

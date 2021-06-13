@@ -58,7 +58,7 @@ class TransactionController extends Controller
 
 
 
-        return view('backend.transaction.party_discount', compact('party','party_id','start_date','end_date','stores','party_discounts'));
+        return view('backend.transaction.party_discount', compact('party','party_id','start_date','end_date','stores'));
     }
 
     public function deliveryList(){

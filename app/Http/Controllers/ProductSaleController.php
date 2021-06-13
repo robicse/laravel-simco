@@ -8,6 +8,7 @@ use App\Party;
 use App\Product;
 use App\ProductBrand;
 use App\ProductCategory;
+use App\ProductPurchase;
 use App\ProductPurchaseDetail;
 use App\ProductSale;
 use App\ProductSaleDetail;
@@ -260,7 +261,8 @@ class ProductSaleController extends Controller
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
         //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
-            $invoice_no = $get_invoice_no+1;
+            $get_invoice = str_replace("sal-","",$get_invoice_no);
+            $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
@@ -268,7 +270,7 @@ class ProductSaleController extends Controller
 
         // product purchase
         $productSale = new ProductSale();
-        $productSale->invoice_no = $invoice_no;
+        $productSale->invoice_no = 'sal-'.$invoice_no;
         $productSale->user_id = Auth::id();
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
@@ -365,7 +367,7 @@ class ProductSaleController extends Controller
                 $invoice_stock->user_id = Auth::id();
                 $invoice_stock->ref_id = $insert_id;
                 $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
-                $invoice_stock->invoice_no = $invoice_no;
+                $invoice_stock->invoice_no = 'sal-'.$invoice_no;
                 $invoice_stock->store_id = $request->store_id;
                 $invoice_stock->date = $request->date;
                 $invoice_stock->product_id = $product_id;
@@ -383,7 +385,7 @@ class ProductSaleController extends Controller
                 $profit = new Profit();
                 $profit->ref_id = $insert_id;
                 $profit->purchase_invoice_no = $purchase_invoice_no;
-                $profit->invoice_no =$invoice_no;;
+                $profit->invoice_no ='sal-'.$invoice_no;
                 $profit->user_id = Auth::id();
                 $profit->store_id = $request->store_id;
                 $profit->type = 'Sale';

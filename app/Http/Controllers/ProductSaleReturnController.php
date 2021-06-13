@@ -278,7 +278,7 @@ class ProductSaleReturnController extends Controller
             }
         }
         $product_sale_return = new ProductSaleReturn();
-        $product_sale_return->invoice_no = 'return-'.$productSale->invoice_no;
+        $product_sale_return->invoice_no = 'salret-'.$productSale->invoice_no;
         $product_sale_return->sale_invoice_no = $productSale->invoice_no;
         $product_sale_return->product_sale_id = $productSale->id;
         $product_sale_return->user_id = Auth::id();
@@ -364,7 +364,7 @@ class ProductSaleReturnController extends Controller
                     $invoice_stock->user_id = Auth::id();
                     $invoice_stock->ref_id = $insert_id;
                     $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
-                    $invoice_stock->invoice_no = 'return-'.$productSale->invoice_no;
+                    $invoice_stock->invoice_no = 'salret-'.$productSale->invoice_no;
                     $invoice_stock->store_id = $productSale->store_id;
                     $invoice_stock->date = $request->date;
                     $invoice_stock->product_id = $product_id;
@@ -382,7 +382,7 @@ class ProductSaleReturnController extends Controller
                     $profit = new Profit();
                     $profit->ref_id = $insert_id;
                     $profit->purchase_invoice_no = $purchase_invoice_no;
-                    $profit->invoice_no ='return-'.$productSale->invoice_no;
+                    $profit->invoice_no ='salret-'.$productSale->invoice_no;
                     $profit->user_id = Auth::id();
                     $profit->store_id = $productSale->store_id;
                     $profit->type = 'Sale';
@@ -402,7 +402,7 @@ class ProductSaleReturnController extends Controller
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = 'return-' . $productSale->invoice_no;
+            $transaction->invoice_no = 'salret-' . $productSale->invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $productSale->store_id;
             $transaction->party_id = $productSale->party_id;

@@ -109,7 +109,7 @@ class ProductSaleReplacementController extends Controller
         $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->pluck('purchase_invoice_no')->first();
         // product replacement
         $purchase_sale_replacement = new ProductSaleReplacement();
-        $purchase_sale_replacement->invoice_no = 'replace-'.$productSale->invoice_no;
+        $purchase_sale_replacement->invoice_no = 'salrep-'.$productSale->invoice_no;
         $purchase_sale_replacement->sale_invoice_no = $productSale->invoice_no;
         $purchase_sale_replacement->product_sale_id = $request->product_sale_id;
         $purchase_sale_replacement->user_id = Auth::user()->id;
@@ -193,7 +193,7 @@ class ProductSaleReplacementController extends Controller
                     $invoice_stock->user_id = Auth::id();
                     $invoice_stock->ref_id = $insert_id;
                     $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
-                    $invoice_stock->invoice_no = 'replace-'.$productSale->invoice_no;
+                    $invoice_stock->invoice_no = 'salrep-'.$productSale->invoice_no;
                     $invoice_stock->store_id = $productSale->store_id;
                     $invoice_stock->date = date('Y-m-d');
                     $invoice_stock->product_id = $product_id;
@@ -211,7 +211,7 @@ class ProductSaleReplacementController extends Controller
                     $profit = new Profit();
                     $profit->ref_id = $insert_id;
                     $profit->purchase_invoice_no = $purchase_invoice_no;
-                    $profit->invoice_no ='replace-'.$productSale->invoice_no;
+                    $profit->invoice_no ='salrep-'.$productSale->invoice_no;
                     $profit->user_id = Auth::id();
                     $profit->store_id = $productSale->store_id;
                     $profit->type = 'Sale';
