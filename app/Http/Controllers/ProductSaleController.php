@@ -246,17 +246,19 @@ class ProductSaleController extends Controller
 
         }
 
-        $total_amount = 0;
-        for($i=0; $i<$row_count;$i++)
-        {
-            $total_amount += $request->sub_total[$i];
-        }
-        $discount_type = $request->discount_type;
-        if($discount_type == 'flat'){
-            $total_amount -= $request->discount_amount;
-        }else{
-            $total_amount = ($total_amount*$request->discount_amount)/100;
-        }
+//        $total_amount = 0;
+//        for($i=0; $i<$row_count;$i++)
+//        {
+//            $total_amount += $request->sub_total[$i];
+//        }
+//        $discount_type = $request->discount_type;
+//        if($discount_type == 'flat'){
+//            $total_amount -= $request->discount_amount;
+//        }else{
+//            $total_amount = ($total_amount*$request->discount_amount)/100;
+//        }
+
+        $total_amount = $request->total_amount;
 
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
         //dd($get_invoice_no);
