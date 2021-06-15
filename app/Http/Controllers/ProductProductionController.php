@@ -222,7 +222,7 @@ class ProductProductionController extends Controller
                     $purchase_purchase_detail->price = $request->existing_price;
                     $purchase_purchase_detail->mrp_price = $request->existing_mrp_price;
                     $purchase_purchase_detail->sub_total = $request->existing_qty*$request->existing_price;
-                    $purchase_purchase_detail->profit_amount = $request->existing_mrp_price - $request->existing_qty;
+                    $purchase_purchase_detail->profit_amount = $request->existing_mrp_price - $request->existing_price;
                     $purchase_purchase_detail->barcode = $product_info->barcode;
                     $purchase_purchase_detail->ref_id = $insert_id;
                     $purchase_purchase_detail->save();
@@ -442,7 +442,7 @@ class ProductProductionController extends Controller
                         $purchase_purchase_detail->price = $request->new_price;
                         $purchase_purchase_detail->mrp_price = $request->new_mrp_price;
                         $purchase_purchase_detail->sub_total = $request->new_qty*$request->new_mrp_price;
-                        $purchase_purchase_detail->profit_amount = $request->new_mrp_price - $request->new_qty;
+                        $purchase_purchase_detail->profit_amount = $request->new_mrp_price - $request->new_price;
                         $purchase_purchase_detail->barcode = $product_info->barcode;
                         $purchase_purchase_detail->ref_id = $insert_id;
                         $purchase_purchase_detail->save();

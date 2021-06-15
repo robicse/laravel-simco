@@ -315,14 +315,16 @@ if (!function_exists('loss_profit')) {
                 ->where('date','<=',$end_date)
                 ->first();
 
-            return $loss_profit = $profit->sum_profit_amount;
+
+
+            return $loss_profit = $profit->sum_profit_amount - product_sale_discount($store_id);
         }else{
             $profit = DB::table('profits')
                 ->select(DB::raw('SUM(profit_amount) as sum_profit_amount'))
                 ->where('store_id',$store_id)
                 ->first();
 
-            return $loss_profit = $profit->sum_profit_amount;
+            return $loss_profit = $profit->sum_profit_amount - product_sale_discount($store_id);
         }
 
     }

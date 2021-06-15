@@ -98,7 +98,8 @@
                                     <p>
                                         <b>
                                             @php
-                                                $loss_profit = loss_profit($store->id,NULL,NULL) - $total_expense;
+                                                //dd(loss_profit($store->id,NULL,NULL));
+                                                    $loss_profit = loss_profit($store->id,NULL,NULL) - $total_expense;
                                             @endphp
                                             @if($loss_profit > 0)
                                                 Profit:
