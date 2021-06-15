@@ -393,8 +393,10 @@ class ProductSaleController extends Controller
                 $profit->qty = $request->qty[$i];
                 $profit->price = $request->price[$i];
                 $profit->sub_total = $request->qty[$i]*$request->price[$i];
-                $profit->discount_amount = $request->discount_amount;
-                $profit->profit_amount = ($profit_amount*$request->qty[$i]) - $request->discount_amount;
+//                $profit->discount_amount = $request->discount_amount;
+//                $profit->profit_amount = ($profit_amount*$request->qty[$i]) - $request->discount_amount;
+                $profit->discount_amount = NULL;
+                $profit->profit_amount = $profit_amount*$request->qty[$i];
                 $profit->date = $request->date;
                 $profit->save();
 
@@ -402,7 +404,7 @@ class ProductSaleController extends Controller
 
             // due
             $due = new Due();
-            $due->invoice_no = $invoice_no;
+            $due->invoice_no = 'sal-'.$invoice_no;
             $due->ref_id = $insert_id;
             $due->user_id = Auth::id();
             $due->store_id = $request->store_id;
@@ -416,7 +418,7 @@ class ProductSaleController extends Controller
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = $invoice_no;
+            $transaction->invoice_no = 'sal-'.$invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
@@ -479,6 +481,17 @@ class ProductSaleController extends Controller
     public function update(Request $request, $id)
     {
         //dd($request->all());
+//        $transaction_id = Transaction::where('ref_id',$id)
+//            ->where('invoice_no','sal-1002')
+//            ->pluck('id')
+//            ->first();
+//        //dd($transaction_id);
+//        $transaction_amount_sum = Transaction::where('ref_id',$id)
+//            ->where('invoice_no','sal-1002')
+//            ->where('id','!=',$transaction_id)
+//            ->select(DB::raw('SUM(amount) as sum_amount'))
+//            ->first();
+//        dd($transaction_amount_sum);
         $this->validate($request, [
             'party_id'=> 'required',
             'store_id'=> 'required',
@@ -504,18 +517,20 @@ class ProductSaleController extends Controller
 
         }
 
-        $total_amount = 0;
-        for($i=0; $i<$row_count;$i++)
-        {
-            $total_amount += $request->sub_total[$i];
-        }
-
-        $discount_type = $request->discount_type;
-        if($discount_type == 'flat'){
-            $total_amount -= $request->discount_amount;
-        }else{
-            $total_amount = ($total_amount*$request->discount_amount)/100;
-        }
+//        $total_amount = 0;
+//        for($i=0; $i<$row_count;$i++)
+//        {
+//            $total_amount += $request->sub_total[$i];
+//        }
+//
+//        $discount_type = $request->discount_type;
+//        if($discount_type == 'flat'){
+//            $total_amount -= $request->discount_amount;
+//        }else{
+//            $total_amount = ($total_amount*$request->discount_amount)/100;
+//        }
+        $total_amount = $request->total_amount;
+        //dd($total_amount);
 
         // product sale
         $productSale = ProductSale::find($id);
@@ -579,6 +594,7 @@ class ProductSaleController extends Controller
             $store_id=$productSale->store_id;
             $invoice_no=$productSale->invoice_no;
             $stock_row = current_stock_row($store_id,'Finish Goods','sale',$product_id);
+            //dd($stock_row);
             $previous_stock = $stock_row->previous_stock;
             $stock_out = $stock_row->stock_out;
             //$current_stock = $stock_row->current_stock;
@@ -630,8 +646,10 @@ class ProductSaleController extends Controller
             $profit->qty = $request_qty;
             $profit->price = $request->price[$i];
             $profit->sub_total = $request_qty*$request->price[$i];
-            $profit->discount_amount = $request->discount_amount;
-            $profit->profit_amount = ($profit_amount*$request_qty) - $request->discount_amount;
+            //$profit->discount_amount = $request->discount_amount;
+            //$profit->profit_amount = ($profit_amount*$request_qty) - $request->discount_amount;
+            $profit->discount_amount = NULL;
+            $profit->profit_amount = $profit_amount*$request->qty[$i];
             $profit->date = $request->date;
             $profit->update();
         }
@@ -646,7 +664,7 @@ class ProductSaleController extends Controller
         $due->due_amount = $request->due_amount;
         $due->update();
 
-        //$transaction_row = Transaction::where('ref_id',$id)->get();
+
         $transaction_row = Transaction::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->get();
         $transaction_row_count = count($transaction_row);
         if($transaction_row_count == 1){
@@ -658,6 +676,29 @@ class ProductSaleController extends Controller
             $transaction->payment_type = $request->payment_type;
             $transaction->check_number = $request->check_number ? $request->check_number : '';
             $transaction->amount = $request->paid_amount;
+            $transaction->update();
+        }
+
+        if($transaction_row_count > 1){
+            $transaction_id = Transaction::where('ref_id',$id)
+                ->where('invoice_no',$productSale->invoice_no)
+                ->pluck('id')
+                ->first();
+            //dd($transaction_id);
+            $transaction_amount_sum = Transaction::where('ref_id',$id)
+                ->where('invoice_no','sal-1002')
+                ->where('id','!=',$transaction_id)
+                ->select(DB::raw('SUM(amount) as sum_amount'))
+                ->first();
+            //dd($transaction_amount_sum);
+            // transaction
+            $transaction = Transaction::where('ref_id',$id)->where('transaction_type','sale')->first();
+            $transaction->user_id = Auth::id();
+            $transaction->store_id = $request->store_id;
+            $transaction->party_id = $request->party_id;
+            $transaction->payment_type = $request->payment_type;
+            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->amount = $request->paid_amount - $transaction_amount_sum->sum_amount;
             $transaction->update();
         }
 

@@ -171,11 +171,12 @@
                                                 $purchase_invoice_nos = purchase_invoice_nos($productSale->store_id,$productSaleDetail->product_id)
                                             @endphp
                                             <div id="invoice_no_1">
-                                                <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>
-                                                    @foreach($purchase_invoice_nos as $purchase_invoice_no)
-                                                        <option value="{{$purchase_invoice_no->invoice_no}}" {{$purchase_invoice_no->invoice_no == $productSaleDetail->purchase_invoice_no}}>{{$purchase_invoice_no->invoice_no}}</option>
-                                                    @endforeach
-                                                </select>
+{{--                                                <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>--}}
+{{--                                                    @foreach($purchase_invoice_nos as $purchase_invoice_no)--}}
+{{--                                                        <option value="{{$purchase_invoice_no->invoice_no}}" {{$purchase_invoice_no->invoice_no == $productSaleDetail->purchase_invoice_no ? 'selected' : ''}}>{{$purchase_invoice_no->invoice_no}}</option>--}}
+{{--                                                    @endforeach--}}
+{{--                                                </select>--}}
+                                                <input type="text" id="invoice_no_1" class="invoice_no form-control" name="invoice_no[]" value="{{$productSaleDetail->purchase_invoice_no}}" readonly >
                                             </div>
                                         </td>
                                         <td width="10%">
@@ -198,8 +199,8 @@
                                     <th width="10%">
                                         Type:
                                         <select name="discount_type" id="discount_type" class="form-control" >
-                                            <option value="flat" {{'flat' == $productSale->return_type ? 'selected' : ''}}>flat</option>
-                                            <option value="percentage" {{'percentage' == $productSale->return_type ? 'selected' : ''}}>percentage</option>
+                                            <option value="flat" {{'flat' == $productSale->discount_type ? 'selected' : ''}}>flat</option>
+                                            <option value="percentage" {{'percentage' == $productSale->discount_type ? 'selected' : ''}}>percentage</option>
                                         </select>
                                     </th>
                                     <th>

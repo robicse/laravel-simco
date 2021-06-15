@@ -137,42 +137,49 @@ if (!function_exists('sum_sale_price')) {
 if (!function_exists('sum_sale_return_price')) {
     function sum_sale_return_price($store_id)
     {
-        $sum_sale_return_price = 0;
-        $productPurchaseDetails = DB::table('product_purchase_details')
-            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
-            ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
-            ->where('product_purchases.store_id',$store_id)
-            //->where('product_purchases.ref_id',NULL)
-            //->where('product_purchases.purchase_product_type','Finish Goods')
-            ->groupBy('product_id')
-            ->groupBy('product_category_id')
-            ->groupBy('product_sub_category_id')
-            ->groupBy('product_brand_id')
-            ->get();
+//        $sum_sale_return_price = 0;
+//        $productPurchaseDetails = DB::table('product_purchase_details')
+//            ->join('product_purchases','product_purchases.id','=','product_purchase_details.product_purchase_id')
+//            ->select('product_id','product_category_id','product_sub_category_id','product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'), DB::raw('SUM(sub_total) as sub_total'))
+//            ->where('product_purchases.store_id',$store_id)
+//            //->where('product_purchases.ref_id',NULL)
+//            //->where('product_purchases.purchase_product_type','Finish Goods')
+//            ->groupBy('product_id')
+//            ->groupBy('product_category_id')
+//            ->groupBy('product_sub_category_id')
+//            ->groupBy('product_brand_id')
+//            ->get();
+//
+//        if(!empty($productPurchaseDetails)) {
+//            foreach ($productPurchaseDetails as $key => $productPurchaseDetail) {
+//                // sale return
+//                $productSaleReturnDetails = DB::table('product_sale_return_details')
+//                    ->select('product_id', 'product_category_id', 'product_sub_category_id', 'product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'))
+//                    ->where('product_id', $productPurchaseDetail->product_id)
+//                    ->where('product_category_id', $productPurchaseDetail->product_category_id)
+//                    ->where('product_sub_category_id', $productPurchaseDetail->product_sub_category_id)
+//                    ->where('product_brand_id', $productPurchaseDetail->product_brand_id)
+//                    ->groupBy('product_id')
+//                    ->groupBy('product_category_id')
+//                    ->groupBy('product_sub_category_id')
+//                    ->groupBy('product_brand_id')
+//                    ->first();
+//
+//                if (!empty($productSaleReturnDetails)) {
+//                    $sum_sale_return_price += $productSaleReturnDetails->price;
+//
+//                }
+//            }
+//        }
+//
+//        return $sum_sale_return_price;
 
-        if(!empty($productPurchaseDetails)) {
-            foreach ($productPurchaseDetails as $key => $productPurchaseDetail) {
-                // sale return
-                $productSaleReturnDetails = DB::table('product_sale_return_details')
-                    ->select('product_id', 'product_category_id', 'product_sub_category_id', 'product_brand_id', DB::raw('SUM(qty) as qty'), DB::raw('SUM(price) as price'))
-                    ->where('product_id', $productPurchaseDetail->product_id)
-                    ->where('product_category_id', $productPurchaseDetail->product_category_id)
-                    ->where('product_sub_category_id', $productPurchaseDetail->product_sub_category_id)
-                    ->where('product_brand_id', $productPurchaseDetail->product_brand_id)
-                    ->groupBy('product_id')
-                    ->groupBy('product_category_id')
-                    ->groupBy('product_sub_category_id')
-                    ->groupBy('product_brand_id')
-                    ->first();
+        $product_sale_returns = DB::table('product_sale_returns')
+            ->select(DB::raw('SUM(total_amount) as sum_product_sale_return_amount'))
+            ->where('store_id',$store_id)
+            ->first();
 
-                if (!empty($productSaleReturnDetails)) {
-                    $sum_sale_return_price += $productSaleReturnDetails->price;
-
-                }
-            }
-        }
-
-        return $sum_sale_return_price;
+        return $sum_sale_return_price = $product_sale_returns->sum_product_sale_return_amount;
     }
 }
 
@@ -205,6 +212,21 @@ if (!function_exists('product_sale_discount')) {
         }
 
         return $sum_total_discount;
+    }
+}
+
+if (!function_exists('product_sale_return_discount')) {
+    function product_sale_return_discount($store_id)
+    {
+        $productSaleReturnDiscount = DB::table('product_sale_returns')
+            ->select( DB::raw('SUM(discount_amount) as total_discount'))
+            ->first();
+        $sum_total_return_discount = 0;
+        if($productSaleReturnDiscount){
+            $sum_total_return_discount = $productSaleReturnDiscount->total_discount;
+        }
+
+        return $sum_total_return_discount;
     }
 }
 
@@ -307,6 +329,9 @@ if (!function_exists('product_sale_discount')) {
 if (!function_exists('loss_profit')) {
     function loss_profit($store_id,$start_date=null,$end_date=null)
     {
+        $sale_discount = product_sale_discount($store_id);
+        $sale_return_discount = product_sale_return_discount($store_id);
+        $final_sale_discount = $sale_discount - $sale_return_discount;
         if($start_date != null && $end_date != null){
              $profit = DB::table('profits')
                 ->select(DB::raw('SUM(profit_amount) as sum_profit_amount'))
@@ -317,14 +342,14 @@ if (!function_exists('loss_profit')) {
 
 
 
-            return $loss_profit = $profit->sum_profit_amount - product_sale_discount($store_id);
+            return $loss_profit = $profit->sum_profit_amount - $final_sale_discount;
         }else{
             $profit = DB::table('profits')
                 ->select(DB::raw('SUM(profit_amount) as sum_profit_amount'))
                 ->where('store_id',$store_id)
                 ->first();
 
-            return $loss_profit = $profit->sum_profit_amount - product_sale_discount($store_id);
+            return $loss_profit = $profit->sum_profit_amount - $final_sale_discount;
         }
 
     }

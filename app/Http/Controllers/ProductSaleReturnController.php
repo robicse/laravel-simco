@@ -219,7 +219,8 @@ class ProductSaleReturnController extends Controller
         return view('backend.productSaleReturn.returnable_sale_products',compact('parties','stores','productSales'));
     }
     public function getReturnableProduct($sale_id){
-        //$products = ProductSaleDetail::where('product_sale_id',$sale_id)->get();
+        $productSale = ProductSale::where('id',$sale_id)->first();
+        //dd($productSale);
         $products = DB::table('product_sale_details')
             ->join('products','product_sale_details.product_id','=','products.id')
             ->where('product_sale_details.product_sale_id',$sale_id)
@@ -248,15 +249,17 @@ class ProductSaleReturnController extends Controller
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
-                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" ></textarea> </th>";
+                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" required></textarea> </th>";
                 $html .= "</tr>";
             endforeach;
             $html .= "<tr>";
+
             $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
                     <option value=\"Cash\" selected>Cash</option>
                     <option value=\"Check\">Check</option>
             </select> </th>";
             $html .= "<th><input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "<th><input type=\"text\" name=\"discount\" id=\"discount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"100\" ></th>";
             $html .= "</tr>";
         endif;
         $html .= "</tbody>
@@ -286,8 +289,10 @@ class ProductSaleReturnController extends Controller
         $product_sale_return->party_id = $productSale->party_id;
         $product_sale_return->payment_type = $productSale->payment_type;
         $product_sale_return->discount_type = $productSale->discount_type;
-        $product_sale_return->discount_amount = 0;
-        $product_sale_return->total_amount = $total_amount;
+//        $product_sale_return->discount_amount = 0;
+//        $product_sale_return->total_amount = $total_amount;
+        $product_sale_return->discount_amount = $productSale->discount_amount;
+        $product_sale_return->total_amount = $total_amount - $productSale->discount_amount;
         $product_sale_return->save();
 
         $insert_id = $product_sale_return->id;

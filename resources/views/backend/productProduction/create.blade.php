@@ -508,8 +508,8 @@
                         $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                         $("#stock_qty_"+current_row).val(res.data.current_stock);
                         $("#price_"+current_row).val(res.data.mrp_price);
-                        $("#existing_price").val(res.data.mrp_price);
-                        $("#new_price").val(res.data.mrp_price);
+                        //$("#existing_price").val(res.data.mrp_price);
+                        //$("#new_price").val(res.data.mrp_price);
                     },
                     error : function (err){
                         console.log(err)

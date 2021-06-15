@@ -75,7 +75,7 @@ class ProductPurchaseController extends Controller
 
         $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
         if(!empty($get_invoice_no)){
-            $get_invoice = str_replace("purchase-","",$get_invoice_no);
+            $get_invoice = str_replace("pur-","",$get_invoice_no);
             $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
