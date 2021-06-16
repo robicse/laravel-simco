@@ -73,7 +73,7 @@ class ProductPurchaseRawMaterialsController extends Controller
 
         $get_invoice_no = ProductPurchase::latest()->pluck('invoice_no')->first();
         if(!empty($get_invoice_no)){
-            $get_invoice = str_replace("pur-","",$get_invoice_no);
+            $get_invoice = str_replace("Pur-","",$get_invoice_no);
             $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
@@ -81,7 +81,7 @@ class ProductPurchaseRawMaterialsController extends Controller
 
         // product purchase
         $productPurchase = new ProductPurchase();
-        $productPurchase ->invoice_no = 'pur-'.$invoice_no;
+        $productPurchase ->invoice_no = 'Pur-'.$invoice_no;
         $productPurchase ->party_id = $request->party_id;
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
@@ -99,7 +99,7 @@ class ProductPurchaseRawMaterialsController extends Controller
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
-                $purchase_purchase_detail->invoice_no = 'pur-'.$invoice_no;
+                $purchase_purchase_detail->invoice_no = 'Pur-'.$invoice_no;
                 $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
                 $purchase_purchase_detail->product_sub_category_id = NULL;
                 $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
@@ -136,7 +136,7 @@ class ProductPurchaseRawMaterialsController extends Controller
 //                $invoice_stock = new InvoiceStock();
 //                $invoice_stock->user_id = Auth::id();
 //                $invoice_stock->ref_id = $insert_id;
-//                $invoice_stock->purchase_invoice_no = 'pur-'.$invoice_no;
+//                $invoice_stock->purchase_invoice_no = 'Pur-'.$invoice_no;
 //                $invoice_stock->invoice_no = NULL;
 //                $invoice_stock->store_id = $request->store_id;
 //                $invoice_stock->date = $request->date;

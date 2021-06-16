@@ -145,16 +145,17 @@
                                                 <th colspan="4">&nbsp;</th>
                                                 <th style="text-align: right">Discount:</th>
                                                 <th style="text-align: right">
-                                                    @php
-                                                        $discount_amount = ($sum_sub_total*$productSale->discount_amount)/100;
-                                                    @endphp
-                                                    @if($productSale->discount_type == 'percentage')
-                                                        -{{number_format($productSale->discount_amount,2)}}% ({{$discount_amount}})
+{{--                                                    @php--}}
+{{--                                                        $discount_amount = ($sum_sub_total*$productSale->discount_amount)/100;--}}
+{{--                                                    @endphp--}}
+{{--                                                    @if($productSale->discount_type == 'percentage')--}}
+{{--                                                        -{{number_format($productSale->discount_amount,2)}}% ({{$discount_amount}})--}}
 
 
-                                                    @else
-                                                        -{{number_format($productSale->discount_amount,2)}}
-                                                    @endif
+{{--                                                    @else--}}
+{{--                                                        -{{number_format($productSale->discount_amount,2)}}--}}
+{{--                                                    @endif--}}
+                                                    -{{number_format($productSale->discount_amount,2)}}
                                                 </th>
                                             </tr>
                                             <tr>

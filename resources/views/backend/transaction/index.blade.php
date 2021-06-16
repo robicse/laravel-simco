@@ -72,7 +72,7 @@
                                                     }
                                                 @endphp
                                             </td>
-                                            <td>{{ $transaction->transaction_type}}</td>
+                                            <td>{{ ucwords($transaction->transaction_type)}}</td>
                                             <td>
                                                 {{ $transaction->payment_type}}
                                                 @if($transaction->payment_type == 'Check')

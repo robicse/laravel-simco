@@ -263,16 +263,24 @@ class ProductSaleController extends Controller
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
         //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
-            $get_invoice = str_replace("sal-","",$get_invoice_no);
+            $get_invoice = str_replace("Sal-","",$get_invoice_no);
             $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
         //dd($invoice_no);
 
+        if($request->discount_type == 'percentage'){
+            $discount_amount = $request->discount_percentage;
+            $discount_percentage = $request->discount_amount;
+        }else{
+            $discount_amount = $request->discount_amount;
+            $discount_percentage = NULL;
+        }
+
         // product purchase
         $productSale = new ProductSale();
-        $productSale->invoice_no = 'sal-'.$invoice_no;
+        $productSale->invoice_no = 'Sal-'.$invoice_no;
         $productSale->user_id = Auth::id();
         $productSale->party_id = $request->party_id;
         $productSale->store_id = $request->store_id;
@@ -282,7 +290,8 @@ class ProductSaleController extends Controller
         $productSale->delivery_service = $request->delivery_service;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
-        $productSale->discount_amount = $request->discount_amount;
+        $productSale->discount_amount = $discount_amount;
+        $productSale->discount_percentage = $discount_percentage;
         $productSale->total_amount = $total_amount;
         $productSale->paid_amount = $request->paid_amount;
         $productSale->due_amount = $request->due_amount;
@@ -369,7 +378,7 @@ class ProductSaleController extends Controller
                 $invoice_stock->user_id = Auth::id();
                 $invoice_stock->ref_id = $insert_id;
                 $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
-                $invoice_stock->invoice_no = 'sal-'.$invoice_no;
+                $invoice_stock->invoice_no = 'Sal-'.$invoice_no;
                 $invoice_stock->store_id = $request->store_id;
                 $invoice_stock->date = $request->date;
                 $invoice_stock->product_id = $product_id;
@@ -387,7 +396,7 @@ class ProductSaleController extends Controller
                 $profit = new Profit();
                 $profit->ref_id = $insert_id;
                 $profit->purchase_invoice_no = $purchase_invoice_no;
-                $profit->invoice_no ='sal-'.$invoice_no;
+                $profit->invoice_no ='Sal-'.$invoice_no;
                 $profit->user_id = Auth::id();
                 $profit->store_id = $request->store_id;
                 $profit->type = 'Sale';
@@ -406,7 +415,7 @@ class ProductSaleController extends Controller
 
             // due
             $due = new Due();
-            $due->invoice_no = 'sal-'.$invoice_no;
+            $due->invoice_no = 'Sal-'.$invoice_no;
             $due->ref_id = $insert_id;
             $due->user_id = Auth::id();
             $due->store_id = $request->store_id;
@@ -420,7 +429,7 @@ class ProductSaleController extends Controller
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = 'sal-'.$invoice_no;
+            $transaction->invoice_no = 'Sal-'.$invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
@@ -484,12 +493,12 @@ class ProductSaleController extends Controller
     {
         //dd($request->all());
 //        $transaction_id = Transaction::where('ref_id',$id)
-//            ->where('invoice_no','sal-1002')
+//            ->where('invoice_no','Sal-1002')
 //            ->pluck('id')
 //            ->first();
 //        //dd($transaction_id);
 //        $transaction_amount_sum = Transaction::where('ref_id',$id)
-//            ->where('invoice_no','sal-1002')
+//            ->where('invoice_no','Sal-1002')
 //            ->where('id','!=',$transaction_id)
 //            ->select(DB::raw('SUM(amount) as sum_amount'))
 //            ->first();
@@ -688,7 +697,7 @@ class ProductSaleController extends Controller
                 ->first();
             //dd($transaction_id);
             $transaction_amount_sum = Transaction::where('ref_id',$id)
-                ->where('invoice_no','sal-1002')
+                ->where('invoice_no',$productSale->invoice_no)
                 ->where('id','!=',$transaction_id)
                 ->select(DB::raw('SUM(amount) as sum_amount'))
                 ->first();

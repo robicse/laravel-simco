@@ -201,8 +201,9 @@
                                             </select>
                                         </th>
                                         <th>
-                                            Discount(Flat):
+                                            Discount Amount:
                                                 <input type="text" id="discount_amount" class="form-control" name="discount_amount" onkeyup="discountAmount('')" value="0">
+                                                <input type="hidden" id="discount_percentage" class="form-control" name="discount_percentage" >
                                         </th>
                                         <th>
                                             Total:
@@ -343,6 +344,7 @@
 
                 if(discount_type == 'flat'){
                     var final_amount = store_total_amount - discount_amount;
+                    var per = 0;
                 }
                 else{
                     var per = (store_total_amount*discount_amount)/100;
@@ -353,6 +355,8 @@
 
                 $('#total_amount').val(final_amount);
                 $('#due_amount').val(final_amount);
+                $('#discount_percentage').val(per);
+
             }
 
                 // onkeyup
