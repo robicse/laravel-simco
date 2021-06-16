@@ -235,7 +235,7 @@ class ProductSaleReturnController extends Controller
                                 <th align=\"right\">Received Quantity</th>
                                 <th>Return Quantity</th>
                                 <th>Amount</th>
-                                <th>Reason</th>
+                                <th>Reason <span style=\"color:red\">*</span></th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -249,7 +249,7 @@ class ProductSaleReturnController extends Controller
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
-                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" required></textarea> </th>";
+                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\"></textarea> </th>";
                 $html .= "</tr>";
             endforeach;
             $html .= "<tr>";
@@ -311,7 +311,7 @@ class ProductSaleReturnController extends Controller
                     $product_sale_return_detail->product_id = $productSaleDetail->product_id;
                     $product_sale_return_detail->qty = $request->return_qty[$i];
                     $product_sale_return_detail->price = $request->total_amount[$i];
-                    $product_sale_return_detail->reason = $request->reason[$i];
+                    $product_sale_return_detail->reason = isset($request->reason[$i]) ? $request->reason[$i] : 'Something Wrong';
                     $product_sale_return_detail->save();
 
                     $product_id = $productSaleDetail->product_id;

@@ -232,7 +232,7 @@ class ProductPurchaseRawMaterialsController extends Controller
         //$productPurchase ->payment_type = $request->payment_type;
         //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
         $productPurchase ->total_amount = $total_amount;
-        //$productPurchase->update();
+        $productPurchase->update();
 
         for($i=0; $i<$row_count;$i++)
         {
@@ -240,14 +240,14 @@ class ProductPurchaseRawMaterialsController extends Controller
             $product_purchase_detail_id = $request->product_purchase_detail_id[$i];
             $purchase_purchase_detail = ProductPurchaseDetail::findOrFail($product_purchase_detail_id);;
             $purchase_purchase_detail->product_category_id = $request->product_category_id[$i];
-            $purchase_purchase_detail->product_sub_category_id = $request->product_sub_category_id[$i] ? $request->product_sub_category_id[$i] : NULL;
+            $purchase_purchase_detail->product_sub_category_id = NULL;
             $purchase_purchase_detail->product_brand_id = $request->product_brand_id[$i];
             $purchase_purchase_detail->product_id = $request->product_id[$i];
             $purchase_purchase_detail->qty = $request->qty[$i];
             $purchase_purchase_detail->price = $request->price[$i];
             $purchase_purchase_detail->mrp_price = NULL;
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
-            //$purchase_purchase_detail->update();
+            $purchase_purchase_detail->update();
 
 
             $product_id = $request->product_id[$i];

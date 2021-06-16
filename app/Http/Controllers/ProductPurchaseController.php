@@ -256,6 +256,7 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->qty = $request->qty[$i];
             $purchase_purchase_detail->price = $request->price[$i];
             $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
+            $purchase_purchase_detail->profit_amount = $request->mrp_price[$i] - $request->price[$i];
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
             $purchase_purchase_detail->barcode = $barcode;
             $purchase_purchase_detail->update();
