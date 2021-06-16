@@ -577,6 +577,21 @@ class ProductSaleController extends Controller
 
         for($i=0; $i<$row_count;$i++)
         {
+            // discount start
+            $price = $request->price[$i];
+            $discount_amount = $request->discount_amount;
+            //$total_amount = $request->total_amount;
+
+            $final_discount_amount = (float)$discount_amount * (float)$price;
+            $final_total_amount = (float)$discount_amount + (float)$total_amount;
+            $discount_type = $request->discount_type;
+            $discount = (float)$final_discount_amount/(float)$final_total_amount;
+            if($discount_type != NULL){
+                if($discount_type == 'Flat'){
+                    $discount = round($discount);
+                }
+            }
+
             $product_id = $request->product_id[$i];
             $purchase_invoice_no = $request->invoice_no[$i];
             $request_qty = $request->qty[$i];
@@ -595,6 +610,7 @@ class ProductSaleController extends Controller
             $purchase_sale_detail->product_id = $product_id;
             $purchase_sale_detail->qty = $request->qty[$i];
             $purchase_sale_detail->price = $request->price[$i];
+            $purchase_sale_detail->discount = $discount;
             $purchase_sale_detail->sub_total = $request->qty[$i]*$request->price[$i];
             $purchase_sale_detail->update();
 

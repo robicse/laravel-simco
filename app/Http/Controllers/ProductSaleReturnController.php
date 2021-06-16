@@ -224,7 +224,7 @@ class ProductSaleReturnController extends Controller
         $products = DB::table('product_sale_details')
             ->join('products','product_sale_details.product_id','=','products.id')
             ->where('product_sale_details.product_sale_id',$sale_id)
-            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','products.name')
+            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','product_sale_details.discount','products.name')
             ->get();
 
         $html = "<table class=\"table table-striped tabel-penjualan\">
@@ -234,6 +234,7 @@ class ProductSaleReturnController extends Controller
                                 <th>Product Name</th>
                                 <th align=\"right\">Received Quantity</th>
                                 <th>Return Quantity</th>
+                                <th>Discount Amount</th>
                                 <th>Amount</th>
                                 <th>Reason <span style=\"color:red\">*</span></th>
                             </tr>
@@ -248,6 +249,7 @@ class ProductSaleReturnController extends Controller
 //                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_sale_id[]\" id=\"product_sale_id_$key\" value=\"$item->product_sale_id\" size=\"28\" /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"discount[]\" id=\"discount_$key\"  value=\"$item->discount\" size=\"28\" /></th>";
                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
                 $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\"></textarea> </th>";
                 $html .= "</tr>";
@@ -259,7 +261,7 @@ class ProductSaleReturnController extends Controller
                     <option value=\"Check\">Check</option>
             </select> </th>";
             $html .= "<th><input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\"  size=\"28\" ></th>";
-            $html .= "<th><input type=\"text\" name=\"discount\" id=\"discount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"100\" ></th>";
+            $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"100\" ></th>";
             $html .= "</tr>";
         endif;
         $html .= "</tbody>
@@ -280,6 +282,14 @@ class ProductSaleReturnController extends Controller
                 $total_amount += $request->total_amount[$i];
             }
         }
+
+        $total_discount_amount = 0;
+        for ($i = 0; $i < $row_count; $i++) {
+            if ($request->return_qty[$i] != null) {
+                $total_discount_amount += $request->discount[$i];
+            }
+        }
+
         $product_sale_return = new ProductSaleReturn();
         $product_sale_return->invoice_no = 'Salret-'.$productSale->invoice_no;
         $product_sale_return->sale_invoice_no = $productSale->invoice_no;
@@ -291,8 +301,8 @@ class ProductSaleReturnController extends Controller
         $product_sale_return->discount_type = $productSale->discount_type;
 //        $product_sale_return->discount_amount = 0;
 //        $product_sale_return->total_amount = $total_amount;
-        $product_sale_return->discount_amount = $productSale->discount_amount;
-        $product_sale_return->total_amount = $total_amount - $productSale->discount_amount;
+        $product_sale_return->discount_amount = $total_discount_amount;
+        $product_sale_return->total_amount = $total_amount - $total_discount_amount;
         $product_sale_return->save();
 
         $insert_id = $product_sale_return->id;
@@ -311,6 +321,7 @@ class ProductSaleReturnController extends Controller
                     $product_sale_return_detail->product_id = $productSaleDetail->product_id;
                     $product_sale_return_detail->qty = $request->return_qty[$i];
                     $product_sale_return_detail->price = $request->total_amount[$i];
+                    $product_sale_return_detail->discount = $request->discount[$i];
                     $product_sale_return_detail->reason = isset($request->reason[$i]) ? $request->reason[$i] : 'Something Wrong';
                     $product_sale_return_detail->save();
 

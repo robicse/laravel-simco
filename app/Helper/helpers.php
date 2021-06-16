@@ -200,21 +200,6 @@ if (!function_exists('total_expense')) {
     }
 }
 
-if (!function_exists('product_sale_discount')) {
-    function product_sale_discount($store_id)
-    {
-        $productSaleDiscount = DB::table('product_sales')
-            ->select( DB::raw('SUM(discount_amount) as total_discount'))
-            ->first();
-        $sum_total_discount = 0;
-        if($productSaleDiscount){
-            $sum_total_discount = $productSaleDiscount->total_discount;
-        }
-
-        return $sum_total_discount;
-    }
-}
-
 if (!function_exists('product_sale_return_discount')) {
     function product_sale_return_discount($store_id)
     {
@@ -227,6 +212,21 @@ if (!function_exists('product_sale_return_discount')) {
         }
 
         return $sum_total_return_discount;
+    }
+}
+
+if (!function_exists('product_sale_discount')) {
+    function product_sale_discount($store_id)
+    {
+        $productSaleDiscount = DB::table('product_sales')
+            ->select( DB::raw('SUM(discount_amount) as total_discount'))
+            ->first();
+        $sum_total_discount = 0;
+        if($productSaleDiscount){
+            $sum_total_discount = $productSaleDiscount->total_discount;
+        }
+
+        return $sum_total_discount - product_sale_return_discount($store_id);
     }
 }
 
@@ -330,8 +330,8 @@ if (!function_exists('loss_profit')) {
     function loss_profit($store_id,$start_date=null,$end_date=null)
     {
         $sale_discount = product_sale_discount($store_id);
-        $sale_return_discount = product_sale_return_discount($store_id);
-        $final_sale_discount = $sale_discount - $sale_return_discount;
+        //$sale_return_discount = product_sale_return_discount($store_id);
+        //$final_sale_discount = $sale_discount - $sale_return_discount;
         if($start_date != null && $end_date != null){
              $profit = DB::table('profits')
                 ->select(DB::raw('SUM(profit_amount) as sum_profit_amount'))
@@ -342,14 +342,16 @@ if (!function_exists('loss_profit')) {
 
 
 
-            return $loss_profit = $profit->sum_profit_amount - $final_sale_discount;
+            //return $loss_profit = $profit->sum_profit_amount - $final_sale_discount;
+            return $loss_profit = $profit->sum_profit_amount - $sale_discount;
         }else{
             $profit = DB::table('profits')
                 ->select(DB::raw('SUM(profit_amount) as sum_profit_amount'))
                 ->where('store_id',$store_id)
                 ->first();
 
-            return $loss_profit = $profit->sum_profit_amount - $final_sale_discount;
+            //return $loss_profit = $profit->sum_profit_amount - $final_sale_discount;
+            return $loss_profit = $profit->sum_profit_amount - $sale_discount;
         }
 
     }
