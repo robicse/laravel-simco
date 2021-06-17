@@ -205,24 +205,24 @@ class ProductSaleReplacementController extends Controller
                     $invoice_stock->save();
 
 
-                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+//                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
 
                     // profit table
-                    $profit = new Profit();
-                    $profit->ref_id = $insert_id;
-                    $profit->purchase_invoice_no = $purchase_invoice_no;
-                    $profit->invoice_no ='Salrep-'.$productSale->invoice_no;
-                    $profit->user_id = Auth::id();
-                    $profit->store_id = $productSale->store_id;
-                    $profit->type = 'Sale';
-                    $profit->product_id = $product_id;
-                    $profit->qty = $request->replace_qty[$i];
-                    $profit->price = $request->price[$i];
-                    $profit->sub_total = $request->replace_qty[$i]*$request->price[$i];
-                    $profit->discount_amount = 0;
-                    $profit->profit_amount = -($profit_amount*$request->replace_qty[$i]);
-                    $profit->date = date('Y-m-d');
-                    $profit->save();
+//                    $profit = new Profit();
+//                    $profit->ref_id = $insert_id;
+//                    $profit->purchase_invoice_no = $purchase_invoice_no;
+//                    $profit->invoice_no ='Salrep-'.$productSale->invoice_no;
+//                    $profit->user_id = Auth::id();
+//                    $profit->store_id = $productSale->store_id;
+//                    $profit->type = 'Sale';
+//                    $profit->product_id = $product_id;
+//                    $profit->qty = $request->replace_qty[$i];
+//                    $profit->price = $request->price[$i];
+//                    $profit->sub_total = $request->replace_qty[$i]*$request->price[$i];
+//                    $profit->discount_amount = 0;
+//                    $profit->profit_amount = -($profit_amount*$request->replace_qty[$i]);
+//                    $profit->date = date('Y-m-d');
+//                    $profit->save();
                 }
             }
         }
@@ -349,20 +349,20 @@ class ProductSaleReplacementController extends Controller
 
 
 
-                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
-
-                    // profit table
-                    $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
-                    $profit->user_id = Auth::id();
-                    $profit->store_id = $store_id;
-                    $profit->product_id = $product_id;
-                    $profit->qty = $request_qty;
-                    $profit->price = $request->price[$i];
-                    $profit->sub_total = $request_qty*$request->price[$i];
-                    $profit->discount_amount = 0;
-                    $profit->profit_amount = -($profit_amount*$request_qty);
-                    $profit->date = date('Y-m-d');
-                    $profit->update();
+//                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+//
+//                    // profit table
+//                    $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
+//                    $profit->user_id = Auth::id();
+//                    $profit->store_id = $store_id;
+//                    $profit->product_id = $product_id;
+//                    $profit->qty = $request_qty;
+//                    $profit->price = $request->price[$i];
+//                    $profit->sub_total = $request_qty*$request->price[$i];
+//                    $profit->discount_amount = 0;
+//                    $profit->profit_amount = -($profit_amount*$request_qty);
+//                    $profit->date = date('Y-m-d');
+//                    $profit->update();
 
                 }
 
