@@ -478,32 +478,41 @@ if (!function_exists('get_profit_amount_row')) {
 }
 
 if (!function_exists('edited_current_invoice_stock')) {
-    function edited_current_invoice_stock($store_id,$purchase_invoice_no,$product_id,$invoice_no,$product_sale_detail_id)
+//    function edited_current_invoice_stock($store_id,$purchase_invoice_no,$product_id,$invoice_no,$product_sale_detail_id)
+//    {
+//        $purchase_qty = DB::table('product_purchase_details')
+//            ->join('product_purchases','product_purchase_details.product_purchase_id','product_purchases.id')
+//            ->where('product_purchases.store_id',$store_id)
+//            ->where('product_purchases.invoice_no',$purchase_invoice_no)
+//            ->where('product_purchase_details.product_id',$product_id)
+//            ->pluck('product_purchase_details.qty')
+//            ->first();
+//
+//        $previous_sale_qty = DB::table('product_sale_details')
+//            ->join('product_sales','product_sale_details.product_sale_id','product_sales.id')
+//            ->where('product_sales.store_id',$store_id)
+//            ->where('product_sale_details.purchase_invoice_no',$purchase_invoice_no)
+//            ->where('product_sales.invoice_no','!=',$invoice_no)
+//            ->where('product_sale_details.product_id',$product_id)
+//            ->select(DB::raw('SUM(product_sale_details.qty) as sum_qty'))
+//            ->first();
+//        $previous_sale_sum_qty = $previous_sale_qty->sum_qty;
+//        if($previous_sale_sum_qty != null){
+//            return $purchase_qty - $previous_sale_sum_qty;
+//        }else{
+//            return $purchase_qty;
+//        }
+//    }
+    function edited_current_invoice_stock($store_id,$product_id,$product_sale_qty)
     {
-        $purchase_qty = DB::table('product_purchase_details')
-            ->join('product_purchases','product_purchase_details.product_purchase_id','product_purchases.id')
-            ->where('product_purchases.store_id',$store_id)
-            ->where('product_purchases.invoice_no',$purchase_invoice_no)
-            ->where('product_purchase_details.product_id',$product_id)
-            ->pluck('product_purchase_details.qty')
+        return $current_stock = DB::table('stocks')
+            ->where('store_id',$store_id)
+            ->where('product_id',$product_id)
+            ->latest()
+            ->pluck('current_stock')
             ->first();
 
-        $previous_sale_qty = DB::table('product_sale_details')
-            ->join('product_sales','product_sale_details.product_sale_id','product_sales.id')
-            ->where('product_sales.store_id',$store_id)
-            ->where('product_sale_details.purchase_invoice_no',$purchase_invoice_no)
-            ->where('product_sales.invoice_no','!=',$invoice_no)
-            ->where('product_sale_details.product_id',$product_id)
-            ->select(DB::raw('SUM(product_sale_details.qty) as sum_qty'))
-            ->first();
-        $previous_sale_sum_qty = $previous_sale_qty->sum_qty;
-        if($previous_sale_sum_qty != null){
-            return $purchase_qty - $previous_sale_sum_qty;
-        }else{
-            return $purchase_qty;
-        }
 
-        //$current_qty = ProductSaleDetail::where('id',$product_sale_detail_id)->pluck('qty')->first();
     }
 }
 

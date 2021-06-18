@@ -104,7 +104,8 @@
                                 <tbody class="neworderbody">
                                 @foreach($productSaleDetails as $key => $productSaleDetail)
                                     @php
-                                        $current_stock = edited_current_invoice_stock($productSale->store_id,$productSaleDetail->purchase_invoice_no,$productSaleDetail->product_id,$productSale->invoice_no,$productSaleDetail->id);
+                                        //$current_stock = edited_current_invoice_stock($productSale->store_id,$productSaleDetail->purchase_invoice_no,$productSaleDetail->product_id,$productSale->invoice_no,$productSaleDetail->id);
+                                        $current_stock = edited_current_invoice_stock($productSale->store_id,$productSaleDetail->product_id,$productSaleDetail->qty);
                                         //dd($current_stock);
                                     @endphp
                                     <tr>
