@@ -97,7 +97,19 @@
                 //console.log(current_row);
                 //console.log(current_product_id);
                 //var current_product_id = $('#product_id_'+current_row).val();
+                var check_sale_return_qty = $('#check_sale_return_qty_'+current_row).val();
+                //console.log('check_sale_return_qty = ' + check_sale_return_qty);
+                //console.log('check_sale_return_qty= ' + typeof check_sale_return_qty);
+                var check_sale_replace_qty = $('#check_sale_replace_qty_'+current_row).val();
+                //console.log('check_sale_replace_qty = ' + check_sale_replace_qty);
+                //console.log('check_sale_replace_qty= ' + typeof check_sale_replace_qty);
                 var current_sale_qty = $('#qty_'+current_row).val();
+                if(check_sale_return_qty > 0){
+                    current_sale_qty -= check_sale_return_qty
+                }
+                if(check_sale_replace_qty > 0){
+                    current_sale_qty -= check_sale_replace_qty
+                }
                 if(current_replace_qty > current_sale_qty){
                     alert('You have limit cross of stock qty!');
                     $('#replace_qty_'+current_row).val(0);

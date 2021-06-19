@@ -61,7 +61,7 @@ class ProductSaleReplacementController extends Controller
 
 
     public function getSaleProduct($sale_id){
-        //$products = ProductSaleDetail::where('product_sale_id',$sale_id)->get();
+        $productSale = ProductSale::where('id',$sale_id)->first();
         $products = DB::table('product_sale_details')
             ->join('products','product_sale_details.product_id','=','products.id')
             ->where('product_sale_details.product_sale_id',$sale_id)
@@ -74,6 +74,8 @@ class ProductSaleReplacementController extends Controller
                                 <th width=\"30\">No</th>
                                 <th>Product Name</th>
                                 <th align=\"right\"> Quantity</th>
+                                <th>Already Return Quantity</th>
+                                <th>Already Replace Quantity</th>
                                 <th>Replace Quantity</th>
                                 <th style=\"display: none\">Price</th>
                                 <th>Reason</th>
@@ -82,11 +84,15 @@ class ProductSaleReplacementController extends Controller
                         <tbody>";
                         if(count($products) > 0):
                             foreach($products as $key => $item):
+                                $check_sale_return_qty = check_sale_return_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
+                                $check_sale_replace_qty = check_sale_replace_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
                                 $key += 1;
                                 $html .= "<tr>";
                                 $html .= "<th width=\"30\">1</th>";
                                 $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" />$item->name</th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
+                                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_return_qty[]\" id=\"check_sale_return_qty_$key\" value=\"$check_sale_return_qty\" readonly /></th>";
+                                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_replace_qty[]\" id=\"check_sale_replace_qty_$key\" value=\"$check_sale_replace_qty\" readonly /></th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"replace_qty[]\" id=\"replace_qty_$key\" onkeyup=\"replace_qty($key,this);\" size=\"28\" /></th>";
                                 $html .= "<th style=\"display: none\"><input type=\"text\" class=\"form-control\" name=\"price[]\" id=\"price_$key\" value=\"$item->price\" size=\"28\" /></th>";
                                 $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" ></textarea> </th>";

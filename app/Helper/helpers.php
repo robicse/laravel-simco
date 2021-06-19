@@ -526,7 +526,24 @@ if (!function_exists('check_sale_return_qty')) {
             ->where('product_sale_return_details.product_id',$product_id)
             ->select(DB::raw('sum(product_sale_return_details.qty) as total_sale_return_qty'))
             ->first();
+
         return $sale_return_qty->total_sale_return_qty;
+
+    }
+}
+
+if (!function_exists('check_sale_replace_qty')) {
+    function check_sale_replace_qty($store_id,$product_id,$sale_invoice_no)
+    {
+        $sale_replace_qty = DB::table('product_sale_replacement_details')
+            ->join('product_sale_replacements','product_sale_replacement_details.p_s_replacement_id','product_sale_replacements.id')
+            ->where('product_sale_replacements.store_id',$store_id)
+            ->where('product_sale_replacements.sale_invoice_no',$sale_invoice_no)
+            ->where('product_sale_replacement_details.product_id',$product_id)
+            ->select(DB::raw('sum(product_sale_replacement_details.replace_qty) as total_sale_replace_qty'))
+            ->first();
+
+        return $sale_replace_qty->total_sale_replace_qty;
 
     }
 }

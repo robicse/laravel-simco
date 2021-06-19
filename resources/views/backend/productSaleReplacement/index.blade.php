@@ -7,7 +7,7 @@
                 <h1><i class=""></i> All Replacement Sale Product</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
-                <li class="breadcrumb-item"> <a href="{!! route('productSaleReplacement.create') !!}" class="btn btn-sm btn-primary" type="button">Add Product Sales</a></li>
+                <li class="breadcrumb-item"> <a href="{!! route('productSaleReplacement.create') !!}" class="btn btn-sm btn-primary" type="button">Add Product Sale Replacements</a></li>
             </ul>
         </div>
         <div class="col-md-12">
