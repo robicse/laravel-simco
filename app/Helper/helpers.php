@@ -516,4 +516,19 @@ if (!function_exists('edited_current_invoice_stock')) {
     }
 }
 
+if (!function_exists('check_sale_return_qty')) {
+    function check_sale_return_qty($store_id,$product_id,$sale_invoice_no)
+    {
+        $sale_return_qty = DB::table('product_sale_return_details')
+            ->join('product_sale_returns','product_sale_return_details.product_sale_return_id','product_sale_returns.id')
+            ->where('product_sale_returns.store_id',$store_id)
+            ->where('product_sale_returns.sale_invoice_no',$sale_invoice_no)
+            ->where('product_sale_return_details.product_id',$product_id)
+            ->select(DB::raw('sum(product_sale_return_details.qty) as total_sale_return_qty'))
+            ->first();
+        return $sale_return_qty->total_sale_return_qty;
+
+    }
+}
+
 ?>
