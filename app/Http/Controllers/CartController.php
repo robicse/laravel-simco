@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\InvoiceStock;
 use App\Product;
 use App\ProductPurchaseDetail;
 use App\Stock;
@@ -18,28 +19,111 @@ class CartController extends Controller
         if($barcode){
             $product_check_exists = Product::where('barcode',$barcode)->pluck('id')->first();
             if($product_check_exists){
-                //$product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
-                $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->where('store_id',$store_id)->latest()->pluck('current_stock')->first();
-                if($product_current_stock_check_exists > 0){
-                    $data['product_check_exists'] = 'Product Found!';
-                    $product = DB::table('products')
-                        ->where('barcode',$barcode)
-                        ->first();
-
-                    if(!empty($product)){
-                        $price = ProductPurchaseDetail::where('product_id',$product->id)->latest()->pluck('mrp_price')->first();
-
-                        $data['id'] = $product->id;
-                        $data['name'] = $product->name;
-                        $data['qty'] = 1;
-                        $data['price'] = $price;
-                        $data['options']['barcode'] = $barcode;
-                        Cart::add($data);
+                if(Cart::count() > 0){
+                    if($product_check_exists )
+                    $previous_invoice_no = NULL;
+                    $qty_sum = 0;
+                    $product_ids = [];
+                    foreach(Cart::content() as $item){
+                        $product_ids[] = $item->id;
+                        $previous_invoice_no = $item->options['invoice_no'];
+                        $qty_sum += $item->qty;
                     }
-                    $data['countCart'] = Cart::count();
+
+                    if (in_array($product_check_exists, $product_ids))
+                    {
+                        $product_current_invoice_stock_check_exists = InvoiceStock::where('product_id',$product_check_exists)
+                            ->where('purchase_invoice_no',$previous_invoice_no)
+                            ->where('store_id',$store_id)
+                            ->latest()
+                            ->first();
+
+                        $check_current_stock = $product_current_invoice_stock_check_exists->current_stock;
+                        if(($check_current_stock > 0) && ($qty_sum < $check_current_stock)) {
+                            $data['product_check_exists'] = 'Product Found!';
+
+                            $product_purchase_detail_info = ProductPurchaseDetail::where('product_id',$product_check_exists)
+                                ->where('qty_stock_status','Available')
+                                ->first();
+                            $price = $product_purchase_detail_info->mrp_price;
+                            $invoice_no = $product_purchase_detail_info->invoice_no;
+
+                            $product = DB::table('products')
+                                ->where('barcode', $barcode)
+                                ->first();
+
+                            if (!empty($product)) {
+                                $data['id'] = $product->id;
+                                $data['name'] = $product->name;
+                                $data['qty'] = 1;
+                                $data['price'] = $price;
+                                $data['options']['barcode'] = $barcode;
+                                $data['options']['invoice_no'] = $invoice_no;
+
+                                Cart::add($data);
+                            }
+                        }else{
+                            $data['product_check_exists'] = 'No Product Stock Found!';
+                        }
+                    }else{
+                        $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
+                        if($product_current_stock_check_exists > 0){
+                            $data['product_check_exists'] = 'Product Found!';
+                            $product = DB::table('products')
+                                ->where('barcode',$barcode)
+                                ->first();
+
+                            if(!empty($product)){
+                                $product_purchase_detail_info = ProductPurchaseDetail::where('product_id',$product->id)
+                                    ->where('qty_stock_status','Available')
+                                    ->first();
+                                $price = $product_purchase_detail_info->mrp_price;
+                                $invoice_no = $product_purchase_detail_info->invoice_no;
+
+                                $data['id'] = $product->id;
+                                $data['name'] = $product->name;
+                                $data['qty'] = 1;
+                                $data['price'] = $price;
+                                $data['options']['barcode'] = $barcode;
+                                $data['options']['invoice_no'] = $invoice_no;
+
+                                Cart::add($data);
+                            }
+                            $data['countCart'] = Cart::count();
+                        }else{
+                            $data['product_check_exists'] = 'No Product Stock Found!';
+                        }
+                    }
                 }else{
-                    $data['product_check_exists'] = 'No Product Stock Found!';
+                    $product_current_stock_check_exists = Stock::where('product_id',$product_check_exists)->latest()->pluck('current_stock')->first();
+                    if($product_current_stock_check_exists > 0){
+                        $data['product_check_exists'] = 'Product Found!';
+                        $product = DB::table('products')
+                            ->where('barcode',$barcode)
+                            ->first();
+
+                        if(!empty($product)){
+                            $product_purchase_detail_info = ProductPurchaseDetail::where('product_id',$product->id)
+                                ->where('qty_stock_status','Available')
+                                ->first();
+                            $price = $product_purchase_detail_info->mrp_price;
+                            $invoice_no = $product_purchase_detail_info->invoice_no;
+
+                            $data['id'] = $product->id;
+                            $data['name'] = $product->name;
+                            $data['qty'] = 1;
+                            $data['price'] = $price;
+                            $data['options']['barcode'] = $barcode;
+                            $data['options']['invoice_no'] = $invoice_no;
+
+                            Cart::add($data);
+                        }
+                        $data['countCart'] = Cart::count();
+                    }else{
+                        $data['product_check_exists'] = 'No Product Stock Found!';
+                    }
                 }
+
             }else{
                 $data['product_check_exists'] = 'No Product Found!';
             }

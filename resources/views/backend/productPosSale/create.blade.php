@@ -20,7 +20,7 @@
                             <div class="col-md-6  input-group">
                                 <input id="kode" type="text" class="form-control" name="kode" autofocus required>
                                 <span class="input-group-btn">
-                                <button onclick="showProduct()" type="button" class="btn btn-info">Show Product</button>
+{{--                                <button onclick="showProduct()" type="button" class="btn btn-info">Show Product</button>--}}
                             </span>
                             </div>
                         </div>

@@ -202,19 +202,19 @@
                                 </div>
                             </a>
                         </div>
-{{--                        <div class="col-md-3">--}}
-{{--                            <a href="{{ route('productPosSales.create') }}">--}}
-{{--                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>--}}
-{{--                                    <div class="info">--}}
-{{--                                        <h4>POS Sale/Stock Out</h4>--}}
-{{--                                        <p><b></b></p>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </a>--}}
-{{--                        </div>--}}
+                        <div class="col-md-3">
+                            <a href="{{ route('productPosSales.create') }}">
+                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>
+                                    <div class="info">
+                                        <h4>POS Sale/Stock Out</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         <div class="col-md-3">
                             <a href="{{ route('productSales.create') }}">
-                                <div class="widget-small info coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i> <div class="info">
+                                <div class="widget-small primary coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i> <div class="info">
                                         <h4>FG Whole Sale</h4>
                                         <p><b></b></p>
                                     </div>
@@ -223,7 +223,7 @@
                         </div>
                         <div class="col-md-3">
                             <a  href="{{ route('returnable.sale.product') }}">
-                                <div class="widget-small primary coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
+                                <div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
                                         <h4>FG Sale Return</h4>
                                         <p><b></b></p>
                                     </div>
@@ -232,7 +232,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('productSaleReplacement.create') }}">
-                                <div class="widget-small warning coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i>
+                                <div class="widget-small danger coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i>
                                     <div class="info">
                                         <h4>FG Sale Replace</h4>
                                         <p><b></b></p>
@@ -242,7 +242,7 @@
                         </div>
                         <div class="col-md-3">
                             <a  href="{{ route('productPurchaseRawMaterials.create') }}">
-                                <div class="widget-small danger coloured-icon"><i class="icon fa fa-shopping-basket"></i>
+                                <div class="widget-small info coloured-icon"><i class="icon fa fa-shopping-basket"></i>
                                     <div class="info">
                                         <h4>Raw Materials Stock In</h4>
                                         <p><b></b></p>
@@ -252,7 +252,7 @@
                         </div>
                         <div class="col-md-3">
                             <a  href="{{ route('productProductions.create') }}">
-                                <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>
+                                <div class="widget-small primary coloured-icon"><i class="icon fas fa-file-invoice"></i>
                                     <div class="info">
                                         <h4> Production Raw Materials</h4>
                                         <p><b></b></p>

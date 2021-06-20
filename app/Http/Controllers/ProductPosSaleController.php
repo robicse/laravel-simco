@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Due;
+use App\InvoiceStock;
 use App\Party;
 use App\Product;
 use App\ProductBrand;
@@ -11,10 +12,12 @@ use App\ProductPurchaseDetail;
 use App\ProductSale;
 use App\ProductSaleDetail;
 use App\ProductSubCategory;
+use App\Profit;
 use App\Stock;
 use App\Store;
 use App\Transaction;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -380,16 +383,29 @@ class ProductPosSaleController extends Controller
 
 
 
+        //$total_amount = $request->total_amount;
+
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
+        //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
-            $invoice_no = $get_invoice_no+1;
+            $get_invoice = str_replace("Sal-","",$get_invoice_no);
+            $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
+        //dd($invoice_no);
+
+//        if($request->discount_type == 'percentage'){
+//            $discount_amount = $request->discount_percentage;
+//            $discount_percentage = $request->discount_amount;
+//        }else{
+//            $discount_amount = $request->discount_amount;
+//            $discount_percentage = NULL;
+//        }
 
         // product purchase
         $productSale = new ProductSale();
-        $productSale->invoice_no = $invoice_no;
+        $productSale->invoice_no = 'Sal-'.$invoice_no;
         $productSale->user_id = Auth::id();
         $productSale->party_id = $customer_id;
         $productSale->store_id = $request->store_id;
@@ -409,11 +425,36 @@ class ProductPosSaleController extends Controller
         if($insert_id)
         {
             foreach (Cart::content() as $content) {
+                //dd($content);
+                $price = $content->price;
+                //$discount_amount = $discount_amount;
+                //$total_amount = $total_amount;
+
+                $final_discount_amount = (float)$discount_amount * (float)$price;
+                $final_total_amount = (float)$discount_amount + (float)$total_amount;
+                $discount_type = $request->discount_type;
+                $discount = (float)$final_discount_amount/(float)$final_total_amount;
+                if($discount_type != NULL){
+                    if($discount_type == 'flat'){
+                        $discount = round($discount);
+                    }
+                }
+
+                $purchase_invoice_no = $content->options['invoice_no'];
+                //dd($purchase_invoice_no);
+
+
+                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$content->id)->first();
+                $purchase_qty = $product_purchase_details_info->qty;
+                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+
                 $product = Product::where('id',$content->id)->first();
 
                 // product purchase detail
                 $purchase_sale_detail = new ProductSaleDetail();
                 $purchase_sale_detail->product_sale_id = $insert_id;
+                $purchase_sale_detail->purchase_invoice_no = $purchase_invoice_no;
                 $purchase_sale_detail->return_type = 'not returnable';
                 $purchase_sale_detail->product_category_id = $product->product_category_id;
                 $purchase_sale_detail->product_sub_category_id = $product->product_sub_category_id ? $product->product_sub_category_id : NULL;
@@ -422,16 +463,53 @@ class ProductPosSaleController extends Controller
                 $purchase_sale_detail->product_id = $content->id;
                 $purchase_sale_detail->qty = $content->qty;
                 $purchase_sale_detail->price = $content->price;
+                $purchase_sale_detail->discount = $discount;
                 $purchase_sale_detail->sub_total = $content->qty*$content->price;
                 $purchase_sale_detail->save();
 
-                $check_previous_stock = Stock::where('product_id',$content->id)->latest()->pluck('current_stock')->first();
+
+                // update purchase details table stock status
+                $total_sale_qty = $purchase_previous_sale_qty + $content->qty;
+                $product_purchase_details_info->sale_qty = $total_sale_qty;
+                if($total_sale_qty == $purchase_qty){
+                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+                }else{
+                    $product_purchase_details_info->qty_stock_status = 'Available';
+                }
+                $product_purchase_details_info->save();
+
+
+
+
+//                $check_previous_stock = Stock::where('product_id',$content->id)->latest()->pluck('current_stock')->first();
+//                if(!empty($check_previous_stock)){
+//                    $previous_stock = $check_previous_stock;
+//                }else{
+//                    $previous_stock = 0;
+//                }
+//
+//                // product stock
+//                $stock = new Stock();
+//                $stock->user_id = Auth::id();
+//                $stock->ref_id = $insert_id;
+//                $stock->store_id = $request->store_id;
+//                $stock->date = date('Y-m-d');
+//                $stock->product_id = $content->id;
+//                $stock->stock_type = 'sale';
+//                $stock->previous_stock = $previous_stock;
+//                $stock->stock_in = 0;
+//                $stock->stock_out = $content->qty;
+//                $stock->current_stock = $previous_stock - $content->qty;
+//                $stock->save();
+
+                // product stock
+                $check_previous_stock = Stock::where('store_id',$request->store_id)
+                    ->where('product_id',$content->id)->latest()->pluck('current_stock')->first();
                 if(!empty($check_previous_stock)){
                     $previous_stock = $check_previous_stock;
                 }else{
                     $previous_stock = 0;
                 }
-
                 // product stock
                 $stock = new Stock();
                 $stock->user_id = Auth::id();
@@ -445,11 +523,64 @@ class ProductPosSaleController extends Controller
                 $stock->stock_out = $content->qty;
                 $stock->current_stock = $previous_stock - $content->qty;
                 $stock->save();
+
+
+
+                // invoice wise product stock
+                $check_previous_invoice_stock = InvoiceStock::where('store_id',$request->store_id)
+                    ->where('purchase_invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$content->id)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+
+                if(!empty($check_previous_invoice_stock)){
+                    $previous_invoice_stock = $check_previous_invoice_stock;
+                }else{
+                    $previous_invoice_stock = 0;
+                }
+                // product stock
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $insert_id;
+                $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
+                $invoice_stock->invoice_no = 'Sal-'.$invoice_no;
+                $invoice_stock->store_id = $request->store_id;
+                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->product_id = $content->id;
+                $invoice_stock->stock_type = 'sale';
+                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->stock_in = 0;
+                $invoice_stock->stock_out = $content->qty;
+                $invoice_stock->current_stock = $previous_invoice_stock - $content->qty;
+                $invoice_stock->save();
+
+
+                $profit_amount = get_profit_amount($purchase_invoice_no,$content->id);
+
+                // profit table
+                $profit = new Profit();
+                $profit->ref_id = $insert_id;
+                $profit->purchase_invoice_no = $purchase_invoice_no;
+                $profit->invoice_no ='Sal-'.$invoice_no;
+                $profit->user_id = Auth::id();
+                $profit->store_id = $request->store_id;
+                $profit->type = 'Sale';
+                $profit->product_id = $content->id;
+                $profit->qty = $content->qty;
+                $profit->price = $content->price;
+                $profit->sub_total = $content->qty*$content->price;
+//                $profit->discount_amount = $request->discount_amount;
+//                $profit->profit_amount = ($profit_amount*$request->qty[$i]) - $request->discount_amount;
+                $profit->discount_amount = NULL;
+                $profit->profit_amount = $profit_amount*$content->qty;
+                $profit->date = date('Y-m-d');
+                $profit->save();
             }
 
             // due
             $due = new Due();
-            $due->invoice_no = $invoice_no;
+            $due->invoice_no = 'Sal-'.$invoice_no;
             $due->ref_id = $insert_id;
             $due->user_id = Auth::id();
             $due->store_id = $request->store_id;
@@ -461,7 +592,7 @@ class ProductPosSaleController extends Controller
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = $invoice_no;
+            $transaction->invoice_no = 'Sal-'.$invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $customer_id;
