@@ -72,7 +72,7 @@
                             <td class="d-inline-flex">
                                 <a href="{{url('product-pos-sales-invoice/'.$productSale->id.'/'.'list')}}" target="__blank" class="btn btn-sm btn-warning" style="margin-left: 5px" type="button">Print</a>
                                 <a href="{{ route('productSales.show',$productSale->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
-                                <a href="{{ route('productSales.edit',$productSale->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
+{{--                                <a href="{{ route('productSales.edit',$productSale->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>--}}
                                 <form method="post" action="{{ route('productSales.destroy',$productSale->id) }}" >
                                    @method('DELETE')
                                     @csrf
