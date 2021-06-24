@@ -99,7 +99,11 @@
                                         <b>
                                             @php
                                                 //dd(loss_profit($store->id,NULL,NULL));
-                                                    $loss_profit = loss_profit($store->id,NULL,NULL) - $total_expense;
+                                                $loss_profit = loss_profit($store->id,NULL,NULL);
+                                                $sale_discount = product_sale_discount($store->id,NULL,NULL);
+                                                $product_sale_return_discount = product_sale_return_discount($store->id,NULL,NULL);
+                                                $loss_profit_after_sale_discount = $loss_profit - ($sale_discount - $product_sale_return_discount);
+                                                $loss_profit = $loss_profit_after_sale_discount - $total_expense;
                                             @endphp
                                             @if($loss_profit > 0)
                                                 Profit:

@@ -41,8 +41,19 @@
                             <table>
                                 <thead>
                                 @php
+                                    //die($end_date);
+                                    //$product_sale_return_discount = product_sale_return_discount($store->id,$start_date,$end_date);
+                                    //$product_sale_discount = product_sale_discount($store->id,$start_date,$end_date);
+
+
+
                                     $loss_profit = loss_profit($store->id,$start_date,$end_date);
+                                    $sale_discount = product_sale_discount($store->id,$start_date,$end_date);
+                                    $product_sale_return_discount = product_sale_return_discount($store->id,$start_date,$end_date);
+                                    $loss_profit_after_sale_discount = $loss_profit - ($sale_discount - $product_sale_return_discount);
                                     $total_expense = total_expense($store->id,$start_date,$end_date);
+                                    //dd($sale_discount);
+                                    $loss_profit = $loss_profit_after_sale_discount - $total_expense;
                                 @endphp
                                 <tr>
                                     <th colspan="10">Sum Product Based Loss/Profit: </th>
