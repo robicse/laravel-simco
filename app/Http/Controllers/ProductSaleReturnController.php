@@ -78,7 +78,7 @@ class ProductSaleReturnController extends Controller
             $productSaleReturnDetail->reason = $request->reason[$i];
             $productSaleReturnDetail->update();
 
-            $total_amount += $request->price[$i]*$request->price[$i];
+            $total_amount += $request->price[$i]*$request->qty[$i];
             $request_qty = $request->qty[$i];
 
 
@@ -284,7 +284,7 @@ class ProductSaleReturnController extends Controller
         $total_amount = 0;
         for ($i = 0; $i < $row_count; $i++) {
             if ($request->return_qty[$i] != null) {
-                $total_amount += $request->total_amount[$i];
+                $total_amount += $request->total_amount[$i]*$request->return_qty[$i];
             }
         }
 

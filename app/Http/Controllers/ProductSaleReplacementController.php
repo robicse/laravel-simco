@@ -151,7 +151,7 @@ class ProductSaleReplacementController extends Controller
                     $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
                     $purchase_qty = $product_purchase_details_info->qty;
                     $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-                    $total_sale_qty = $purchase_previous_sale_qty - $request->replace_qty[$i];
+                    $total_sale_qty = $purchase_previous_sale_qty + $request->replace_qty[$i];
                     $product_purchase_details_info->sale_qty = $total_sale_qty;
                     if($total_sale_qty == $purchase_qty){
                         $product_purchase_details_info->qty_stock_status = 'Not Available';
@@ -321,7 +321,7 @@ class ProductSaleReplacementController extends Controller
                     $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
                     $purchase_qty = $product_purchase_details_info->qty;
                     $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-                    $total_sale_qty = $purchase_previous_sale_qty - $request->qty[$i];
+                    $total_sale_qty = $purchase_previous_sale_qty + $request->qty[$i];
                     $product_purchase_details_info->sale_qty = $total_sale_qty;
                     if($total_sale_qty == $purchase_qty){
                         $product_purchase_details_info->qty_stock_status = 'Not Available';
