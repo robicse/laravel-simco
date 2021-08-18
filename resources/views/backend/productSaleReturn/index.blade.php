@@ -25,7 +25,7 @@
                             <th>Party</th>
                             <th>Payment Type</th>
                             <th>Total Amount</th>
-                            <th>date</th>
+                            <th>Date</th>
                             <th>Action</th>
                         </tr>
                         </thead>
