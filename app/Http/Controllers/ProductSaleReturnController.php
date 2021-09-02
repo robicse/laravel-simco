@@ -278,8 +278,7 @@ class ProductSaleReturnController extends Controller
         //dd($request->all());
         $row_count = count($request->return_qty);
         $productSale = ProductSale::where('id',$request->product_sale_id)->first();
-        $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->pluck('purchase_invoice_no')->first();
-        //dd($row_count);
+
 
         $total_amount = 0;
         for ($i = 0; $i < $row_count; $i++) {
@@ -331,6 +330,8 @@ class ProductSaleReturnController extends Controller
                     $product_sale_return_detail->save();
 
                     $product_id = $productSaleDetail->product_id;
+                    $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->where('product_id',$product_id)->pluck('purchase_invoice_no')->first();
+                    //dd($purchase_invoice_no);
 
                     // update purchase details table stock status
                     $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
