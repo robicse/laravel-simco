@@ -102,9 +102,9 @@ class PartyController extends Controller
 
     public function destroy($id)
     {
-        $parties = Party::find($id);
-        $parties->delete();
-        Toastr::success('Party Deleted Successfully Done!');
+//        $parties = Party::find($id);
+//        $parties->delete();
+        Toastr::warning('Party not deleted possible, Please contact with administrator!');
         return redirect()->route('party.index');
     }
 }

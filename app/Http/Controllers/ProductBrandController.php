@@ -72,8 +72,8 @@ class ProductBrandController extends Controller
 
     public function destroy($id)
     {
-        ProductBrand::destroy($id);
-        Toastr::success('Product Brand Deleted Successfully');
+        //ProductBrand::destroy($id);
+        Toastr::warning('Product Brand not deleted possible, Please contact with administrator!');
         return redirect()->route('productBrands.index');
     }
 }

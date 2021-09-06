@@ -63,8 +63,8 @@ class OfficeCostingCategoryController extends Controller
 
     public function destroy($id)
     {
-        OfficeCostingCategory::destroy($id);
-        Toastr::success('Office Costing Category Deleted Successfully');
+        //OfficeCostingCategory::destroy($id);
+        Toastr::warning('Office Costing Category not deleted possible, Please contact with administrator!');
         return redirect()->route('officeCostingCategory.index');
     }
 }

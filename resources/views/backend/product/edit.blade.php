@@ -251,7 +251,7 @@
                 $('#model').val('');
             }
 
-            var final_name = name + '.' + model
+            var final_name = name + '. ' + model
             $('#final_name').val(final_name);
         })
 

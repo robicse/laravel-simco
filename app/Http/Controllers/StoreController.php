@@ -123,8 +123,8 @@ class StoreController extends Controller
 
     public function destroy($id)
     {
-        Store::destroy($id);
-        Toastr::success('Store Deleted Successfully');
+        //Store::destroy($id);
+        Toastr::warning('Store not deleted possible, Please contact with administrator!');
         return redirect()->route('stores.index');
     }
 }

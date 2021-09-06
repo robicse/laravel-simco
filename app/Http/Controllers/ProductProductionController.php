@@ -380,7 +380,7 @@ class ProductProductionController extends Controller
 
 
                 // new product create
-                $product_name = $request->name . '.' . $request->model;
+                $product_name = $request->name . '. ' . $request->model;
                 $product = new Product;
                 $product->product_type = $request->product_type;
                 $product->barcode = $request->barcode;

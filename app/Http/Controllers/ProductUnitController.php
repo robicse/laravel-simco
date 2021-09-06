@@ -71,8 +71,8 @@ class ProductUnitController extends Controller
 
     public function destroy($id)
     {
-        ProductUnit::destroy($id);
-        Toastr::success('Product Unit Deleted Successfully');
+        //ProductUnit::destroy($id);
+        Toastr::warning('Product Unit not deleted possible, Please contact with administrator!');
         return redirect()->route('productUnits.index');
     }
 }

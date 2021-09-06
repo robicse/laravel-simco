@@ -72,8 +72,8 @@ class ProductCategoryController extends Controller
 
     public function destroy($id)
     {
-        ProductCategory::destroy($id);
-        Toastr::success('Product Category Deleted Successfully');
+        //ProductCategory::destroy($id);
+        Toastr::warning('Product Category not deleted possible, Please contact with administrator!');
         return redirect()->route('productCategories.index');
     }
 }

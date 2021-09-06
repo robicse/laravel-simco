@@ -80,8 +80,8 @@ class ProductSubCategoryController extends Controller
 
     public function destroy($id)
     {
-        ProductSubCategory::destroy($id);
-        Toastr::success('Product Sub Category Deleted Successfully');
+        //ProductSubCategory::destroy($id);
+        Toastr::warning('Product Sub Category not deleted possible, Please contact with administrator!');
         return redirect()->route('productSubCategories.index');
     }
 }

@@ -52,7 +52,7 @@ class ProductController extends Controller
         ]);
 
 
-        $product_name = $request->name . '.' . $request->model;
+        $product_name = $request->name . '. ' . $request->model;
         $product = new Product;
         $product->product_type = $request->product_type;
         $product->barcode = $request->barcode;
@@ -113,7 +113,7 @@ class ProductController extends Controller
             'product_brand_id' => 'required',
         ]);
 
-        $product_name = $request->name . '.' . $request->model;
+        $product_name = $request->name . '. ' . $request->model;
         $product = Product::find($id);
         $product->product_type = $request->product_type;
         //$product->name = $request->name;
@@ -156,8 +156,8 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        Product::destroy($id);
-        Toastr::success('Product Deleted Successfully');
+        //Product::destroy($id);
+        Toastr::warning('Product not deleted possible, Please contact with administrator!');
         return redirect()->route('products.index');
     }
 
