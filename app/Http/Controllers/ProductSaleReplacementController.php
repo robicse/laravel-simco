@@ -384,11 +384,91 @@ class ProductSaleReplacementController extends Controller
     public function destroy($id)
     {
         $productSaleReplacement = ProductSaleReplacement::find($id);
-        $productSaleReplacement->delete();
+
+
+        //DB::table('stocks')->where('ref_id',$id)->where('stock_type','replace')->delete();
+        //DB::table('transactions')->where('ref_id',$id)->delete();
+
+        $productSale = ProductSale::where('id',$productSaleReplacement->product_sale_id)->first();
+        $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->pluck('purchase_invoice_no')->first();
+
+        $product_sale_replacement_details = DB::table('product_sale_replacement_details')->where('p_s_replacement_id',$id)->get();
+        if(count($product_sale_replacement_details) > 0){
+            foreach($product_sale_replacement_details as $product_sale_replacement_detail){
+
+                $store_id = $productSaleReplacement->store_id;
+                $product_id = $product_sale_replacement_detail->product_id;
+                $replace_qty = $product_sale_replacement_detail->replace_qty;
+
+                $check_previous_stock = Stock::where('product_id',$product_id)->where('store_id',$store_id)->latest()->pluck('current_stock')->first();
+                if(!empty($check_previous_stock)){
+                    $previous_stock = $check_previous_stock;
+                }else{
+                    $previous_stock = 0;
+                }
+
+                // product stock
+                $stock = new Stock();
+                $stock->user_id = Auth::id();
+                $stock->ref_id = $id;
+                $stock->store_id = $store_id;
+                $stock->date = date('Y-m-d');
+                $stock->product_id = $product_id;
+                $stock->stock_type = 'replace delete';
+                $stock->previous_stock = $previous_stock;
+                $stock->stock_in = $replace_qty;
+                $stock->stock_out = 0;
+                $stock->current_stock = $previous_stock + $replace_qty;
+                $stock->save();
+
+                // invoice wise product stock
+                $check_previous_invoice_stock = InvoiceStock::where('store_id',$store_id)
+                    ->where('purchase_invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$product_id)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+
+                if(!empty($check_previous_invoice_stock)){
+                    $previous_invoice_stock = $check_previous_invoice_stock;
+                }else{
+                    $previous_invoice_stock = 0;
+                }
+
+                // product invoice stock
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $id;
+                $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
+                $invoice_stock->invoice_no = 'Salrep-'.$productSale->invoice_no;
+                $invoice_stock->store_id = $store_id;
+                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->product_id = $product_id;
+                $invoice_stock->stock_type = 'replace delete';
+                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->stock_in = $replace_qty;
+                $invoice_stock->stock_out = 0;
+                $invoice_stock->current_stock = $previous_invoice_stock + $replace_qty;
+                $invoice_stock->save();
+
+                // update purchase details table stock status
+                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                $purchase_qty = $product_purchase_details_info->qty;
+                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+                $total_sale_qty = $purchase_previous_sale_qty - $replace_qty;
+                $product_purchase_details_info->sale_qty = $total_sale_qty;
+                if($total_sale_qty == $purchase_qty){
+                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+                }else{
+                    $product_purchase_details_info->qty_stock_status = 'Available';
+                }
+                $product_purchase_details_info->save();
+            }
+        }
 
         DB::table('product_sale_replacement_details')->where('p_s_replacement_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->where('stock_type','replace')->delete();
-        //DB::table('transactions')->where('ref_id',$id)->delete();
+
+        $productSaleReplacement->delete();
 
         Toastr::success('Product Sale Replacement Deleted Successfully', 'Success');
         return redirect()->route('productSaleReplacement.index');

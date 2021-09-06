@@ -192,10 +192,106 @@ class ProductSaleReturnController extends Controller
     public function destroy($id)
     {
         $productSaleReturn = ProductSaleReturn::find($id);
-        $productSaleReturn->delete();
+        $product_sale_return_details = DB::table('product_sale_return_details')->where('product_sale_return_id',$id)->get();
+        if(count($product_sale_return_details) > 0){
+            foreach($product_sale_return_details as $product_sale_return_detail){
 
+                $store_id = $productSaleReturn->store_id;
+                $product_id = $product_sale_return_detail->product_id;
+                $qty = $product_sale_return_detail->qty;
+                $price = $product_sale_return_detail->price;
+                $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSaleReturn->product_sale_id)->where('product_id',$product_id)->pluck('purchase_invoice_no')->first();
+                //dd($purchase_invoice_no);
+
+                // update purchase details table stock status
+                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                $purchase_qty = $product_purchase_details_info->qty;
+                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+                $total_sale_qty = $purchase_previous_sale_qty + $qty;
+                $product_purchase_details_info->sale_qty = $total_sale_qty;
+                if($total_sale_qty == $purchase_qty){
+                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+                }else{
+                    $product_purchase_details_info->qty_stock_status = 'Available';
+                }
+                $product_purchase_details_info->save();
+
+
+                $check_previous_stock = Stock::where('product_id', $product_id)->latest()->pluck('current_stock')->first();
+                if (!empty($check_previous_stock)) {
+                    $previous_stock = $check_previous_stock;
+                } else {
+                    $previous_stock = 0;
+                }
+
+                // product stock
+                $stock = new Stock();
+                $stock->user_id = Auth::id();
+                $stock->ref_id = $id;
+                $stock->store_id = $store_id;
+                $stock->product_id = $product_id;
+                $stock->stock_type = 'sale return delete';
+                $stock->previous_stock = $previous_stock;
+                $stock->stock_in = 0;
+                $stock->stock_out = $qty;
+                $stock->current_stock = $previous_stock - $qty;
+                $stock->date = date('Y-m-d');
+                $stock->save();
+
+                // invoice wise product stock
+                $check_previous_invoice_stock = InvoiceStock::where('store_id',$store_id)
+                    ->where('purchase_invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$product_id)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+
+                if(!empty($check_previous_invoice_stock)){
+                    $previous_invoice_stock = $check_previous_invoice_stock;
+                }else{
+                    $previous_invoice_stock = 0;
+                }
+                // product stock
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $id;
+                $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
+                $invoice_stock->invoice_no = 'Salretdel-'.$productSaleReturn->invoice_no;
+                $invoice_stock->store_id = $store_id;
+                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->product_id = $product_id;
+                $invoice_stock->stock_type = 'sale return delete';
+                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->stock_in = 0;
+                $invoice_stock->stock_out = $qty;
+                $invoice_stock->current_stock = $previous_invoice_stock - $qty;
+                $invoice_stock->save();
+
+
+                $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+
+                // profit table
+                $profit = new Profit();
+                $profit->ref_id = $id;
+                $profit->purchase_invoice_no = $purchase_invoice_no;
+                $profit->invoice_no ='Salretdel-'.$productSaleReturn->invoice_no;
+                $profit->user_id = Auth::id();
+                $profit->store_id = $store_id;
+                $profit->type = 'sale return delete';
+                $profit->product_id = $product_id;
+                $profit->qty = $qty;
+                $profit->price = $price;
+                $profit->sub_total = $qty*$price;
+                $profit->discount_amount = 0;
+                $profit->profit_amount = $profit_amount*$qty;
+                $profit->date = date('Y-m-d');
+                $profit->save();
+            }
+        }
+
+        $productSaleReturn->delete();
         DB::table('product_sale_return_details')->where('product_sale_return_id',$id)->delete();
-        DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale return')->delete();
+        //DB::table('stocks')->where('ref_id',$id)->where('stock_type','sale return')->delete();
         DB::table('transactions')->where('ref_id',$id)->where('transaction_type','sale return')->delete();
 
         Toastr::success('Product Sale Return Deleted Successfully', 'Success');
