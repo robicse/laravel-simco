@@ -572,4 +572,25 @@ if (!function_exists('check_sale_replace_qty')) {
     }
 }
 
+if (!function_exists('salesProductModels')) {
+    function salesProductModels($product_sale_id)
+    {
+        $salesProductModels = DB::table('product_sale_details')
+            ->leftJoin('products','product_sale_details.product_id','products.id')
+            ->where('product_sale_details.product_sale_id',$product_sale_id)
+            ->select('products.model')
+            ->get();
+
+        $models = '';
+        $elements = [];
+        if(count($salesProductModels) > 0){
+            foreach($salesProductModels as $salesProductModel){
+                $elements[] = $salesProductModel->model;
+            }
+            $models = implode(',', $elements);
+        }
+        return $models;
+    }
+}
+
 ?>

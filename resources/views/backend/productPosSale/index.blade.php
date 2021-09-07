@@ -43,6 +43,7 @@
                             <th width="5%">SL NO</th>
                             <th>Sale User</th>
                             <th>Invoice No</th>
+                            <th>Model</th>
                             <th>Customer</th>
     {{--                        <th>Payment Type</th>--}}
                             <th>Total Amount</th>
@@ -58,6 +59,22 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $productSale->user->name}}</td>
                             <td>{{ $productSale->invoice_no}}</td>
+                            <td>
+                                @php
+                                    $str_arr = explode (",", salesProductModels($productSale->id));
+                                @endphp
+
+                                @foreach($str_arr as $key => $str)
+                                    @if(($key == 0 && count($str_arr) > 1))
+                                        {{$str}},
+                                    @elseif( (($key > 0 && $key < count($str_arr))) && ($key+1 != count($str_arr)))
+                                        {{$str}},
+                                    @else
+                                        {{$str}}
+                                    @endif
+                                    <br/>
+                                @endforeach
+                            </td>
                             <td>{{ $productSale->party->name}}</td>
     {{--                        <td>{{ $productSale->payment_type}}</td>--}}
                             <td>{{ $productSale->total_amount}}</td>
