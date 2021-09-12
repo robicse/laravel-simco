@@ -593,4 +593,46 @@ if (!function_exists('salesProductModels')) {
     }
 }
 
+if (!function_exists('saleReturnsProductModels')) {
+    function saleReturnsProductModels($product_sale_return_id)
+    {
+        $saleReturnsProductModels = DB::table('product_sale_return_details')
+            ->leftJoin('products','product_sale_return_details.product_id','products.id')
+            ->where('product_sale_return_details.product_sale_return_id',$product_sale_return_id)
+            ->select('products.model')
+            ->get();
+
+        $models = '';
+        $elements = [];
+        if(count($saleReturnsProductModels) > 0){
+            foreach($saleReturnsProductModels as $saleReturnsProductModel){
+                $elements[] = $saleReturnsProductModel->model;
+            }
+            $models = implode(',', $elements);
+        }
+        return $models;
+    }
+}
+
+if (!function_exists('saleReplacementsProductModels')) {
+    function saleReplacementsProductModels($product_sale_replacement_id)
+    {
+        $saleReplacementsProductModels = DB::table('product_sale_replacement_details')
+            ->leftJoin('products','product_sale_replacement_details.product_id','products.id')
+            ->where('product_sale_replacement_details.p_s_replacement_id',$product_sale_replacement_id)
+            ->select('products.model')
+            ->get();
+
+        $models = '';
+        $elements = [];
+        if(count($saleReplacementsProductModels) > 0){
+            foreach($saleReplacementsProductModels as $saleReplacementsProductModel){
+                $elements[] = $saleReplacementsProductModel->model;
+            }
+            $models = implode(',', $elements);
+        }
+        return $models;
+    }
+}
+
 ?>

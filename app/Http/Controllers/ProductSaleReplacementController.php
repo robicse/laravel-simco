@@ -112,7 +112,7 @@ class ProductSaleReplacementController extends Controller
         $row_count = count($request->replace_qty);
 
         $productSale = ProductSale::where('id',$request->product_sale_id)->first();
-        $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->pluck('purchase_invoice_no')->first();
+        //$purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->pluck('purchase_invoice_no')->first();
         // product replacement
         $purchase_sale_replacement = new ProductSaleReplacement();
         $purchase_sale_replacement->invoice_no = 'Salrep-'.$productSale->invoice_no;
@@ -146,6 +146,7 @@ class ProductSaleReplacementController extends Controller
                     $purchase_sale_replacement_detail->save();
 
                     $product_id = $request->product_id[$i];
+                    $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->where('product_id',$product_id)->pluck('purchase_invoice_no')->first();
 
                     // update purchase details table stock status
                     $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
