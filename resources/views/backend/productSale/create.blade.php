@@ -197,8 +197,8 @@
                                             Type:
                                             <select name="discount_type" id="discount_type" class="form-control" required>
                                                 <option value="">Select</option>
-                                                <option value="flat">flat</option>
-                                                <option value="percentage">percentage</option>
+                                                <option value="flat">Flat</option>
+                                                <option value="percentage">Percentage</option>
                                             </select>
                                         </th>
                                         <th>
@@ -209,7 +209,7 @@
                                         <th>
                                             Total:
                                             <input type="hidden" id="store_total_amount" class="form-control">
-                                            <input type="text" id="total_amount" class="form-control" name="total_amount">
+                                            <input type="text" id="total_amount" class="form-control" name="total_amount" readonly>
                                         </th>
                                         <th colspan="2">
                                             Paid Amount:
@@ -321,9 +321,55 @@
                 $('#total_amount').val(t);
             }
 
+            $('#discount_type').on('change', function (){
+               //alert();
+                var discount_type = $('#discount_type').val();
+
+                var store_total_amount = $('#store_total_amount').val();
+                console.log('store_total_amount= ' + store_total_amount);
+                console.log('store_total_amount= ' + typeof store_total_amount);
+                store_total_amount = parseInt(store_total_amount);
+                console.log('total= ' + typeof store_total_amount);
+
+                var paid_amount = $('#paid_amount').val();
+                console.log('paid_amount= ' + paid_amount);
+                console.log('paid_amount= ' + typeof paid_amount);
+                paid_amount = parseInt(paid_amount);
+                console.log('paid_amount= ' + typeof paid_amount);
+
+                var discount_amount = $('#discount_amount').val();
+                console.log('discount_amount= ' + discount_amount);
+                console.log('discount_amount= ' + typeof discount_amount);
+                discount_amount = parseInt(discount_amount);
+                console.log('discount_amount= ' + typeof discount_amount);
+                //alert(discount_type);
+
+                if(discount_type == 'flat'){
+                    var final_amount = store_total_amount - discount_amount;
+                    var per = 0;
+                    var last_final_amount = final_amount - paid_amount;
+                }
+                else{
+                    var per = (store_total_amount*discount_amount)/100;
+                    var final_amount = store_total_amount - per;
+                    var last_final_amount = final_amount - paid_amount;
+                }
+                console.log('final_amount= ' + final_amount);
+                console.log('final_amount= ' + typeof final_amount);
+
+                $('#total_amount').val(final_amount);
+                $('#due_amount').val(last_final_amount);
+                $('#discount_percentage').val(per);
+            });
+
             // onkeyup
             function discountAmount(){
                 var discount_type = $('#discount_type').val();
+
+                if(discount_type == 0){
+                    alert('You first need to change discount type (flat/percentage)!');
+                    $('#discount_amount').val(0);
+                }
 
                 //var total = $('#total_amount').val();
                 //console.log('total= ' + total);
@@ -337,6 +383,12 @@
                 store_total_amount = parseInt(store_total_amount);
                 console.log('total= ' + typeof store_total_amount);
 
+                var paid_amount = $('#paid_amount').val();
+                console.log('paid_amount= ' + paid_amount);
+                console.log('paid_amount= ' + typeof paid_amount);
+                paid_amount = parseInt(paid_amount);
+                console.log('paid_amount= ' + typeof paid_amount);
+
                 var discount_amount = $('#discount_amount').val();
                 console.log('discount_amount= ' + discount_amount);
                 console.log('discount_amount= ' + typeof discount_amount);
@@ -346,16 +398,18 @@
                 if(discount_type == 'flat'){
                     var final_amount = store_total_amount - discount_amount;
                     var per = 0;
+                    var last_final_amount = final_amount - paid_amount;
                 }
                 else{
                     var per = (store_total_amount*discount_amount)/100;
                     var final_amount = store_total_amount - per;
+                    var last_final_amount = final_amount - paid_amount;
                 }
                 console.log('final_amount= ' + final_amount);
                 console.log('final_amount= ' + typeof final_amount);
 
                 $('#total_amount').val(final_amount);
-                $('#due_amount').val(final_amount);
+                $('#due_amount').val(last_final_amount);
                 $('#discount_percentage').val(per);
 
             }
