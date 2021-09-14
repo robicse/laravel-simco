@@ -58,27 +58,44 @@
                                 <tr>
                                     <th colspan="10">Sum Product Based Loss/Profit: </th>
                                     <th>
-                                        @if($loss_profit > 0)
-                                            Profit: {{number_format($loss_profit, 2, '.', '')}}
-                                        @else
-                                            Loss: {{number_format($loss_profit, 2, '.', '')}}
-                                        @endif
+                                        @php
+                                            if($loss_profit >= 0){
+                                                $loss_profit_string_flag = 'Profit';
+                                                $product_loss_profit = $loss_profit;
+                                            }else{
+                                                 $remove_minus_sign_from_loss = abs($loss_profit);
+                                                 $loss_profit_string_flag = 'Loss';
+                                                 $product_loss_profit = $remove_minus_sign_from_loss;
+                                            }
+                                        @endphp
+                                        <span style="font-size: 18px">{{$loss_profit_string_flag}}:</span> {{number_format($product_loss_profit, 2, '.', '')}} Tk.
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th colspan="10">Expense:</th>
+                                    <th colspan="10">&nbsp;</th>
                                     <th>
-                                        {{number_format($total_expense, 2, '.', '')}}
+                                        <span style="font-size: 18px">Expense:</span> {{number_format($total_expense, 2, '.', '')}} Tk.
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th colspan="10">Final Loss/Profit:</th>
+                                    <th colspan="10">Final(After Deduction Expense) Loss/Profit:</th>
                                     <th>
-                                        @if($loss_profit > 0)
-                                            Profit: {{number_format($loss_profit - $total_expense, 2, '.', '')}}
-                                        @else
-                                            Loss: {{number_format($loss_profit + $total_expense, 2, '.', '')}}
-                                        @endif
+                                        @php
+                                            $final_loss_profit = 0;
+                                            if($loss_profit_string_flag == 'Loss'){
+                                                $final_loss_profit_string_flag = 'Loss';
+                                                $final_loss_profit = $remove_minus_sign_from_loss + $total_expense;
+                                            }elseif( ($loss_profit_string_flag == 'Profit') && ($product_loss_profit > $total_expense) ){
+                                                $final_loss_profit_string_flag = 'Profit';
+                                                $final_loss_profit = $product_loss_profit - $total_expense;
+                                            }else{
+                                                $final_loss_profit_string_flag = 'Loss';
+                                                $final_loss_profit = $total_expense - $product_loss_profit;
+                                            }
+                                        @endphp
+                                        <span style="font-size: 18px">{{$final_loss_profit_string_flag}}:</span> {{number_format($final_loss_profit, 2, '.', '')}} Tk.
+
+
                                     </th>
                                 </tr>
                                 </thead>
