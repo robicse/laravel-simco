@@ -22,21 +22,21 @@ class ExpenseController extends Controller
         $office_costing_category_id = $request->office_costing_category_id ? $request->office_costing_category_id : '';
         if($start_date && $end_date && $office_costing_category_id){
             if($auth_user == "Admin"){
-                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('office_costing_category_id',$office_costing_category_id)->latest()->get();
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('office_costing_category_id',$office_costing_category_id)->orderBy('id','desc')->get();
             }else{
-                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('office_costing_category_id',$office_costing_category_id)->where('user_id',$auth_user_id)->get();
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('office_costing_category_id',$office_costing_category_id)->where('user_id',$auth_user_id)->orderBy('id','desc')->get();
             }
         }elseif($start_date && $end_date){
             if($auth_user == "Admin"){
-                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->latest()->get();
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->orderBy('id','desc')->get();
             }else{
-                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('user_id',$auth_user_id)->get();
+                $expenses = Expense::where('date','>=',$start_date)->where('date','<=',$end_date)->where('user_id',$auth_user_id)->orderBy('id','desc')->get();
             }
         }else{
             if($auth_user == "Admin"){
-                $expenses = Expense::latest()->get();
+                $expenses = Expense::orderBy('id','desc')->get();
             }else{
-                $expenses = Expense::where('user_id',$auth_user_id)->get();
+                $expenses = Expense::where('user_id',$auth_user_id)->orderBy('id','desc')->get();
             }
         }
         $officeCostingCategories = OfficeCostingCategory::all();
