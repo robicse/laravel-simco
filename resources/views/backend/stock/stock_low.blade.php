@@ -37,7 +37,7 @@
 
                                     $stocks = \App\Stock::where('store_id',$store->id)
                                     ->whereIn('id', function($query) {
-                                           $query->from('stocks')->where('current_stock','<', 10)->groupBy('product_id')->selectRaw('MAX(id)');
+                                           $query->from('stocks')->where('current_stock','<=', 10)->groupBy('product_id')->selectRaw('MAX(id)');
                                         })->latest('id')->get();
 
                                 @endphp
