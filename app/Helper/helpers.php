@@ -445,6 +445,29 @@ if (!function_exists('purchase_invoice_nos')) {
     }
 }
 
+if (!function_exists('raw_materials_purchase_invoice_nos')) {
+    function raw_materials_purchase_invoice_nos($store_id=null,$product_id=null)
+    {
+        if($store_id != null && $product_id != null){
+            return $invoice_nos = DB::table('product_purchases')
+                ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
+                ->where('product_purchase_details.qty_stock_status','Available')
+                ->where('product_purchases.purchase_product_type','Raw Materials')
+                ->where('product_purchases.store_id',$store_id)
+                ->where('product_purchase_details.product_id',$product_id)
+                ->select('product_purchases.invoice_no')
+                ->get();
+        }else{
+            return $invoice_nos = DB::table('product_purchases')
+                ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
+                ->where('product_purchase_details.qty_stock_status','Available')
+                ->where('product_purchases.purchase_product_type','Raw Materials')
+                ->select('product_purchases.invoice_no')
+                ->get();
+        }
+    }
+}
+
 if (!function_exists('current_stock_row')) {
     function current_stock_row($store_id,$stock_product_type,$stock_type,$product_id)
     {
@@ -632,6 +655,22 @@ if (!function_exists('saleReplacementsProductModels')) {
             $models = implode(',', $elements);
         }
         return $models;
+    }
+}
+
+if (!function_exists('stockLow')) {
+    function stockLow($store_id)
+    {
+//        return  \App\Stock::where('store_id',$store_id)
+//            ->whereIn('id', function($query) {
+//                $query->from('stocks')->where('current_stock','<=', 10)->groupBy('product_id')->selectRaw('MAX(id)');
+//            })->latest('id')->get();
+
+        return  \App\Stock::where('store_id',$store_id)
+                            ->whereIn('id', function($query) {
+                               $query->from('stocks')->groupBy('product_id')->selectRaw('MAX(id)');
+                            })->where('current_stock','<=', 10)->latest('id')->get();
+
     }
 }
 

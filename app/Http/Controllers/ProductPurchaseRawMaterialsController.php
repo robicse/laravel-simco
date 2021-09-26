@@ -133,22 +133,22 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $stock->save();
 
                 // invoice wise stock
-//                $invoice_stock = new InvoiceStock();
-//                $invoice_stock->user_id = Auth::id();
-//                $invoice_stock->ref_id = $insert_id;
-//                $invoice_stock->purchase_invoice_no = 'Pur-'.$invoice_no;
-//                $invoice_stock->invoice_no = NULL;
-//                $invoice_stock->store_id = $request->store_id;
-//                $invoice_stock->date = $request->date;
-//                $invoice_stock->product_id = $request->product_id[$i];
-//                $invoice_stock->stock_product_type = 'Raw Materials';
-//                $invoice_stock->stock_type = 'purchase';
-//                $invoice_stock->previous_stock = 0;
-//                $invoice_stock->stock_in = $request->qty[$i];
-//                $invoice_stock->stock_out = 0;
-//                $invoice_stock->current_stock = 0 + $request->qty[$i];
-//                $invoice_stock->date = date('Y-m-d');
-//                $invoice_stock->save();
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $insert_id;
+                $invoice_stock->purchase_invoice_no = 'Pur-'.$invoice_no;
+                $invoice_stock->invoice_no = NULL;
+                $invoice_stock->store_id = $request->store_id;
+                $invoice_stock->date = $request->date;
+                $invoice_stock->product_id = $request->product_id[$i];
+                $invoice_stock->stock_product_type = 'Raw Materials';
+                $invoice_stock->stock_type = 'purchase';
+                $invoice_stock->previous_stock = 0;
+                $invoice_stock->stock_in = $request->qty[$i];
+                $invoice_stock->stock_out = 0;
+                $invoice_stock->current_stock = 0 + $request->qty[$i];
+                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->save();
             }
 
             // transaction
