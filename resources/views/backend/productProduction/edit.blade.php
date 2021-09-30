@@ -41,6 +41,7 @@
                                     <th style="display: none">Category</th>
                                     {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
+                                    <th>Invoice NO</th>
                                     <th>Stock Qty</th>
                                     <th>Used Qty <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
@@ -96,6 +97,14 @@
                                                         <option value="{{$productBrand->id}}" {{$productBrand->id == $productProductionDetail->product_brand_id ? 'selected' : ''}}>{{$productBrand->name}}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                        </td>
+                                        <td width="12%">
+                                            @php
+                                                $purchase_invoice_nos = raw_materials_purchase_invoice_nos($productProduction->store_id,$productProductionDetail->product_id)
+                                            @endphp
+                                            <div id="invoice_no_1">
+                                                <input type="text" id="invoice_no_1" class="invoice_no form-control" name="invoice_no[]" value="{{$productProductionDetail->purchase_invoice_no}}" readonly >
                                             </div>
                                         </td>
                                         <td width="12%">
@@ -429,6 +438,7 @@
                             '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
                             // '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                             '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
+                            '<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
                             '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
                             '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                             '<td style="display: none"><input type="text" min="1" max="" class="production form-control" name="production[]"></td>' +
@@ -517,6 +527,52 @@
                                 $("#price_"+current_row).val(res.data.mrp_price);
                                 $("#existing_price").val(res.data.mrp_price);
                                 $("#new_price").val(res.data.mrp_price);
+                            },
+                            error : function (err){
+                                console.log(err)
+                            }
+                        })
+                    }else{
+                        alert('Please select first store!');
+                        location.reload();
+                    }
+                }
+
+                function getInvoiceVal(row,sel)
+                {
+                    var store_id = $('#store_id').val();
+                    var current_product_id = $('#product_id_'+row).val();
+                    if(store_id){
+                        // console.log(store_id)
+                        // console.log(row)
+                        // console.log(sel.value)
+
+                        var current_row = row;
+                        var current_invoice_no = sel.value;
+                        if(current_row > 1){
+                            var previous_row = current_row - 1;
+                            var previous_product_id = $('#product_id_'+previous_row).val();
+                            if(previous_product_id === current_product_id){
+                                $('#product_id_'+current_row).val('');
+                                alert('You selected same product, Please selected another product!');
+                                return false
+                            }
+                        }
+
+                        $.ajax({
+                            url : "{{URL('product-production-invoice-data')}}",
+                            method : "get",
+                            data : {
+                                store_id : store_id,
+                                current_product_id : current_product_id,
+                                current_invoice_no : current_invoice_no,
+                                current_row : current_row,
+                            },
+                            success : function (res){
+                                //console.log(res)
+                                console.log(res.data)
+                                $("#stock_qty_"+current_row).val(res.data.current_stock);
+                                $("#price_"+current_row).val(res.data.price);
                             },
                             error : function (err){
                                 console.log(err)

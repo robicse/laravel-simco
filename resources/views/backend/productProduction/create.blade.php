@@ -40,7 +40,7 @@
                                     <th style="display: none">Category</th>
 {{--                                    <th>Sub Category</th>--}}
                                     <th>Brand</th>
-{{--                                    <th>Invoice NO</th>--}}
+                                    <th>Invoice NO</th>
                                     <th>Stock Qty</th>
                                     <th>Used Qty (Stock Out) <small class="requiredCustom">*</small></th>
                                     <th style="display: none">Production</th>
@@ -91,13 +91,13 @@
                                             </select>
                                         </div>
                                     </td>
-{{--                                    <td>--}}
-{{--                                        <div id="invoice_no_1">--}}
-{{--                                            <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>--}}
+                                    <td width="12%">
+                                        <div id="invoice_no_1">
+                                            <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>
 
-{{--                                            </select>--}}
-{{--                                        </div>--}}
-{{--                                    </td>--}}
+                                            </select>
+                                        </div>
+                                    </td>
                                     <td width="12%">
                                         <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
                                     </td>
@@ -415,14 +415,14 @@
                 var productSubCategory = $('.product_sub_category_id').html();
                 var productBrand = $('.product_brand_id').html();
                 var product = $('.product_id').html();
-                //var invoiceNo = $('.invoice_no').html();
+                var invoiceNo = $('.invoice_no').html();
                 var n = ($('.neworderbody tr').length - 0) + 1;
                 var tr = '<tr><td class="no">' + n + '</td>' +
                     '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                     '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
                     // '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
-                    //'<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
+                    '<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
                     '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
                     '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td style="display: none"><input type="text" min="1" max="" class="production form-control" name="production[]"></td>' +
@@ -517,9 +517,9 @@
                         $("#product_category_id_"+current_row).html(res.data.categoryOptions);
                         $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                         $("#product_brand_id_"+current_row).html(res.data.brandOptions);
-                        $("#stock_qty_"+current_row).val(res.data.current_stock);
-                        $("#price_"+current_row).val(res.data.mrp_price);
-                        //$("#invoice_no_"+current_row).html(res.data.invoiceNos);
+                        // $("#stock_qty_"+current_row).val(res.data.current_stock);
+                        // $("#price_"+current_row).val(res.data.mrp_price);
+                        $("#invoice_no_"+current_row).html(res.data.invoiceNos);
 
 
                         //$("#existing_price").val(res.data.mrp_price);
