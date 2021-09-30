@@ -91,75 +91,50 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
-                                <div class="info">
-                                    <h4>Final Loss/Profit</h4>
-                                    <p>
-                                        <b>
+{{--                        <div class="col-md-3">--}}
+{{--                            <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>--}}
+{{--                                <div class="info">--}}
+{{--                                    <h4>Final Loss/Profit</h4>--}}
+{{--                                    <p>--}}
+{{--                                        <b>--}}
 {{--                                            @php--}}
-{{--                                                //dd(loss_profit($store->id,NULL,NULL));--}}
 {{--                                                $loss_profit = loss_profit($store->id,NULL,NULL);--}}
 {{--                                                $sale_discount = product_sale_discount($store->id,NULL,NULL);--}}
 {{--                                                $product_sale_return_discount = product_sale_return_discount($store->id,NULL,NULL);--}}
 {{--                                                $loss_profit_after_sale_discount = $loss_profit - ($sale_discount - $product_sale_return_discount);--}}
-{{--                                                $loss_profit = $loss_profit_after_sale_discount - $total_expense;--}}
+{{--                                                $total_expense = total_expense($store->id,NULL,NULL);--}}
+{{--                                                $loss_profit = $loss_profit_after_sale_discount;--}}
+
+{{--                                                if($loss_profit >= 0){--}}
+{{--                                                    $loss_profit_string_flag = 'Profit';--}}
+{{--                                                    $product_loss_profit = $loss_profit;--}}
+{{--                                                }else{--}}
+{{--                                                     $remove_minus_sign_from_loss = abs($loss_profit);--}}
+{{--                                                     $loss_profit_string_flag = 'Loss';--}}
+{{--                                                     $product_loss_profit = $remove_minus_sign_from_loss;--}}
+{{--                                                }--}}
 {{--                                            @endphp--}}
-{{--                                            @if($loss_profit > 0)--}}
-{{--                                                Profit:--}}
-{{--                                            @elseif($loss_profit < 0)--}}
-{{--                                                Loss:--}}
-{{--                                            @else--}}
-
-{{--                                            @endif--}}
-{{--                                                {{number_format($loss_profit, 2, '.', '')}}--}}
-
-
-
-
-
-
-
-
-
-                                            @php
-                                                $loss_profit = loss_profit($store->id,NULL,NULL);
-                                                $sale_discount = product_sale_discount($store->id,NULL,NULL);
-                                                $product_sale_return_discount = product_sale_return_discount($store->id,NULL,NULL);
-                                                $loss_profit_after_sale_discount = $loss_profit - ($sale_discount - $product_sale_return_discount);
-                                                $total_expense = total_expense($store->id,NULL,NULL);
-                                                $loss_profit = $loss_profit_after_sale_discount;
-
-                                                if($loss_profit >= 0){
-                                                    $loss_profit_string_flag = 'Profit';
-                                                    $product_loss_profit = $loss_profit;
-                                                }else{
-                                                     $remove_minus_sign_from_loss = abs($loss_profit);
-                                                     $loss_profit_string_flag = 'Loss';
-                                                     $product_loss_profit = $remove_minus_sign_from_loss;
-                                                }
-                                            @endphp
 {{--                                            <span style="font-size: 18px">{{$loss_profit_string_flag}}:</span> {{number_format($product_loss_profit, 2, '.', '')}} Tk.--}}
 
-                                            @php
-                                                $final_loss_profit = 0;
-                                                if($loss_profit_string_flag == 'Loss'){
-                                                    $final_loss_profit_string_flag = 'Loss';
-                                                    $final_loss_profit = $remove_minus_sign_from_loss + $total_expense;
-                                                }elseif( ($loss_profit_string_flag == 'Profit') && ($product_loss_profit > $total_expense) ){
-                                                    $final_loss_profit_string_flag = 'Profit';
-                                                    $final_loss_profit = $product_loss_profit - $total_expense;
-                                                }else{
-                                                    $final_loss_profit_string_flag = 'Loss';
-                                                    $final_loss_profit = $total_expense - $product_loss_profit;
-                                                }
-                                            @endphp
-                                            <span style="font-size: 18px">{{$final_loss_profit_string_flag}}:</span> {{number_format($final_loss_profit, 2, '.', '')}} Tk.
-                                        </b>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+{{--                                            @php--}}
+{{--                                                $final_loss_profit = 0;--}}
+{{--                                                if($loss_profit_string_flag == 'Loss'){--}}
+{{--                                                    $final_loss_profit_string_flag = 'Loss';--}}
+{{--                                                    $final_loss_profit = $remove_minus_sign_from_loss + $total_expense;--}}
+{{--                                                }elseif( ($loss_profit_string_flag == 'Profit') && ($product_loss_profit > $total_expense) ){--}}
+{{--                                                    $final_loss_profit_string_flag = 'Profit';--}}
+{{--                                                    $final_loss_profit = $product_loss_profit - $total_expense;--}}
+{{--                                                }else{--}}
+{{--                                                    $final_loss_profit_string_flag = 'Loss';--}}
+{{--                                                    $final_loss_profit = $total_expense - $product_loss_profit;--}}
+{{--                                                }--}}
+{{--                                            @endphp--}}
+{{--                                            <span style="font-size: 18px">{{$final_loss_profit_string_flag}}:</span> {{number_format($final_loss_profit, 2, '.', '')}} Tk.--}}
+{{--                                        </b>--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="col-md-3">
                             <a  href="{{ route('transaction.partyDiscount') }}">
                                 <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>

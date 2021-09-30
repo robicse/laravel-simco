@@ -57,7 +57,8 @@
                                         @php
                                             $current_row = $key+1;
 
-                                            $current_stock = \App\Stock::where('product_id',$productProductionDetail->product_id)->latest()->pluck('current_stock')->first();
+                                            //$current_stock = \App\Stock::where('product_id',$productProductionDetail->product_id)->latest()->pluck('current_stock')->first();
+                                            $current_stock = \App\InvoiceStock::where('purchase_invoice_no',$productProductionDetail->purchase_invoice_no)->where('product_id',$productProductionDetail->product_id)->latest()->pluck('current_stock')->first();
                                         @endphp
                                         <td width="5%" class="no">{{$current_row}}</td>
                                         <td width="20%">
