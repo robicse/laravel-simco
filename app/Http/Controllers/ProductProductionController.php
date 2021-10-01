@@ -371,7 +371,7 @@ class ProductProductionController extends Controller
 
             // product Production
             $productProduction = new ProductProduction();
-            //$productProduction->invoice_no = 'production-'.$invoice_no_product_production;
+            $productProduction->invoice_no = 'production-'.$invoice_no_product_production;
             $productProduction->user_id = Auth::id();
             $productProduction->store_id = $request->store_id;
             $productProduction->total_amount = $total_amount;
@@ -420,9 +420,11 @@ class ProductProductionController extends Controller
                     $product_purchase_details_info->save();
 
                     $invoice_previous_stock = InvoiceStock::where('purchase_invoice_no',$purchase_invoice_no)
+                        ->where('store_id',$request->store_id)
                         ->where('product_id',$product_id)
-                        ->where('stock_product_type','Raw Materials')
-                        ->pluck('previous_stock')
+                        //->where('stock_product_type','Raw Materials')
+                        ->latest()
+                        ->pluck('current_stock')
                         ->first();
                     $invoice_stock = new InvoiceStock();
                     $invoice_stock->user_id = Auth::id();

@@ -272,23 +272,81 @@ class ProductPurchaseRawMaterialsController extends Controller
 
             // product stock
             $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->latest()->first();
+            $previous_stock = Stock::where('product_id',$product_id)->latest('id','desc')->pluck('current_stock')->first();
 
+            // product stock
+            $stock = new Stock();
+            $stock->user_id = Auth::id();
+            $stock->ref_id = $id;
+            $stock->store_id = $request->store_id;
+            $stock->date = $request->date;
+            $stock->product_id = $request->product_id[$i];
+            $stock->stock_product_type = 'Raw Materials';
+            $stock->stock_type = 'purchase';
+            $stock->previous_stock = $previous_stock;
             if($stock_row->stock_in != $request->qty[$i]){
                 if($request->qty[$i] > $stock_row->stock_in){
-                    $add_or_minus_stock_in = $request->qty[$i] - $stock_row->stock_in;
-                    $update_stock_in = $stock_row->stock_in + $add_or_minus_stock_in;
-                    $update_current_stock = $stock_row->current_stock + $add_or_minus_stock_in;
+                    $add_stock_in = $request->qty[$i] - $stock_row->stock_in;
+                    $update_current_stock = $previous_stock + $add_stock_in;
+
+                    $stock->stock_in = $add_stock_in;
+                    $stock->stock_out = 0;
+                    $stock->current_stock = $update_current_stock;
                 }else{
-                    $add_or_minus_stock_in =  $stock_row->stock_in - $request->qty[$i];
-                    $update_stock_in = $stock_row->stock_in - $add_or_minus_stock_in;
-                    $update_current_stock = $stock_row->current_stock - $add_or_minus_stock_in;
+                    $minus_stock_in =  $stock_row->stock_in - $request->qty[$i];
+                    $update_current_stock = $previous_stock - $minus_stock_in;
+
+                    $stock->stock_in = 0;
+                    $stock->stock_out = $minus_stock_in;
+                    $stock->current_stock = $update_current_stock;
                 }
 
-                $stock_row->user_id = Auth::user()->id;
-                $stock_row->stock_in = $update_stock_in;
-                $stock_row->current_stock = $update_current_stock;
-                $stock_row->update();
             }
+            $stock->save();
+
+            // invoice wise stock
+            $invoice_stock_row = InvoiceStock::where('ref_id',$id)
+                ->where('store_id',$request->store_id)
+                ->where('stock_type','purchase')
+                ->where('product_id',$product_id)
+                ->latest()->first();
+            $previous_invoice_stock = InvoiceStock::where('purchase_invoice_no',$productPurchase->invoice_no)
+                ->where('store_id',$request->store_id)
+                ->where('product_id',$product_id)
+                ->latest()
+                ->pluck('current_stock')
+                ->first();
+            $invoice_stock = new InvoiceStock();
+            $invoice_stock->user_id = Auth::id();
+            $invoice_stock->ref_id = $id;
+            $invoice_stock->purchase_invoice_no = $productPurchase->invoice_no;
+            $invoice_stock->invoice_no = NULL;
+            $invoice_stock->store_id = $request->store_id;
+            $invoice_stock->product_id = $request->product_id[$i];
+            $invoice_stock->stock_product_type = 'Raw Materials';
+            $invoice_stock->stock_type = 'purchase';
+            $invoice_stock->previous_stock = $previous_invoice_stock;
+            if($invoice_stock_row->stock_in != $request->qty[$i]){
+                if($request->qty[$i] > $invoice_stock_row->stock_in){
+                    $add_stock_in = $request->qty[$i] - $invoice_stock_row->stock_in;
+                    $update_current_stock = $previous_invoice_stock + $add_stock_in;
+
+                    $invoice_stock->stock_in = $add_stock_in;
+                    $invoice_stock->stock_out = 0;
+                    $invoice_stock->current_stock = $update_current_stock;
+                }else{
+                    $minus_stock_in =  $invoice_stock_row->stock_in - $request->qty[$i];
+                    $update_current_stock = $previous_invoice_stock - $minus_stock_in;
+
+                    $invoice_stock->stock_in = 0;
+                    $invoice_stock->stock_out = $minus_stock_in;
+                    $invoice_stock->current_stock = $update_current_stock;
+                }
+
+            }
+            $invoice_stock->date = date('Y-m-d');
+            $invoice_stock->save();
+
         }
 
         // transaction
