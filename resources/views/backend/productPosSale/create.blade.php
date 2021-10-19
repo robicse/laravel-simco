@@ -364,22 +364,22 @@
         }
 
         // $(function() {
-        //     $('#check_number').hide();
+        //     $('#cheque_number').hide();
         //     $('#payment_type').change(function(){
         //         console.log('okk');
         //         if($('#payment_type').val() == 'Check') {
-        //             $('#check_number').show();
+        //             $('#cheque_number').show();
         //         } else {
-        //             $('#check_number').val('');
-        //             $('#check_number').hide();
+        //             $('#cheque_number').val('');
+        //             $('#cheque_number').hide();
         //         }
         //     });
         // });
 
         function productType(){
             var arr = $('#payment_type').val();
-            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "Cheque"){ $("#cheque_number").removeAttr("readonly"); }
+            if(arr == "Cash"){ $("#cheque_number").attr("readonly", "readonly"); }
         }
 
     </script>

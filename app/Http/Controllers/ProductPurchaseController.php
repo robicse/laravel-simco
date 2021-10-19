@@ -83,15 +83,15 @@ class ProductPurchaseController extends Controller
 
         // product purchase
         $productPurchase = new ProductPurchase();
-        $productPurchase ->invoice_no = 'Pur-'.$invoice_no;
-        $productPurchase ->party_id = $request->party_id;
-        $productPurchase ->store_id = $request->store_id;
-        $productPurchase ->user_id = Auth::id();
-        $productPurchase ->date = $request->date;
-        //$productPurchase ->payment_type = $request->payment_type;
-        //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
-        $productPurchase ->total_amount = $total_amount;
-        $productPurchase ->purchase_product_type = 'Finish Goods';
+        $productPurchase->invoice_no = 'Pur-'.$invoice_no;
+        $productPurchase->party_id = $request->party_id;
+        $productPurchase->store_id = $request->store_id;
+        $productPurchase->user_id = Auth::id();
+        $productPurchase->date = $request->date;
+        //$productPurchase->payment_type = $request->payment_type;
+        //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
+        $productPurchase->total_amount = $total_amount;
+        $productPurchase->purchase_product_type = 'Finish Goods';
         $productPurchase->save();
         $insert_id = $productPurchase->id;
         if($insert_id)
@@ -170,7 +170,7 @@ class ProductPurchaseController extends Controller
             $transaction->transaction_product_type = 'Finish Goods';
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $transaction->amount = $total_amount;
             $transaction->save();
         }
@@ -237,7 +237,7 @@ class ProductPurchaseController extends Controller
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->date = $request->date;
         //$productPurchase ->payment_type = $request->payment_type;
-        //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
+        //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase->update();
 
@@ -390,7 +390,7 @@ class ProductPurchaseController extends Controller
         $transaction->party_id = $request->party_id;
         $transaction->date = $request->date;
         $transaction->payment_type = $request->payment_type;
-        $transaction->check_number = $request->check_number ? $request->check_number : '';
+        $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $transaction->amount = $total_amount;
         $transaction->update();
 

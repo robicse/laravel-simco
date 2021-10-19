@@ -58,10 +58,10 @@
                                     <select name="payment_type" id="payment_type" class="form-control" required>
                                         <option value="">Select One</option>
                                         <option value="Cash" selected >Cash</option>
-                                        <option value="Check">Check</option>
+                                        <option value="Cheque">Cheque</option>
                                     </select>
                                     <span>&nbsp;</span>
-                                    <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
+                                    <input type="text" name="cheque_number" id="cheque_number" class="form-control" placeholder="Cheque Number">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -687,13 +687,13 @@
             }
 
             $(function() {
-                $('#check_number').hide();
+                $('#cheque_number').hide();
                 $('#payment_type').change(function(){
-                    if($('#payment_type').val() == 'Check') {
-                        $('#check_number').show();
+                    if($('#payment_type').val() == 'Cheque') {
+                        $('#cheque_number').show();
                     } else {
-                        $('#check_number').val('');
-                        $('#check_number').hide();
+                        $('#cheque_number').val('');
+                        $('#cheque_number').hide();
                     }
                 });
             });

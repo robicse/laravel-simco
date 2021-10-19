@@ -127,8 +127,8 @@
         function productType(){
             var arr = $('#payment_type').val();
             console.log(arr);
-            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "Cheque"){ $("#cheque_number").removeAttr("readonly"); }
+            if(arr == "Cash"){ $("#cheque_number").attr("readonly", "readonly"); }
         }
         // ajax
         function return_qty(row,sel) {
@@ -173,8 +173,8 @@
 {{--        function productType(row,sel){--}}
 {{--            var current_row = row;--}}
 {{--            var arr = $('#payment_type_'+current_row).val();--}}
-{{--            if(arr == "check"){ $("#check_number_"+current_row).removeAttr("readonly"); }--}}
-{{--            if(arr == "Cash"){ $("#check_number_"+current_row).attr("readonly", "readonly"); }--}}
+{{--            if(arr == "Cheque"){ $("#cheque_number_"+current_row).removeAttr("readonly"); }--}}
+{{--            if(arr == "Cash"){ $("#cheque_number_"+current_row).attr("readonly", "readonly"); }--}}
 {{--        }--}}
 
 {{--    </script>--}}

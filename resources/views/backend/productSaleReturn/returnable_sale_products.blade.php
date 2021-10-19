@@ -115,10 +115,10 @@
 {{--                                                <label class="control-label">Payment Type  <small class="text-danger">*</small></label>--}}
 {{--                                                    <select name="payment_type" id="payment_type_{{$key}}" class="form-control" onchange="productType({{$key}},this)">--}}
 {{--                                                        <option value="Cash" selected>Cash</option>--}}
-{{--                                                        <option value="Check">Check</option>--}}
+{{--                                                        <option value="Cheque">Cheque</option>--}}
 {{--                                                    </select>--}}
 {{--                                                    <span>&nbsp;</span>--}}
-{{--                                                    <input type="text" name="check_number" id="check_number_{{$key}}" class="form-control" placeholder="Check Number" readonly="readonly">--}}
+{{--                                                    <input type="text" name="cheque_number" id="cheque_number_{{$key}}" class="form-control" placeholder="Cheque Number" readonly="readonly">--}}
 {{--                                            </div>--}}
 {{--                                            <div class="form-group col-md-6">--}}
 {{--                                                <label class="control-label">Reason</label>--}}
@@ -172,8 +172,8 @@
         function productType(){
             var arr = $('#payment_type').val();
             console.log(arr);
-            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "Cheque"){ $("#cheque_number").removeAttr("readonly"); }
+            if(arr == "Cash"){ $("#cheque_number").attr("readonly", "readonly"); }
         }
         // ajax
         function return_qty(row,sel) {
@@ -224,8 +224,8 @@
 {{--        function productType(row,sel){--}}
 {{--            var current_row = row;--}}
 {{--            var arr = $('#payment_type_'+current_row).val();--}}
-{{--            if(arr == "check"){ $("#check_number_"+current_row).removeAttr("readonly"); }--}}
-{{--            if(arr == "Cash"){ $("#check_number_"+current_row).attr("readonly", "readonly"); }--}}
+{{--            if(arr == "Cheque"){ $("#cheque_number_"+current_row).removeAttr("readonly"); }--}}
+{{--            if(arr == "Cash"){ $("#cheque_number_"+current_row).attr("readonly", "readonly"); }--}}
 {{--        }--}}
 
 {{--    </script>--}}

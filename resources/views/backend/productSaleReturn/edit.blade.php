@@ -52,7 +52,7 @@
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
                                     <option value="Cash" {{'Cash' == $productSale->payment_type ? 'selected' : ''}}>Cash</option>
-                                    <option value="Check" {{'Check' == $productSale->payment_type ? 'selected' : ''}}>Check</option>
+                                    <option value="Cheque" {{'Cheque' == $productSale->payment_type ? 'selected' : ''}}>Cheque</option>
                                 </select>
                             </div>
                         </div>

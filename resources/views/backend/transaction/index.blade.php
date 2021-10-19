@@ -75,8 +75,8 @@
                                             <td>{{ ucwords($transaction->transaction_type)}}</td>
                                             <td>
                                                 {{ $transaction->payment_type}}
-                                                @if($transaction->payment_type == 'Check')
-                                                    ( {{$transaction->check_number}} )
+                                                @if($transaction->payment_type == 'Cheque')
+                                                    ( {{$transaction->cheque_number}} )
                                                 @endif
                                             </td>
                                             <td>{{ $transaction->amount}}</td>

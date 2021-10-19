@@ -126,8 +126,8 @@
                                             @foreach($transactions as $transaction)
                                                 <li>
                                                     {{$transaction->payment_type}}
-                                                    @if($transaction->payment_type == 'Check')
-                                                        ( Check Number: {{$transaction->check_number}} )
+                                                    @if($transaction->payment_type == 'Cheque')
+                                                        ( Check Number: {{$transaction->cheque_number}} )
                                                     @endif
                                                     :
                                                     {{$transaction->amount}}
@@ -235,7 +235,7 @@
                                         <tr>
                                             <td width="5%" class="no">{{$key+1}}</td>
                                             <td width="18%">
-                                                <input type="text" name="store_id" id="store_id" value="{{$store->id}}">
+                                                <input type="hidden" name="store_id" id="store_id" value="{{$store->id}}">
                                                 <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                                     <option value="">Select  Product</option>
                                                     @foreach($products as $product)

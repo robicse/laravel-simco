@@ -40,10 +40,10 @@
                             <th>Date</th>
                             <td>{{$productSale->date}}</td>
                         </tr>
-                        @if($transaction->payment_type == 'Check')
+                        @if($transaction->payment_type == 'Cheque')
                             <tr>
                                 <th>Check Number</th>
-                                <td>{{$transaction->check_number}}</td>
+                                <td>{{$transaction->cheque_number}}</td>
                             </tr>
                         @endif
     {{--                    <tr>--}}

@@ -180,7 +180,7 @@ class ProductSaleReturnController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->store_id = $store_id;
         //$transaction->payment_type = $request->payment_type;
-        //$transaction->check_number = $request->check_number;
+        //$transaction->cheque_number = $request->cheque_number;
         $transaction->date = date('Y-m-d');
         $transaction->amount = $total_amount;
         $transaction->save();
@@ -359,9 +359,9 @@ class ProductSaleReturnController extends Controller
 
             $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
                     <option value=\"Cash\" selected>Cash</option>
-                    <option value=\"Check\">Check</option>
+                    <option value=\"Cheque\">Cheque</option>
             </select> </th>";
-            $html .= "<th><input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "<th><input type=\"text\" name=\"cheque_number\" id=\"cheque_number\" class=\"form-control\" placeholder=\"Cheque Number\" readonly=\"readonly\"  size=\"28\" ></th>";
             $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"28\" ></th>";
             $html .= "</tr>";
         endif;
@@ -397,7 +397,9 @@ class ProductSaleReturnController extends Controller
         $product_sale_return->user_id = Auth::id();
         $product_sale_return->store_id = $productSale->store_id;
         $product_sale_return->party_id = $productSale->party_id;
-        $product_sale_return->payment_type = $productSale->payment_type;
+        //$product_sale_return->payment_type = $productSale->payment_type;
+        $product_sale_return->payment_type = $request->payment_type;
+        $product_sale_return->cheque_number = $request->cheque_number ? $request->cheque_number : NULL;
         $product_sale_return->discount_type = $productSale->discount_type;
 //        $product_sale_return->discount_amount = 0;
 //        $product_sale_return->total_amount = $total_amount;
@@ -528,7 +530,7 @@ class ProductSaleReturnController extends Controller
             $transaction->transaction_product_type = $transaction_product_type;
             $transaction->transaction_type = 'sale return';
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number;
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : NULL;
             $transaction->date = date('Y-m-d');
             $transaction->amount = $total_amount;
             $transaction->save();

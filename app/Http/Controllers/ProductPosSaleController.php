@@ -287,10 +287,10 @@ class ProductPosSaleController extends Controller
                             <div class=\"col-md-8\">
                                 <select class=\"form-control\" id=\"payment_type\" name=\"payment_type\" onchange=\"productType('')\">
                                     <option value=\"Cash\">Cash</option>
-                                    <option value=\"Check\">Check</option>
+                                    <option value=\"Cheque\">Cheque</option>
                                 </select>
                                 <span>&nbsp;</span>
-                                <input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\">
+                                <input type=\"text\" name=\"cheque_number\" id=\"cheque_number\" class=\"form-control\" placeholder=\"Cheque Number\" readonly=\"readonly\">
                             </div>
                         </div>
                         <div class=\"box-footer\">
@@ -379,7 +379,7 @@ class ProductPosSaleController extends Controller
         $paid_amount = $request->paid_amount;
         $due_amount = $request->due_amount;
         $payment_type = $request->payment_type;
-        $check_number = $request->check_number;
+        $cheque_number = $request->cheque_number;
 
 
 
@@ -420,6 +420,8 @@ class ProductPosSaleController extends Controller
         $productSale->paid_amount = $paid_amount;
         $productSale->due_amount = $due_amount;
         $productSale->sale_type = 'pos';
+        $productSale->payment_type = $payment_type;
+        $productSale->cheque_number = $cheque_number ? $cheque_number : NULL;
         $productSale->save();
         $insert_id = $productSale->id;
         if($insert_id)
@@ -600,7 +602,7 @@ class ProductPosSaleController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $payment_type;
-            $transaction->check_number = $check_number ? $check_number : '';
+            $transaction->cheque_number = $cheque_number ? $cheque_number : '';
             $transaction->amount = $paid_amount;
             $transaction->save();
 

@@ -180,8 +180,8 @@
                                                 @foreach($transactions as $transaction)
                                                     <li>
                                                         {{$transaction->payment_type}}
-                                                        @if($transaction->payment_type == 'Check')
-                                                            ( Check Number: {{$transaction->check_number}} )
+                                                        @if($transaction->payment_type == 'Cheque')
+                                                            ( Check Number: {{$transaction->cheque_number}} )
                                                         @endif
                                                         :
                                                         Tk.{{$transaction->amount}} ({{$transaction->created_at}})
