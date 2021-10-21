@@ -91,17 +91,17 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="12%">
-                                        <div id="invoice_no_1">
+                                    <td width="16%">
+                                        <div id="invoice_no_div_1">
                                             <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>
 
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="12%">
+                                    <td width="10%">
                                         <input type="number" id="stock_qty_1" class="stock_qty form-control" name="stock_qty[]" value="" readonly >
                                     </td>
-                                    <td width="12%">
+                                    <td width="10%">
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                     </td>
                                     <td width="8%" style="display: none">
@@ -417,19 +417,19 @@
                 var product = $('.product_id').html();
                 var invoiceNo = $('.invoice_no').html();
                 var n = ($('.neworderbody tr').length - 0) + 1;
-                var tr = '<tr><td class="no">' + n + '</td>' +
-                    '<td><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
+                var tr = '<tr><td width="5%" class="no">' + n + '</td>' +
+                    '<td width="20%"><select class="form-control product_id select2" name="product_id[]" id="product_id_'+n+'" onchange="getval('+n+',this);" required>' + product + '</select></td>' +
                     '<td style="display: none"><div id="product_category_id_'+n+'"><select class="form-control product_category_id select2" name="product_category_id[]" required>' + productCategory + '</select></div></td>' +
                     // '<td><div id="product_sub_category_id_'+n+'"><select class="form-control product_sub_category_id select2" name="product_sub_category_id[]" required>' + productSubCategory + '</select></div></td>' +
-                    '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
-                    '<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
-                    '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
-                    '<td><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
+                    '<td width="12%"><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
+                    '<td width="16%"><div id="invoice_no_div_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
+                    '<td width="10%"><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
+                    '<td width="10%"><input type="number" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td style="display: none"><input type="text" min="1" max="" class="production form-control" name="production[]"></td>' +
-                    '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
+                    '<td width="8%"><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
-                    '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
-                    '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
+                    '<td width="15%"><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
+                    '<td width="15%"><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
 
                 $('.neworderbody').append(tr);
 
@@ -521,7 +521,7 @@
                         $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                         // $("#stock_qty_"+current_row).val(res.data.current_stock);
                         // $("#price_"+current_row).val(res.data.mrp_price);
-                        $("#invoice_no_"+current_row).html(res.data.invoiceNos);
+                        $("#invoice_no_div_"+current_row).html(res.data.invoiceNos);
 
 
                         //$("#existing_price").val(res.data.mrp_price);
@@ -548,15 +548,17 @@
 
                 var current_row = row;
                 var current_invoice_no = sel.value;
-                // if(current_row > 1){
-                //     var previous_row = current_row - 1;
-                //     var previous_product_id = $('#product_id_'+previous_row).val();
-                //     if(previous_product_id === current_product_id){
-                //         $('#product_id_'+current_row).val('');
-                //         alert('You selected same product, Please selected another product!');
-                //         return false
-                //     }
-                // }
+                if(current_row > 1){
+                    var previous_row = current_row - 1;
+                    var previous_product_id = $('#product_id_'+previous_row).val();
+                    var previous_invoice_no = $('#invoice_no_'+previous_row).val();
+                    if( (previous_product_id === current_product_id) && (previous_invoice_no === current_invoice_no)){
+                        //$('#product_id_'+current_row).val('');
+                        $('#invoice_no_'+current_row).val('');
+                        alert('You selected same invoice same product, Please selected another invoice or product!');
+                        return false
+                    }
+                }
 
                 $.ajax({
                     url : "{{URL('product-production-invoice-data')}}",

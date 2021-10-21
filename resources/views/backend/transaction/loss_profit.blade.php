@@ -79,7 +79,7 @@
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th colspan="10">Final(After Deduction Expense) Loss/Profit:</th>
+                                    <th colspan="10">Final(After Deduction Expense):</th>
                                     <th>
                                         @php
                                             $final_loss_profit = 0;
@@ -94,7 +94,7 @@
                                                 $final_loss_profit = $total_expense - $product_loss_profit;
                                             }
                                         @endphp
-                                        <span style="font-size: 18px">{{$final_loss_profit_string_flag}}:</span> {{number_format($final_loss_profit, 2, '.', '')}} Tk.
+                                        <span style="font-size: 18px">{{$final_loss_profit == 0 ? 'Loss/Profit' : $final_loss_profit_string_flag}}:</span> {{number_format($final_loss_profit, 2, '.', '')}} Tk.
 
 
                                     </th>
