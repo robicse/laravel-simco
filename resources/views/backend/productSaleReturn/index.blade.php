@@ -64,8 +64,8 @@
                                 if($transaction){
                                     echo $transaction->payment_type;
 
-                                    if($transaction->payment_type == 'Check'){
-                                        echo "( Check Number: ". $transaction->check_number .")";
+                                    if($transaction->payment_type == 'Cheque'){
+                                        echo "( Check Number: ". $transaction->cheque_number .")";
                                     }
                                 }
                                 @endphp

@@ -58,10 +58,10 @@
                                     <select name="payment_type" id="payment_type" class="form-control" required>
                                         <option value="">Select One</option>
                                         <option value="Cash" selected >Cash</option>
-                                        <option value="Check">Check</option>
+                                        <option value="Cheque">Cheque</option>
                                     </select>
                                     <span>&nbsp;</span>
-                                    <input type="text" name="check_number" id="check_number" class="form-control" placeholder="Check Number">
+                                    <input type="text" name="cheque_number" id="cheque_number" class="form-control" placeholder="Cheque Number">
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -168,7 +168,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <div id="invoice_no_1">
+                                            <div id="invoice_no_div_1">
                                                 <select class="form-control invoice_no select2" name="invoice_no[]"  onchange="getInvoiceVal(1,this);" required>
 
                                                 </select>
@@ -474,7 +474,7 @@
                         '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                         '<td style="display: none"><div id="product_unit_id_'+n+'"><select class="form-control product_unit_id select2" name="product_unit_id[]" id="product_unit_id_'+n+'" required>' + productUnit + '</select></div></td>' +
                         '<td><select name="return_type[]" id="return_type_id_'+n+'" class="form-control" ><option value="returnable" selected>returnable</option><option value="not returnable">not returnable</option></select></td>' +
-                        '<td><div id="invoice_no_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
+                        '<td><div id="invoice_no_div_'+n+'"><select class="form-control invoice_no select2" name="invoice_no[]" id="invoice_no_'+n+'" onchange="getInvoiceVal('+n+',this);" required>' + invoiceNo + '</select></div></td>' +
                         '<td><input type="number" id="stock_qty_'+n+'" class="stock_qty form-control" name="stock_qty[]" readonly></td>' +
                         '<td><input type="text" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                         '<td><input type="text" id="price_'+n+'" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
@@ -558,15 +558,15 @@
                     //alert(sel.value);
                     var current_row = row;
                     var current_product_id = sel.value;
-                    if(current_row > 1){
-                        var previous_row = current_row - 1;
-                        var previous_product_id = $('#product_id_'+previous_row).val();
-                        if(previous_product_id === current_product_id){
-                            $('#product_id_'+current_row).val('');
-                            alert('You selected same product, Please selected another product!');
-                            return false
-                        }
-                    }
+                    // if(current_row > 1){
+                    //     var previous_row = current_row - 1;
+                    //     var previous_product_id = $('#product_id_'+previous_row).val();
+                    //     if(previous_product_id === current_product_id){
+                    //         $('#product_id_'+current_row).val('');
+                    //         alert('You selected same product, Please selected another product!');
+                    //         return false
+                    //     }
+                    // }
 
                     $.ajax({
                         url : "{{URL('product-sale-relation-data')}}",
@@ -584,7 +584,7 @@
                             $("#product_sub_category_id_"+current_row).html(res.data.subCategoryOptions);
                             $("#product_brand_id_"+current_row).html(res.data.brandOptions);
                             $("#product_unit_id_"+current_row).html(res.data.unitOptions);
-                            $("#invoice_no_"+current_row).html(res.data.invoiceNos);
+                            $("#invoice_no_div_"+current_row).html(res.data.invoiceNos);
                             //$("#stock_qty_"+current_row).val(res.data.current_stock);
                             //$("#price_"+current_row).val(res.data.mrp_price);
                         },
@@ -612,9 +612,11 @@
                     if(current_row > 1){
                         var previous_row = current_row - 1;
                         var previous_product_id = $('#product_id_'+previous_row).val();
-                        if(previous_product_id === current_product_id){
-                            $('#product_id_'+current_row).val('');
-                            alert('You selected same product, Please selected another product!');
+                        var previous_invoice_no = $('#invoice_no_'+previous_row).val();
+                        if( (previous_product_id === current_product_id) && (previous_invoice_no === current_invoice_no)){
+                            //$('#product_id_'+current_row).val('');
+                            $('#invoice_no_'+current_row).val('');
+                            alert('You selected same invoice same product, Please selected another invoice or product!');
                             return false
                         }
                     }
@@ -687,13 +689,13 @@
             }
 
             $(function() {
-                $('#check_number').hide();
+                $('#cheque_number').hide();
                 $('#payment_type').change(function(){
-                    if($('#payment_type').val() == 'Check') {
-                        $('#check_number').show();
+                    if($('#payment_type').val() == 'Cheque') {
+                        $('#cheque_number').show();
                     } else {
-                        $('#check_number').val('');
-                        $('#check_number').hide();
+                        $('#cheque_number').val('');
+                        $('#cheque_number').hide();
                     }
                 });
             });

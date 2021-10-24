@@ -70,7 +70,7 @@ class ExpenseController extends Controller
         $expense->store_id = $request->store_id;
         $expense->office_costing_category_id = $request->office_costing_category_id;
         $expense->payment_type = $request->payment_type;
-        $expense->check_number = $request->check_number ? $request->check_number : NULL;
+        $expense->cheque_number = $request->cheque_number ? $request->cheque_number : NULL;
         $expense->amount = $request->amount;
         $expense->date = $request->date;
         $expense->save();
@@ -86,7 +86,7 @@ class ExpenseController extends Controller
             $transaction->ref_id = $insert_id;
             $transaction->transaction_type = 'expense';
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $transaction->amount = $request->amount;
             $transaction->date = $request->date;
             $transaction->save();
@@ -129,7 +129,7 @@ class ExpenseController extends Controller
         //$expense->store_id = $request->store_id;
         $expense->office_costing_category_id = $request->office_costing_category_id;
         $expense->payment_type = $request->payment_type;
-        $expense->check_number = $request->check_number ? $request->check_number : NULL;
+        $expense->cheque_number = $request->cheque_number ? $request->cheque_number : NULL;
         $expense->amount = $request->amount;
         //$expense->date = date('d-m-Y');
         $affectedRows = $expense->save();
@@ -137,7 +137,7 @@ class ExpenseController extends Controller
         if($affectedRows){
             $transaction = Transaction::where('ref_id',$id)->first();
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $transaction->amount = $request->amount;
             //$transaction->date = $request->date;
             $transaction->save();

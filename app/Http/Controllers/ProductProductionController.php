@@ -237,7 +237,7 @@ class ProductProductionController extends Controller
                 $transaction->transaction_product_type = 'Raw Materials';
                 $transaction->transaction_type = 'production';
                 $transaction->payment_type = $request->payment_type;
-                $transaction->check_number = $request->check_number ? $request->check_number : '';
+                $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
                 $transaction->amount = $total_amount;
                 $transaction->save();
 
@@ -339,7 +339,7 @@ class ProductProductionController extends Controller
                     $transaction->transaction_product_type = 'Finish Goods';
                     $transaction->transaction_type = 'production';
                     $transaction->payment_type = $request->payment_type;
-                    $transaction->check_number = $request->check_number ? $request->check_number : '';
+                    $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
                     $transaction->amount = $request->existing_price;
                     $transaction->save();
                 }
@@ -483,7 +483,7 @@ class ProductProductionController extends Controller
                 $transaction->transaction_product_type = 'Raw Materials';
                 $transaction->transaction_type = 'production';
                 $transaction->payment_type = $request->payment_type;
-                $transaction->check_number = $request->check_number ? $request->check_number : '';
+                $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
                 $transaction->amount = $total_amount;
                 $transaction->save();
 
@@ -611,7 +611,7 @@ class ProductProductionController extends Controller
                         $transaction->transaction_product_type = 'Finish Goods';
                         $transaction->transaction_type = 'production';
                         $transaction->payment_type = $request->payment_type;
-                        $transaction->check_number = $request->check_number ? $request->check_number : '';
+                        $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
                         $transaction->amount = $request->new_price;
                         $transaction->save();
                     }
@@ -852,7 +852,7 @@ class ProductProductionController extends Controller
                 //$transaction->transaction_product_type = 'Raw Materials';
                 //$transaction->transaction_type = 'production';
                 $transaction->payment_type = $request->payment_type;
-                $transaction->check_number = $request->check_number ? $request->check_number : '';
+                $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
                 $transaction->amount = $total_amount;
                 $transaction->save();
 
@@ -992,7 +992,7 @@ class ProductProductionController extends Controller
                     //$transaction->transaction_product_type = 'Finish Goods';
                     //$transaction->transaction_type = 'production';
                     $transaction->payment_type = $request->payment_type;
-                    $transaction->check_number = $request->check_number ? $request->check_number : '';
+                    $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
                     $transaction->amount = $request->existing_price;
                     $transaction->save();
                 }
@@ -1088,7 +1088,7 @@ class ProductProductionController extends Controller
 //                $transaction->transaction_product_type = 'Raw Materials';
 //                $transaction->transaction_type = 'production';
 //                $transaction->payment_type = $request->payment_type;
-//                $transaction->check_number = $request->check_number ? $request->check_number : '';
+//                $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
 //                $transaction->amount = $total_amount;
 //                $transaction->save();
 //
@@ -1194,7 +1194,7 @@ class ProductProductionController extends Controller
 //                        $transaction->transaction_product_type = 'Finish Goods';
 //                        $transaction->transaction_type = 'production';
 //                        $transaction->payment_type = $request->payment_type;
-//                        $transaction->check_number = $request->check_number ? $request->check_number : '';
+//                        $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
 //                        $transaction->amount = $request->new_price;
 //                        $transaction->save();
 //                    }

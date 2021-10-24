@@ -87,7 +87,7 @@ class ProductPurchaseRawMaterialsController extends Controller
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->date = $request->date;
         //$productPurchase ->payment_type = $request->payment_type;
-        //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
+        //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase ->purchase_product_type = 'Raw Materials';
         $productPurchase->save();
@@ -162,7 +162,7 @@ class ProductPurchaseRawMaterialsController extends Controller
             $transaction->transaction_product_type = 'Raw Materials';
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $transaction->amount = $total_amount;
             $transaction->save();
         }
@@ -230,7 +230,7 @@ class ProductPurchaseRawMaterialsController extends Controller
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->date = $request->date;
         //$productPurchase ->payment_type = $request->payment_type;
-        //$productPurchase->check_number = $request->check_number ? $request->check_number : '';
+        //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $productPurchase ->total_amount = $total_amount;
         $productPurchase->update();
 
@@ -357,7 +357,7 @@ class ProductPurchaseRawMaterialsController extends Controller
         $transaction->party_id = $request->party_id;
         $transaction->date = $request->date;
         $transaction->payment_type = $request->payment_type;
-        $transaction->check_number = $request->check_number ? $request->check_number : '';
+        $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $transaction->amount = $total_amount;
         $transaction->update();
 

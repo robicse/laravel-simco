@@ -73,15 +73,15 @@
                                         <div class="invoice-to">
                                             <table>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Invoice</td>
-                                                    <td style="text-align: left;font-size: 16px;">#{{$productSale->invoice_no}}</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Invoice No.</td>
+                                                    <td style="text-align: left;font-size: 16px;">{{$productSale->invoice_no}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">DateTime:</td>
                                                     <td style="text-align: left;font-size: 16px;">{{$productSale->created_at}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone NO:</td>
+                                                    <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone No.</td>
 {{--                                                    <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>--}}
                                                     <td style="text-align: left;font-size: 16px;">02-9662755</td>
                                                 </tr>
@@ -103,7 +103,7 @@
                                         <table class="table table-striped">
                                             <thead>
                                             <tr style="background-color: #dddddd">
-                                                <th>SL NO.</th>
+                                                <th>SL No.</th>
                                                 <th>Description</th>
                                                 <th>Qty</th>
                                                 <th>Unit</th>
@@ -180,7 +180,7 @@
                                 </div>
                                 <!-- /.row -->
                                 <div class="write">
-                                    <p class="lead"><b>In Word : {{ucwords($digit->format($productSale->total_amount))}} Only</b></p>
+                                    <p class="lead"><b>In Word : {{ucwords($digit->format($productSale->total_amount))}} Only.</b></p>
                                 </div>
                                 <div class="row">
                                     <!-- accepted payments column -->
@@ -192,8 +192,8 @@
                                                 @foreach($transactions as $transaction)
                                                     <li>
                                                         {{$transaction->payment_type}}
-                                                        @if($transaction->payment_type == 'Check')
-                                                            ( Check Number: {{$transaction->check_number}} )
+                                                        @if($transaction->payment_type == 'Cheque')
+                                                            ( Check Number: {{$transaction->cheque_number}} )
                                                         @endif
                                                         :
                                                         Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})

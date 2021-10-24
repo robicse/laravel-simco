@@ -286,7 +286,7 @@ class ProductSaleController extends Controller
         $productSale->store_id = $request->store_id;
         $productSale->date = $request->date;
         //$productSale->payment_type = $request->payment_type;
-        //$productSale->check_number = $request->check_number ? $request->check_number : '';
+        //$productSale->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $productSale->delivery_service = $request->delivery_service;
         $productSale->delivery_service_charge = $request->delivery_service_charge;
         $productSale->discount_type = $request->discount_type;
@@ -439,7 +439,7 @@ class ProductSaleController extends Controller
             $due->store_id = $request->store_id;
             $due->party_id = $request->party_id;
             //$due->payment_type = $request->payment_type;
-            //$due->check_number = $request->check_number ? $request->check_number : '';
+            //$due->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $due->total_amount = $total_amount;
             $due->paid_amount = $request->paid_amount;
             $due->due_amount = $request->due_amount;
@@ -456,7 +456,7 @@ class ProductSaleController extends Controller
             $transaction->transaction_product_type = 'Finish Goods';
             $transaction->transaction_type = 'sale';
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             //$transaction->amount = $total_amount;
             $transaction->amount = $request->paid_amount;
             $transaction->save();
@@ -719,7 +719,7 @@ class ProductSaleController extends Controller
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $transaction->amount = $request->paid_amount;
             $transaction->update();
         }
@@ -742,7 +742,7 @@ class ProductSaleController extends Controller
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number ? $request->check_number : '';
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $transaction->amount = $request->paid_amount - $transaction_amount_sum->sum_amount;
             $transaction->update();
         }
@@ -1126,7 +1126,7 @@ class ProductSaleController extends Controller
         $transaction->transaction_product_type = $transaction_product_type;
         $transaction->transaction_type = 'due';
         $transaction->payment_type = $request->payment_type;
-        $transaction->check_number = $request->check_number ? $request->check_number : '';
+        $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $transaction->amount = $request->new_paid;
         $transaction->date = date('Y-m-d');
         $transaction->save();

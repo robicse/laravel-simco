@@ -180,7 +180,7 @@ class ProductSaleReturnController extends Controller
         $transaction->user_id = Auth::id();
         $transaction->store_id = $store_id;
         //$transaction->payment_type = $request->payment_type;
-        //$transaction->check_number = $request->check_number;
+        //$transaction->cheque_number = $request->cheque_number;
         $transaction->date = date('Y-m-d');
         $transaction->amount = $total_amount;
         $transaction->save();
@@ -314,6 +314,65 @@ class ProductSaleReturnController extends Controller
         //return view('backend.productSaleReturn.returnable_sale_products',compact('returnable_sale_products'));
         return view('backend.productSaleReturn.returnable_sale_products',compact('parties','stores','productSales'));
     }
+<<<<<<< HEAD
+=======
+    public function getReturnableProduct($sale_id){
+        $productSale = ProductSale::where('id',$sale_id)->first();
+        //dd($productSale);
+        $products = DB::table('product_sale_details')
+            ->join('products','product_sale_details.product_id','=','products.id')
+            ->where('product_sale_details.product_sale_id',$sale_id)
+            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','product_sale_details.discount','products.name')
+            ->get();
+
+        $html = "<table class=\"table table-striped tabel-penjualan\">
+                        <thead>
+                            <tr>
+                                <th width=\"30\">No</th>
+                                <th>Product Name</th>
+                                <th align=\"right\">Received Quantity</th>
+                                <th>Already Return Quantity</th>
+                                <th>Return Quantity</th>
+                                <th>Discount Amount</th>
+                                <th>Amount</th>
+                                <th>Reason <span style=\"color:red\">*</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+        if(count($products) > 0):
+            foreach($products as $key => $item):
+
+                $check_sale_return_qty = check_sale_return_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
+
+                $key += 1;
+                $html .= "<tr>";
+                $html .= "<th width=\"30\">1</th>";
+                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" /><input type=\"hidden\" class=\"form-control\" name=\"product_sale_detail_id[]\" id=\"product_sale_detail_id_$key\" value=\"$item->id\" size=\"28\" />$item->name</th>";
+//                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_sale_id[]\" id=\"product_sale_id_$key\" value=\"$item->product_sale_id\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_return_qty[]\" id=\"check_sale_return_qty_$key\" value=\"$check_sale_return_qty\" readonly /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"discount[]\" id=\"discount_$key\"  value=\"$item->discount\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
+                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\"></textarea> </th>";
+                $html .= "</tr>";
+            endforeach;
+            $html .= "<tr>";
+
+            $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
+                    <option value=\"Cash\" selected>Cash</option>
+                    <option value=\"Cheque\">Cheque</option>
+            </select> </th>";
+            $html .= "<th><input type=\"text\" name=\"cheque_number\" id=\"cheque_number\" class=\"form-control\" placeholder=\"Cheque Number\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "</tr>";
+        endif;
+        $html .= "</tbody>
+                    </table>";
+        echo json_encode($html);
+        //dd($html);
+    }
+>>>>>>> af1b1f826da65d9eadc0c3cfc6e657c2643bcf4c
     public function saleProductReturn(Request $request){
         //dd($request->all());
         $row_count = count($request->return_qty);
@@ -341,7 +400,9 @@ class ProductSaleReturnController extends Controller
         $product_sale_return->user_id = Auth::id();
         $product_sale_return->store_id = $productSale->store_id;
         $product_sale_return->party_id = $productSale->party_id;
-        $product_sale_return->payment_type = $productSale->payment_type;
+        //$product_sale_return->payment_type = $productSale->payment_type;
+        $product_sale_return->payment_type = $request->payment_type;
+        $product_sale_return->cheque_number = $request->cheque_number ? $request->cheque_number : NULL;
         $product_sale_return->discount_type = $productSale->discount_type;
 //        $product_sale_return->discount_amount = 0;
 //        $product_sale_return->total_amount = $total_amount;
@@ -472,7 +533,7 @@ class ProductSaleReturnController extends Controller
             $transaction->transaction_product_type = $transaction_product_type;
             $transaction->transaction_type = 'sale return';
             $transaction->payment_type = $request->payment_type;
-            $transaction->check_number = $request->check_number;
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : NULL;
             $transaction->date = date('Y-m-d');
             $transaction->amount = $total_amount;
             $transaction->save();

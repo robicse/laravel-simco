@@ -24,6 +24,10 @@
                         </thead>
                         <tbody>
                         <tr>
+                            <th>Invoice No</th>
+                            <td>{{$productPurchase->invoice_no}}</td>
+                        </tr>
+                        <tr>
                             <th>User</th>
                             <td>{{$productPurchase->user->name}}</td>
                         </tr>
@@ -41,14 +45,19 @@
                         </tr>
                         <tr>
                             <th>Payment Type</th>
-                            <td>{{$transaction->payment_type}}</td>
+                            <td>
+                                {{$transaction->payment_type}}
+                                @if($transaction->payment_type == 'Cheque')
+                                    ({{$transaction->cheque_number}})
+                                @endif
+                            </td>
                         </tr>
-                        @if($transaction->payment_type == 'Check')
-                            <tr>
-                                <th>Check Number</th>
-                                <td>{{$transaction->check_number}}</td>
-                            </tr>
-                        @endif
+{{--                        @if($transaction->payment_type == 'Cheque')--}}
+{{--                            <tr>--}}
+{{--                                <th>Check Number</th>--}}
+{{--                                <td>{{$transaction->cheque_number}}</td>--}}
+{{--                            </tr>--}}
+{{--                        @endif--}}
                         <tr>
                             <th>Amount</th>
                             <td>{{$productPurchase->total_amount}}</td>

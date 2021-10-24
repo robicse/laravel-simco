@@ -59,10 +59,10 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" required>
                                     <option value="Cash" @if($expense->payment_type == 'Cash') selected @endif>Cash</option>
-                                    <option value="Check" @if($expense->payment_type == 'Check') selected @endif>Check</option>
+                                    <option value="Cheque" @if($expense->payment_type == 'Cheque') selected @endif>Cheque</option>
                                 </select>
                                 <span>&nbsp;</span>
-                                <input type="text" name="check_number" id="check_number" class="form-control" value="{{$expense->check_number}}">
+                                <input type="text" name="cheque_number" id="cheque_number" class="form-control" value="{{$expense->cheque_number}}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -203,14 +203,14 @@
             <?php
             if($expense->payment_type == 'Cash'){
             ?>
-            $('#check_number').hide();
+            $('#cheque_number').hide();
             <?php } ?>
             $('#payment_type').change(function(){
-                if($('#payment_type').val() == 'Check') {
-                    $('#check_number').show();
+                if($('#payment_type').val() == 'Cheque') {
+                    $('#cheque_number').show();
                 } else {
-                    $('#check_number').val('');
-                    $('#check_number').hide();
+                    $('#cheque_number').val('');
+                    $('#cheque_number').hide();
                 }
             });
         });
