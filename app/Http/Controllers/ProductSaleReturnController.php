@@ -314,62 +314,6 @@ class ProductSaleReturnController extends Controller
         //return view('backend.productSaleReturn.returnable_sale_products',compact('returnable_sale_products'));
         return view('backend.productSaleReturn.returnable_sale_products',compact('parties','stores','productSales'));
     }
-    public function getReturnableProduct($sale_id){
-        $productSale = ProductSale::where('id',$sale_id)->first();
-        //dd($productSale);
-        $products = DB::table('product_sale_details')
-            ->join('products','product_sale_details.product_id','=','products.id')
-            ->where('product_sale_details.product_sale_id',$sale_id)
-            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','product_sale_details.discount','products.name')
-            ->get();
-
-        $html = "<table class=\"table table-striped tabel-penjualan\">
-                        <thead>
-                            <tr>
-                                <th width=\"30\">No</th>
-                                <th>Product Name</th>
-                                <th align=\"right\">Received Quantity</th>
-                                <th>Already Return Quantity</th>
-                                <th>Return Quantity</th>
-                                <th>Discount Amount</th>
-                                <th>Amount</th>
-                                <th>Reason <span style=\"color:red\">*</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-        if(count($products) > 0):
-            foreach($products as $key => $item):
-
-                $check_sale_return_qty = check_sale_return_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
-
-                $key += 1;
-                $html .= "<tr>";
-                $html .= "<th width=\"30\">1</th>";
-                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" /><input type=\"hidden\" class=\"form-control\" name=\"product_sale_detail_id[]\" id=\"product_sale_detail_id_$key\" value=\"$item->id\" size=\"28\" />$item->name</th>";
-//                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_sale_id[]\" id=\"product_sale_id_$key\" value=\"$item->product_sale_id\" size=\"28\" /></th>";
-                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
-                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_return_qty[]\" id=\"check_sale_return_qty_$key\" value=\"$check_sale_return_qty\" readonly /></th>";
-                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
-                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"discount[]\" id=\"discount_$key\"  value=\"$item->discount\" size=\"28\" /></th>";
-                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
-                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\"></textarea> </th>";
-                $html .= "</tr>";
-            endforeach;
-            $html .= "<tr>";
-
-            $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
-                    <option value=\"Cash\" selected>Cash</option>
-                    <option value=\"Check\">Check</option>
-            </select> </th>";
-            $html .= "<th><input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\"  size=\"28\" ></th>";
-            $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"28\" ></th>";
-            $html .= "</tr>";
-        endif;
-        $html .= "</tbody>
-                    </table>";
-        echo json_encode($html);
-        //dd($html);
-    }
     public function saleProductReturn(Request $request){
         //dd($request->all());
         $row_count = count($request->return_qty);
@@ -536,5 +480,61 @@ class ProductSaleReturnController extends Controller
 
         Toastr::success('Product Sale Return Created Successfully', 'Success');
         return redirect()->route('productSaleReturns.index');
+    }
+    public function getReturnableProduct($sale_id){
+        $productSale = ProductSale::where('id',$sale_id)->first();
+        //dd($productSale);
+        $products = DB::table('product_sale_details')
+            ->join('products','product_sale_details.product_id','=','products.id')
+            ->where('product_sale_details.product_sale_id',$sale_id)
+            ->select('product_sale_details.id','product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','product_sale_details.discount','products.name')
+            ->get();
+
+        $html = "<table class=\"table table-striped tabel-penjualan\">
+                        <thead>
+                            <tr>
+                                <th width=\"30\">No</th>
+                                <th>Product Name</th>
+                                <th align=\"right\">Received Quantity</th>
+                                <th>Already Return Quantity</th>
+                                <th>Return Quantity</th>
+                                <th>Discount Amount</th>
+                                <th>Amount</th>
+                                <th>Reason <span style=\"color:red\">*</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+        if(count($products) > 0):
+            foreach($products as $key => $item):
+
+                $check_sale_return_qty = check_sale_return_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
+
+                $key += 1;
+                $html .= "<tr>";
+                $html .= "<th width=\"30\">1</th>";
+                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" /><input type=\"hidden\" class=\"form-control\" name=\"product_sale_detail_id[]\" id=\"product_sale_detail_id_$key\" value=\"$item->id\" size=\"28\" />$item->name</th>";
+//                $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_sale_id[]\" id=\"product_sale_id_$key\" value=\"$item->product_sale_id\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_return_qty[]\" id=\"check_sale_return_qty_$key\" value=\"$check_sale_return_qty\" readonly /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"return_qty[]\" id=\"return_qty_$key\" onkeyup=\"return_qty($key,this);\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"discount[]\" id=\"discount_$key\"  value=\"$item->discount\" size=\"28\" /></th>";
+                $html .= "<th><input type=\"text\" class=\"form-control\" name=\"total_amount[]\" id=\"total_amount_$key\"  value=\"$item->price\" size=\"28\" /></th>";
+                $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\"></textarea> </th>";
+                $html .= "</tr>";
+            endforeach;
+            $html .= "<tr>";
+
+            $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
+                    <option value=\"Cash\" selected>Cash</option>
+                    <option value=\"Check\">Check</option>
+            </select> </th>";
+            $html .= "<th><input type=\"text\" name=\"check_number\" id=\"check_number\" class=\"form-control\" placeholder=\"Check Number\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "</tr>";
+        endif;
+        $html .= "</tbody>
+                    </table>";
+        echo json_encode($html);
+        //dd($html);
     }
 }

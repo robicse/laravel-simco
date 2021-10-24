@@ -65,6 +65,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('productPurchaseRawMaterials','ProductPurchaseRawMaterialsController');
     Route::resource('productProductions','ProductProductionController');
     Route::resource('productSaleReplacement','ProductSaleReplacementController');
+    Route::resource('productPurchaseReturn','ProductPurchaseReturnController');
+
+
+    Route::get('returnable-purchase-product-list','ProductPurchaseReturnController@returnablePurchaseProduct')->name('returnable.purchase.product');
+    Route::post('purchase-product-return','ProductPurchaseReturnController@purchaseProductReturn')->name('purchase.product.return');
+    Route::get('get-returnable-purchase-product/{purchase_id}','ProductPurchaseReturnController@getReturnablePurchaseProduct');
 
 
     Route::get('productPurchases-invoice','ProductPurchaseController@invoice')->name('productPurchases-invoice');
