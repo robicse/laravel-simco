@@ -153,7 +153,7 @@ class ProductPurchaseRawMaterialsController extends Controller
 
             // transaction
             $transaction = new Transaction();
-            $transaction->invoice_no = Null;
+            $transaction->invoice_no = $productPurchase->invoice_no;
             $transaction->user_id = Auth::id();
             $transaction->store_id = $request->store_id;
             $transaction->party_id = $request->party_id;

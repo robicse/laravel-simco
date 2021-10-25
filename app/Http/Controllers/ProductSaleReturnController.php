@@ -111,6 +111,7 @@ class ProductSaleReturnController extends Controller
             // product stock
             $store_id=$product_sale_return->store_id;
             $stock_row = current_stock_row($store_id,'Finish Goods','sale return',$product_id);
+            //  dd($stock_row);
             $previous_stock = $stock_row->previous_stock;
             $stock_out = $stock_row->stock_out;
             //$current_stock = $stock_row->current_stock;

@@ -14,21 +14,21 @@
         </div>
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Edit Returnable Sales Product</h3>
+                <h3 class="tile-title">Edit Returnable Purchase Product</h3>
                 <div class="tile-body tile-footer">
                     @if(session('response'))
                         <div class="alert alert-success">
                             {{ session('response') }}
                         </div>
                     @endif
-                    <form method="post" action="{{ route('productSaleReturns.update',$productSaleReturn->id) }}">
+                    <form method="post" action="{{ route('productPurchaseReturn.update',$productPurchaseReturn->id) }}">
                         @method('PUT')
                         @csrf
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Invoice  <small class="requiredCustom">*</small></label>
                             <div class="col-md-5">
-                                <input class="form-control" type="hidden" name="product_sale_return_id" value="{{$productSaleReturn->id}}">
-                                <input class="form-control" type="text" name="sale_invoice_no" value="{{$productSaleReturn->sale_invoice_no}}" readonly>
+                                <input class="form-control" type="hidden" name="product_purchase_return_id" value="{{$productPurchaseReturn->id}}">
+                                <input class="form-control" type="text" name="purchase_invoice_no" value="{{$productPurchaseReturn->purchase_invoice_no}}" readonly>
                             </div>
                         </div>
 
@@ -46,33 +46,33 @@
                                     </tr>
                                     </thead>
                                     <tbody class="neworderbody">
-                                    @foreach($productSaleReturnDetails as $key => $productSaleReturnDetail)
+                                    @foreach($productPurchaseReturnDetails as $key => $productPurchaseReturnDetail)
                                         @php
                                             $key += 1;
 
-                                            $sale_qty = \Illuminate\Support\Facades\DB::table('product_sale_details')
-                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
-                                            ->where('product_sales.invoice_no',$productSaleReturn->sale_invoice_no)
-                                            ->where('product_sale_details.product_id',$productSaleReturnDetail->product_id)
-                                        ->pluck('product_sale_details.qty')
+                                            $sale_qty = \Illuminate\Support\Facades\DB::table('product_purchase_details')
+                                            ->join('product_purchases','product_purchases.id','product_purchase_details.product_purchase_id')
+                                            ->where('product_purchases.invoice_no',$productPurchaseReturn->purchase_invoice_no)
+                                            ->where('product_purchase_details.product_id',$productPurchaseReturnDetail->product_id)
+                                        ->pluck('product_purchase_details.qty')
                                         ->first();
                                         @endphp
                                         <tr>
                                             <td width="5%" class="no">1</td>
                                             <td>
-                                                <input class="form-control" type="hidden" name="product_sale_return_detail_id[]" value="{{$productSaleReturnDetail->id}}">
-                                                <input class="form-control" type="hidden" name="product_id[]" value="{{$productSaleReturnDetail->product_id}}">
-                                                {{$productSaleReturnDetail->product->name}}
+                                                <input class="form-control" type="hidden" name="product_purchase_return_detail_id[]" value="{{$productPurchaseReturnDetail->id}}">
+                                                <input class="form-control" type="hidden" name="product_id[]" value="{{$productPurchaseReturnDetail->product_id}}">
+                                                {{$productPurchaseReturnDetail->product->name}}
                                             </td>
                                             <td>{{$sale_qty}}</td>
                                             <td>
-                                                <input class="form-control" type="text" name="qty[]" value="{{$productSaleReturnDetail->qty}}">
+                                                <input class="form-control" type="text" name="qty[]" value="{{$productPurchaseReturnDetail->qty}}">
                                             </td>
                                             <td>
-                                                <input class="form-control" type="text" name="price[]" value="{{$productSaleReturnDetail->price}}">
+                                                <input class="form-control" type="text" name="price[]" value="{{$productPurchaseReturnDetail->price}}">
                                             </td>
                                             <td>
-                                                <textarea class="form-control" rows="3" name="reason[]">{{$productSaleReturnDetail->reason}}</textarea>
+                                                <textarea class="form-control" rows="3" name="reason[]">{{$productPurchaseReturnDetail->reason}}</textarea>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -103,11 +103,11 @@
     <script>
         $('#sale_invoice_no').change(function(){
             $('#loadForm').html('');
-            var sale_id = $(this).val();
-            console.log(sale_id);
+            var purchase_id = $(this).val();
+            console.log(purchase_id);
 
             $.ajax({
-                url : "{{ URL('/get-returnable-product') }}/" + sale_id,
+                url : "{{ URL('/get-returnable-purchase-product') }}/" + purchase_id,
                 type: "GET",
                 dataType: "json",
                 success: function(data)
@@ -152,32 +152,7 @@
             }
         }
     </script>
-{{--    <script>--}}
 
-{{--        // ajax--}}
-{{--        function return_qty1(row,sel) {--}}
-{{--            console.log('ooo');--}}
-{{--            var current_row = row;--}}
-{{--            var current_return_qty = sel.value;--}}
-{{--            console.log(current_row);--}}
-{{--            console.log(current_return_qty);--}}
-{{--            //var current_product_id = $('#product_id_'+current_row).val();--}}
-
-{{--            var current_sale_qty = $('#qty_'+current_row).val();--}}
-{{--            if(current_return_qty > current_sale_qty){--}}
-{{--                alert('You have limit cross of stock qty!');--}}
-{{--                $('#return_qty_'+current_row).val(0);--}}
-{{--            }--}}
-{{--        }--}}
-
-{{--        function productType(row,sel){--}}
-{{--            var current_row = row;--}}
-{{--            var arr = $('#payment_type_'+current_row).val();--}}
-{{--            if(arr == "check"){ $("#check_number_"+current_row).removeAttr("readonly"); }--}}
-{{--            if(arr == "Cash"){ $("#check_number_"+current_row).attr("readonly", "readonly"); }--}}
-{{--        }--}}
-
-{{--    </script>--}}
 @endpush
 
 

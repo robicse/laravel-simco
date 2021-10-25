@@ -52,13 +52,12 @@
                                 @endforeach
                             </td>
                             <td>{{ $productPurchaseReturn->user->name}}</td>
-{{--                            <td>{{ $productSaleReturn->store->name}}</td>--}}
                             <td>{{ $productPurchaseReturn->party->name}}</td>
                             <td>
                                 @php
                                     $transaction = \Illuminate\Support\Facades\DB::table('transactions')
-                                  ->where('invoice_no',$productSaleReturn->invoice_no)
-                                  ->where('ref_id',$productSaleReturn->id)
+                                  ->where('invoice_no',$productPurchaseReturn->invoice_no)
+                                  ->where('ref_id',$productPurchaseReturn->id)
                                   ->first();
 
                                 if($transaction){
@@ -74,9 +73,9 @@
                             <td>{{ $productPurchaseReturn->total_amount}}</td>
                             <td>{{ $productPurchaseReturn->created_at}}</td>
                             <td class="d-inline-flex">
-                                <a href="{{ route('productSaleReturns.show',$productPurchaseReturn->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
-                                <a href="{{ route('productSaleReturns.edit',$productPurchaseReturn->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
-                                <form method="post" action="{{ route('productSaleReturns.destroy',$productPurchaseReturn->id) }}" >
+                                <a href="{{ route('productPurchaseReturn.show',$productPurchaseReturn->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
+                                <a href="{{ route('productPurchaseReturn.edit',$productPurchaseReturn->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
+                                <form method="post" action="{{ route('productPurchaseReturn.destroy',$productPurchaseReturn->id) }}" >
                                     @method('DELETE')
                                     @csrf
                                     <button class="btn btn-sm btn-danger" style="margin-left: 5px" type="submit" onclick="return confirm('You Are Sure This Delete !')"><i class="fa fa-trash"></i></button>

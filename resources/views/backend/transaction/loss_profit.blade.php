@@ -44,9 +44,6 @@
                                     //die($end_date);
                                     //$product_sale_return_discount = product_sale_return_discount($store->id,$start_date,$end_date);
                                     //$product_sale_discount = product_sale_discount($store->id,$start_date,$end_date);
-
-
-
                                     $loss_profit = loss_profit($store->id,$start_date,$end_date);
                                     $sale_discount = product_sale_discount($store->id,$start_date,$end_date);
                                     $product_sale_return_discount = product_sale_return_discount($store->id,$start_date,$end_date);
