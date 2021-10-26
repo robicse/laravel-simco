@@ -49,7 +49,10 @@ class ProductPurchaseReturnController extends Controller
 
     public function show($id)
     {
-        //
+        $productPurchaseReturn = ProductPurchaseReturn::find($id);
+        $productPurchaseReturnDetails = ProductPurchaseReturnDetail::where('product_purchase_return_id',$id)->get();
+
+        return view('backend.productPurchaseReturn.show', compact('productPurchaseReturn','productPurchaseReturnDetails'));
     }
 
 
@@ -443,7 +446,7 @@ class ProductPurchaseReturnController extends Controller
                     $stock->previous_stock = $previous_stock;
                     $stock->stock_in = $request->return_qty[$i];
                     $stock->stock_out = 0;
-                    $stock->current_stock = $previous_stock + $request->return_qty[$i];
+                    $stock->current_stock = $previous_stock - $request->return_qty[$i];
                     $stock->date = date('Y-m-d');
                     $stock->save();
 
@@ -473,7 +476,7 @@ class ProductPurchaseReturnController extends Controller
                     $invoice_stock->previous_stock = $previous_invoice_stock;
                     $invoice_stock->stock_in = $request->return_qty[$i];
                     $invoice_stock->stock_out = 0;
-                    $invoice_stock->current_stock = $previous_invoice_stock + $request->return_qty[$i];
+                    $invoice_stock->current_stock = $previous_invoice_stock - $request->return_qty[$i];
                     $invoice_stock->save();
 
 

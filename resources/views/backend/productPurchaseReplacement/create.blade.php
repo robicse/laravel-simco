@@ -10,32 +10,32 @@
         <main class="app-content">
             <div class="app-title">
                 <div>
-                    <h1><i class=""></i> Add Sales Product Replace</h1>
+                    <h1><i class=""></i> Add Purchase Product Replace</h1>
                 </div>
                 <ul class="app-breadcrumb breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('productSaleReplacement.index') }}" class="btn btn-sm btn-primary col-sm" type="button">All Replacement Sales Product</a>
+                        <a href="{{ route('productPurchaseReplacement.index') }}" class="btn btn-sm btn-primary col-sm" type="button">All Replacement Purchase Product</a>
                     </li>
                 </ul>
             </div>
             <div class="col-md-12">
                 <div class="tile">
-                    <h3 class="tile-title">Add Sales Product Replace</h3>
+                    <h3 class="tile-title">Add Purchase Product Replace</h3>
                     <div class="tile-body tile-footer">
                         @if(session('response'))
                             <div class="alert alert-success">
                                 {{ session('response') }}
                             </div>
                         @endif
-                        <form method="post" action="{{ route('productSaleReplacement.store') }}">
+                        <form method="post" action="{{ route('productPurchaseReplacement.store') }}">
                             @csrf
                             <div class="form-group row">
                                 <label class="control-label col-md-3 text-right">Invoice  <small class="requiredCustom">*</small></label>
                                 <div class="col-md-5">
-                                    <select name="product_sale_id" class="form-control select2" id="sale_invoice_no" required>
+                                    <select name="product_purchase_id" class="form-control select2" id="purchase_invoice_no" required>
                                         <option value="">Select One</option>
-                                        @foreach($productSales as $productSale)
-                                            <option value="{{$productSale->id}}">{{$productSale->invoice_no}} </option>
+                                        @foreach($productPurchases as $productPurchase)
+                                            <option value="{{$productPurchase->id}}">{{$productPurchase->invoice_no}} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -64,13 +64,13 @@
 
     @push('js')
         <script>
-            $('#sale_invoice_no').change(function(){
+            $('#purchase_invoice_no').change(function(){
                 $('#loadForm').html('');
-                var sale_id = $(this).val();
-                console.log(sale_invoice_no);
+                var purchase_id = $(this).val();
+                console.log(purchase_invoice_no);
 
                 $.ajax({
-                    url : "{{ URL('/get-sale-product') }}/" + sale_id,
+                    url : "{{ URL('/get-purchase-product') }}/" + purchase_id,
                     type: "GET",
                     dataType: "json",
                     success: function(data)

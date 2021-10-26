@@ -59,6 +59,7 @@
                                 <thead>
                                 <tr>
                                     <th>Product</th>
+                                    <th>Product QTY</th>
                                     <th>Replace pQty</th>
                                     <th>Reason</th>
                                 </tr>
@@ -66,6 +67,15 @@
                                 <tbody class="neworderbody">
                                 @foreach($productSaleReplacementDetails as $key => $productSaleReplacementDetail)
                                     <tr>
+                                        @php
+                                            $sale_qty = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                            ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
+                                        ->pluck('product_sale_details.qty')
+                                        ->first();
+                                        //dd($sale_qty)
+
+                                        @endphp
                                         @php
                                             $current_row = $key+1;
                                         @endphp
@@ -79,6 +89,7 @@
                                             <input type="hidden" class="form-control" name="product_id[]" value="{{$productSaleReplacementDetail->product_id}}" >
                                             <input type="hidden" class="form-control" name="product_Sale_replacement_detail_id[]" value="{{$productSaleReplacementDetail->id}}" >
                                         </td>
+                                        <td width="8%">{{$sale_qty}}</td>
                                         <td width="8%">
                                             <input type="text" min="1" max="" class="qty form-control" name="replace_qty[]" value="{{$productSaleReplacementDetail->replace_qty}}" required >
                                         </td>

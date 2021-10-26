@@ -4,7 +4,7 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class=""></i> Product Sales Return And Details</h1>
+                <h1><i class=""></i> Product Purchase Return And Details</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item"> <a href="{!! route('productSaleReturns.index') !!}" class="btn btn-sm btn-primary" type="button">Back</a></li>
@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Product Sales Returns</h3>
+                <h3 class="tile-title">Product Purchase Returns</h3>
                 <div class="table-responsive">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
@@ -22,27 +22,27 @@
                         <tbody>
                         <tr>
                             <th>Invoice NO</th>
-                            <td>{{$productSaleReturn->invoice_no}}</td>
+                            <td>{{$productPurchaseReturn->invoice_no}}</td>
                         </tr>
                         <tr>
                             <th>User</th>
-                            <td>{{$productSaleReturn->user->name}}</td>
+                            <td>{{$productPurchaseReturn->user->name}}</td>
                         </tr>
                         <tr>
                             <th>Store</th>
-                            <td>{{$productSaleReturn->store->name}}</td>
+                            <td>{{$productPurchaseReturn->store->name}}</td>
                         </tr>
                         <tr>
                             <th>Party</th>
-                            <td>{{$productSaleReturn->party->name}}</td>
+                            <td>{{$productPurchaseReturn->party->name}}</td>
                         </tr>
                         <tr>
                             <th>Payment Type</th>
                             <td>
                                 @php
                                   $transaction = \Illuminate\Support\Facades\DB::table('transactions')
-                                  ->where('invoice_no',$productSaleReturn->invoice_no)
-                                  ->where('ref_id',$productSaleReturn->id)
+                                  ->where('invoice_no',$productPurchaseReturn->invoice_no)
+                                  ->where('ref_id',$productPurchaseReturn->id)
                                   ->first();
                                 @endphp
                                 {{$transaction->payment_type}}
@@ -53,15 +53,15 @@
                         </tr>
                         <tr>
                             <th>Discount Type</th>
-                            <td>{{$productSaleReturn->discount_type}}</td>
+                            <td>{{$productPurchaseReturn->discount_type}}</td>
                         </tr>
                         <tr>
                             <th>Discount Amount</th>
-                            <td>{{$productSaleReturn->discount_amount}}</td>
+                            <td>{{$productPurchaseReturn->discount_amount}}</td>
                         </tr>
                         <tr>
                             <th>Amount</th>
-                            <td>{{$productSaleReturn->total_amount}}</td>
+                            <td>{{$productPurchaseReturn->total_amount}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -72,7 +72,7 @@
         </div>
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Product Sales Details</h3>
+                <h3 class="tile-title">Product Purchase Details</h3>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -88,21 +88,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($productSaleReturnDetails as $productSaleReturnDetail)
+                    @foreach($productPurchaseReturnDetails as $productPurchaseReturnDetail)
                         <tr>
-                            <td>{{$productSaleReturnDetail->product->product_category->name}}</td>
-{{--                            <td>--}}
-{{--                                {{$productSaleReturnDetail->product->product_sub_category ? $productSaleReturnDetail->product->product_sub_category->name : ''}}--}}
-{{--                            </td>--}}
-                            <td>{{$productSaleReturnDetail->product->product_brand->name}}</td>
+                            <td>{{$productPurchaseReturnDetail->product->product_category->name}}</td>
+
+                            <td>{{$productPurchaseReturnDetail->product->product_brand->name}}</td>
 {{--                            <td>{{$productSaleReturnDetail->return_type}}</td>--}}
-                            <td>{{$productSaleReturnDetail->reason}}</td>
+                            <td>{{$productPurchaseReturnDetail->reason}}</td>
                             <td>
-                                <img src="{{asset('uploads/product/'.$productSaleReturnDetail->product->image)}}" width="50" height="50" />
+                                <img src="{{asset('uploads/product/'.$productPurchaseReturnDetail->product->image)}}" width="50" height="50" />
                             </td>
-                            <td>{{$productSaleReturnDetail->product->name}}</td>
-                            <td>{{$productSaleReturnDetail->qty}}</td>
-                            <td>{{$productSaleReturnDetail->price}}</td>
+                            <td>{{$productPurchaseReturnDetail->product->name}}</td>
+                            <td>{{$productPurchaseReturnDetail->qty}}</td>
+                            <td>{{$productPurchaseReturnDetail->price}}</td>
                         </tr>
                     @endforeach
                     </tbody>

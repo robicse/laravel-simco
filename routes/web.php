@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('productPurchaseReturn','ProductPurchaseReturnController');
     Route::resource('productPurchaseReplacement','ProductPurchaseReplacementController');
 
+    Route::get('get-purchase-product/{purchase_id}','ProductPurchaseReplacementController@getPurchaseProduct');
 
     Route::get('returnable-purchase-product-list','ProductPurchaseReturnController@returnablePurchaseProduct')->name('returnable.purchase.product');
     Route::post('purchase-product-return','ProductPurchaseReturnController@purchaseProductReturn')->name('purchase.product.return');
@@ -150,3 +151,36 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/roles/permission','RoleController@create_permission');
     Route::post('/user/active','UserController@activeDeactive')->name('user.active');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

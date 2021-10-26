@@ -306,7 +306,7 @@ class ProductSaleReplacementController extends Controller
 
 
                     $product_id = $purchase_sale_replacement_detail->product_id;
-                    $product_sale_replacement = ProductSaleReplacement::find($request->purchase_sale_replacement_id);
+                    $product_sale_replacement = ProductSaleReplacement::find($request->purchase_Sale_replacement_id);
                     $invoice_no = $product_sale_replacement->invoice_no;
                     $sale_invoice_no = $product_sale_replacement->sale_invoice_no;
                     $store_id = $product_sale_replacement->store_id;
