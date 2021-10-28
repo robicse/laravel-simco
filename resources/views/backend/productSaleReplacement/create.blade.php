@@ -91,7 +91,6 @@
 
             // ajax
             function replace_qty(row,sel) {
-
                 var current_row = row;
                 var current_replace_qty = sel.value;
                 //console.log(current_row);
@@ -104,16 +103,31 @@
                 //console.log('check_sale_replace_qty = ' + check_sale_replace_qty);
                 //console.log('check_sale_replace_qty= ' + typeof check_sale_replace_qty);
                 var current_sale_qty = $('#qty_'+current_row).val();
+                var current_purchase_invoice_no = $('#purchase_invoice_list_'+current_row).val();
+                var split_last_purchase_stock_qty = current_purchase_invoice_no.split("=>");
+                var current_last_purchase_stock_qty = parseInt(split_last_purchase_stock_qty[1]);
+                //alert(last[1]);
+
+
                 if(check_sale_return_qty > 0){
                     current_sale_qty -= check_sale_return_qty
                 }
                 if(check_sale_replace_qty > 0){
                     current_sale_qty -= check_sale_replace_qty
                 }
+                console.log('current_replace_qty = ' + typeof current_replace_qty);
+                console.log('current_sale_qty = ' + typeof current_sale_qty);
+                console.log('current_last_purchase_stock_qty = ' + typeof current_last_purchase_stock_qty);
+
+                if(current_replace_qty > current_last_purchase_stock_qty){
+                    alert('You have limit cross of current purchase invoice stock qty, please select another invoice!');
+                    $('#replace_qty_'+current_row).val(0);
+                }
                 if(current_replace_qty > current_sale_qty){
                     alert('You have limit cross of stock qty!');
                     $('#replace_qty_'+current_row).val(0);
                 }
+
             }
         </script>
     @endpush

@@ -62,23 +62,25 @@ class ProductSaleReplacementController extends Controller
 
     public function getSaleProduct($sale_id){
         $productSale = ProductSale::where('id',$sale_id)->first();
+       // dd($productSale);
         $products = DB::table('product_sale_details')
             ->join('products','product_sale_details.product_id','=','products.id')
             ->where('product_sale_details.product_sale_id',$sale_id)
-            ->select('product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','products.name')
+            ->select('product_sale_details.product_id','product_sale_details.qty','product_sale_details.price','products.name','product_sale_details.purchase_invoice_no')
             ->get();
 
         $html = "<table class=\"table table-striped tabel-penjualan\">
                         <thead>
                             <tr>
-                                <th width=\"30\">No</th>
-                                <th>Product Name</th>
-                                <th align=\"right\"> Quantity</th>
-                                <th>Already Return Quantity</th>
-                                <th>Already Replace Quantity</th>
-                                <th>Replace Quantity</th>
-                                <th style=\"display: none\">Price</th>
-                                <th>Reason</th>
+                                <th width=\"10\">No</th>
+                                <th width=\"30\">Product Name</th>
+                                <th width=\"10\" align=\"right\"> Quantity</th>
+                                <th width=\"10\">Already Return Quantity</th>
+                                <th width=\"10\">Already Replace Quantity</th>
+                                <th width=\"20\">Purchase Invoice</th>
+                                <th width=\"10\">Replace Quantity</th>
+                                <th width=\"10\" style=\"display: none\">Price</th>
+                                <th width=\"20\">Reason</th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -86,13 +88,53 @@ class ProductSaleReplacementController extends Controller
                             foreach($products as $key => $item):
                                 $check_sale_return_qty = check_sale_return_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
                                 $check_sale_replace_qty = check_sale_replace_qty($productSale->store_id,$item->product_id,$productSale->invoice_no);
+
+
+
+
+
+                                //dd($check_purchase_invoice);
                                 $key += 1;
+
+                                $current_purchase_invoice_no = $item->purchase_invoice_no;
+                                $purchase_invoice_lists = purchase_invoice_lists($item->product_id);
+
+                                $current_stock = 0;
+                                $options = "<select class=\"form-control select2\" name=\"purchase_invoice_list[]\" id=\"purchase_invoice_list_$key\">";
+                                if(count($purchase_invoice_lists) == 0){
+                                    $options = '<option value="">No Data Found!</option>';
+                                }elseif(count($purchase_invoice_lists) > 0){
+                                    foreach ($purchase_invoice_lists as $key2 => $purchase_invoice_list){
+
+                                        $current_stock = InvoiceStock::where('store_id',$productSale->store_id)
+                                            ->where('product_id',$item->product_id)
+                                            ->where('purchase_invoice_no',$purchase_invoice_list->invoice_no)
+                                            //->where('current_stock','>',0)
+                                            ->latest()
+                                            ->pluck('current_stock')
+                                            ->first();
+
+
+                                        //$options .= '<option value="'.$purchase_invoice_list->invoice_no.'" '.$current_purchase_invoice_no.' >'.$purchase_invoice_list->invoice_no.'</option>';
+                                        $options .= "<option value='$purchase_invoice_list->invoice_no => $current_stock'";
+                                        if($current_purchase_invoice_no == $purchase_invoice_list->invoice_no){$options .= 'selected';}
+                                        $options .= ">".$purchase_invoice_list->invoice_no."=>".$current_stock."</option>";
+
+                                    }
+                                }else{
+                                    $options = '<option value="">No Data Found!</option>';
+                                }
+                                $options .= "</select>";
+                                //$options .= "<input type=\"text\" class=\"form-control\" name=\"current_stock[]\" id=\"current_stock_$key\" value=\"$current_stock\" size=\"28\" />";
+
                                 $html .= "<tr>";
                                 $html .= "<th width=\"30\">1</th>";
                                 $html .= "<th><input type=\"hidden\" class=\"form-control\" name=\"product_id[]\" id=\"product_id_$key\" value=\"$item->product_id\" size=\"28\" />$item->name</th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"qty[]\" id=\"qty_$key\" value=\"$item->qty\" size=\"28\" readonly /></th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_return_qty[]\" id=\"check_sale_return_qty_$key\" value=\"$check_sale_return_qty\" readonly /></th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"check_sale_replace_qty[]\" id=\"check_sale_replace_qty_$key\" value=\"$check_sale_replace_qty\" readonly /></th>";
+                                //$html .= "<th><select class=\"form-control select2\" name=\"purchase_invoice_list\" id=\"purchase_invoice_list_$key\">$options</th>";
+                                $html .= "<th>$options</th>";
                                 $html .= "<th><input type=\"text\" class=\"form-control\" name=\"replace_qty[]\" id=\"replace_qty_$key\" onkeyup=\"replace_qty($key,this);\" size=\"28\" /></th>";
                                 $html .= "<th style=\"display: none\"><input type=\"text\" class=\"form-control\" name=\"price[]\" id=\"price_$key\" value=\"$item->price\" size=\"28\" /></th>";
                                 $html .= "<th><textarea type=\"text\" class=\"form-control\" name=\"reason[]\" id=\"reason_$key\"  size=\"28\" ></textarea> </th>";
@@ -136,8 +178,24 @@ class ProductSaleReplacementController extends Controller
             for($i=0; $i<$row_count;$i++)
             {
                 if($request->replace_qty[$i] != null){
+                    $product_id = $request->product_id[$i];
+                    $purchase_invoice_list_string = $request->purchase_invoice_list[$i];
+                    $Product_sale_detail = ProductSaleDetail::where('product_sale_id',$productSale->id)->where('product_id',$product_id)->first();
+                    $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->where('product_id',$product_id)->pluck('purchase_invoice_no')->first();
+                    $purchase_invoice_list = explode('=>', $purchase_invoice_list_string);
+                    $exist_purchase_invoice_no = trim($purchase_invoice_list[0]);
+                    //dd($purchase_invoice_list[0]);
+//                    echo gettype($Product_sale_detail->purchase_invoice_no)."\n";
+//                    echo gettype($exist_purchase_invoice_no)."\n";
+//                    echo $Product_sale_detail->purchase_invoice_no."\n";
+//                    echo $exist_purchase_invoice_no."\n";
+//                    die();
+
+
                     // product replacement detail
                     $purchase_sale_replacement_detail = new ProductSaleReplacementDetail();
+                    $purchase_sale_replacement_detail->product_sale_detail_id = $Product_sale_detail->id;
+                    $purchase_sale_replacement_detail->purchase_invoice_no = $exist_purchase_invoice_no;
                     $purchase_sale_replacement_detail->p_s_replacement_id = $insert_id;
                     $purchase_sale_replacement_detail->product_id = $request->product_id[$i];
                     $purchase_sale_replacement_detail->replace_qty = $request->replace_qty[$i];
@@ -145,8 +203,7 @@ class ProductSaleReplacementController extends Controller
                     $purchase_sale_replacement_detail->reason = $request->reason[$i];
                     $purchase_sale_replacement_detail->save();
 
-                    $product_id = $request->product_id[$i];
-                    $purchase_invoice_no = ProductSaleDetail::where('product_sale_id',$productSale->id)->where('product_id',$product_id)->pluck('purchase_invoice_no')->first();
+
 
                     // update purchase details table stock status
                     $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
@@ -210,6 +267,30 @@ class ProductSaleReplacementController extends Controller
                     $invoice_stock->stock_out = $request->replace_qty[$i];
                     $invoice_stock->current_stock = $previous_invoice_stock - $request->replace_qty[$i];
                     $invoice_stock->save();
+
+
+                    if(strcmp($Product_sale_detail->purchase_invoice_no, $exist_purchase_invoice_no) == 0){
+                        $replace_qty = $request->replace_qty[$i];
+                        $profit_amount = get_replace_loss_profit_amount($purchase_invoice_no,$product_id,$exist_purchase_invoice_no,$replace_qty);
+
+                        //profit table
+                        $profit = new Profit();
+                        $profit->ref_id = $insert_id;
+                        $profit->purchase_invoice_no = $exist_purchase_invoice_no;
+                        $profit->invoice_no ='Salrep-'.$productSale->invoice_no;
+                        $profit->user_id = Auth::id();
+                        $profit->store_id = $productSale->store_id;
+                        $profit->type = 'Sale Replace';
+                        $profit->product_id = $product_id;
+                        $profit->qty = $request->replace_qty[$i];
+                        $profit->price = $request->price[$i];
+                        $profit->sub_total = $request->replace_qty[$i]*$request->price[$i];
+                        $profit->discount_amount = 0;
+                        //$profit->profit_amount = -($profit_amount*$request->replace_qty[$i]);
+                        $profit->profit_amount = $profit_amount;
+                        $profit->date = date('Y-m-d');
+                        $profit->save();
+                    }
 
 
 //                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);

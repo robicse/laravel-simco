@@ -513,6 +513,28 @@ if (!function_exists('get_profit_amount')) {
     }
 }
 
+if (!function_exists('get_replace_loss_profit_amount')) {
+    function get_replace_loss_profit_amount($purchase_invoice_no,$product_id,$purchase_invoice_list,$replace_qty)
+    {
+        $get_previous_mrp_price_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+            ->where('product_id',$product_id)
+            ->pluck('mrp_price')
+            ->first();
+
+        $get_new_mrp_price_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_list)
+            ->where('product_id',$product_id)
+            ->pluck('mrp_price')
+            ->first();
+        if($get_previous_mrp_price_amount > $get_new_mrp_price_amount){
+            $amount = $get_previous_mrp_price_amount - $get_new_mrp_price_amount;
+            return -($amount*$replace_qty);
+        }else{
+            $amount = $get_new_mrp_price_amount - $get_previous_mrp_price_amount;
+            return $amount*$replace_qty;
+        }
+    }
+}
+
 if (!function_exists('get_profit_amount_row')) {
     function get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id)
     {
@@ -625,6 +647,35 @@ if (!function_exists('check_sale_replace_qty')) {
 
     }
 }
+
+//if (!function_exists('purchase_invoice_lists')) {
+//    function purchase_invoice_lists($product_id)
+//    {
+//        $purchase_invoice_lists = DB::table('product_purchase_details')
+//            ->where('product_id',$product_id)
+//            ->select('invoice_no','product_id')
+//            ->get();
+//        //dd($purchase_invoice_lists);
+//        return $purchase_invoice_lists;
+//
+//    }
+//}
+
+if (!function_exists('purchase_invoice_lists')) {
+    function purchase_invoice_lists($product_id)
+    {
+        $purchase_invoice_lists = DB::table('product_purchase_details')
+            ->where('product_id',$product_id)
+            ->select('invoice_no','product_id')
+            ->get();
+        //dd($purchase_invoice_lists);
+        return $purchase_invoice_lists;
+
+    }
+}
+
+
+
 
 if (!function_exists('salesProductModels')) {
     function salesProductModels($product_sale_id)

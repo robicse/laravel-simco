@@ -606,7 +606,6 @@
                     // console.log(store_id)
                     // console.log(row)
                     // console.log(sel.value)
-
                     var current_row = row;
                     var current_invoice_no = sel.value;
                     if(current_row > 1){
