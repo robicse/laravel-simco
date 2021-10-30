@@ -26,6 +26,7 @@
                         @csrf
                         <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
+                            <input type="hidden" name="purchase_Sale_replacement_id" value="{{$productSaleReplacement->id}}">
                             <div class="col-md-8">
                                 <select name="store_id" id="store_id" class="form-control" disabled>
                                     <option value="">Select One</option>
@@ -54,12 +55,14 @@
 {{--                        </div>--}}
 
                         <div class="table-responsive">
-                            {{--<input type="button" class="btn btn-primary add " style="margin-left: 804px;" value="Add More Product">--}}
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th>Product</th>
                                     <th>Product QTY</th>
+                                    <th>Already Return Quantity</th>
+                                    <th>Already Replace Quantity</th>
+                                    <th>Purchase Invoice</th>
                                     <th>Replace pQty</th>
                                     <th>Reason</th>
                                 </tr>
@@ -85,11 +88,63 @@
                                             ->where('id',$productSaleReplacementDetail->product_id)
                                             ->pluck('name')
                                             ->first();
+
+                                        $product_id = \Illuminate\Support\Facades\DB::table('products')
+                                            ->where('id',$productSaleReplacementDetail->product_id)
+                                            ->pluck('id')
+                                            ->first();
+
+                                        $sale_qty = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                            ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
+                                            ->pluck('product_sale_details.qty')
+                                            ->first();
+
+                                            $productSale = \App\ProductSale::where('id',$productSaleReplacement->product_sale_id)->first();
+
+                                            $check_sale_return_qty = check_sale_return_qty($productSale->store_id,$product_id,$productSale->invoice_no);
+                                            //dd($check_sale_return_qty);
+                                            $check_sale_replace_qty = check_sale_replace_qty($productSale->store_id,$product_id,$productSale->invoice_no);
+
+
                                             @endphp
                                             <input type="hidden" class="form-control" name="product_id[]" value="{{$productSaleReplacementDetail->product_id}}" >
                                             <input type="hidden" class="form-control" name="product_Sale_replacement_detail_id[]" value="{{$productSaleReplacementDetail->id}}" >
                                         </td>
                                         <td width="8%">{{$sale_qty}}</td>
+                                        <td width="8%">{{$check_sale_return_qty}}</td>
+                                        <td width="8%">{{$check_sale_replace_qty}}</td>
+                                        <td width="8%">
+                                            @php
+                                        $purchase_invoice_no = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                            ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
+                                            ->pluck('product_sale_details.purchase_invoice_no')
+                                            ->first();
+                                        $purchase_product_id = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                            ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
+                                            ->pluck('product_sale_details.product_id')
+                                            ->first();
+                                        //dd($purchase_product_id);
+                                                $current_purchase_invoice_no = $purchase_invoice_no;
+                                                $purchase_invoice_lists = purchase_invoice_lists($purchase_product_id);
+                                                //dd($purchase_invoice_lists)
+                                            @endphp
+                                            <select name="purchase_invoice_list[]" id=\"purchase_invoice_list_" class="form-control select2">
+                                                <option value="">Select One</option>
+                                                @foreach($purchase_invoice_lists as $purchase_invoice_list)
+                                                    @php
+                                                        $current_stock = \App\InvoiceStock::where('store_id',$productSale->store_id)
+                                                             ->where('product_id',$purchase_product_id)
+                                                             ->where('purchase_invoice_no',$purchase_invoice_list->invoice_no)
+                                                             ->latest()
+                                                             ->pluck('current_stock')
+                                                             ->first();
+                                                    @endphp
+                                                    <option value="$purchase_invoice_list->invoice_no => $current_stock" {{$current_purchase_invoice_no == $purchase_invoice_list->invoice_no ? "selected" : ""}}> {{$purchase_invoice_list->invoice_no."=>".$current_stock}}</option>
+                                                @endforeach
+                                            </select></td>
                                         <td width="8%">
                                             <input type="text" min="1" max="" class="qty form-control" name="replace_qty[]" value="{{$productSaleReplacementDetail->replace_qty}}" required >
                                         </td>
@@ -141,7 +196,46 @@
                 $(this).parent().parent().remove();
                 totalAmount();
             });
+            // ajax
+            function replace_qty(row,sel) {
+                var current_row = row;
+                var current_replace_qty = sel.value;
+                //console.log(current_row);
+                //console.log(current_product_id);
+                //var current_product_id = $('#product_id_'+current_row).val();
+                var check_sale_return_qty = $('#check_sale_return_qty_'+current_row).val();
+                //console.log('check_sale_return_qty = ' + check_sale_return_qty);
+                //console.log('check_sale_return_qty= ' + typeof check_sale_return_qty);
+                var check_sale_replace_qty = $('#check_sale_replace_qty_'+current_row).val();
+                //console.log('check_sale_replace_qty = ' + check_sale_replace_qty);
+                //console.log('check_sale_replace_qty= ' + typeof check_sale_replace_qty);
+                var current_sale_qty = $('#qty_'+current_row).val();
+                var current_purchase_invoice_no = $('#purchase_invoice_list_'+current_row).val();
+                var split_last_purchase_stock_qty = current_purchase_invoice_no.split("=>");
+                var current_last_purchase_stock_qty = parseInt(split_last_purchase_stock_qty[1]);
+                //alert(last[1]);
 
+
+                if(check_sale_return_qty > 0){
+                    current_sale_qty -= check_sale_return_qty
+                }
+                if(check_sale_replace_qty > 0){
+                    current_sale_qty -= check_sale_replace_qty
+                }
+                console.log('current_replace_qty = ' + typeof current_replace_qty);
+                console.log('current_sale_qty = ' + typeof current_sale_qty);
+                console.log('current_last_purchase_stock_qty = ' + typeof current_last_purchase_stock_qty);
+
+                if(current_replace_qty > current_last_purchase_stock_qty){
+                    alert('You have limit cross of current purchase invoice stock qty, please select another invoice!');
+                    $('#replace_qty_'+current_row).val(0);
+                }
+                if(current_replace_qty > current_sale_qty){
+                    alert('You have limit cross of stock qty!');
+                    $('#replace_qty_'+current_row).val(0);
+                }
+
+            }
             $('.neworderbody').delegate('.qty, .price', 'keyup', function () {
                 var gr_tot = 0;
                 var tr = $(this).parent().parent();

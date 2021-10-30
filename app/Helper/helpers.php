@@ -516,21 +516,36 @@ if (!function_exists('get_profit_amount')) {
 if (!function_exists('get_replace_loss_profit_amount')) {
     function get_replace_loss_profit_amount($purchase_invoice_no,$product_id,$purchase_invoice_list,$replace_qty)
     {
+        $get_previous_price_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+            ->where('product_id',$product_id)
+            ->pluck('price')
+            ->first();
         $get_previous_mrp_price_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
             ->where('product_id',$product_id)
             ->pluck('mrp_price')
+            ->first();
+
+        $get_previous_total_amount = $get_previous_mrp_price_amount - $get_previous_price_amount ;
+
+        $get_new_price_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_list)
+            ->where('product_id',$product_id)
+            ->pluck('price')
             ->first();
 
         $get_new_mrp_price_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_list)
             ->where('product_id',$product_id)
             ->pluck('mrp_price')
             ->first();
-        if($get_previous_mrp_price_amount > $get_new_mrp_price_amount){
-            $amount = $get_previous_mrp_price_amount - $get_new_mrp_price_amount;
-            return -($amount*$replace_qty);
+
+        $get_new_total_amount = $get_new_mrp_price_amount - $get_new_price_amount ;
+
+        if($get_previous_total_amount > $get_new_total_amount){
+            $amount = $get_previous_total_amount - $get_new_total_amount;
+            //dd($amount);
+            return ($amount*$replace_qty);
         }else{
-            $amount = $get_new_mrp_price_amount - $get_previous_mrp_price_amount;
-            return $amount*$replace_qty;
+            $amount = $get_new_total_amount - $get_previous_total_amount;
+            return -($amount*$replace_qty);
         }
     }
 }
