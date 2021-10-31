@@ -771,4 +771,33 @@ if (!function_exists('stockLow')) {
     }
 }
 
+if (!function_exists('saleReplacementAlreadySale')) {
+    function saleReplacementAlreadySale($product_id,$product_sale_replacement_detail_id)
+    {
+
+        return  \Illuminate\Support\Facades\DB::table('product_sale_details')
+            //->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+            ->join('product_sale_replacement_details','product_sale_details.id','product_sale_replacement_details.product_sale_detail_id')
+            ->where('product_sale_details.product_id',$product_id)
+            ->where('product_sale_replacement_details.id',$product_sale_replacement_detail_id)
+            ->pluck('product_sale_details.qty')
+            ->first();
+
+    }
+}
+
+if (!function_exists('currentInvoiceStock')) {
+    function currentInvoiceStock($store_id,$product_id,$invoice_no)
+    {
+
+        return  \App\InvoiceStock::where('store_id',$store_id)
+            ->where('product_id',$product_id)
+            ->where('purchase_invoice_no',$invoice_no)
+            ->latest()
+            ->pluck('current_stock')
+            ->first();
+
+    }
+}
+
 ?>

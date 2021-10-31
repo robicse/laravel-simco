@@ -205,7 +205,7 @@ class ProductSaleReplacementController extends Controller
 
 
                     // update purchase details table stock status
-                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$exist_purchase_invoice_no)->where('product_id',$product_id)->first();
                     $purchase_qty = $product_purchase_details_info->qty;
                     $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
                     $total_sale_qty = $purchase_previous_sale_qty + $request->replace_qty[$i];
@@ -351,7 +351,6 @@ class ProductSaleReplacementController extends Controller
     public function update(Request $request, $id)
     {
         //dd($request->all());
-       // $productSale = ProductSale::where('id',$request->product_sale_id)->first();
 
         $row_count = count($request->replace_qty);
 
@@ -364,11 +363,8 @@ class ProductSaleReplacementController extends Controller
                 $purchase_sale_replacement_detail->reason = $request->reason[$i];
                 $purchase_sale_replacement_detail->save();
 
-
                 $product_id = $request->product_id[$i];
                 $Product_sale_detail = ProductSaleDetail::where('product_id',$product_id)->first();
-               // dd($Product_sale_detail);
-                $purchase_invoice_no = ProductSaleDetail::where('product_id',$product_id)->pluck('purchase_invoice_no')->first();
 
                 $purchase_invoice_list_string = $request->purchase_invoice_list[$i];
                 $purchase_invoice_list = explode('=>', $purchase_invoice_list_string);
@@ -389,14 +385,12 @@ class ProductSaleReplacementController extends Controller
                         $update_current_stock = $stock_row->current_stock + $add_or_minus_stock_out;
                     }
 
-
                     $stock_row->user_id = Auth::user()->id;
                     $stock_row->stock_out = $update_stock_out;
                     $stock_row->current_stock = $update_current_stock;
                     $stock_row->update();
 
-
-                    $product_id = $purchase_sale_replacement_detail->product_id;
+                    //$product_id = $purchase_sale_replacement_detail->product_id;
                     $product_sale_replacement = ProductSaleReplacement::find($request->purchase_Sale_replacement_id);
                    // dd($product_sale_replacement);
                     $invoice_no = $product_sale_replacement->invoice_no;
@@ -404,17 +398,19 @@ class ProductSaleReplacementController extends Controller
                     $store_id = $product_sale_replacement->store_id;
                     $request_qty = $request->replace_qty[$i];
 
-                    $purchase_invoice_no = DB::table('product_sale_details')
-                        ->join('product_sales','product_sale_details.product_sale_id','product_sales.id')
-                        ->where('product_sales.invoice_no',$sale_invoice_no)
-                        ->latest('product_sale_details.purchase_invoice_no')
-                        ->pluck('product_sale_details.purchase_invoice_no')
-                        ->first();
                     // update purchase details table stock status
-                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$exist_purchase_invoice_no)->where('product_id',$product_id)->first();
                     $purchase_qty = $product_purchase_details_info->qty;
                     $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-                    $total_sale_qty = $purchase_previous_sale_qty + $request->qty;
+
+                    if ($request_qty > $purchase_previous_sale_qty) {
+                        $add_or_minus_stock_out = $request_qty - $purchase_previous_sale_qty;
+                        $total_sale_qty = $purchase_previous_sale_qty + $add_or_minus_stock_out;
+                    } else {
+                        $add_or_minus_stock_out = $purchase_previous_sale_qty - $request_qty;
+                        $total_sale_qty = $purchase_previous_sale_qty - $add_or_minus_stock_out;
+                    }
+
                     $product_purchase_details_info->sale_qty = $total_sale_qty;
                     if($total_sale_qty == $purchase_qty){
                         $product_purchase_details_info->qty_stock_status = 'Not Available';
@@ -423,11 +419,8 @@ class ProductSaleReplacementController extends Controller
                     }
                     $product_purchase_details_info->save();
 
-
-
-
                     // invoice stock
-                    $invoice_stock_row = current_invoice_stock_row($store_id,'Finish Goods','replace',$product_id,$purchase_invoice_no,$invoice_no);
+                    $invoice_stock_row = current_invoice_stock_row($store_id,'Finish Goods','replace',$product_id,$exist_purchase_invoice_no,$invoice_no);
                     $previous_invoice_stock = $invoice_stock_row->previous_stock;
                     $invoice_stock_out = $invoice_stock_row->stock_out;
 
@@ -446,50 +439,21 @@ class ProductSaleReplacementController extends Controller
 
 
                     if(strcmp(trim($Product_sale_detail->purchase_invoice_no), trim($exist_purchase_invoice_no)) !== 0){
-                        $replace_qty = $request->replace_qty[$i];
-                        $profit_amount = get_replace_loss_profit_amount($purchase_invoice_no,$product_id,$exist_purchase_invoice_no,$replace_qty);
-                         dd($profit_amount);
 
-                        //profit table
-                        $profit_id = $request->profit_id;
-                        $profit = new Profit();
+                        $profit_amount = get_replace_loss_profit_amount($Product_sale_detail->purchase_invoice_no,$product_id,$exist_purchase_invoice_no,$request->replace_qty[$i]);
 
-                        $profit->ref_id = $product_sale_replacement;
+                        $profit = Profit::where('purchase_invoice_no',$exist_purchase_invoice_no)->where('invoice_no',$invoice_no)->first();
                         $profit->purchase_invoice_no = $exist_purchase_invoice_no;
-                        $profit->invoice_no ='Salrep-'.$productSale->invoice_no;
                         $profit->user_id = Auth::id();
-                        $profit->store_id = $productSale->store_id;
-                        $profit->type = 'Sale Replace Edit';
-                        $profit->product_id = $product_id;
+                        $profit->type = 'Sale Replace';
                         $profit->qty = $request->replace_qty[$i];
-                        $profit->price = $request->price[$i];
-                        $profit->sub_total = $request->replace_qty[$i]*$request->price[$i];
+                        $profit->sub_total = $request->replace_qty[$i]*$profit->price[$i];
                         $profit->discount_amount = 0;
-                        //$profit->profit_amount = -($profit_amount*$request->replace_qty[$i]);
                         $profit->profit_amount = $profit_amount;
                         $profit->date = date('Y-m-d');
                         $profit->save();
                     }
-
-
-//                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
-//
-//                    // profit table
-//                    $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
-//                    $profit->user_id = Auth::id();
-//                    $profit->store_id = $store_id;
-//                    $profit->product_id = $product_id;
-//                    $profit->qty = $request_qty;
-//                    $profit->price = $request->price[$i];
-//                    $profit->sub_total = $request_qty*$request->price[$i];
-//                    $profit->discount_amount = 0;
-//                    $profit->profit_amount = -($profit_amount*$request_qty);
-//                    $profit->date = date('Y-m-d');
-//                    $profit->update();
-
                 }
-
-
             }
         }
 
