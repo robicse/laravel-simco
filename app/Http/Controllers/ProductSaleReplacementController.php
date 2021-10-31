@@ -448,9 +448,10 @@ class ProductSaleReplacementController extends Controller
                     if(strcmp(trim($Product_sale_detail->purchase_invoice_no), trim($exist_purchase_invoice_no)) !== 0){
                         $replace_qty = $request->replace_qty[$i];
                         $profit_amount = get_replace_loss_profit_amount($purchase_invoice_no,$product_id,$exist_purchase_invoice_no,$replace_qty);
-                        // dd($profit_amount);
+                         dd($profit_amount);
 
                         //profit table
+                        $profit_id = $request->profit_id;
                         $profit = new Profit();
 
                         $profit->ref_id = $product_sale_replacement;

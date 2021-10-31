@@ -10,6 +10,8 @@ use App\ProductPurchase;
 use App\ProductPurchaseDetail;
 use App\ProductPurchaseReplacement;
 use App\ProductPurchaseReplacementDetail;
+use App\ProductSale;
+use App\ProductSaleDetail;
 use App\Stock;
 use App\Store;
 use Brian2694\Toastr\Facades\Toastr;
@@ -55,6 +57,7 @@ class ProductPurchaseReplacementController extends Controller
             ->where('product_purchase_details.product_purchase_id',$purchase_id)
             ->select('product_purchase_details.product_id','product_purchase_details.qty','product_purchase_details.price','products.name')
             ->get();
+
 
         $html = "<table class=\"table table-striped tabel-penjualan\">
                         <thead>
@@ -140,12 +143,13 @@ class ProductPurchaseReplacementController extends Controller
                     $purchase_qty = $product_purchase_details_info->qty;
                     $purchase_previous_purchase_qty = $product_purchase_details_info->qty;
                     $total_purchase_qty = $purchase_previous_purchase_qty + $request->replace_qty[$i];
-                    $product_purchase_details_info->qty = $total_purchase_qty;
+                    $product_purchase_details_info->sale_qty = $total_purchase_qty;
                     if($total_purchase_qty == $purchase_qty){
                         $product_purchase_details_info->qty_stock_status = 'Not Available';
                     }else{
                         $product_purchase_details_info->qty_stock_status = 'Available';
                     }
+                    //dd($product_purchase_details_info);
                     $product_purchase_details_info->save();
 
 
@@ -244,6 +248,89 @@ class ProductPurchaseReplacementController extends Controller
 
     public function destroy($id)
     {
-        //
+        $productPurchaseReplacement = ProductPurchaseReplacement::find($id);
+        $productPurchase = ProductPurchase::where('id',$productPurchaseReplacement->product_purchase_id)->first();
+        $purchase_invoice_no = ProductPurchaseDetail::where('product_purchase_id',$productPurchase->id)->pluck('invoice_no')->first();
+
+        $product_purchase_replacement_details = DB::table('product_purchase_replacement_details')->where('product_purchase_replacement_id',$id)->get();
+        if(count($product_purchase_replacement_details) > 0){
+            foreach($product_purchase_replacement_details as $product_purchase_replacement_detail){
+
+                $store_id = $productPurchaseReplacement->store_id;
+                $product_id = $product_purchase_replacement_detail->product_id;
+                $replace_qty = $product_purchase_replacement_detail->replace_qty;
+
+                $check_previous_stock = Stock::where('product_id',$product_id)->where('store_id',$store_id)->latest()->pluck('current_stock')->first();
+                if(!empty($check_previous_stock)){
+                    $previous_stock = $check_previous_stock;
+                }else{
+                    $previous_stock = 0;
+                }
+
+                // product stock
+                $stock = new Stock();
+                $stock->user_id = Auth::id();
+                $stock->ref_id = $id;
+                $stock->store_id = $store_id;
+                $stock->date = date('Y-m-d');
+                $stock->product_id = $product_id;
+                $stock->stock_type = 'replace delete';
+                $stock->previous_stock = $previous_stock;
+                $stock->stock_in = $replace_qty;
+                $stock->stock_out = 0;
+                $stock->current_stock = $previous_stock - $replace_qty;
+                $stock->save();
+
+                // invoice wise product stock
+                $check_previous_invoice_stock = InvoiceStock::where('store_id',$store_id)
+                    ->where('purchase_invoice_no',$purchase_invoice_no)
+                    ->where('product_id',$product_id)
+                    ->latest()
+                    ->pluck('current_stock')
+                    ->first();
+
+                if(!empty($check_previous_invoice_stock)){
+                    $previous_invoice_stock = $check_previous_invoice_stock;
+                }else{
+                    $previous_invoice_stock = 0;
+                }
+
+                // product invoice stock
+                $invoice_stock = new InvoiceStock();
+                $invoice_stock->user_id = Auth::id();
+                $invoice_stock->ref_id = $id;
+                $invoice_stock->purchase_invoice_no = $purchase_invoice_no;
+                $invoice_stock->invoice_no = 'Salrep-'.$productPurchase->invoice_no;
+                $invoice_stock->store_id = $store_id;
+                $invoice_stock->date = date('Y-m-d');
+                $invoice_stock->product_id = $product_id;
+                $invoice_stock->stock_type = 'replace delete';
+                $invoice_stock->previous_stock = $previous_invoice_stock;
+                $invoice_stock->stock_in = $replace_qty;
+                $invoice_stock->stock_out = 0;
+                $invoice_stock->current_stock = $previous_invoice_stock - $replace_qty;
+                $invoice_stock->save();
+
+                // update purchase details table stock status
+                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+                $purchase_qty = $product_purchase_details_info->qty;
+                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+                $total_sale_qty = $purchase_previous_sale_qty - $replace_qty;
+                $product_purchase_details_info->sale_qty = $total_sale_qty;
+                if($total_sale_qty == $purchase_qty){
+                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+                }else{
+                    $product_purchase_details_info->qty_stock_status = 'Available';
+                }
+                $product_purchase_details_info->save();
+            }
+        }
+
+        DB::table('product_purchase_replacement_details')->where('product_purchase_replacement_id',$id)->delete();
+
+        $productPurchaseReplacement->delete();
+
+        Toastr::success('Product Purchase Replacement Deleted Successfully', 'Success');
+        return redirect()->route('productPurchaseReplacement.index');
     }
 }

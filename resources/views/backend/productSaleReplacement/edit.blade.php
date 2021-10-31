@@ -74,10 +74,9 @@
                                             $sale_qty = \Illuminate\Support\Facades\DB::table('product_sale_details')
                                             ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
                                             ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
-                                        ->pluck('product_sale_details.qty')
-                                        ->first();
+                                            ->pluck('product_sale_details.qty')
+                                            ->first();
                                         //dd($sale_qty)
-
                                         @endphp
                                         @php
                                             $current_row = $key+1;
@@ -116,20 +115,20 @@
                                         <td width="8%">{{$check_sale_replace_qty}}</td>
                                         <td width="8%">
                                             @php
-                                        $purchase_invoice_no = \Illuminate\Support\Facades\DB::table('product_sale_details')
-                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
-                                            ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
-                                            ->pluck('product_sale_details.purchase_invoice_no')
-                                            ->first();
-                                        $purchase_product_id = \Illuminate\Support\Facades\DB::table('product_sale_details')
-                                            ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
-                                            ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
-                                            ->pluck('product_sale_details.product_id')
-                                            ->first();
-                                        //dd($purchase_product_id);
-                                                $current_purchase_invoice_no = $purchase_invoice_no;
-                                                $purchase_invoice_lists = purchase_invoice_lists($purchase_product_id);
-                                                //dd($purchase_invoice_lists)
+                                            $purchase_invoice_no = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                                ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                                ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
+                                                ->pluck('product_sale_details.purchase_invoice_no')
+                                                ->first();
+                                            $purchase_product_id = \Illuminate\Support\Facades\DB::table('product_sale_details')
+                                                ->join('product_sales','product_sales.id','product_sale_details.product_sale_id')
+                                                ->where('product_sale_details.product_id',$productSaleReplacementDetail->product_id)
+                                                ->pluck('product_sale_details.product_id')
+                                                ->first();
+
+                                            $current_purchase_invoice_no = $purchase_invoice_no;
+                                            $purchase_invoice_lists = purchase_invoice_lists($purchase_product_id);
+                                            //dd($purchase_invoice_lists)
                                             @endphp
                                             <select name="purchase_invoice_list[]" id=\"purchase_invoice_list_" class="form-control select2">
                                                 <option value="">Select One</option>
