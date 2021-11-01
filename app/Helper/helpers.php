@@ -183,6 +183,18 @@ if (!function_exists('sum_sale_return_price')) {
     }
 }
 
+if (!function_exists('sum_purchase_return_price')) {
+    function sum_purchase_return_price($store_id)
+    {
+        $product_purchase_returns = DB::table('product_purchase_returns')
+            ->select(DB::raw('SUM(total_amount) as sum_product_purchase_return_amount'))
+            ->where('store_id',$store_id)
+            ->first();
+
+        return $product_purchase_returns->sum_product_purchase_return_amount;
+    }
+}
+
 if (!function_exists('total_expense')) {
     function total_expense($store_id,$start_date=null,$end_date=null)
     {

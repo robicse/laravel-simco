@@ -51,6 +51,17 @@
                             </div>
                         </div>
                         <div class="col-md-3">
+                            <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                                <div class="info">
+                                    <h4>Total Purchase Return</h4>
+                                    @php
+                                        $sum_purchase_return_price = sum_purchase_return_price($store->id);
+                                    @endphp
+                                    <p><b>{{number_format($sum_purchase_return_price, 2, '.', '')}}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="widget-small danger coloured-icon"><i class="icon fas fa-money-check-alt "></i>
                                 <div class="info">
                                     <h4>Total Sell</h4>

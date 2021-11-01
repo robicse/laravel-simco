@@ -139,18 +139,18 @@ class ProductPurchaseReplacementController extends Controller
                     $purchase_invoice_no = ProductPurchaseDetail::where('product_purchase_id',$productPurchase->id)->where('product_id',$product_id)->pluck('invoice_no')->first();
 
                     // update purchase details table stock status
-                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
-                    $purchase_qty = $product_purchase_details_info->qty;
-                    $purchase_previous_purchase_qty = $product_purchase_details_info->qty;
-                    $total_purchase_qty = $purchase_previous_purchase_qty + $request->replace_qty[$i];
-                    $product_purchase_details_info->sale_qty = $total_purchase_qty;
-                    if($total_purchase_qty == $purchase_qty){
-                        $product_purchase_details_info->qty_stock_status = 'Not Available';
-                    }else{
-                        $product_purchase_details_info->qty_stock_status = 'Available';
-                    }
-                    //dd($product_purchase_details_info);
-                    $product_purchase_details_info->save();
+//                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+//                    $purchase_qty = $product_purchase_details_info->qty;
+//                    $purchase_previous_purchase_qty = $product_purchase_details_info->qty;
+//                    $total_purchase_qty = $purchase_previous_purchase_qty + $request->replace_qty[$i];
+//                    $product_purchase_details_info->sale_qty = $total_purchase_qty;
+//                    if($total_purchase_qty == $purchase_qty){
+//                        $product_purchase_details_info->qty_stock_status = 'Not Available';
+//                    }else{
+//                        $product_purchase_details_info->qty_stock_status = 'Available';
+//                    }
+//                    //dd($product_purchase_details_info);
+//                    $product_purchase_details_info->save();
 
 
                     $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
@@ -312,17 +312,17 @@ class ProductPurchaseReplacementController extends Controller
                 $invoice_stock->save();
 
                 // update purchase details table stock status
-                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
-                $purchase_qty = $product_purchase_details_info->qty;
-                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-                $total_sale_qty = $purchase_previous_sale_qty - $replace_qty;
-                $product_purchase_details_info->sale_qty = $total_sale_qty;
-                if($total_sale_qty == $purchase_qty){
-                    $product_purchase_details_info->qty_stock_status = 'Not Available';
-                }else{
-                    $product_purchase_details_info->qty_stock_status = 'Available';
-                }
-                $product_purchase_details_info->save();
+//                $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+//                $purchase_qty = $product_purchase_details_info->qty;
+//                $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+//                $total_sale_qty = $purchase_previous_sale_qty - $replace_qty;
+//                $product_purchase_details_info->sale_qty = $total_sale_qty;
+//                if($total_sale_qty == $purchase_qty){
+//                    $product_purchase_details_info->qty_stock_status = 'Not Available';
+//                }else{
+//                    $product_purchase_details_info->qty_stock_status = 'Available';
+//                }
+//                $product_purchase_details_info->save();
             }
         }
 

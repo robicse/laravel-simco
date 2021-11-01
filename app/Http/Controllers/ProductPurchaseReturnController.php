@@ -99,17 +99,17 @@ class ProductPurchaseReturnController extends Controller
                 ->first();
 
             // update purchase details table stock status
-            $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
-            $purchase_qty = $product_purchase_details_info->qty;
-            $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-            $total_sale_qty = $purchase_previous_sale_qty - $request->qty[$i];
-            $product_purchase_details_info->sale_qty = $total_sale_qty;
-            if($total_sale_qty == $purchase_qty){
-                $product_purchase_details_info->qty_stock_status = 'Not Available';
-            }else{
-                $product_purchase_details_info->qty_stock_status = 'Available';
-            }
-            $product_purchase_details_info->save();
+//            $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+//            $purchase_qty = $product_purchase_details_info->qty;
+//            $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+//            $total_sale_qty = $purchase_previous_sale_qty - $request->qty[$i];
+//            $product_purchase_details_info->sale_qty = $total_sale_qty;
+//            if($total_sale_qty == $purchase_qty){
+//                $product_purchase_details_info->qty_stock_status = 'Not Available';
+//            }else{
+//                $product_purchase_details_info->qty_stock_status = 'Available';
+//            }
+//            $product_purchase_details_info->save();
 
 
             // product stock
@@ -152,20 +152,20 @@ class ProductPurchaseReturnController extends Controller
                 $invoice_stock_row->update();
             }
 
-            $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+//            $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
 
             // profit table
-            $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
-            $profit->user_id = Auth::id();
-            $profit->store_id = $store_id;
-            $profit->product_id = $product_id;
-            $profit->qty = $request_qty;
-            $profit->price = $request->price[$i];
-            $profit->sub_total = $request_qty*$request->price[$i];
-            $profit->discount_amount = 0;
-            $profit->profit_amount = -($request->price[$i]*$request_qty);
-            $profit->date = date('Y-m-d');
-            $profit->update();
+//            $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
+//            $profit->user_id = Auth::id();
+//            $profit->store_id = $store_id;
+//            $profit->product_id = $product_id;
+//            $profit->qty = $request_qty;
+//            $profit->price = $request->price[$i];
+//            $profit->sub_total = $request_qty*$request->price[$i];
+//            $profit->discount_amount = 0;
+//            $profit->profit_amount = -($request->price[$i]*$request_qty);
+//            $profit->date = date('Y-m-d');
+//            $profit->update();
         }
 
         $productPurchaseReturn = ProductPurchaseReturn::find($request->product_purchase_return_id);
@@ -269,21 +269,21 @@ class ProductPurchaseReturnController extends Controller
                 $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
 
                 // profit table
-                $profit = new Profit();
-                $profit->ref_id = $id;
-                $profit->purchase_invoice_no = $purchase_invoice_no;
-                $profit->invoice_no ='PurchaseRetdel-'.$productPurchaseReturn->invoice_no;
-                $profit->user_id = Auth::id();
-                $profit->store_id = $store_id;
-                $profit->type = 'purchase return delete';
-                $profit->product_id = $product_id;
-                $profit->qty = $qty;
-                $profit->price = $price;
-                $profit->sub_total = $qty*$price;
-                $profit->discount_amount = 0;
-                $profit->profit_amount = $price*$qty;
-                $profit->date = date('Y-m-d');
-                $profit->save();
+//                $profit = new Profit();
+//                $profit->ref_id = $id;
+//                $profit->purchase_invoice_no = $purchase_invoice_no;
+//                $profit->invoice_no ='PurchaseRetdel-'.$productPurchaseReturn->invoice_no;
+//                $profit->user_id = Auth::id();
+//                $profit->store_id = $store_id;
+//                $profit->type = 'purchase return delete';
+//                $profit->product_id = $product_id;
+//                $profit->qty = $qty;
+//                $profit->price = $price;
+//                $profit->sub_total = $qty*$price;
+//                $profit->discount_amount = 0;
+//                $profit->profit_amount = $price*$qty;
+//                $profit->date = date('Y-m-d');
+//                $profit->save();
             }
         }
 
@@ -416,18 +416,18 @@ class ProductPurchaseReturnController extends Controller
                     //dd($purchase_invoice_no);
 
                     // update purchase details table stock status
-                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
-
-                    $purchase_qty = $product_purchase_details_info->qty;
-                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-                    $total_sale_qty = $purchase_previous_sale_qty - $request->return_qty[$i];
-                    $product_purchase_details_info->sale_qty = $total_sale_qty;
-                    if($total_sale_qty == $purchase_qty){
-                        $product_purchase_details_info->qty_stock_status = 'Not Available';
-                    }else{
-                        $product_purchase_details_info->qty_stock_status = 'Available';
-                    }
-                    $product_purchase_details_info->save();
+//                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)->where('product_id',$product_id)->first();
+//
+//                    $purchase_qty = $product_purchase_details_info->qty;
+//                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+//                    $total_sale_qty = $purchase_previous_sale_qty - $request->return_qty[$i];
+//                    $product_purchase_details_info->sale_qty = $total_sale_qty;
+//                    if($total_sale_qty == $purchase_qty){
+//                        $product_purchase_details_info->qty_stock_status = 'Not Available';
+//                    }else{
+//                        $product_purchase_details_info->qty_stock_status = 'Available';
+//                    }
+//                    $product_purchase_details_info->save();
 
 
                     $check_previous_stock = Stock::where('product_id', $product_id)->latest()->pluck('current_stock')->first();
@@ -480,24 +480,24 @@ class ProductPurchaseReturnController extends Controller
                     $invoice_stock->save();
 
 
-                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+//                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
 
                     // profit table
-                    $profit = new Profit();
-                    $profit->ref_id = $insert_id;
-                    $profit->purchase_invoice_no = $purchase_invoice_no;
-                    $profit->invoice_no ='PurchaseRet-'.$productPurchase->invoice_no;
-                    $profit->user_id = Auth::id();
-                    $profit->store_id = $productPurchase->store_id;
-                    $profit->type = 'Purchase ';
-                    $profit->product_id = $product_id;
-                    $profit->qty = $request->return_qty[$i];
-                    $profit->price = $request->total_amount[$i];
-                    $profit->sub_total = $request->return_qty[$i]*$request->total_amount[$i];
-                    $profit->discount_amount = 0;
-                    $profit->profit_amount = +($request->total_amount[$i]*$request->return_qty[$i]);
-                    $profit->date = date('Y-m-d');
-                    $profit->save();
+//                    $profit = new Profit();
+//                    $profit->ref_id = $insert_id;
+//                    $profit->purchase_invoice_no = $purchase_invoice_no;
+//                    $profit->invoice_no ='PurchaseRet-'.$productPurchase->invoice_no;
+//                    $profit->user_id = Auth::id();
+//                    $profit->store_id = $productPurchase->store_id;
+//                    $profit->type = 'Purchase ';
+//                    $profit->product_id = $product_id;
+//                    $profit->qty = $request->return_qty[$i];
+//                    $profit->price = $request->total_amount[$i];
+//                    $profit->sub_total = $request->return_qty[$i]*$request->total_amount[$i];
+//                    $profit->discount_amount = 0;
+//                    $profit->profit_amount = +($request->total_amount[$i]*$request->return_qty[$i]);
+//                    $profit->date = date('Y-m-d');
+//                    $profit->save();
 
                 }
             }
