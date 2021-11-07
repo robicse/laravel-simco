@@ -205,17 +205,17 @@ class ProductSaleReplacementController extends Controller
 
 
                     // update purchase details table stock status
-                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$exist_purchase_invoice_no)->where('product_id',$product_id)->first();
-                    $purchase_qty = $product_purchase_details_info->qty;
-                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-                    $total_sale_qty = $purchase_previous_sale_qty + $request->replace_qty[$i];
-                    $product_purchase_details_info->sale_qty = $total_sale_qty;
-                    if($total_sale_qty == $purchase_qty){
-                        $product_purchase_details_info->qty_stock_status = 'Not Available';
-                    }else{
-                        $product_purchase_details_info->qty_stock_status = 'Available';
-                    }
-                    $product_purchase_details_info->save();
+//                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$exist_purchase_invoice_no)->where('product_id',$product_id)->first();
+//                    $purchase_qty = $product_purchase_details_info->qty;
+//                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+//                    $total_sale_qty = $purchase_previous_sale_qty + $request->replace_qty[$i];
+//                    $product_purchase_details_info->sale_qty = $total_sale_qty;
+//                    if($total_sale_qty == $purchase_qty){
+//                        $product_purchase_details_info->qty_stock_status = 'Not Available';
+//                    }else{
+//                        $product_purchase_details_info->qty_stock_status = 'Available';
+//                    }
+//                    $product_purchase_details_info->save();
 
 
                     $check_previous_stock = Stock::where('product_id',$product_id)->latest()->pluck('current_stock')->first();
@@ -233,9 +233,11 @@ class ProductSaleReplacementController extends Controller
                     $stock->product_id = $product_id;
                     $stock->stock_type = 'replace';
                     $stock->previous_stock = $previous_stock;
-                    $stock->stock_in = 0;
+                    //$stock->stock_in = 0;
+                    $stock->stock_in = $request->replace_qty[$i];
                     $stock->stock_out = $request->replace_qty[$i];
-                    $stock->current_stock = $previous_stock - $request->replace_qty[$i];
+                    //$stock->current_stock = $previous_stock - $request->replace_qty[$i];
+                    $stock->current_stock = $previous_stock;
                     //dd($stock);
                     $stock->save();
 
@@ -263,9 +265,11 @@ class ProductSaleReplacementController extends Controller
                     $invoice_stock->product_id = $product_id;
                     $invoice_stock->stock_type = 'replace';
                     $invoice_stock->previous_stock = $previous_invoice_stock;
-                    $invoice_stock->stock_in = 0;
+                    //$invoice_stock->stock_in = 0;
+                    $invoice_stock->stock_in = $request->replace_qty[$i];
                     $invoice_stock->stock_out = $request->replace_qty[$i];
-                    $invoice_stock->current_stock = $previous_invoice_stock - $request->replace_qty[$i];
+                    //$invoice_stock->current_stock = $previous_invoice_stock - $request->replace_qty[$i];
+                    $invoice_stock->current_stock = $previous_invoice_stock;
                     //dd($invoice_stock);
                     $invoice_stock->save();
 
@@ -386,8 +390,10 @@ class ProductSaleReplacementController extends Controller
                     }
 
                     $stock_row->user_id = Auth::user()->id;
+                    $stock_row->stock_in = $update_stock_out;
                     $stock_row->stock_out = $update_stock_out;
-                    $stock_row->current_stock = $update_current_stock;
+                    //$stock_row->current_stock = $update_current_stock;
+                    $stock_row->current_stock = $stock_row->previous_stock;
                     $stock_row->update();
 
                     //$product_id = $purchase_sale_replacement_detail->product_id;
@@ -399,25 +405,25 @@ class ProductSaleReplacementController extends Controller
                     $request_qty = $request->replace_qty[$i];
 
                     // update purchase details table stock status
-                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$exist_purchase_invoice_no)->where('product_id',$product_id)->first();
-                    $purchase_qty = $product_purchase_details_info->qty;
-                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-
-                    if ($request_qty > $purchase_previous_sale_qty) {
-                        $add_or_minus_stock_out = $request_qty - $purchase_previous_sale_qty;
-                        $total_sale_qty = $purchase_previous_sale_qty + $add_or_minus_stock_out;
-                    } else {
-                        $add_or_minus_stock_out = $purchase_previous_sale_qty - $request_qty;
-                        $total_sale_qty = $purchase_previous_sale_qty - $add_or_minus_stock_out;
-                    }
-
-                    $product_purchase_details_info->sale_qty = $total_sale_qty;
-                    if($total_sale_qty == $purchase_qty){
-                        $product_purchase_details_info->qty_stock_status = 'Not Available';
-                    }else{
-                        $product_purchase_details_info->qty_stock_status = 'Available';
-                    }
-                    $product_purchase_details_info->save();
+//                    $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$exist_purchase_invoice_no)->where('product_id',$product_id)->first();
+//                    $purchase_qty = $product_purchase_details_info->qty;
+//                    $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
+//
+//                    if ($request_qty > $purchase_previous_sale_qty) {
+//                        $add_or_minus_stock_out = $request_qty - $purchase_previous_sale_qty;
+//                        $total_sale_qty = $purchase_previous_sale_qty + $add_or_minus_stock_out;
+//                    } else {
+//                        $add_or_minus_stock_out = $purchase_previous_sale_qty - $request_qty;
+//                        $total_sale_qty = $purchase_previous_sale_qty - $add_or_minus_stock_out;
+//                    }
+//
+//                    $product_purchase_details_info->sale_qty = $total_sale_qty;
+//                    if($total_sale_qty == $purchase_qty){
+//                        $product_purchase_details_info->qty_stock_status = 'Not Available';
+//                    }else{
+//                        $product_purchase_details_info->qty_stock_status = 'Available';
+//                    }
+//                    $product_purchase_details_info->save();
 
                     // invoice stock
                     $invoice_stock_row = current_invoice_stock_row($store_id,'Finish Goods','replace',$product_id,$exist_purchase_invoice_no,$invoice_no);
@@ -430,10 +436,12 @@ class ProductSaleReplacementController extends Controller
                         $invoice_stock_row->date = date('Y-m-d');
                         $invoice_stock_row->product_id = $product_id;
                         $invoice_stock_row->previous_stock = $previous_invoice_stock;
-                        $invoice_stock_row->stock_in = 0;
+                       // $invoice_stock_row->stock_in = 0;
+                        $invoice_stock_row->stock_in = $request_qty;
                         $invoice_stock_row->stock_out = $request_qty;
                         $new_stock_out = $previous_invoice_stock - $request_qty;
-                        $invoice_stock_row->current_stock = $new_stock_out;
+                        //$invoice_stock_row->current_stock = $new_stock_out;
+                        $invoice_stock_row->current_stock = $previous_invoice_stock;
                         $invoice_stock_row->update();
                     }
 

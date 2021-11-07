@@ -168,9 +168,11 @@ class ProductPurchaseReplacementController extends Controller
                     $stock->product_id = $product_id;
                     $stock->stock_type = 'purchase replace';
                     $stock->previous_stock = $previous_stock;
-                    $stock->stock_in = 0;
+                    //$stock->stock_in = 0;
+                    $stock->stock_in = $request->replace_qty[$i];
                     $stock->stock_out = $request->replace_qty[$i];
-                    $stock->current_stock = $previous_stock - $request->replace_qty[$i];
+                    //$stock->current_stock = $previous_stock - $request->replace_qty[$i];
+                    $stock->current_stock = $previous_stock;
                     $stock->save();
 
                     // invoice wise product stock
@@ -197,9 +199,11 @@ class ProductPurchaseReplacementController extends Controller
                     $invoice_stock->product_id = $product_id;
                     $invoice_stock->stock_type = 'purchase replace';
                     $invoice_stock->previous_stock = $previous_invoice_stock;
-                    $invoice_stock->stock_in = 0;
+                    //$invoice_stock->stock_in = 0;
+                    $invoice_stock->stock_in = $request->replace_qty[$i];
                     $invoice_stock->stock_out = $request->replace_qty[$i];
-                    $invoice_stock->current_stock = $previous_invoice_stock - $request->replace_qty[$i];
+                    //$invoice_stock->current_stock = $previous_invoice_stock - $request->replace_qty[$i];
+                    $invoice_stock->current_stock = $previous_invoice_stock;
                     $invoice_stock->save();
 
                 }
