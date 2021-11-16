@@ -79,8 +79,8 @@
         function productType(){
             var arr = $('#payment_type').val();
             console.log(arr);
-            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
-            if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
+            if(arr == "Cheque"){ $("#cheque_number").removeAttr("readonly"); }
+            if(arr == "Cash"){ $("#cheque_number").attr("readonly", "readonly"); }
         }
         // ajax
         function return_qty(row,sel) {

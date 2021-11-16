@@ -40,7 +40,7 @@
                     </tr>
                     @if($transaction->payment_type == 'Cheque')
                         <tr>
-                            <th>Check Number</th>
+                            <th>Cheque Number</th>
                             <td>{{$transaction->cheque_number}}</td>
                         </tr>
                     @endif

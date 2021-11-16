@@ -230,7 +230,7 @@
                                         <li>
                                             {{$transaction->payment_type}}
                                             @if($transaction->payment_type == 'Cheque')
-                                                ( Check Number: {{$transaction->cheque_number}} )
+                                                ( Cheque Number: {{$transaction->cheque_number}} )
                                             @endif
                                             :
                                             Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})

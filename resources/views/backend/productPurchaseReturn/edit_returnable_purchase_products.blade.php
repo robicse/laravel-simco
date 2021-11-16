@@ -127,7 +127,7 @@
         function productType(){
             var arr = $('#payment_type').val();
             console.log(arr);
-            if(arr == "Check"){ $("#check_number").removeAttr("readonly"); }
+            if(arr == "Cheque"){ $("#check_number").removeAttr("readonly"); }
             if(arr == "Cash"){ $("#check_number").attr("readonly", "readonly"); }
         }
         // ajax

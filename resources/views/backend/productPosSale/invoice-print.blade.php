@@ -217,7 +217,7 @@
                                             <li>
                                                 {{$transaction->payment_type}}
                                                 @if($transaction->payment_type == 'Cheque')
-                                                    ( Check Number: {{$transaction->cheque_number}} )
+                                                    ( Cheque Number: {{$transaction->cheque_number}} )
                                                 @endif
                                                 :
                                                 {{$transaction->amount}}

@@ -61,7 +61,7 @@
                                     <option value="Cheque">Cheque</option>
                                 </select>
                                 <span>&nbsp;</span>
-                                <input type="text" name="cheque_number" id="cheque_number" class="form-control" placeholder="Check Number">
+                                <input type="text" name="cheque_number" id="cheque_number" class="form-control" placeholder="Cheque Number">
                             </div>
                         </div>
                         <div class="form-group row">

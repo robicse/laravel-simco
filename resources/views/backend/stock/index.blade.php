@@ -34,11 +34,13 @@
                     <div class="form-group" style="margin-left: 5px">
                         <select class="form-control select2" name="stock_type">
                             <option value="">Select Stock Type</option>
-                            <option value="purchase" {{$stock_type == 'purchase' ? 'selected' : ''}}>purchase</option>
-                            <option value="sale" {{$stock_type == 'sale' ? 'selected' : ''}}>sale</option>
-                            <option value="sale return" {{$stock_type == 'sale return' ? 'selected' : ''}}>sale return</option>
-                            <option value="production" {{$stock_type == 'production' ? 'selected' : ''}}>production</option>
-                            <option value="replace" {{$stock_type == 'replace' ? 'selected' : ''}}>replace</option>
+                            <option value="purchase" {{$stock_type == 'purchase' ? 'selected' : ''}}>Purchase</option>
+                            <option value="purchase return" {{$stock_type == 'purchase return' ? 'selected' : ''}}>Purchase Return</option>
+                            <option value="purchase replace" {{$stock_type == 'purchase replace' ? 'selected' : ''}}>Purchase Replace</option>
+                            <option value="production" {{$stock_type == 'production' ? 'selected' : ''}}>Production</option>
+                            <option value="sale" {{$stock_type == 'sale' ? 'selected' : ''}}>Sale</option>
+                            <option value="sale return" {{$stock_type == 'sale return' ? 'selected' : ''}}>Sale Return</option>
+                            <option value="replace" {{$stock_type == 'replace' ? 'selected' : ''}}>Sale Replace</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-left: 5px">

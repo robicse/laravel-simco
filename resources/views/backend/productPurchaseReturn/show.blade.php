@@ -47,18 +47,18 @@
                                 @endphp
                                 {{$transaction->payment_type}}
                                 @if($transaction->payment_type == 'Check')
-                                    ( Check Number: {{$transaction->check_number}} )
+                                    ( Cheque Number: {{$transaction->check_number}} )
                                 @endif
                             </td>
                         </tr>
-                        <tr>
-                            <th>Discount Type</th>
-                            <td>{{$productPurchaseReturn->discount_type}}</td>
-                        </tr>
-                        <tr>
-                            <th>Discount Amount</th>
-                            <td>{{$productPurchaseReturn->discount_amount}}</td>
-                        </tr>
+{{--                        <tr>--}}
+{{--                            <th>Discount Type</th>--}}
+{{--                            <td>{{$productPurchaseReturn->discount_type}}</td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <th>Discount Amount</th>--}}
+{{--                            <td>{{$productPurchaseReturn->discount_amount}}</td>--}}
+{{--                        </tr>--}}
                         <tr>
                             <th>Amount</th>
                             <td>{{$productPurchaseReturn->total_amount}}</td>

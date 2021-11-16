@@ -235,6 +235,25 @@
                             </a>
                         </div>
                         <div class="col-md-3">
+                            <a  href="{{ route('returnable.purchase.product') }}">
+                                <div class="widget-small warning coloured-icon"><i class="icon fa fa-cart-plus"></i> <div class="info">
+                                        <h4>Purchase Return</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('productPurchaseReplacement.create') }}">
+                                <div class="widget-small danger coloured-icon"> <i class="icon fa fa-sort-amount-asc"></i>
+                                    <div class="info">
+                                        <h4>Purchase Replace</h4>
+                                        <p><b></b></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
                             <a href="{{ route('productPosSales.create') }}">
                                 <div class="widget-small info coloured-icon"><i class="icon fas fa-file-invoice"></i>
                                     <div class="info">
