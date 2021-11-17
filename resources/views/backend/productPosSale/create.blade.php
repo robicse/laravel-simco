@@ -367,7 +367,7 @@
         //     $('#cheque_number').hide();
         //     $('#payment_type').change(function(){
         //         console.log('okk');
-        //         if($('#payment_type').val() == 'Check') {
+        //         if($('#payment_type').val() == 'Cheque') {
         //             $('#cheque_number').show();
         //         } else {
         //             $('#cheque_number').val('');

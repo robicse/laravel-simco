@@ -158,6 +158,20 @@
                                                     ->where('stocks.id',$stock->id)
                                                     ->pluck('parties.name')
                                                     ->first();
+                                                }elseif($stock->stock_type == 'purchase return'){
+                                                    echo $party_name = DB::table('stocks')
+                                                    ->join('product_purchase_returns','stocks.ref_id','product_purchase_returns.id')
+                                                    ->join('parties','product_purchase_returns.party_id','parties.id')
+                                                    ->where('stocks.id',$stock->id)
+                                                    ->pluck('parties.name')
+                                                    ->first();
+                                                }elseif($stock->stock_type == 'purchase replace'){
+                                                    echo $party_name = DB::table('stocks')
+                                                    ->join('product_purchase_replacements','stocks.ref_id','product_purchase_replacements.id')
+                                                    ->join('parties','product_purchase_replacements.party_id','parties.id')
+                                                    ->where('stocks.id',$stock->id)
+                                                    ->pluck('parties.name')
+                                                    ->first();
                                                 }elseif($stock->stock_type == 'sale'){
                                                     echo $party_name = DB::table('stocks')
                                                     ->join('product_sales','stocks.ref_id','product_sales.id')

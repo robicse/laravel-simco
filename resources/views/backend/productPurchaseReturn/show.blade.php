@@ -46,8 +46,8 @@
                                   ->first();
                                 @endphp
                                 {{$transaction->payment_type}}
-                                @if($transaction->payment_type == 'Check')
-                                    ( Cheque Number: {{$transaction->check_number}} )
+                                @if($transaction->payment_type == 'Cheque')
+                                    ( Cheque Number: {{$transaction->cheque_number}} )
                                 @endif
                             </td>
                         </tr>

@@ -230,8 +230,8 @@ class ProductPurchaseReturnController extends Controller
                 $stock->product_id = $product_id;
                 $stock->stock_type = 'purchase return delete';
                 $stock->previous_stock = $previous_stock;
-                $stock->stock_in = 0;
-                $stock->stock_out = $qty;
+                $stock->stock_in = $qty;
+                $stock->stock_out = 0;
                 $stock->current_stock = $previous_stock - $qty;
                 $stock->date = date('Y-m-d');
                 $stock->save();
@@ -260,8 +260,8 @@ class ProductPurchaseReturnController extends Controller
                 $invoice_stock->product_id = $product_id;
                 $invoice_stock->stock_type = 'purchase return delete';
                 $invoice_stock->previous_stock = $previous_invoice_stock;
-                $invoice_stock->stock_in = 0;
-                $invoice_stock->stock_out = $qty;
+                $invoice_stock->stock_in = $qty;
+                $invoice_stock->stock_out = 0;
                 $invoice_stock->current_stock = $previous_invoice_stock - $qty;
                 $invoice_stock->save();
 
@@ -444,8 +444,8 @@ class ProductPurchaseReturnController extends Controller
                     $stock->product_id = $product_id;
                     $stock->stock_type = 'purchase return';
                     $stock->previous_stock = $previous_stock;
-                    $stock->stock_in = $request->return_qty[$i];
-                    $stock->stock_out = 0;
+                    $stock->stock_in = 0;
+                    $stock->stock_out = $request->return_qty[$i];
                     $stock->current_stock = $previous_stock - $request->return_qty[$i];
                     $stock->date = date('Y-m-d');
                     $stock->save();
@@ -474,8 +474,8 @@ class ProductPurchaseReturnController extends Controller
                     $invoice_stock->product_id = $product_id;
                     $invoice_stock->stock_type = 'purchase return';
                     $invoice_stock->previous_stock = $previous_invoice_stock;
-                    $invoice_stock->stock_in = $request->return_qty[$i];
-                    $invoice_stock->stock_out = 0;
+                    $invoice_stock->stock_in = 0;
+                    $invoice_stock->stock_out = $request->return_qty[$i];
                     $invoice_stock->current_stock = $previous_invoice_stock - $request->return_qty[$i];
                     $invoice_stock->save();
 
