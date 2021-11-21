@@ -20,7 +20,7 @@
                         <tr>
                             <th width="5%">SL NO</th>
                             <th>Invoice</th>
-                            <th>Model</th>
+{{--                            <th>Model</th>--}}
                             <th>User</th>
 {{--                            <th>Store</th>--}}
                             <th>Customer</th>
@@ -33,22 +33,22 @@
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $productPurchaseReplacement->invoice_no}}</td>
-                            <td>
-                                @php
-                                    $str_arr = explode (",", saleReplacementsProductModels($productPurchaseReplacement->id));
-                                @endphp
+{{--                            <td>--}}
+{{--                                @php--}}
+{{--                                    $str_arr = explode (",", saleReplacementsProductModels($productPurchaseReplacement->id));--}}
+{{--                                @endphp--}}
 
-                                @foreach($str_arr as $key => $str)
-                                    @if(($key == 0 && count($str_arr) > 1))
-                                        {{$str}},
-                                    @elseif( (($key > 0 && $key < count($str_arr))) && ($key+1 != count($str_arr)))
-                                        {{$str}},
-                                    @else
-                                        {{$str}}
-                                    @endif
-                                    <br/>
-                                @endforeach
-                            </td>
+{{--                                @foreach($str_arr as $key => $str)--}}
+{{--                                    @if(($key == 0 && count($str_arr) > 1))--}}
+{{--                                        {{$str}},--}}
+{{--                                    @elseif( (($key > 0 && $key < count($str_arr))) && ($key+1 != count($str_arr)))--}}
+{{--                                        {{$str}},--}}
+{{--                                    @else--}}
+{{--                                        {{$str}}--}}
+{{--                                    @endif--}}
+{{--                                    <br/>--}}
+{{--                                @endforeach--}}
+{{--                            </td>--}}
                             <td>{{ $productPurchaseReplacement->user->name}}</td>
 {{--                            <td>{{ $productSaleReplacement->store->name}}</td>--}}
                             <td>{{ $productPurchaseReplacement->party->name}}</td>

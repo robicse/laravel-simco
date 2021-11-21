@@ -43,6 +43,7 @@
                             <th>Date</th>
                             <td>{{$productPurchase->date}}</td>
                         </tr>
+                        @if(!empty($transaction))
                         <tr>
                             <th>Payment Type</th>
                             <td>
@@ -52,6 +53,7 @@
                                 @endif
                             </td>
                         </tr>
+                        @endif
 {{--                        @if($transaction->payment_type == 'Cheque')--}}
 {{--                            <tr>--}}
 {{--                                <th>Cheque Number</th>--}}

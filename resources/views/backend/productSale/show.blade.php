@@ -40,16 +40,36 @@
                             <th>Date</th>
                             <td>{{$productSale->date}}</td>
                         </tr>
-                        @if($transaction->payment_type == 'Cheque')
+{{--                        @if($transaction->payment_type == 'Cheque')--}}
+{{--                            <tr>--}}
+{{--                                <th>Cheque Number</th>--}}
+{{--                                <td>{{$transaction->cheque_number}}</td>--}}
+{{--                            </tr>--}}
+{{--                        @endif--}}
+                        @if(!empty($transactions))
                             <tr>
-                                <th>Cheque Number</th>
-                                <td>{{$transaction->cheque_number}}</td>
+                                <th>Payment Type</th>
+                                <th>
+                                    <ul>
+                                        @foreach($transactions as $transaction)
+                                            <li>
+                                                {{$transaction->payment_type}}
+                                                @if($transaction->payment_type == 'Cheque')
+                                                    ( Cheque Number: {{$transaction->cheque_number}} )
+                                                @endif
+                                                :
+                                                Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </th>
                             </tr>
                         @endif
     {{--                    <tr>--}}
     {{--                        <th>Delivery Service</th>--}}
     {{--                        <td>{{$productSale->delivery_service}}</td>--}}
     {{--                    </tr>--}}
+                        @if($productSale->discount_amount > 0)
                         <tr>
                             <th>Discount Type</th>
                             <td>{{$productSale->discount_type}}</td>
@@ -58,6 +78,7 @@
                             <th>Discount Amount</th>
                             <td>{{$productSale->discount_amount}}</td>
                         </tr>
+                        @endif
                         <tr>
                             <th>Total Amount</th>
                             <td>{{$productSale->total_amount}}</td>

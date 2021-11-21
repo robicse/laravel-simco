@@ -57,11 +57,11 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" >
                                     <option value="">Select One</option>
-                                    <option value="Cash" {{'Cash' == $transaction->payment_type ? 'selected' : ''}}>Cash</option>
-                                    <option value="Cheque" {{'Cheque' == $transaction->payment_type ? 'selected' : ''}}>Cheque</option>
+                                    <option value="Cash" @if(!empty($transaction->payment_type)) {{'Cash' == $transaction->payment_type ? 'selected' : ''}} @endif>Cash</option>
+                                    <option value="Cheque" @if(!empty($transaction->payment_type)) {{'Cheque' == $transaction->payment_type ? 'selected' : ''}} @endif>Cheque</option>
                                 </select>
                                 <span>&nbsp;</span>
-                                <input type="text" name="cheque_number" id="cheque_number" class="form-control" value="{{$transaction->cheque_number}}" placeholder="Cheque Number">
+                                <input type="text" name="cheque_number" id="cheque_number" class="form-control" value="@if(!empty($transaction->payment_type)){{$transaction->cheque_number}} @endif" placeholder="Cheque Number">
                             </div>
                         </div>
                         <div class="form-group row">

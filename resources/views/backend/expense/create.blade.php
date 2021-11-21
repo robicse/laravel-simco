@@ -10,7 +10,7 @@
     <main class="app-content">
         <div class="app-title">
             <div>
-                <h1><i class=""></i> Add Sales Product</h1>
+                <h1><i class=""></i> Add Expenses</h1>
             </div>
             <ul class="app-breadcrumb breadcrumb">
                 <li class="breadcrumb-item">

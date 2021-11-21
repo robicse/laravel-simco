@@ -185,7 +185,7 @@ class ProductPurchaseController extends Controller
     {
         $productPurchase = ProductPurchase::find($id);
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
 
         return view('backend.productPurchase.show', compact('productPurchase','productPurchaseDetails','transaction'));
     }
@@ -206,7 +206,8 @@ class ProductPurchaseController extends Controller
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
+        //dd($transaction);
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
         $stock_id = Stock::where('ref_id',$id)->where('stock_type','purchase')->pluck('id')->first();
         return view('backend.productPurchase.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction','stock_id'));
