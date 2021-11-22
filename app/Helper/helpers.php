@@ -767,6 +767,48 @@ if (!function_exists('saleReplacementsProductModels')) {
     }
 }
 
+if (!function_exists('purchaseReturnsProductModels')) {
+    function purchaseReturnsProductModels($product_purchase_return_id)
+    {
+        $purchaseReturnsProductModels = DB::table('product_purchase_return_details')
+            ->leftJoin('products','product_purchase_return_details.product_id','products.id')
+            ->where('product_purchase_return_details.product_purchase_return_id',$product_purchase_return_id)
+            ->select('products.model')
+            ->get();
+
+        $models = '';
+        $elements = [];
+        if(count($purchaseReturnsProductModels) > 0){
+            foreach($purchaseReturnsProductModels as $purchaseReturnsProductModel){
+                $elements[] = $purchaseReturnsProductModel->model;
+            }
+            $models = implode(',', $elements);
+        }
+        return $models;
+    }
+}
+
+if (!function_exists('purchaseReplacementsProductModels')) {
+    function purchaseReplacementsProductModels($product_purchase_replacement_id)
+    {
+        $purchaseReplacementsProductModels = DB::table('product_purchase_replacement_details')
+            ->leftJoin('products','product_purchase_replacement_details.product_id','products.id')
+            ->where('product_purchase_replacement_details.product_purchase_replacement_id',$product_purchase_replacement_id)
+            ->select('products.model')
+            ->get();
+
+        $models = '';
+        $elements = [];
+        if(count($purchaseReplacementsProductModels) > 0){
+            foreach($purchaseReplacementsProductModels as $purchaseReplacementsProductModel){
+                $elements[] = $purchaseReplacementsProductModel->model;
+            }
+            $models = implode(',', $elements);
+        }
+        return $models;
+    }
+}
+
 if (!function_exists('stockLow')) {
     function stockLow($store_id)
     {

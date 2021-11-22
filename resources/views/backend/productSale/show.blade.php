@@ -72,7 +72,7 @@
                         @if($productSale->discount_amount > 0)
                         <tr>
                             <th>Discount Type</th>
-                            <td>{{$productSale->discount_type}}</td>
+                            <td>{{ucfirst($productSale->discount_type)}}</td>
                         </tr>
                         <tr>
                             <th>Discount Amount</th>
