@@ -202,7 +202,7 @@
                                             </select>
                                         </th>
                                         <th>
-                                            Discount Amount:
+                                            Discount:
                                                 <input type="text" id="discount_amount" class="form-control" name="discount_amount" onkeyup="discountAmount('')" value="0">
                                                 <input type="hidden" id="discount_percentage" class="form-control" name="discount_percentage" >
                                         </th>

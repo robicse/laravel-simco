@@ -210,7 +210,7 @@
                                         @endif
                                     </th>
                                     <th>
-                                        Discount Amount:
+                                        Discount:
                                         <input type="text" id="discount_amount" class="discount_amount form-control" name="discount_amount" onkeyup="discountAmount('')" value="{{$productSale->discount_amount}}" @if($productSale->discount_amount > 0) readonly @endif>
                                         <input type="hidden" id="discount_percentage" class="form-control" name="discount_percentage" value="{{$productSale->discount_percentage}}">
                                     </th>

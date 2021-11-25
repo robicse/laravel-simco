@@ -43,16 +43,24 @@
                             <th>Date</th>
                             <td>{{$productPurchase->date}}</td>
                         </tr>
-                        @if(!empty($transaction))
-                        <tr>
-                            <th>Payment Type</th>
-                            <td>
-                                {{$transaction->payment_type}}
-                                @if($transaction->payment_type == 'Cheque')
-                                    ({{$transaction->cheque_number}})
-                                @endif
-                            </td>
-                        </tr>
+                        @if(!empty($transactions))
+                            <tr>
+                                <th>Payment Type</th>
+                                <th>
+                                    <ul>
+                                        @foreach($transactions as $transaction)
+                                            <li>
+                                                {{$transaction->payment_type}}
+                                                @if($transaction->payment_type == 'Cheque')
+                                                    ( Cheque Number: {{$transaction->cheque_number}} )
+                                                @endif
+                                                :
+                                                Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </th>
+                            </tr>
                         @endif
 {{--                        @if($transaction->payment_type == 'Cheque')--}}
 {{--                            <tr>--}}
@@ -60,9 +68,27 @@
 {{--                                <td>{{$transaction->cheque_number}}</td>--}}
 {{--                            </tr>--}}
 {{--                        @endif--}}
+                        @if($productPurchase->discount_amount > 0)
+                            <tr>
+                                <th>Discount Type</th>
+                                <td>{{ucfirst($productPurchase->discount_type)}}</td>
+                            </tr>
+                            <tr>
+                                <th>Discount Amount</th>
+                                <td>{{$productPurchase->discount_amount}}</td>
+                            </tr>
+                        @endif
                         <tr>
-                            <th>Amount</th>
+                            <th>Total Amount</th>
                             <td>{{$productPurchase->total_amount}}</td>
+                        </tr>
+                        <tr>
+                            <th>Paid Amount</th>
+                            <td>{{$productPurchase->paid_amount}}</td>
+                        </tr>
+                        <tr>
+                            <th>Due Amount</th>
+                            <td>{{$productPurchase->due_amount}}</td>
                         </tr>
                         </tbody>
                     </table>

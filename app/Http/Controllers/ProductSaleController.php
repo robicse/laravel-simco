@@ -701,7 +701,7 @@ class ProductSaleController extends Controller
         }
 
         // due
-        $due = Due::where('ref_id',$id)->first();;
+        $due = Due::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->first();;
         $due->user_id = Auth::id();
         $due->store_id = $request->store_id;
         $due->party_id = $request->party_id;
