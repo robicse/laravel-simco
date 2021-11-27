@@ -58,9 +58,27 @@
 {{--                                <td>{{$transaction->cheque_number}}</td>--}}
 {{--                            </tr>--}}
 {{--                        @endif--}}
+                        @if($productPurchase->discount_amount > 0)
+                            <tr>
+                                <th>Discount Type</th>
+                                <td>{{ucfirst($productPurchase->discount_type)}}</td>
+                            </tr>
+                            <tr>
+                                <th>Discount Amount</th>
+                                <td>{{$productPurchase->discount_amount}}</td>
+                            </tr>
+                        @endif
                         <tr>
-                            <th>Amount</th>
+                            <th>Total Amount</th>
                             <td>{{$productPurchase->total_amount}}</td>
+                        </tr>
+                        <tr>
+                            <th>Paid Amount</th>
+                            <td>{{$productPurchase->paid_amount}}</td>
+                        </tr>
+                        <tr>
+                            <th>Due Amount</th>
+                            <td>{{$productPurchase->due_amount}}</td>
                         </tr>
                         </tbody>
                     </table>

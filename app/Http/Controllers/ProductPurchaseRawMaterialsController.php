@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Due;
 use App\InvoiceStock;
 use App\Party;
 use App\Product;
@@ -79,6 +80,13 @@ class ProductPurchaseRawMaterialsController extends Controller
             $invoice_no = 1000;
         }
 
+        if($request->discount_type == 'percentage'){
+            $discount_amount = $request->discount_percentage;
+            $discount_percentage = $request->discount_amount;
+        }else{
+            $discount_amount = $request->discount_amount;
+            $discount_percentage = NULL;
+        }
         // product purchase
         $productPurchase = new ProductPurchase();
         $productPurchase ->invoice_no = 'Pur-'.$invoice_no;
@@ -88,7 +96,13 @@ class ProductPurchaseRawMaterialsController extends Controller
         $productPurchase ->date = $request->date;
         //$productPurchase ->payment_type = $request->payment_type;
         //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
-        $productPurchase ->total_amount = $total_amount;
+        $productPurchase->discount_type = $request->discount_type;
+        $productPurchase->discount_amount = $discount_amount;
+        $productPurchase->discount_percentage = $discount_percentage;
+        $productPurchase->total_amount = $total_amount;
+        $productPurchase->paid_amount = $request->paid_amount;
+        $productPurchase->due_amount = $request->due_amount;
+//        $productPurchase ->total_amount = $total_amount;
         $productPurchase ->purchase_product_type = 'Raw Materials';
         $productPurchase->save();
         $insert_id = $productPurchase->id;
@@ -96,6 +110,24 @@ class ProductPurchaseRawMaterialsController extends Controller
         {
             for($i=0; $i<$row_count;$i++)
             {
+                $price = $request->price[$i];
+                //$discount_amount = $discount_amount;
+                //$total_amount = $total_amount;
+
+                $final_discount_amount = (float)$discount_amount * (float)$price;
+                $final_total_amount = (float)$discount_amount + (float)$total_amount;
+                $discount_type = $request->discount_type;
+                $discount = (float)$final_discount_amount/(float)$final_total_amount;
+                if($discount_type != NULL){
+                    if($discount_type == 'flat'){
+                        $discount = round($discount);
+                    }
+                }
+
+                $product_id = $request->product_id[$i];
+                $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
+
+
                 // product purchase detail
                 $purchase_purchase_detail = new ProductPurchaseDetail();
                 $purchase_purchase_detail->product_purchase_id = $insert_id;
@@ -106,8 +138,12 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $purchase_purchase_detail->product_id = $request->product_id[$i];
                 $purchase_purchase_detail->qty = $request->qty[$i];
                 $purchase_purchase_detail->price = $request->price[$i];
+                $purchase_purchase_detail->discount = $discount;
                 $purchase_purchase_detail->mrp_price = NULL;
+//                $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                $purchase_purchase_detail->profit_amount = $request->mrp_price[$i] - $request->price[$i];
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+                $purchase_purchase_detail->barcode = $barcode;
                 $purchase_purchase_detail->save();
 
                 $product_id = $request->product_id[$i];
@@ -150,6 +186,20 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $invoice_stock->date = date('Y-m-d');
                 $invoice_stock->save();
             }
+
+            // due
+            $due = new Due();
+            $due->invoice_no = 'Pur-'.$invoice_no;
+            $due->ref_id = $insert_id;
+            $due->user_id = Auth::id();
+            $due->store_id = $request->store_id;
+            $due->party_id = $request->party_id;
+            //$due->payment_type = $request->payment_type;
+            //$due->cheque_number = $request->cheque_number ? $request->cheque_number : '';
+            $due->total_amount = $total_amount;
+            $due->paid_amount = $request->paid_amount;
+            $due->due_amount = $request->due_amount;
+            $due->save();
 
             // transaction
             $transaction = new Transaction();
