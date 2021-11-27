@@ -147,12 +147,11 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>
-                                        Sub Total:
-                                        <input type="text" id="store_total_amount" class="form-control" value="{{$productPurchase->total_amount}}" readonly>
-{{--                                        <input type="text" id="total_amount" class="form-control" name="total_amount" value="{{$productPurchase->total_amount}}">--}}
-                                    </th>
-                                    <th>
+{{--                                    <th>--}}
+{{--                                        Sub Total:--}}
+{{--                                        <input type="text" id="store_total_amount" class="form-control" value="{{$productPurchase->total_amount}}" readonly>--}}
+{{--                                    </th>--}}
+                                    <th colspan="2">
                                         Type:
 
                                         @if($productPurchase->discount_amount > 0)
@@ -171,7 +170,7 @@
                                     </th>
                                     <th>
                                         Grand Total:
-{{--                                        <input type="hidden" id="store_total_amount" class="form-control" value="{{$productPurchase->total_amount}}">--}}
+                                        <input type="hidden" id="store_total_amount" class="form-control" value="{{$productPurchase->total_amount}}">
                                         <input type="text" id="total_amount" class="form-control" name="total_amount" value="{{$productPurchase->total_amount - $productPurchase->discount_amount}}" readonly>
                                     </th>
                                     <th>

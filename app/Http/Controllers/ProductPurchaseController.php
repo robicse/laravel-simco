@@ -636,4 +636,16 @@ class ProductPurchaseController extends Controller
         return redirect()->back();
 
     }
+
+    public function supplierDue()
+    {
+        $auth_user_id = Auth::user()->id;
+        $auth_user = Auth::user()->roles[0]->name;
+        if($auth_user == "Admin"){
+            $productPurchases = ProductPurchase::where('due_amount','>',0)->where('purchase_product_type','Finish Goods')->latest()->get();
+        }else{
+            $productPurchases = ProductPurchase::where('user_id',$auth_user_id)->where('due_amount','>',0)->where('purchase_product_type','Finish Goods')->get();
+        }
+        return view('backend.productPurchase.supplier_due',compact('productPurchases'));
+    }
 }

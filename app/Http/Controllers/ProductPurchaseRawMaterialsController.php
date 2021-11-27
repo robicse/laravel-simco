@@ -477,4 +477,16 @@ class ProductPurchaseRawMaterialsController extends Controller
 
         }
     }
+
+    public function supplierDueRawMaterials()
+    {
+        $auth_user_id = Auth::user()->id;
+        $auth_user = Auth::user()->roles[0]->name;
+        if($auth_user == "Admin"){
+            $productPurchases = ProductPurchase::where('due_amount','>',0)->where('purchase_product_type','Raw Materials')->latest()->get();
+        }else{
+            $productPurchases = ProductPurchase::where('user_id',$auth_user_id)->where('due_amount','>',0)->where('purchase_product_type','Raw Materials')->get();
+        }
+        return view('backend.productPurchaseRawMaterial.supplier_due',compact('productPurchases'));
+    }
 }

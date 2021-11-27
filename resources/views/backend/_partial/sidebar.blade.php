@@ -31,6 +31,7 @@
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchases.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchases.create') }}"><i class="app-menu__icon fas fa-users"></i> <span class="app-menu__label">Create</span></a></li>
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchases.supplier.due') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">Supplier Due</span></a></li>
 
             </ul>
         </li>
@@ -38,7 +39,7 @@
             <ul class="treeview-menu">
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchaseRawMaterials.index') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">List</span></a></li>
                 <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchaseRawMaterials.create') }}"><i class="app-menu__icon fa fa-circle-o"></i> <span class="app-menu__label">Create</span></a></li>
-
+                <li class="custom_li_bg"><a class="app-menu__item custom_li_a_position" href="{{ route('productPurchases.supplier.due.rawMaterials') }}"><i class="app-menu__icon fa fa-circle"></i> <span class="app-menu__label">Supplier Due</span></a></li>
             </ul>
         </li>
         <li class="treeview{{Request::is('productPurchaseReturn*') ? ' is-expanded': ''}}"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-arrow-up"></i><span class="app-menu__label">Purchase Return</span><i class="treeview-indicator fa fa-angle-right"></i></a>
