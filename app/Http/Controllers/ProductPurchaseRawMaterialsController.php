@@ -281,11 +281,31 @@ class ProductPurchaseRawMaterialsController extends Controller
         $productPurchase ->date = $request->date;
         //$productPurchase ->payment_type = $request->payment_type;
         //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
-        $productPurchase ->total_amount = $total_amount;
+        $productPurchase->discount_type = $request->discount_type;
+        $productPurchase->discount_amount = $request->discount_amount;
+        $productPurchase->total_amount = $total_amount;
+        $productPurchase->paid_amount = $request->paid_amount;
+        $productPurchase->due_amount = $request->due_amount;
         $productPurchase->update();
 
         for($i=0; $i<$row_count;$i++)
         {
+            $price = $request->price[$i];
+            $discount_amount = $request->discount_amount;
+
+            $final_discount_amount = (float)$discount_amount * (float)$price;
+            $final_total_amount = (float)$discount_amount + (float)$total_amount;
+            $discount_type = $request->discount_type;
+            $discount = (float)$final_discount_amount/(float)$final_total_amount;
+            if($discount_type != NULL){
+                if($discount_type == 'Flat'){
+                    $discount = round($discount);
+                }
+            }
+
+            $product_id = $request->product_id[$i];
+            $barcode = Product::where('id',$product_id)->pluck('barcode')->first();
+
             // product purchase detail
             $product_purchase_detail_id = $request->product_purchase_detail_id[$i];
             $purchase_purchase_detail = ProductPurchaseDetail::findOrFail($product_purchase_detail_id);;
@@ -296,7 +316,10 @@ class ProductPurchaseRawMaterialsController extends Controller
             $purchase_purchase_detail->qty = $request->qty[$i];
             $purchase_purchase_detail->price = $request->price[$i];
             $purchase_purchase_detail->mrp_price = NULL;
+            $purchase_purchase_detail->profit_amount = $request->mrp_price[$i] - $request->price[$i];
             $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
+            $purchase_purchase_detail->discount = $discount;
+            $purchase_purchase_detail->barcode = $barcode;
             $purchase_purchase_detail->update();
 
 
@@ -321,87 +344,135 @@ class ProductPurchaseRawMaterialsController extends Controller
 //            $stock->update();
 
             // product stock
-            $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->latest()->first();
-            $previous_stock = Stock::where('product_id',$product_id)->latest('id','desc')->pluck('current_stock')->first();
+//            $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->latest()->first();
+//            $previous_stock = Stock::where('product_id',$product_id)->latest('id','desc')->pluck('current_stock')->first();
+
 
             // product stock
-            $stock = new Stock();
-            $stock->user_id = Auth::id();
-            $stock->ref_id = $id;
-            $stock->store_id = $request->store_id;
-            $stock->date = $request->date;
-            $stock->product_id = $request->product_id[$i];
-            $stock->stock_product_type = 'Raw Materials';
-            $stock->stock_type = 'purchase';
-            $stock->previous_stock = $previous_stock;
-            if($stock_row->stock_in != $request->qty[$i]){
-                if($request->qty[$i] > $stock_row->stock_in){
-                    $add_stock_in = $request->qty[$i] - $stock_row->stock_in;
-                    $update_current_stock = $previous_stock + $add_stock_in;
-
-                    $stock->stock_in = $add_stock_in;
-                    $stock->stock_out = 0;
-                    $stock->current_stock = $update_current_stock;
-                }else{
-                    $minus_stock_in =  $stock_row->stock_in - $request->qty[$i];
-                    $update_current_stock = $previous_stock - $minus_stock_in;
-
-                    $stock->stock_in = 0;
-                    $stock->stock_out = $minus_stock_in;
-                    $stock->current_stock = $update_current_stock;
-                }
-
-            }
-            $stock->save();
+//            $stock = new Stock();
+//            $stock->user_id = Auth::id();
+//            $stock->ref_id = $id;
+//            $stock->store_id = $request->store_id;
+//            $stock->date = $request->date;
+//            $stock->product_id = $request->product_id[$i];
+//            $stock->stock_product_type = 'Raw Materials';
+//            $stock->stock_type = 'purchase';
+//            $stock->previous_stock = $previous_stock;
+//            if($stock_row->stock_in != $request->qty[$i]){
+//                if($request->qty[$i] > $stock_row->stock_in){
+//                    $add_stock_in = $request->qty[$i] - $stock_row->stock_in;
+//                    $update_current_stock = $previous_stock + $add_stock_in;
+//
+//                    $stock->stock_in = $add_stock_in;
+//                    $stock->stock_out = 0;
+//                    $stock->current_stock = $update_current_stock;
+//                }else{
+//                    $minus_stock_in =  $stock_row->stock_in - $request->qty[$i];
+//                    $update_current_stock = $previous_stock - $minus_stock_in;
+//
+//                    $stock->stock_in = 0;
+//                    $stock->stock_out = $minus_stock_in;
+//                    $stock->current_stock = $update_current_stock;
+//                }
+//
+//            }
+//            $stock->save();
 
             // invoice wise stock
-            $invoice_stock_row = InvoiceStock::where('ref_id',$id)
-                ->where('store_id',$request->store_id)
-                ->where('stock_type','purchase')
-                ->where('product_id',$product_id)
-                ->latest()->first();
-            $previous_invoice_stock = InvoiceStock::where('purchase_invoice_no',$productPurchase->invoice_no)
-                ->where('store_id',$request->store_id)
-                ->where('product_id',$product_id)
-                ->latest()
-                ->pluck('current_stock')
-                ->first();
-            $invoice_stock = new InvoiceStock();
-            $invoice_stock->user_id = Auth::id();
-            $invoice_stock->ref_id = $id;
-            $invoice_stock->purchase_invoice_no = $productPurchase->invoice_no;
-            $invoice_stock->invoice_no = NULL;
-            $invoice_stock->store_id = $request->store_id;
-            $invoice_stock->product_id = $request->product_id[$i];
-            $invoice_stock->stock_product_type = 'Raw Materials';
-            $invoice_stock->stock_type = 'purchase';
-            $invoice_stock->previous_stock = $previous_invoice_stock;
-            if($invoice_stock_row->stock_in != $request->qty[$i]){
-                if($request->qty[$i] > $invoice_stock_row->stock_in){
-                    $add_stock_in = $request->qty[$i] - $invoice_stock_row->stock_in;
-                    $update_current_stock = $previous_invoice_stock + $add_stock_in;
+//            $invoice_stock_row = InvoiceStock::where('ref_id',$id)
+//                ->where('store_id',$request->store_id)
+//                ->where('stock_type','purchase')
+//                ->where('product_id',$product_id)
+//                ->latest()->first();
+//            $previous_invoice_stock = InvoiceStock::where('purchase_invoice_no',$productPurchase->invoice_no)
+//                ->where('store_id',$request->store_id)
+//                ->where('product_id',$product_id)
+//                ->latest()
+//                ->pluck('current_stock')
+//                ->first();
+//            $invoice_stock = new InvoiceStock();
+//            $invoice_stock->user_id = Auth::id();
+//            $invoice_stock->ref_id = $id;
+//            $invoice_stock->purchase_invoice_no = $productPurchase->invoice_no;
+//            $invoice_stock->invoice_no = NULL;
+//            $invoice_stock->store_id = $request->store_id;
+//            $invoice_stock->product_id = $request->product_id[$i];
+//            $invoice_stock->stock_product_type = 'Raw Materials';
+//            $invoice_stock->stock_type = 'purchase';
+//            $invoice_stock->previous_stock = $previous_invoice_stock;
+//            if($invoice_stock_row->stock_in != $request->qty[$i]){
+//                if($request->qty[$i] > $invoice_stock_row->stock_in){
+//                    $add_stock_in = $request->qty[$i] - $invoice_stock_row->stock_in;
+//                    $update_current_stock = $previous_invoice_stock + $add_stock_in;
+//
+//                    $invoice_stock->stock_in = $add_stock_in;
+//                    $invoice_stock->stock_out = 0;
+//                    $invoice_stock->current_stock = $update_current_stock;
+//                }else{
+//                    $minus_stock_in =  $invoice_stock_row->stock_in - $request->qty[$i];
+//                    $update_current_stock = $previous_invoice_stock - $minus_stock_in;
+//
+//                    $invoice_stock->stock_in = 0;
+//                    $invoice_stock->stock_out = $minus_stock_in;
+//                    $invoice_stock->current_stock = $update_current_stock;
+//                }
+//
+//            }
+//            $invoice_stock->date = date('Y-m-d');
+//            $invoice_stock->save();
 
-                    $invoice_stock->stock_in = $add_stock_in;
-                    $invoice_stock->stock_out = 0;
-                    $invoice_stock->current_stock = $update_current_stock;
-                }else{
-                    $minus_stock_in =  $invoice_stock_row->stock_in - $request->qty[$i];
-                    $update_current_stock = $previous_invoice_stock - $minus_stock_in;
+            $store_id=$productPurchase->store_id;
+            $invoice_no=$productPurchase->invoice_no;
+            $stock_row = current_stock_row($store_id,'Raw Materials','purchase',$product_id);
+            $previous_stock = $stock_row->previous_stock;
+            $stock_out = $stock_row->stock_out;
+            //$current_stock = $stock_row->current_stock;
+            $request_qty = $request->qty[$i];
 
-                    $invoice_stock->stock_in = 0;
-                    $invoice_stock->stock_out = $minus_stock_in;
-                    $invoice_stock->current_stock = $update_current_stock;
-                }
 
+            if($stock_out != $request_qty){
+                $stock_row->user_id = Auth::id();
+                $stock_row->store_id = $request->store_id;
+                $stock_row->product_id = $product_id;
+                $stock_row->previous_stock = $previous_stock;
+                $stock_row->stock_in = $request_qty;
+                $stock_row->stock_out = 0;
+                $new_stock_in = $previous_stock + $request_qty;
+                $stock_row->current_stock = $new_stock_in;
+                $stock_row->update();
             }
-            $invoice_stock->date = date('Y-m-d');
-            $invoice_stock->save();
+
+            $invoice_stock_row = current_invoice_stock_row($store_id,'Raw Materials','purchase',$product_id,$invoice_no,null);
+            $previous_invoice_stock = $invoice_stock_row->previous_stock;
+            $invoice_stock_out = $invoice_stock_row->stock_out;
+
+            if($invoice_stock_out != $request_qty){
+                $invoice_stock_row->user_id = Auth::id();
+                $invoice_stock_row->store_id = $store_id;
+                $invoice_stock_row->date = $request->date;
+                $invoice_stock_row->product_id = $product_id;
+                $invoice_stock_row->previous_stock = $previous_invoice_stock;
+                $invoice_stock_row->stock_in = $request_qty;
+                $invoice_stock_row->stock_out = 0;
+                $new_stock_in = $previous_invoice_stock + $request_qty;
+                $invoice_stock_row->current_stock = $new_stock_in;
+                $invoice_stock_row->update();
+            }
 
         }
 
+        $due = Due::where('ref_id',$id)->where('invoice_no',$productPurchase->invoice_no)->first();
+        $due->user_id = Auth::id();
+        $due->store_id = $request->store_id;
+        $due->party_id = $request->party_id;
+        $due->total_amount = $total_amount;
+        $due->paid_amount = $request->paid_amount;
+        $due->due_amount = $request->due_amount;
+        $due->update();
+
         // transaction
         $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
-        $transaction->invoice_no = Null;
+        //$transaction->invoice_no = Null;
         $transaction->user_id = Auth::id();
         $transaction->store_id = $request->store_id;
         $transaction->party_id = $request->party_id;
