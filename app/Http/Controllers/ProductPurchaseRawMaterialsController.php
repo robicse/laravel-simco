@@ -213,8 +213,10 @@ class ProductPurchaseRawMaterialsController extends Controller
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
             $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
-            $transaction->amount = $total_amount;
+            $transaction->amount = $request->paid_amount;
+//            $transaction->amount = $total_amount;
             $transaction->save();
+
         }
 
         Toastr::success('Product Purchase Created Successfully', 'Success');
@@ -227,9 +229,9 @@ class ProductPurchaseRawMaterialsController extends Controller
     {
         $productPurchase = ProductPurchase::find($id);
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
-        $transaction = Transaction::where('ref_id',$id)->first();
+        $transactions = Transaction::where('ref_id',$id)->where('invoice_no',$productPurchase->invoice_no)->where('transaction_product_type','Raw Materials')->get();
 
-        return view('backend.productPurchaseRawMaterial.show', compact('productPurchase','productPurchaseDetails','transaction'));
+        return view('backend.productPurchaseRawMaterial.show', compact('productPurchase','productPurchaseDetails','transactions'));
     }
 
 

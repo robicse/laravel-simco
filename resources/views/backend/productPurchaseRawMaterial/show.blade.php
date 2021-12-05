@@ -43,15 +43,25 @@
                             <th>Date</th>
                             <td>{{$productPurchase->date}}</td>
                         </tr>
-                        <tr>
-                            <th>Payment Type</th>
-                            <td>
-                                {{$transaction->payment_type}}
-                                @if($transaction->payment_type == 'Cheque')
-                                    ({{$transaction->cheque_number}})
-                                @endif
-                            </td>
-                        </tr>
+                        @if(!empty($transactions))
+                            <tr>
+                                <th>Payment Type</th>
+                                <th>
+                                    <ul>
+                                        @foreach($transactions as $transaction)
+                                            <li>
+                                                {{$transaction->payment_type}}
+                                                @if($transaction->payment_type == 'Cheque')
+                                                    ( Cheque Number: {{$transaction->cheque_number}} )
+                                                @endif
+                                                :
+                                                Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </th>
+                            </tr>
+                        @endif
 {{--                        @if($transaction->payment_type == 'Cheque')--}}
 {{--                            <tr>--}}
 {{--                                <th>Cheque Number</th>--}}

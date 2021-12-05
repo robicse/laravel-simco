@@ -214,7 +214,7 @@ class ProductPurchaseController extends Controller
             $transaction->transaction_type = 'purchase';
             $transaction->payment_type = $request->payment_type;
             $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
-            $transaction->amount = $total_amount;
+            $transaction->amount = $request->paid_amount;
             $transaction->save();
         }
 
