@@ -116,7 +116,17 @@
                                 </tr>
 
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colspan="6">&nbsp;</th>
 
+                                    <th colspan="2">
+                                        Total:
+                                        <input type="hidden" id="store_total_amount" class="form-control">
+                                        <input type="text" id="total_amount" class="form-control" name="total_amount" readonly>
+                                    </th>
+                                </tr>
+                                </tfoot>
                             </table>
 
                             <div>&nbsp;</div>

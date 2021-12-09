@@ -257,6 +257,11 @@ class ProductProductionController extends Controller
                 $productPurchase ->date = $request->date;
                 $productPurchase ->total_amount = $request->existing_qty*$request->existing_price;
                 $productPurchase ->purchase_product_type = 'Finish Goods';
+                $productPurchase->discount_type = 'flat';
+                $productPurchase->discount_amount = 0;
+//                $productPurchase->discount_percentage = '';
+                $productPurchase->paid_amount = 0;
+                $productPurchase->due_amount = $request->existing_qty*$request->existing_price;
                 $productPurchase->ref_id = $insert_id;
                 $productPurchase->save();
                 $purchase_insert_id = $productPurchase->id;
@@ -278,6 +283,7 @@ class ProductProductionController extends Controller
                     $purchase_purchase_detail->sub_total = $request->existing_qty*$request->existing_price;
                     $purchase_purchase_detail->profit_amount = $request->existing_mrp_price - $request->existing_price;
                     $purchase_purchase_detail->barcode = $product_info->barcode;
+                    $purchase_purchase_detail->discount = 0;
                     $purchase_purchase_detail->ref_id = $insert_id;
                     $purchase_purchase_detail->save();
 
@@ -537,6 +543,12 @@ class ProductProductionController extends Controller
                     $productPurchase->date = $request->date;
                     $productPurchase->total_amount = $request->new_qty*$request->new_mrp_price;
                     $productPurchase->purchase_product_type = 'Finish Goods';
+                    $productPurchase->discount_type = 'flat';
+                    $productPurchase->discount_amount = 0;
+//                    $productPurchase->discount_percentage = '';
+                    $productPurchase->paid_amount = 0;
+                    $productPurchase->due_amount = $request->new_qty*$request->new_mrp_price;
+
                     $productPurchase->save();
                     $purchase_insert_id = $productPurchase->id;
                     if($purchase_insert_id)
@@ -558,6 +570,7 @@ class ProductProductionController extends Controller
                         $purchase_purchase_detail->profit_amount = $request->new_mrp_price - $request->new_price;
                         $purchase_purchase_detail->barcode = $product_info->barcode;
                         $purchase_purchase_detail->ref_id = $insert_id;
+                        $purchase_purchase_detail->discount = 0;
                         $purchase_purchase_detail->save();
 
 

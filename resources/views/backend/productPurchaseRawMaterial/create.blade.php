@@ -162,11 +162,11 @@
                                         <input type="hidden" id="store_total_amount" class="form-control">
                                         <input type="text" id="total_amount" class="form-control" name="total_amount" readonly>
                                     </th>
-                                    <th colspan="2">
+                                    <th >
                                         Paid Amount:
                                         <input type="text" id="paid_amount" class="getmoney form-control" onkeyup="paidAmount('')" name="paid_amount" value="0">
                                     </th>
-                                    <th colspan="2">
+                                    <th width="15%">
                                         Due Amount:
                                         <input type="text" id="due_amount" class="backmoney form-control" name="due_amount">
                                     </th>
@@ -391,7 +391,7 @@
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="text" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
-                    '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
+                    // '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';
