@@ -125,6 +125,10 @@
                                         <td style="text-align: left;font-size: 16px;">{{$productSale->created_at}}</td>
                                     </tr>
                                     <tr>
+                                        <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">BIN Reg. NO:</td>
+                                        <td style="text-align: left;font-size: 16px;">001719214-0201</td>
+                                    </tr>
+                                    <tr>
                                         <td style="text-align: left;font-size: 16px;border-right: 1px solid #000000">Phone No.</td>
 {{--                                        <td style="text-align: left;font-size: 16px;">{{$party->phone}}</td>--}}
                                         <td style="text-align: left;font-size: 16px;">02-9662755</td>

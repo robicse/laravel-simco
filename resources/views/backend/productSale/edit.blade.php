@@ -28,7 +28,7 @@
                         <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="store_id" id="store_id" class="form-control" >
+                                <select name="store_id" id="store_id" class="form-control" required>
                                     <option value="">Select One</option>
                                     @foreach($stores as $store)
                                         <option value="{{$store->id}}" {{$store->id == $productSale->store_id ? 'selected' : ''}}>{{$store->name}} </option>
@@ -39,7 +39,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="party_id" id="party_id" class="form-control select2">
+                                <select name="party_id" id="party_id" class="form-control select2" required>
                                     <option value="">Select One</option>
                                     @foreach($parties as $party)
                                         <option value="{{$party->id}}" {{$party->id == $productSale->party_id ? 'selected' : ''}}>{{$party->name}} </option>
@@ -50,7 +50,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="payment_type" id="payment_type" class="form-control" >
+                                <select name="payment_type" id="payment_type" class="form-control" required>
                                     <option value="">Select One</option>
                                     <option value="Cash" {{'Cash' == $transaction->payment_type ? 'selected' : ''}}>Cash</option>
                                     <option value="Cheque" {{'Cheque' == $transaction->payment_type ? 'selected' : ''}}>Cheque</option>

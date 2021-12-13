@@ -236,7 +236,8 @@ class ProductPurchaseController extends Controller
 
     public function edit($id)
     {
-        $parties = Party::where('type','supplier')->get() ;
+        $parties = Party::where('type','supplier')->orWhere('type','own')->get();
+        //dd($parties);
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin"){
@@ -642,9 +643,9 @@ class ProductPurchaseController extends Controller
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin"){
-            $productPurchases = ProductPurchase::where('due_amount','>',0)->where('purchase_product_type','Finish Goods')->latest()->get();
+            $productPurchases = ProductPurchase::where('due_amount','>',0)->where('purchase_product_type','Finish Goods')->where('party_id','!=',64)->latest()->get();
         }else{
-            $productPurchases = ProductPurchase::where('user_id',$auth_user_id)->where('due_amount','>',0)->where('purchase_product_type','Finish Goods')->get();
+            $productPurchases = ProductPurchase::where('user_id',$auth_user_id)->where('due_amount','>',0)->where('purchase_product_type','Finish Goods')->where('due_amount','!=',64)->get();
         }
         return view('backend.productPurchase.supplier_due',compact('productPurchases'));
     }

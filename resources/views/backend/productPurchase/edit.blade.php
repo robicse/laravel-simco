@@ -33,7 +33,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="store_id" id="store_id" class="form-control" >
+                                <select name="store_id" id="store_id" class="form-control" required>
                                     <option value="">Select One</option>
                                     @foreach($stores as $store)
                                         <option value="{{$store->id}}" {{$store->id == $productPurchase->store_id ? 'selected' : ''}}>{{$store->name}} </option>
@@ -44,7 +44,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="party_id" id="party_id" class="form-control select2">
+                                <select name="party_id" id="party_id" class="form-control select2" required>
                                     <option value="">Select One</option>
                                     @foreach($parties as $party)
                                         <option value="{{$party->id}}" {{$party->id == $productPurchase->party_id ? 'selected' : ''}}>{{$party->name}} </option>
@@ -55,7 +55,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="payment_type" id="payment_type" class="form-control" >
+                                <select name="payment_type" id="payment_type" class="form-control" required>
                                     <option value="">Select One</option>
                                     <option value="Cash" @if(!empty($transaction->payment_type)) {{'Cash' == $transaction->payment_type ? 'selected' : ''}} @endif>Cash</option>
                                     <option value="Cheque" @if(!empty($transaction->payment_type)) {{'Cheque' == $transaction->payment_type ? 'selected' : ''}} @endif>Cheque</option>
@@ -464,7 +464,7 @@
 
         $(function() {
             <?php
-            if($transaction->payment_type == 'Cash'){
+            if(!empty($transaction->payment_type) && $transaction->payment_type == 'Cash'){
             ?>
             $('#cheque_number').hide();
             <?php } ?>

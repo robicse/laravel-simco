@@ -103,6 +103,7 @@
                             <div class="invoice-logo">
                                 <span style="font-size: 16px;"> {{$productSale->created_at}}</span><br>
                                 <small class="float-right" style="font-size: 16px;">Invoice #{{$productSale->invoice_no}}</small><br>
+                                <small class="float-right">BIN Reg. NO: 001719214-0201</small><br>
                             </div>
                         </div>
                     </div>

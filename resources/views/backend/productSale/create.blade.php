@@ -44,7 +44,7 @@
                             <div class="form-group row" @if(Auth::user()->roles[0]->name == 'User') style="display: none" @endif>
                                 <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                                 <div class="col-md-8">
-                                    <select name="store_id" id="store_id" class="form-control" >
+                                    <select name="store_id" id="store_id" class="form-control" required>
     {{--                                    <option value="">Select One</option>--}}
                                         @foreach($stores as $store)
                                             <option value="{{$store->id}}" {{Auth::user()->roles[0]->name == 'User' ? 'selected':''}}>{{$store->name}} </option>

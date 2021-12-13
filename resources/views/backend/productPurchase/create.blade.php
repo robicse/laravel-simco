@@ -32,7 +32,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Party  <small class="requiredCustom">*</small></label>
                             <div class="col-md-6">
-                                <select name="party_id" id="supplier" class="form-control select2">
+                                <select name="party_id" id="supplier" class="form-control select2" required>
                                     <option value="">Select One</option>
                                     @foreach($parties as $party)
                                         <option value="{{$party->id}}">{{$party->name}} </option>
@@ -44,7 +44,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Store  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="store_id" id="store_id" class="form-control" >
+                                <select name="store_id" id="store_id" class="form-control" required>
 {{--                                    <option value="">Select One</option>--}}
                                     @foreach($stores as $store)
                                         <option value="{{$store->id}}">{{$store->name}} </option>
@@ -55,7 +55,7 @@
                         <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Payment Type  <small class="requiredCustom">*</small></label>
                             <div class="col-md-8">
-                                <select name="payment_type" id="payment_type" class="form-control" >
+                                <select name="payment_type" id="payment_type" class="form-control" required>
                                     <option value="Cash" selected>Cash</option>
                                     <option value="Cheque">Cheque</option>
                                 </select>

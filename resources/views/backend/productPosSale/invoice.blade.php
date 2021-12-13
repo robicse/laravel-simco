@@ -55,6 +55,7 @@
                                             <img class="float-right" src="{{asset('uploads/store/'.$store->logo)}}" alt="logo" height="60px" width="200px"><br><br>
                                             <small class="float-right"> {{$productSale->created_at}}</small><br>
                                             <small class="float-right">Invoice #{{$productSale->invoice_no}}</small><br>
+                                            <small class="float-right">BIN Reg. NO: 001719214-0201</small><br>
                                         </h4>
                                     </div>
                                     <!-- /.col -->
