@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('supplier-due','ProductPurchaseController@supplierDue')->name('productPurchases.supplier.due');
     Route::get('supplier-due-raw-materials','ProductPurchaseRawMaterialsController@supplierDueRawMaterials')->name('productPurchases.supplier.due.rawMaterials');
     Route::post('supplier-pay-due','ProductPurchaseController@supplierPayDue')->name('supplier.pay.due');
+    Route::get('productSales-challan/{id}','ProductSaleController@challan')->name('productSales-challan');
+    Route::get('productSales-challan-print/{id}','ProductSaleController@challanPrint')->name('productSales-challan-print');
     Route::get('productSales-invoice/{id}','ProductSaleController@invoice')->name('productSales-invoice');
     Route::get('productSales-invoice-print/{id}','ProductSaleController@invoicePrint')->name('productSales-invoice-print');
     Route::get('productSales-invoice-edit/{id}','ProductSaleController@invoiceEdit')->name('productSales-invoice-edit');

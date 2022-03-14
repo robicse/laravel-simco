@@ -109,8 +109,6 @@
                                                 <th>Description</th>
                                                 <th>Qty</th>
                                                 <th>Unit</th>
-                                                <th>Unit Price BDT</th>
-                                                <th>Amount BDT</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -123,106 +121,31 @@
                                                     <td style="text-align: left">{{$productSaleDetail->product->name}}</td>
                                                     <td>{{$productSaleDetail->qty}}</td>
                                                     <td>{{$productSaleDetail->product_unit->name}}</td>
-                                                    <td style="text-align: right">{{number_format($productSaleDetail->price,2)}}</td>
-                                                    <td style="text-align: right">
-                                                        @php
-                                                            $sub_total=$productSaleDetail->qty*$productSaleDetail->price;
-                                                            $sum_sub_total += $sub_total;
-                                                        @endphp
-                                                        {{number_format($sub_total,2)}}
-                                                    </td>
                                                 </tr>
                                             @endforeach
-                                            <tr>
-                                                <td colspan="4">&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Subtotal:</th>
-                                                <th style="text-align: right">{{number_format($sum_sub_total, 2)}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Discount:</th>
-                                                <th style="text-align: right">
-{{--                                                    @php--}}
-{{--                                                        $discount_amount = ($sum_sub_total*$productSale->discount_amount)/100;--}}
-{{--                                                    @endphp--}}
-{{--                                                    @if($productSale->discount_type == 'percentage')--}}
-{{--                                                        -{{number_format($productSale->discount_amount,2)}}% ({{$discount_amount}})--}}
-
-
-{{--                                                    @else--}}
-{{--                                                        -{{number_format($productSale->discount_amount,2)}}--}}
-{{--                                                    @endif--}}
-                                                    -{{number_format($productSale->discount_amount,2)}}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Total Amount:</th>
-                                                <th style="text-align: right">{{number_format($productSale->total_amount,2)}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Paid Amount:</th>
-                                                <th style="text-align: right">{{number_format($productSale->paid_amount,2)}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Due Amount:</th>
-                                                <th style="text-align: right">{{number_format($productSale->due_amount,2)}}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="4">&nbsp;</th>
-                                                <th style="text-align: right">Previous Due Amount:</th>
-                                                <th style="text-align: right">{{number_format($previous_due,2)}}</th>
-                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                     <!-- /.col -->
                                 </div>
                                 <!-- /.row -->
-                                <div class="write">
-                                    <p class="lead"><b>In Word : {{ucwords($digit->format($productSale->total_amount))}} Only.</b></p>
-                                </div>
+                                <div class="write">&nbsp;</div>
                                 <div class="row">
                                     <!-- accepted payments column -->
-                                    <div class="col-6">
-                                        <p class="lead">Payment Type:</p>
-                                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                                            @if(!empty($transactions))
-                                                <ul>
-                                                @foreach($transactions as $transaction)
-                                                    <li>
-                                                        {{$transaction->payment_type}}
-                                                        @if($transaction->payment_type == 'Cheque')
-                                                            ( Cheque Number: {{$transaction->cheque_number}} )
-                                                        @endif
-                                                        :
-                                                        Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})
-                                                    </li>
-                                                @endforeach
-                                                </ul>
-                                            @endif
-                                        </p>
-                                    </div>
-                                    <!-- /.col -->
-                                    <div class="row">
-                                        <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
-                                            <strong>Received By</strong><br>
-                                            <strong>Customer signature</strong>
-                                        </div>
-                                        <div class="col-md-6" style="text-align: right; width: 40%; display: inline-block">
-                                            <strong>Authorize Signature</strong><br>
-                                            <strong>For SIMCO Electronics</strong>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
+                                                <strong>Received By</strong><br>
+                                                <strong>Customer signature</strong>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: right; width: 40%; display: inline-block">
+                                                <strong>Authorize Signature</strong><br>
+                                                <strong>For SIMCO Electronics</strong>
+                                            </div>
                                         </div>
                                     </div>
-                                    <!-- /.col -->
                                 </div>
+                                <div class="write">&nbsp;</div>
                                 <!-- /.row -->
                                 <div class="row footer_div">
                                     <div style="width: 20%;float: left;display: inline-block">
@@ -264,7 +187,7 @@
                                 <!-- this row will not appear when printing -->
                                 <div class="row no-print">
                                     <div class="col-12">
-                                        <a href="{{route('productSales-invoice-print',$productSale->id)}}" target="_blank" class="btn btn-success float-right"><i class="fas fa-print"></i> Print</a>
+                                        <a href="{{route('productSales-challan-print',$productSale->id)}}" target="_blank" class="btn btn-success float-right"><i class="fas fa-print"></i> Print</a>
                                         {{--                                        <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit--}}
                                         {{--                                            Payment--}}
                                         {{--                                        </button>--}}

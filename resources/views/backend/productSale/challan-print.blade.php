@@ -152,8 +152,6 @@
                             <th>Description</th>
                             <th>Qty</th>
                             <th>Unit</th>
-                            <th>Unit Price BDT</th>
-                            <th>Amount BDT</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -166,92 +164,10 @@
                                 <td style="text-align: left">{{$productSaleDetail->product->name}}</td>
                                 <td>{{$productSaleDetail->qty}}</td>
                                 <td>{{$productSaleDetail->product_unit->name}}</td>
-                                <td style="text-align: right">{{number_format($productSaleDetail->price,2)}}</td>
-                                <td style="text-align: right">
-                                    @php
-                                        $sub_total=$productSaleDetail->qty*$productSaleDetail->price;
-                                        $sum_sub_total += $sub_total;
-                                    @endphp
-                                    {{number_format($sub_total,2)}}
-                                </td>
                             </tr>
                         @endforeach
-                        <tr>
-                            <td colspan="4">&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <th colspan="4">&nbsp;</th>
-                            <th style="text-align: right">Subtotal:</th>
-                            <th style="text-align: right">{{number_format($sum_sub_total, 2)}}</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4">&nbsp;</th>
-                            <th style="text-align: right">Discount:</th>
-                            <th style="text-align: right">
-{{--                                @php--}}
-{{--                                    $discount_amount = ($sum_sub_total*$productSale->discount_amount)/100;--}}
-{{--                                @endphp--}}
-{{--                                @if($productSale->discount_type == 'percentage')--}}
-{{--                                    -{{number_format($productSale->discount_amount,2)}}% ({{$discount_amount}})--}}
-
-
-{{--                                @else--}}
-{{--                                    -{{number_format($productSale->discount_amount,2)}}--}}
-{{--                                @endif--}}
-                                -{{number_format($productSale->discount_amount,2)}}
-                            </th>
-                        </tr>
-                        <tr>
-                            <th colspan="4">&nbsp;</th>
-                            <th style="text-align: right">Total Amount:</th>
-                            <th style="text-align: right">{{number_format($productSale->total_amount,2)}}</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4">&nbsp;</th>
-                            <th style="text-align: right">Paid Amount:</th>
-                            <th style="text-align: right">{{number_format($productSale->paid_amount,2)}}</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4">&nbsp;</th>
-                            <th style="text-align: right">Due Amount:</th>
-                            <th style="text-align: right">{{number_format($productSale->due_amount,2)}}</th>
-                        </tr>
-                        <tr>
-                            <th colspan="4">&nbsp;</th>
-                            <th style="text-align: right">Previous Due Amount:</th>
-                            <th style="text-align: right">{{number_format($previous_due,2)}}</th>
-                        </tr>
                         </tbody>
                     </table>
-                    <div class="write">
-                        <p class="lead"><b>In Word : {{ucwords($digit->format($productSale->total_amount))}} Only.</b></p>
-                    </div>
-                    <div class="row" style="">
-                        <!-- accepted payments column -->
-                        <div class="col-md-6">
-
-                            <p style="text-align: left;font-size: 16px;" class="lead">Payment Type:</p>
-                            <p style="text-align: left;font-size: 16px;" class="text-muted well well-sm shadow-none" >
-                            @if(!empty($transactions))
-                                <ul>
-                                    @foreach($transactions as $transaction)
-                                        <li>
-                                            {{$transaction->payment_type}}
-                                            @if($transaction->payment_type == 'Cheque')
-                                                ( Cheque Number: {{$transaction->cheque_number}} )
-                                            @endif
-                                            :
-                                            Tk.{{number_format($transaction->amount,2)}} ({{$transaction->created_at}})
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                @endif
-                            </p>
-                        </div>
-                        <!-- /.col -->
-                    </div>
 
                     <div class="row" style="margin-top: 10%">
                         <div class="col-md-6" style="width: 60%; float: left;display: inline-block">
