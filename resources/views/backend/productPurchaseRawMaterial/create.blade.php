@@ -82,6 +82,7 @@
                                     <th>Brand</th>
                                     <th>Qty <small class="requiredCustom">*</small></th>
                                     <th>Price <small class="requiredCustom">*</small></th>
+                                    <th>MRP Price <small class="requiredCustom">*</small></th>
                                     <th>Sub Total</th>
                                     <th>Action</th>
 
@@ -90,7 +91,7 @@
                                 <tbody class="neworderbody">
                                 <tr>
                                     <td width="5%" class="no">1</td>
-                                    <td width="30%">
+                                    <td width="28%">
                                         <select class="form-control product_id select2" name="product_id[]" id="product_id_1" onchange="getval(1,this);" required>
                                             <option value="">Select  Product</option>
                                             @foreach($products as $product)
@@ -118,7 +119,7 @@
 {{--                                            </select>--}}
 {{--                                        </div>--}}
 {{--                                    </td>--}}
-                                    <td width="15%">
+                                    <td width="12%">
                                         <div id="product_brand_id_1">
                                             <select class="form-control product_brand_id select2" name="product_brand_id[]" required>
                                                 <option value="">Select  Brand</option>
@@ -128,11 +129,14 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td width="15%">
+                                    <td width="12%">
                                         <input type="number" min="1" max="" class="qty form-control" name="qty[]" value="" required >
                                     </td>
-                                    <td width="15%">
+                                    <td width="12%">
                                         <input type="number" min="1" max="" class="price form-control" name="price[]" value="" required >
+                                    </td>
+                                    <td width="12%">
+                                        <input type="number" min="1" max="" class="form-control" name="mrp_price[]" value="" required >
                                     </td>
                                     <td width="15%">
                                         <input type="text" class="amount form-control" name="sub_total[]">
@@ -146,9 +150,9 @@
                                     <th>&nbsp;</th>
                                     <th>
                                         Type:
-                                        <select name="discount_type" id="discount_type" class="form-control" required>
+                                        <select name="discount_type" id="discount_type" class="form-control" >
                                             <option value="">Select</option>
-                                            <option value="flat" selected>Flat</option>
+                                            <option value="flat">Flat</option>
                                             <option value="percentage">Percentage</option>
                                         </select>
                                     </th>
@@ -162,11 +166,11 @@
                                         <input type="hidden" id="store_total_amount" class="form-control">
                                         <input type="text" id="total_amount" class="form-control" name="total_amount" readonly>
                                     </th>
-                                    <th >
+                                    <th colspan="2">
                                         Paid Amount:
                                         <input type="text" id="paid_amount" class="getmoney form-control" onkeyup="paidAmount('')" name="paid_amount" value="0">
                                     </th>
-                                    <th width="15%">
+                                    <th colspan="2">
                                         Due Amount:
                                         <input type="text" id="due_amount" class="backmoney form-control" name="due_amount">
                                     </th>
@@ -391,7 +395,7 @@
                     '<td><div id="product_brand_id_'+n+'"><select class="form-control product_brand_id select2" name="product_brand_id[]" id="product_brand_id_'+n+'" required>' + productBrand + '</select></div></td>' +
                     '<td><input type="text" min="1" max="" class="qty form-control" name="qty[]" required></td>' +
                     '<td><input type="text" min="1" max="" class="price form-control" name="price[]" value="" required></td>' +
-                    // '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
+                    '<td><input type="text" min="1" max="" class="form-control" name="mrp_price[]" value="" required></td>' +
                     //'<td><input type="number" min="0" value="0" max="100" class="dis form-control" name="discount[]" required></td>' +
                     '<td><input type="text" class="amount form-control" name="sub_total[]" required></td>' +
                     '<td><input type="button" class="btn btn-danger delete" value="x"></td></tr>';

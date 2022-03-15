@@ -150,9 +150,9 @@
                                     <th>&nbsp;</th>
                                     <th>
                                         Type:
-                                        <select name="discount_type" id="discount_type" class="form-control" required>
+                                        <select name="discount_type" id="discount_type" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="flat" selected>Flat</option>
+                                            <option value="flat">Flat</option>
                                             <option value="percentage">Percentage</option>
                                         </select>
                                     </th>

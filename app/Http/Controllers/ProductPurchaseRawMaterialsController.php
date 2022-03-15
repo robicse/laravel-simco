@@ -96,7 +96,7 @@ class ProductPurchaseRawMaterialsController extends Controller
         $productPurchase ->date = $request->date;
         //$productPurchase ->payment_type = $request->payment_type;
         //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
-        $productPurchase->discount_type = $request->discount_type;
+        $productPurchase->discount_type = $request->discount_type ? $request->discount_type : NULL;
         $productPurchase->discount_amount = $discount_amount;
         $productPurchase->discount_percentage = $discount_percentage;
         $productPurchase->total_amount = $total_amount;
@@ -111,6 +111,8 @@ class ProductPurchaseRawMaterialsController extends Controller
             for($i=0; $i<$row_count;$i++)
             {
                 $price = $request->price[$i];
+                $mrp_price = $request->mrp_price[$i];
+                dd($mrp_price);
                 //$discount_amount = $discount_amount;
                 //$total_amount = $total_amount;
 
@@ -138,8 +140,8 @@ class ProductPurchaseRawMaterialsController extends Controller
                 $purchase_purchase_detail->product_id = $request->product_id[$i];
                 $purchase_purchase_detail->qty = $request->qty[$i];
                 $purchase_purchase_detail->price = $request->price[$i];
+                $purchase_purchase_detail->mrp_price = $request->mrp_price[$i];
                 $purchase_purchase_detail->discount = $discount;
-                $purchase_purchase_detail->mrp_price = NULL;
 //                $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];
                 $purchase_purchase_detail->profit_amount = $request->mrp_price[$i] - $request->price[$i];
                 $purchase_purchase_detail->sub_total = $request->qty[$i]*$request->price[$i];

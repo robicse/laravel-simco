@@ -441,7 +441,7 @@ if (!function_exists('purchase_invoice_nos')) {
             return $invoice_nos = DB::table('product_purchases')
                 ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
                 ->where('product_purchase_details.qty_stock_status','Available')
-                ->where('product_purchases.purchase_product_type','Finish Goods')
+                //->where('product_purchases.purchase_product_type','Finish Goods')
                 ->where('product_purchases.store_id',$store_id)
                 ->where('product_purchase_details.product_id',$product_id)
                 ->select('product_purchases.invoice_no')
@@ -450,7 +450,7 @@ if (!function_exists('purchase_invoice_nos')) {
             return $invoice_nos = DB::table('product_purchases')
                 ->leftjoin('product_purchase_details','product_purchase_details.product_purchase_id','product_purchases.id')
                 ->where('product_purchase_details.qty_stock_status','Available')
-                ->where('product_purchases.purchase_product_type','Finish Goods')
+                //->where('product_purchases.purchase_product_type','Finish Goods')
                 ->select('product_purchases.invoice_no')
                 ->get();
         }
@@ -515,13 +515,25 @@ if (!function_exists('current_invoice_stock_row')) {
     }
 }
 
+//if (!function_exists('get_profit_amount')) {
+//    function get_profit_amount($purchase_invoice_no,$product_id)
+//    {
+//        return $get_profit_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+//            ->where('product_id',$product_id)
+//            ->pluck('profit_amount')
+//            ->first();
+//    }
+//}
+
 if (!function_exists('get_profit_amount')) {
-    function get_profit_amount($purchase_invoice_no,$product_id)
+    function get_profit_amount($purchase_invoice_no,$product_id, $current_sale_price)
     {
-        return $get_profit_amount = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
+         $purchase_price = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
             ->where('product_id',$product_id)
-            ->pluck('profit_amount')
+            ->pluck('price')
             ->first();
+
+        return $current_sale_price - $purchase_price;
     }
 }
 

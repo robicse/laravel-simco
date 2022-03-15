@@ -213,7 +213,8 @@ class ProductSaleController extends Controller
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $productUnits = ProductUnit::all();
-        $products = Product::where('product_type','Finish Goods')->get();
+        //$products = Product::where('product_type','Finish Goods')->get();
+        $products = Product::latest('id','desc')->get();
         return view('backend.productSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands','productUnits'));
     }
 
@@ -408,7 +409,8 @@ class ProductSaleController extends Controller
                 $invoice_stock->save();
 
 
-                $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+                //$profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+                $profit_amount = get_profit_amount($purchase_invoice_no,$product_id,$request->price[$i]);
 
                 // profit table
                 $profit = new Profit();
