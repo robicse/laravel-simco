@@ -411,6 +411,7 @@ class ProductSaleController extends Controller
 
                 //$profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
                 $profit_amount = get_profit_amount($purchase_invoice_no,$product_id,$request->price[$i]);
+                //dd($profit_amount);
 
                 // profit table
                 $profit = new Profit();

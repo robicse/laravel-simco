@@ -42,7 +42,7 @@
 {{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
                         <th>Paid Amount</th>
-                        <th>Date</th>
+                        <th width="15%">Date</th>
                         <th>Due Amount</th>
                         <th>Action</th>
                     </tr>

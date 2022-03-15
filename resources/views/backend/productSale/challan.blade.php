@@ -98,7 +98,7 @@
 
                                 </div>
                                 <!-- /.row -->
-
+                                <h1 style="text-align: center"><strong>Challan</strong></h1>
                                 <!-- Table row -->
                                 <div class="row">
                                     <div class="col-12 table-responsive">

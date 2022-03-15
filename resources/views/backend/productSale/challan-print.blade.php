@@ -55,7 +55,7 @@
                         border-top: 1px solid #000000;
                         width:100%;
                         font-size: 10px !important;
-                        padding-bottom: 20px;
+                        padding-bottom: 5px;
                     }
 
                     /* default settings */
@@ -144,7 +144,7 @@
                     </div>
                     <br/>
                     <br/>
-                    <br/>
+                    <h1 style="text-align: center"><strong>Challan</strong></h1>
                     <table class="invoice">
                         <thead>
                         <tr style="background-color: #dddddd">

@@ -112,7 +112,6 @@ class ProductPurchaseRawMaterialsController extends Controller
             {
                 $price = $request->price[$i];
                 $mrp_price = $request->mrp_price[$i];
-                dd($mrp_price);
                 //$discount_amount = $discount_amount;
                 //$total_amount = $total_amount;
 

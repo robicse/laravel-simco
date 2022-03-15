@@ -99,13 +99,14 @@
                                 </div>
                                 <!-- /.row -->
 
+                                <h1 style="text-align: center"><strong>Bill</strong></h1>
                                 <!-- Table row -->
                                 <div class="row">
                                     <div class="col-12 table-responsive">
                                         <table class="table table-striped">
                                             <thead>
                                             <tr style="background-color: #dddddd">
-                                                <th>SL No.</th>
+                                                <th>SL No.11</th>
                                                 <th>Description</th>
                                                 <th>Qty</th>
                                                 <th>Unit</th>

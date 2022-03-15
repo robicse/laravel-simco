@@ -126,8 +126,8 @@ class ProductProductionController extends Controller
             $productProduction->user_id = Auth::id();
             $productProduction->store_id = $request->store_id;
             $productProduction->total_amount = $total_amount;
-            $productProduction->paid_amount = 0;
-            $productProduction->due_amount = $total_amount;
+            $productProduction->paid_amount = $total_amount;
+            $productProduction->due_amount = 0;
             $productProduction->date = $request->date;
             $productProduction->save();
             $insert_id = $productProduction->id;
@@ -142,7 +142,6 @@ class ProductProductionController extends Controller
                     // product production detail
                     $purchase_production_detail = new ProductProductionDetail();
                     $purchase_production_detail->purchase_invoice_no = $purchase_invoice_no;
-                    $purchase_production_detail->invoice_no = 'production-'.$invoice_no_product_production;
                     $purchase_production_detail->invoice_no = 'production-'.$invoice_no_product_production;
                     $purchase_production_detail->product_production_id = $insert_id;
                     $purchase_production_detail->product_category_id = $request->product_category_id[$i];
@@ -257,11 +256,11 @@ class ProductProductionController extends Controller
                 $productPurchase ->date = $request->date;
                 $productPurchase ->total_amount = $request->existing_qty*$request->existing_price;
                 $productPurchase ->purchase_product_type = 'Finish Goods';
-                $productPurchase->discount_type = 'flat';
+                $productPurchase->discount_type = NULL;
                 $productPurchase->discount_amount = 0;
 //                $productPurchase->discount_percentage = '';
-                $productPurchase->paid_amount = 0;
-                $productPurchase->due_amount = $request->existing_qty*$request->existing_price;
+                $productPurchase->paid_amount = $request->existing_qty*$request->existing_price;
+                $productPurchase->due_amount = 0;
                 $productPurchase->ref_id = $insert_id;
                 $productPurchase->save();
                 $purchase_insert_id = $productPurchase->id;
@@ -381,8 +380,8 @@ class ProductProductionController extends Controller
             $productProduction->user_id = Auth::id();
             $productProduction->store_id = $request->store_id;
             $productProduction->total_amount = $total_amount;
-            $productProduction->paid_amount = 0;
-            $productProduction->due_amount = $total_amount;
+            $productProduction->paid_amount = $total_amount;
+            $productProduction->due_amount = 0;
             $productProduction->date = $request->date;
 
             //dd($productProduction);
@@ -522,8 +521,6 @@ class ProductProductionController extends Controller
 //            resize image for hospital and upload
                     $proImage =Image::make($image)->resize(300, 300)->save($image->getClientOriginalExtension());
                     Storage::disk('public')->put('uploads/product/'.$imagename, $proImage);
-
-
                 }else {
                     $imagename = "default.png";
                 }
@@ -543,11 +540,11 @@ class ProductProductionController extends Controller
                     $productPurchase->date = $request->date;
                     $productPurchase->total_amount = $request->new_qty*$request->new_mrp_price;
                     $productPurchase->purchase_product_type = 'Finish Goods';
-                    $productPurchase->discount_type = 'flat';
+                    $productPurchase->discount_type = NULL;
                     $productPurchase->discount_amount = 0;
 //                    $productPurchase->discount_percentage = '';
-                    $productPurchase->paid_amount = 0;
-                    $productPurchase->due_amount = $request->new_qty*$request->new_mrp_price;
+                    $productPurchase->paid_amount = $request->new_qty*$request->new_mrp_price;
+                    $productPurchase->due_amount = 0;
 
                     $productPurchase->save();
                     $purchase_insert_id = $productPurchase->id;
