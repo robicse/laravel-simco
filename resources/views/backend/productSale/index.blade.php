@@ -38,13 +38,13 @@
                         <th>Sale User</th>
                         <th>Invoice No</th>
 {{--                        <th>Model</th>--}}
-                        <th>Customer</th>
+                        <th width="20%">Customer</th>
 {{--                        <th>Payment Type</th>--}}
                         <th>Total Amount</th>
                         <th>Paid Amount</th>
-                        <th width="15%">Date</th>
+                        <th width="14%">Date</th>
                         <th>Due Amount</th>
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>

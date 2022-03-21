@@ -55,7 +55,7 @@
                         border-top: 1px solid #000000;
                         width:100%;
                         font-size: 10px !important;
-                        padding-bottom: 5px;
+                        padding-bottom: 10px;
                     }
 
                     /* default settings */

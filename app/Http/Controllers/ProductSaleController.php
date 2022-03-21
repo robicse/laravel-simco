@@ -946,7 +946,10 @@ class ProductSaleController extends Controller
     public function invoice($id)
     {
         $productSale = ProductSale::find($id);
-        $previous_due = ProductSale::where('party_id','<',$productSale->party_id)->where('id','<',$productSale->id)->sum('due_amount');
+        $previous_due = ProductSale::where('party_id',$productSale->party_id)
+            ->where('id','<',$productSale->id)
+            ->sum('due_amount');
+
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
         //$transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
         $transactions = Transaction::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->get();
@@ -960,7 +963,10 @@ class ProductSaleController extends Controller
     public function invoicePrint($id)
     {
         $productSale = ProductSale::find($id);
-        $previous_due = ProductSale::where('party_id','<',$productSale->party_id)->where('id','<',$productSale->id)->sum('due_amount');
+        $previous_due = ProductSale::where('party_id',$productSale->party_id)
+            ->where('id','<',$productSale->id)
+            ->sum('due_amount');
+
         $productSaleDetails = ProductSaleDetail::where('product_sale_id',$id)->get();
         //$transactions = Transaction::where('ref_id',$id)->where('transaction_type','sale')->get();
         $transactions = Transaction::where('ref_id',$id)->where('invoice_no',$productSale->invoice_no)->get();

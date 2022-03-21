@@ -35,7 +35,8 @@ class ProductPurchaseController extends Controller
 
     public function index()
     {
-        $productPurchases = ProductPurchase::where('purchase_product_type','Finish Goods')->latest()->get();
+//        $productPurchases = ProductPurchase::where('purchase_product_type','Finish Goods')->latest()->get();
+        $productPurchases = ProductPurchase::latest()->get();
         return view('backend.productPurchase.index',compact('productPurchases'));
     }
 
