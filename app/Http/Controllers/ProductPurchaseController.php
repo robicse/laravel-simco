@@ -35,7 +35,6 @@ class ProductPurchaseController extends Controller
 
     public function index()
     {
-//        $productPurchases = ProductPurchase::where('purchase_product_type','Finish Goods')->latest()->get();
         $productPurchases = ProductPurchase::latest()->get();
         return view('backend.productPurchase.index',compact('productPurchases'));
     }
@@ -61,7 +60,6 @@ class ProductPurchaseController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
         $this->validate($request, [
             'party_id'=> 'required',
             'store_id'=> 'required',
@@ -98,8 +96,6 @@ class ProductPurchaseController extends Controller
         $productPurchase->store_id = $request->store_id;
         $productPurchase->user_id = Auth::id();
         $productPurchase->date = $request->date;
-        //$productPurchase->payment_type = $request->payment_type;
-        //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $productPurchase->discount_type = $request->discount_type;
         $productPurchase->discount_amount = $discount_amount;
         $productPurchase->discount_percentage = $discount_percentage;
@@ -114,8 +110,6 @@ class ProductPurchaseController extends Controller
             for($i=0; $i<$row_count;$i++)
             {
                 $price = $request->price[$i];
-                //$discount_amount = $discount_amount;
-                //$total_amount = $total_amount;
 
                 $final_discount_amount = (float)$discount_amount * (float)$price;
                 $final_total_amount = (float)$discount_amount + (float)$total_amount;
@@ -196,8 +190,6 @@ class ProductPurchaseController extends Controller
             $due->user_id = Auth::id();
             $due->store_id = $request->store_id;
             $due->party_id = $request->party_id;
-            //$due->payment_type = $request->payment_type;
-            //$due->cheque_number = $request->cheque_number ? $request->cheque_number : '';
             $due->total_amount = $total_amount;
             $due->paid_amount = $request->paid_amount;
             $due->due_amount = $request->due_amount;
@@ -238,7 +230,6 @@ class ProductPurchaseController extends Controller
     public function edit($id)
     {
         $parties = Party::where('type','supplier')->orWhere('type','own')->get();
-        //dd($parties);
         $auth_user_id = Auth::user()->id;
         $auth_user = Auth::user()->roles[0]->name;
         if($auth_user == "Admin"){
@@ -246,13 +237,12 @@ class ProductPurchaseController extends Controller
         }else{
             $stores = Store::where('user_id',$auth_user_id)->get();
         }
-        $products = Product::where('product_type','Finish Goods')->get();
+        $products = Product::all();
         $productPurchase = ProductPurchase::find($id);
         $productCategories = ProductCategory::all();
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
-        //dd($transaction);
         $productPurchaseDetails = ProductPurchaseDetail::where('product_purchase_id',$id)->get();
         $stock_id = Stock::where('ref_id',$id)->where('stock_type','purchase')->pluck('id')->first();
         return view('backend.productPurchase.edit',compact('parties','stores','products','productPurchase','productPurchaseDetails','productCategories','productSubCategories','productBrands','transaction','stock_id'));
@@ -261,14 +251,12 @@ class ProductPurchaseController extends Controller
 
     public function update(Request $request, $id)
     {
-        //dd($request->all());
         $this->validate($request, [
             'party_id'=> 'required',
             'store_id'=> 'required',
 
         ]);
 
-        $stock_id = $request->stock_id;
         $row_count = count($request->product_id);
         $total_amount = 0;
         for($i=0; $i<$row_count;$i++)
@@ -282,8 +270,6 @@ class ProductPurchaseController extends Controller
         $productPurchase ->store_id = $request->store_id;
         $productPurchase ->user_id = Auth::id();
         $productPurchase ->date = $request->date;
-        //$productPurchase ->payment_type = $request->payment_type;
-        //$productPurchase->cheque_number = $request->cheque_number ? $request->cheque_number : '';
         $productPurchase->discount_type = $request->discount_type;
         $productPurchase->discount_amount = $request->discount_amount;
         $productPurchase->total_amount = $total_amount;
@@ -295,7 +281,6 @@ class ProductPurchaseController extends Controller
         {
             $price = $request->price[$i];
             $discount_amount = $request->discount_amount;
-            //$total_amount = $request->total_amount;
 
             $final_discount_amount = (float)$discount_amount * (float)$price;
             $final_total_amount = (float)$discount_amount + (float)$total_amount;
@@ -326,129 +311,48 @@ class ProductPurchaseController extends Controller
             $purchase_purchase_detail->barcode = $barcode;
             $purchase_purchase_detail->update();
 
-
-//            $stock_row = Stock::where('ref_id',$id)->where('stock_type','purchase')->where('product_id',$product_id)->latest()->first();
-//            $previous_stock = Stock::where('product_id',$product_id)->latest('id','desc')->pluck('current_stock')->first();
-//
-//            // product stock
-//            if($request->qty[$i] != $stock_row->stock_in) {
-//                $stock = new Stock();
-//                $stock->user_id = Auth::id();
-//                $stock->ref_id = $id;
-//                $stock->store_id = $request->store_id;
-//                $stock->date = $request->date;
-//                $stock->product_id = $request->product_id[$i];
-//                $stock->stock_product_type = $productPurchase->purchase_product_type;
-//                $stock->stock_type = 'purchase';
-//                $stock->previous_stock = $previous_stock;
-//                if ($stock_row->stock_in != $request->qty[$i]) {
-//                    if ($request->qty[$i] > $stock_row->stock_in) {
-//                        $add_stock_in = $request->qty[$i] - $stock_row->stock_in;
-//                        $update_current_stock = $previous_stock + $add_stock_in;
-//
-//                        $stock->stock_in = $add_stock_in;
-//                        $stock->stock_out = 0;
-//                        $stock->current_stock = $update_current_stock;
-//                    } else {
-//                        $minus_stock_in = $stock_row->stock_in - $request->qty[$i];
-//                        $update_current_stock = $previous_stock - $minus_stock_in;
-//
-//                        $stock->stock_in = 0;
-//                        $stock->stock_out = $minus_stock_in;
-//                        $stock->current_stock = $update_current_stock;
-//                    }
-//
-//                }
-//                $stock->save();
-//            }
-//
-//            // invoice wise stock
-//            $invoice_stock_row = InvoiceStock::where('ref_id',$id)
-//                ->where('store_id',$request->store_id)
-//                ->where('stock_type','purchase')
-//                ->where('product_id',$product_id)
-//                ->latest()->first();
-//            $previous_invoice_stock = InvoiceStock::where('purchase_invoice_no',$productPurchase->invoice_no)
-//                ->where('store_id',$request->store_id)
-//                ->where('product_id',$product_id)
-//                ->latest()
-//                ->pluck('current_stock')
-//                ->first();
-//            if($invoice_stock_row->stock_in != $request->qty[$i]) {
-//                $invoice_stock = new InvoiceStock();
-//                $invoice_stock->user_id = Auth::id();
-//                $invoice_stock->ref_id = $id;
-//                $invoice_stock->purchase_invoice_no = $productPurchase->invoice_no;
-//                $invoice_stock->invoice_no = NULL;
-//                $invoice_stock->store_id = $request->store_id;
-//                $invoice_stock->product_id = $request->product_id[$i];
-//                $invoice_stock->stock_product_type = $productPurchase->purchase_product_type;
-//                $invoice_stock->stock_type = 'purchase';
-//                $invoice_stock->previous_stock = $previous_invoice_stock;
-//                //if($invoice_stock_row->stock_in != $request->qty[$i]){
-//                if ($request->qty[$i] > $invoice_stock_row->stock_in) {
-//                    $add_stock_in = $request->qty[$i] - $invoice_stock_row->stock_in;
-//                    $update_current_stock = $previous_invoice_stock + $add_stock_in;
-//
-//                    $invoice_stock->stock_in = $add_stock_in;
-//                    $invoice_stock->stock_out = 0;
-//                    $invoice_stock->current_stock = $update_current_stock;
-//                } else {
-//                    $minus_stock_in = $invoice_stock_row->stock_in - $request->qty[$i];
-//                    $update_current_stock = $previous_invoice_stock - $minus_stock_in;
-//
-//                    $invoice_stock->stock_in = 0;
-//                    $invoice_stock->stock_out = $minus_stock_in;
-//                    $invoice_stock->current_stock = $update_current_stock;
-//                }
-//
-//                //}
-//                $invoice_stock->date = date('Y-m-d');
-//                $invoice_stock->save();
-//            }
-
             // product stock
             $store_id=$productPurchase->store_id;
             $invoice_no=$productPurchase->invoice_no;
-            $stock_row = current_stock_row($store_id,'Finish Goods','purchase',$product_id);
+            $purchase_product_type=$productPurchase->purchase_product_type;
+            $stock_row = current_stock_row($store_id,$purchase_product_type,'purchase',$product_id);
             //dd($stock_row);
-            $previous_stock = $stock_row->previous_stock;
-            $stock_out = $stock_row->stock_out;
-            //$current_stock = $stock_row->current_stock;
-            $request_qty = $request->qty[$i];
+            if(!empty($stock_row)){
+                $previous_stock = $stock_row->previous_stock;
+                $stock_out = $stock_row->stock_out;
+                $request_qty = $request->qty[$i];
 
+                if($stock_out != $request_qty){
+                    $stock_row->user_id = Auth::id();
+                    $stock_row->store_id = $request->store_id;
+                    $stock_row->product_id = $product_id;
+                    $stock_row->previous_stock = $previous_stock;
+                    $stock_row->stock_in = $request_qty;
+                    $stock_row->stock_out = 0;
+                    $new_stock_in = $previous_stock + $request_qty;
+                    $stock_row->current_stock = $new_stock_in;
+                    $stock_row->update();
+                }
 
-            if($stock_out != $request_qty){
-                $stock_row->user_id = Auth::id();
-                $stock_row->store_id = $request->store_id;
-                $stock_row->product_id = $product_id;
-                $stock_row->previous_stock = $previous_stock;
-                $stock_row->stock_in = $request_qty;
-                $stock_row->stock_out = 0;
-                $new_stock_in = $previous_stock + $request_qty;
-                $stock_row->current_stock = $new_stock_in;
-                $stock_row->update();
+                // invoice stock
+                $invoice_stock_row = current_invoice_stock_row($store_id,$purchase_product_type,'purchase',$product_id,$invoice_no,null);
+                $previous_invoice_stock = $invoice_stock_row->previous_stock;
+                $invoice_stock_out = $invoice_stock_row->stock_out;
+
+                if($invoice_stock_out != $request_qty){
+                    $invoice_stock_row->user_id = Auth::id();
+                    $invoice_stock_row->store_id = $store_id;
+                    $invoice_stock_row->date = $request->date;
+                    $invoice_stock_row->product_id = $product_id;
+                    $invoice_stock_row->previous_stock = $previous_invoice_stock;
+                    $invoice_stock_row->stock_in = $request_qty;
+                    $invoice_stock_row->stock_out = 0;
+                    $new_stock_in = $previous_invoice_stock + $request_qty;
+                    $invoice_stock_row->current_stock = $new_stock_in;
+                    $invoice_stock_row->update();
+                }
             }
 
-
-
-            // invoice stock
-            $invoice_stock_row = current_invoice_stock_row($store_id,'Finish Goods','purchase',$product_id,$invoice_no,null);
-            $previous_invoice_stock = $invoice_stock_row->previous_stock;
-            $invoice_stock_out = $invoice_stock_row->stock_out;
-
-            if($invoice_stock_out != $request_qty){
-                $invoice_stock_row->user_id = Auth::id();
-                $invoice_stock_row->store_id = $store_id;
-                $invoice_stock_row->date = $request->date;
-                $invoice_stock_row->product_id = $product_id;
-                $invoice_stock_row->previous_stock = $previous_invoice_stock;
-                $invoice_stock_row->stock_in = $request_qty;
-                $invoice_stock_row->stock_out = 0;
-                $new_stock_in = $previous_invoice_stock + $request_qty;
-                $invoice_stock_row->current_stock = $new_stock_in;
-                $invoice_stock_row->update();
-            }
         }
 
         // due
@@ -480,14 +384,6 @@ class ProductPurchaseController extends Controller
 
     public function destroy($id)
     {
-//        $productPurchase = ProductPurchase::find($id);
-//        $productPurchase->delete();
-//
-//        DB::table('product_purchase_details')->where('product_purchase_id',$id)->delete();
-//        DB::table('stocks')->where('ref_id',$id)->delete();
-//        DB::table('transactions')->where('ref_id',$id)->delete();
-//
-//        Toastr::success('Product purchase Deleted Successfully', 'Success');
         Toastr::warning('Product Purchase Permanently Deleted Not Possible, Please Contact With Administrator.', 'Warning');
         return redirect()->route('productPurchases.index');
     }
@@ -558,7 +454,6 @@ class ProductPurchaseController extends Controller
     }
 
     public function newParty(Request $request){
-        //dd($request->all());
         $this->validate($request, [
             'type'=> 'required',
             'name' => 'required',
@@ -591,7 +486,6 @@ class ProductPurchaseController extends Controller
     }
 
     public function supplierPayDue(Request $request){
-        //dd($request->all());
 
         $product_purchase_id = $request->product_purchase_id;
         $product_purchase = ProductPurchase::find($product_purchase_id);
@@ -611,7 +505,6 @@ class ProductPurchaseController extends Controller
         $due->user_id=$product_purchase->user_id;
         $due->store_id=$product_purchase->store_id;
         $due->party_id=$product_purchase->party_id;
-        //$due->payment_type=$product_sale->payment_type;
         $due->total_amount=$product_purchase->total_amount;
         $due->paid_amount=$request->new_paid;
         $due->due_amount=$total_amount-($paid_amount+$request->new_paid+$product_purchase->discount_amount);

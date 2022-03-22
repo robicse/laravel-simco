@@ -57,7 +57,7 @@
                             <div class="col-md-8">
                                 <select name="payment_type" id="payment_type" class="form-control" required>
                                     <option value="">Select One</option>
-                                    <option value="Cash" @if(!empty($transaction->payment_type)) {{'Cash' == $transaction->payment_type ? 'selected' : ''}} @endif>Cash</option>
+                                    <option value="Cash" @if(!empty($transaction->payment_type)) {{'Cash' == 'Cash' ? 'selected' : ''}} @endif>Cash</option>
                                     <option value="Cheque" @if(!empty($transaction->payment_type)) {{'Cheque' == $transaction->payment_type ? 'selected' : ''}} @endif>Cheque</option>
                                 </select>
                                 <span>&nbsp;</span>
