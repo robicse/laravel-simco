@@ -50,7 +50,9 @@
                             </td>
                             <td class="d-inline-flex">
                                 <a href="{{ route('productPurchases.show',$productPurches->id) }}" class="btn btn-sm btn-info float-left" style="margin-left: 5px">Show</a>
+                                @if( $productPurches->purchase_product_type == 'Finish Goods')
                                 <a href="{{ route('productPurchases.edit',$productPurches->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
+                                @endif
 {{--                                <form method="post" action="{{ route('productPurchases.destroy',$productPurches->id) }}" >--}}
 {{--                                   @method('DELETE')--}}
 {{--                                    @csrf--}}

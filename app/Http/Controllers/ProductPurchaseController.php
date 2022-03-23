@@ -367,15 +367,17 @@ class ProductPurchaseController extends Controller
 
         // transaction
         $transaction = Transaction::where('ref_id',$id)->where('transaction_type','purchase')->first();
-        //$transaction->invoice_no = Null;
-        $transaction->user_id = Auth::id();
-        $transaction->store_id = $request->store_id;
-        $transaction->party_id = $request->party_id;
-        $transaction->date = $request->date;
-        $transaction->payment_type = $request->payment_type;
-        $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
-        $transaction->amount = $total_amount;
-        $transaction->update();
+        if(!empty($transaction)){
+            //$transaction->invoice_no = Null;
+            $transaction->user_id = Auth::id();
+            $transaction->store_id = $request->store_id;
+            $transaction->party_id = $request->party_id;
+            $transaction->date = $request->date;
+            $transaction->payment_type = $request->payment_type;
+            $transaction->cheque_number = $request->cheque_number ? $request->cheque_number : '';
+            $transaction->amount = $total_amount;
+            $transaction->update();
+        }
 
         Toastr::success('Product Purchases Updated Successfully', 'Success');
         return redirect()->route('productPurchases.index');

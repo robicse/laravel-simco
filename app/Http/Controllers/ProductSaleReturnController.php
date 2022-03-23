@@ -153,7 +153,7 @@ class ProductSaleReturnController extends Controller
 
 
 
-            $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+            $profit_amount = get_profit_amount($purchase_invoice_no,$product_id,$productSaleReturnDetail->price);
 
             // profit table
             $profit = get_profit_amount_row($store_id,$purchase_invoice_no,$invoice_no,$product_id);
@@ -269,7 +269,7 @@ class ProductSaleReturnController extends Controller
                 $invoice_stock->save();
 
 
-                $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+                $profit_amount = get_profit_amount($purchase_invoice_no,$product_id,$price);
 
                 // profit table
                 $profit = new Profit();
@@ -497,7 +497,7 @@ class ProductSaleReturnController extends Controller
                     $invoice_stock->save();
 
 
-                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id);
+                    $profit_amount = get_profit_amount($purchase_invoice_no,$product_id,$productSale->price);
 
                     // profit table
                     $profit = new Profit();
