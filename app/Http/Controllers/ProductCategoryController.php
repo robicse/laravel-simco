@@ -20,7 +20,6 @@ class ProductCategoryController extends Controller
     public function index()
     {
         $productCategories = ProductCategory::latest()->get();
-        //dd($productCategories);
         return view('backend.productCategory.index',compact('productCategories'));
     }
 
@@ -34,12 +33,10 @@ class ProductCategoryController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-
         $productCategory = new ProductCategory;
         $productCategory->name = $request->name;
         $productCategory->slug = Str::slug($request->name);
         $productCategory->save();
-
         Toastr::success('Product Category Created Successfully');
         return redirect()->route('productCategories.index');
     }
@@ -60,19 +57,16 @@ class ProductCategoryController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-
         $productCategory = ProductCategory::find($id);
         $productCategory->name = $request->name;
         $productCategory->slug = Str::slug($request->name);
         $productCategory->update();
-
         Toastr::success('Product Category Updated Successfully');
         return redirect()->route('productCategories.index');
     }
 
     public function destroy($id)
     {
-        //ProductCategory::destroy($id);
         Toastr::warning('Product Category not deleted possible, Please contact with administrator!');
         return redirect()->route('productCategories.index');
     }

@@ -25,12 +25,10 @@ class OfficeCostingCategoryController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-
         $officeCostingCategory = new OfficeCostingCategory();
         $officeCostingCategory->name = $request->name;
         $officeCostingCategory->slug = Str::slug($request->name);
         $officeCostingCategory->save();
-
         Toastr::success('Office Costing Category Created Successfully');
         return redirect()->route('officeCostingCategory.index');
     }
@@ -51,19 +49,16 @@ class OfficeCostingCategoryController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-
         $officeCostingCategory = OfficeCostingCategory::find($id);
         $officeCostingCategory->name = $request->name;
         $officeCostingCategory->slug = Str::slug($request->name);
         $officeCostingCategory->save();
-
         Toastr::success('Office Costing Category Updated Successfully');
         return redirect()->route('officeCostingCategory.index');
     }
 
     public function destroy($id)
     {
-        //OfficeCostingCategory::destroy($id);
         Toastr::warning('Office Costing Category not deleted possible, Please contact with administrator!');
         return redirect()->route('officeCostingCategory.index');
     }

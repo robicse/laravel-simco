@@ -34,12 +34,10 @@ class ProductBrandController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-
         $productBrand = new ProductBrand;
         $productBrand->name = $request->name;
         $productBrand->slug = Str::slug($request->name);
         $productBrand->save();
-
         Toastr::success('Product Brand Created Successfully');
         return redirect()->route('productBrands.index');
     }
@@ -60,19 +58,16 @@ class ProductBrandController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
-
         $productBrand = ProductBrand::find($id);
         $productBrand->name = $request->name;
         $productBrand->slug = Str::slug($request->name);
         $productBrand->save();
-
         Toastr::success('Product Brand Updated Successfully');
         return redirect()->route('productBrands.index');
     }
 
     public function destroy($id)
     {
-        //ProductBrand::destroy($id);
         Toastr::warning('Product Brand not deleted possible, Please contact with administrator!');
         return redirect()->route('productBrands.index');
     }

@@ -41,6 +41,7 @@
                             <th width="10%">Name</th>
                             <th width="10%">Email</th>
                             <th width="10%">Role</th>
+                            <th width="10%">Status</th>
                             <th width="15%">Action</th>
                         </tr>
                         </thead>
@@ -63,6 +64,7 @@
                                     @endforeach
                                 @endif
                             </td>
+                            <td>{{$user->status == 1 ? 'Active' : 'Inactive'}}</td>
                             <td class="d-inline-flex">
                                 <a class="btn btn-primary" style="margin-left: 5px" href="{{ route('users.edit',$user->id) }}">Edit</a>
 {{--                                <a class="btn btn-info" style="margin-left: 5px" href="{{ route('password.change_password',$user->id) }}">Edit Password</a>--}}

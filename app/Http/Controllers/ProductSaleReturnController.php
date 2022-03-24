@@ -358,12 +358,12 @@ class ProductSaleReturnController extends Controller
             endforeach;
             $html .= "<tr>";
 
-            $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" >
+            $html .= "<th colspan=\"2\"><select name=\"payment_type\" id=\"payment_type\" class=\"form-control\" onchange=\"productType('')\" readonly=\"readonly\">
                     <option value=\"Cash\" selected>Cash</option>
                     <option value=\"Cheque\">Cheque</option>
             </select> </th>";
-            $html .= "<th><input type=\"text\" name=\"cheque_number\" id=\"cheque_number\" class=\"form-control\" placeholder=\"Cheque Number\" readonly=\"readonly\"  size=\"28\" ></th>";
-            $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"28\" ></th>";
+            $html .= "<th><input type=\"text\" name=\"cheque_number\" id=\"cheque_number\" class=\"form-control\" placeholder=\"Cheque Number\" readonly=\"readonly\"  size=\"28\"></th>";
+            $html .= "<th><input type=\"text\" name=\"discount_amount\" id=\"discount_amount\" class=\"form-control\" value=\"$productSale->discount_amount\" readonly=\"readonly\"  size=\"28\" style=\"display: none\"></th>";
             $html .= "</tr>";
         endif;
         $html .= "</tbody>
@@ -512,7 +512,8 @@ class ProductSaleReturnController extends Controller
                     $profit->price = $request->total_amount[$i];
                     $profit->sub_total = $request->return_qty[$i]*$request->total_amount[$i];
                     $profit->discount_amount = 0;
-                    $profit->profit_amount = -($profit_amount*$request->return_qty[$i]);
+                    //$profit->profit_amount = -($profit_amount*$request->return_qty[$i]);
+                    $profit->profit_amount = $profit_amount*$request->return_qty[$i];
                     $profit->date = date('Y-m-d');
                     $profit->save();
 

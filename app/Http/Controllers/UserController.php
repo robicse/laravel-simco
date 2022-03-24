@@ -119,6 +119,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         $user->store_id = $request->store_id;
+        $user->status = $request->status;
         $user->update();
 
         // second
@@ -136,6 +137,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         //User::find($id)->delete();
+        $user = User::find($id);
+        $user->status = 0;
+        $user->update();
         Toastr::warning('User not deleted possible, Please contact with administrator!');
         return redirect()->route('users.index');
     }

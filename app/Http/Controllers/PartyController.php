@@ -34,7 +34,6 @@ class PartyController extends Controller
     {
         $this->validate($request, [
             'type'=> 'required',
-            //'name' => 'required|unique:parties,name',
             'name' => 'required',
             'phone'=> 'required',
             'email'=> '',
@@ -48,11 +47,9 @@ class PartyController extends Controller
         $parties->email = $request->email;
         $parties->address = $request->address;
         $parties->status = $request->status;
-       // dd($parties);
         $parties->save();
         Toastr::success('Party Created Successfully', 'Success');
         return redirect()->route('party.index');
-
     }
 
 
@@ -64,9 +61,7 @@ class PartyController extends Controller
 
     public function edit($id)
     {
-
         $parties = Party::find($id);
-       // dd($parties);
         return view('backend.party.edit',compact('parties'));
     }
 
@@ -76,15 +71,10 @@ class PartyController extends Controller
         $this->validate($request, [
             'type'=> 'required',
             'name'=> 'required',
-//            'name' => [
-//                'required',
-//                Rule::unique('parties')->ignore($id),
-//            ],
             'phone'=> 'required',
             'email'=> '',
             'address'=> '',
         ]);
-
         $parties = Party::find($id);
         $parties->type = $request->type;
         $parties->name = $request->name;
@@ -93,7 +83,6 @@ class PartyController extends Controller
         $parties->email = $request->email;
         $parties->address = $request->address;
         $parties->status = $request->status;
-        // dd($parties);
         $parties->save();
         Toastr::success('Party Updtaed Successfully', 'Success');
         return redirect()->route('party.index');
@@ -102,8 +91,6 @@ class PartyController extends Controller
 
     public function destroy($id)
     {
-//        $parties = Party::find($id);
-//        $parties->delete();
         Toastr::warning('Party not deleted possible, Please contact with administrator!');
         return redirect()->route('party.index');
     }

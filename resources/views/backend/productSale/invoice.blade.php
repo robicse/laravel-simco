@@ -106,7 +106,7 @@
                                         <table class="table table-striped">
                                             <thead>
                                             <tr style="background-color: #dddddd">
-                                                <th>SL No.11</th>
+                                                <th>SL No.</th>
                                                 <th>Description</th>
                                                 <th>Qty</th>
                                                 <th>Unit</th>

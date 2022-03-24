@@ -18,6 +18,7 @@
                         <thead>
                         <tr>
                             <th width="5%">SL NO</th>
+                            <th width="5%">Party ID</th>
                             <th width="10%">Type</th>
                             <th width="15%">Name</th>
                             <th width="15%">Phone</th>
@@ -29,6 +30,7 @@
                         @foreach($parties as $key => $party)
                         <tr>
                             <td>{{ $key+1 }}</td>
+                            <td>{{ $party->id}}</td>
                             <td>{{ ucfirst($party->type)}}</td>
                             <td>{{ $party->name}}</td>
                             <td>{{ $party->phone}}</td>

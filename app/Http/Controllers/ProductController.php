@@ -36,7 +36,6 @@ class ProductController extends Controller
         $productSubCategories = ProductSubCategory::all();
         $productBrands = ProductBrand::all();
         $productUnits = ProductUnit::all();
-        //dd($productUnits);
         return view('backend.product.create', compact('productCategories','productSubCategories','productBrands','productUnits'));
     }
 
@@ -47,18 +46,13 @@ class ProductController extends Controller
             'name' => 'required|unique:products,name',
             'barcode' => 'required',
             'product_category_id' => 'required',
-            //'product_sub_category_id' => 'required',
             'product_brand_id' => 'required',
         ]);
-
-
         $product_name = $request->name . '. ' . $request->model;
         $product = new Product;
         $product->product_type = $request->product_type;
         $product->barcode = $request->barcode;
-        //$product->name = $request->name;
         $product->name = $product_name;
-        //$product->slug = Str::slug($request->name);
         $product->slug = Str::slug($product_name);
         $product->product_category_id = $request->product_category_id;
         $product->product_sub_category_id = $request->product_sub_category_id ? $request->product_sub_category_id : Null;
@@ -75,16 +69,12 @@ class ProductController extends Controller
 //            resize image for hospital and upload
             $proImage =Image::make($image)->resize(300, 300)->save($image->getClientOriginalExtension());
             Storage::disk('public')->put('uploads/product/'.$imagename, $proImage);
-
-
         }else {
             $imagename = "default.png";
         }
 
         $product->image = $imagename;
-        //dd($product);
         $product->save();
-
         Toastr::success('Product Created Successfully');
         return redirect()->route('products.index');
     }
@@ -109,16 +99,13 @@ class ProductController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'product_category_id' => 'required',
-            //'product_sub_category_id' => 'required',
             'product_brand_id' => 'required',
         ]);
 
         $product_name = $request->name . '. ' . $request->model;
         $product = Product::find($id);
         $product->product_type = $request->product_type;
-        //$product->name = $request->name;
         $product->name = $product_name;
-        //$product->slug = Str::slug($request->name);
         $product->slug = Str::slug($product_name);
         $product->barcode = $request->barcode;
         $product->product_category_id = $request->product_category_id;
@@ -138,25 +125,20 @@ class ProductController extends Controller
             {
                 Storage::disk('public')->delete('uploads/product/'.$product->image);
             }
-
 //            resize image for hospital and upload
             $proImage = Image::make($image)->resize(300, 300)->save($image->getClientOriginalExtension());
             Storage::disk('public')->put('uploads/product/' . $imagename, $proImage);
-
         }else {
             $imagename = $product->image;
         }
-
         $product->image = $imagename;
         $product->update();
-
         Toastr::success('Product Updated Successfully');
         return redirect()->route('products.index');
     }
 
     public function destroy($id)
     {
-        //Product::destroy($id);
         Toastr::warning('Product not deleted possible, Please contact with administrator!');
         return redirect()->route('products.index');
     }
@@ -172,7 +154,6 @@ class ProductController extends Controller
         }else{
             $options = "<option value=''>No Data Found!</option>";
         }
-
         return response()->json(['success'=>true,'data'=>$options]);
     }
 
@@ -184,7 +165,6 @@ class ProductController extends Controller
         }else{
             $barcode_check = 'Not Found';
         }
-
         return response()->json(['success'=>true,'data'=>$barcode_check]);
     }
 }

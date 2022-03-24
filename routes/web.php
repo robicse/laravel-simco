@@ -30,10 +30,6 @@ Route::get('/view-clear', function() {
 });
 /* artisan command */
 
-
-
-
-
 Route::get('/', function () {
     //return view('welcome');
     return redirect()->route('login');
@@ -74,7 +70,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('purchase-product-return','ProductPurchaseReturnController@purchaseProductReturn')->name('purchase.product.return');
     Route::get('get-returnable-purchase-product/{purchase_id}','ProductPurchaseReturnController@getReturnablePurchaseProduct');
 
-
     Route::get('productPurchases-invoice','ProductPurchaseController@invoice')->name('productPurchases-invoice');
     Route::get('productPurchases-invoice-print','ProductPurchaseController@invoicePrint')->name('productPurchases-invoice-print');
     Route::get('supplier-due','ProductPurchaseController@supplierDue')->name('productPurchases.supplier.due');
@@ -109,9 +104,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('party/new-office-costing-category','ExpenseController@newOfficeCostingCategory')->name('office.costing.category.new');
     Route::get('product-production-relation-data','ProductProductionController@productProductionRelationData');
 
-
-
-
     Route::get('productPosSales/list','ProductPosSaleController@index')->name('productPosSales.index');
     Route::get('productPosSales','ProductPosSaleController@create')->name('productPosSales.create');
     Route::get('sale/{id}/data', 'ProductPosSaleController@listData')->name('sale.data');
@@ -123,23 +115,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('product-pos-sales-invoice/{id}/{status}','PointOfSaleController@invoicePos')->name('product.pos.sales-invoice');
     Route::get('product-pos-sales-invoice-print/{id}','PointOfSaleController@invoicePosPrint')->name('product.pos.Sales-invoice-print');
 
-
     Route::get('selectedform/{product_code}/{store_id}','ProductPosSaleController@selectedform');
     Route::get('add-to-cart','CartController@addToCart');
     Route::get('delete-cart-product/{rowId}','CartController@deleteCartProduct');
     Route::get('delete-all-cart-product','CartController@deleteAllCartProduct');
     Route::post('pos_insert', 'ProductPosSaleController@postInsert');
 
-
     Route::get('get-sale-product/{sale_id}','ProductSaleReplacementController@getSaleProduct');
     Route::get('get-returnable-product/{sale_id}','ProductSaleReturnController@getReturnableProduct');
 
-
     // stock sync
     Route::get('stock_sync','StockController@stock_sync')->name('stock_sync');
-
-
-
 
     //excel
     Route::get('export', 'UserController@export')->name('export');

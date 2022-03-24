@@ -29,7 +29,6 @@ class ProductPosSaleController extends Controller
 {
     public function index()
     {
-        //Session::put('product_sale_id',14);
         Session::forget('product_sale_id');
 
         $auth_user_id = Auth::user()->id;
@@ -45,46 +44,8 @@ class ProductPosSaleController extends Controller
     public function create()
     {
         /* check cart with raw data */
-//        Cart::add([
-//            'id' => '293ad',
-//            'name' => 'Product 1',
-//            'qty' => 1,
-//            'price' => 9.99,
-//            'options' => [
-//                'size' => 'large'
-//            ]
-//        ]);
-
-//        Cart::add([
-//            [
-//                'id' => '293ad',
-//                'name' => 'Product 1',
-//                'qty' => 1,
-//                'price' => 10.00
-//            ],
-//            [
-//                'id' => '4832k',
-//                'name' => 'Product 2',
-//                'qty' => 1,
-//                'price' => 10.00,
-//                'options' => [
-//                    'size' => 'large'
-//                ]
-//            ]
-//        ]);
-
-
-//        Cart::add([$product1, $product2]);
-//        Cart::content();
-//        Cart::total();
-//        Cart::count();
         Cart::destroy();
-//        dd(Cart::count());
-//        echo Cart::count();
         /* check cart with raw data */
-
-
-
         $auth = Auth::user();
         $auth_user = Auth::user()->roles[0]->name;
         $parties = Party::where('type','customer')->get() ;
@@ -102,24 +63,13 @@ class ProductPosSaleController extends Controller
             ->groupBy('product_purchase_details.product_id')
             ->groupBy('product_purchase_details.barcode')
             ->latest('products.id')->get();
-
         return view('backend.productPosSale.create',compact('parties','stores','products','productCategories','productSubCategories','productBrands'));
     }
-
-
-
-
-
-
-
-
 
     public function selectedform($barcode, $store_id){
 
         $baseurl = URL('/pos_insert');
-
         // One Way
-
 //        $html = '<form name="form" id="form" action="'.$baseurl.'" method="post" enctype="multipart/form-data">
 //                <input type="hidden" name="_token" value="'.csrf_token().'" />
 //                    <table class="table table-striped tabel-penjualan">
@@ -188,9 +138,7 @@ class ProductPosSaleController extends Controller
 //                        </div>
 //                    </div>
 //            </form>';
-
-
-
+        // Two Way
         $html = "<form name=\"form\" id=\"form\" action=\"".$baseurl."\" method=\"post\" enctype=\"multipart/form-data\">
                     <div class=\"form-group row\">
                     <div class=\"col-md-8\">
@@ -301,11 +249,9 @@ class ProductPosSaleController extends Controller
                     </div>
             </form>";
         echo json_encode($html);
-
     }
 
     public function postInsert(Request $request){
-        //dd($request->all());
         $customer = $request->customer;
         if(is_numeric($customer) && strlen($customer) > 9){
             $customer_check_exits = Party::where('phone',$customer)->pluck('id')->first();
@@ -360,19 +306,6 @@ class ProductPosSaleController extends Controller
         }else{
             $customer_id = $request->customer;
         }
-
-
-
-
-
-//        echo $customer_id;
-//        echo '<pre>';
-//        print_r($request->all());
-//        echo '</pre>';
-//        dd(Cart::content());
-
-
-        //$total_amount = Cart::subtotal();
         $vat_amount = $request->vat_amount;
         $discount_amount = $request->discount_amount;
         $total_amount = $request->grand_total;
@@ -380,29 +313,13 @@ class ProductPosSaleController extends Controller
         $due_amount = $request->due_amount;
         $payment_type = $request->payment_type;
         $cheque_number = $request->cheque_number;
-
-
-
-        //$total_amount = $request->total_amount;
-
         $get_invoice_no = ProductSale::latest()->pluck('invoice_no')->first();
-        //dd($get_invoice_no);
         if(!empty($get_invoice_no)){
             $get_invoice = str_replace("Sal-","",$get_invoice_no);
             $invoice_no = $get_invoice+1;
         }else{
             $invoice_no = 1000;
         }
-        //dd($invoice_no);
-
-//        if($request->discount_type == 'percentage'){
-//            $discount_amount = $request->discount_percentage;
-//            $discount_percentage = $request->discount_amount;
-//        }else{
-//            $discount_amount = $request->discount_amount;
-//            $discount_percentage = NULL;
-//        }
-
         // product purchase
         $productSale = new ProductSale();
         $productSale->invoice_no = 'Sal-'.$invoice_no;
@@ -427,11 +344,7 @@ class ProductPosSaleController extends Controller
         if($insert_id)
         {
             foreach (Cart::content() as $content) {
-                //dd($content);
                 $price = $content->price;
-                //$discount_amount = $discount_amount;
-                //$total_amount = $total_amount;
-
                 $final_discount_amount = (float)$discount_amount * (float)$price;
                 $final_total_amount = (float)$discount_amount + (float)$total_amount;
                 $discount_type = $request->discount_type;
@@ -441,18 +354,12 @@ class ProductPosSaleController extends Controller
                         $discount = round($discount);
                     }
                 }
-
                 $purchase_invoice_no = $content->options['invoice_no'];
-                //dd($purchase_invoice_no);
-
-
                 $product_purchase_details_info = ProductPurchaseDetail::where('invoice_no',$purchase_invoice_no)
                     ->where('product_id',$content->id)->first();
                 $purchase_qty = $product_purchase_details_info->qty;
                 $purchase_previous_sale_qty = $product_purchase_details_info->sale_qty;
-
                 $product = Product::where('id',$content->id)->first();
-
                 // product purchase detail
                 $purchase_sale_detail = new ProductSaleDetail();
                 $purchase_sale_detail->product_sale_id = $insert_id;
@@ -468,8 +375,6 @@ class ProductPosSaleController extends Controller
                 $purchase_sale_detail->discount = $discount;
                 $purchase_sale_detail->sub_total = $content->qty*$content->price;
                 $purchase_sale_detail->save();
-
-
                 // update purchase details table stock status
                 $total_sale_qty = $purchase_previous_sale_qty + $content->qty;
                 $product_purchase_details_info->sale_qty = $total_sale_qty;
@@ -479,31 +384,6 @@ class ProductPosSaleController extends Controller
                     $product_purchase_details_info->qty_stock_status = 'Available';
                 }
                 $product_purchase_details_info->save();
-
-
-
-
-//                $check_previous_stock = Stock::where('product_id',$content->id)->latest()->pluck('current_stock')->first();
-//                if(!empty($check_previous_stock)){
-//                    $previous_stock = $check_previous_stock;
-//                }else{
-//                    $previous_stock = 0;
-//                }
-//
-//                // product stock
-//                $stock = new Stock();
-//                $stock->user_id = Auth::id();
-//                $stock->ref_id = $insert_id;
-//                $stock->store_id = $request->store_id;
-//                $stock->date = date('Y-m-d');
-//                $stock->product_id = $content->id;
-//                $stock->stock_type = 'sale';
-//                $stock->previous_stock = $previous_stock;
-//                $stock->stock_in = 0;
-//                $stock->stock_out = $content->qty;
-//                $stock->current_stock = $previous_stock - $content->qty;
-//                $stock->save();
-
                 // product stock
                 $check_previous_stock = Stock::where('store_id',$request->store_id)
                     ->where('product_id',$content->id)->latest()->pluck('current_stock')->first();
@@ -525,9 +405,6 @@ class ProductPosSaleController extends Controller
                 $stock->stock_out = $content->qty;
                 $stock->current_stock = $previous_stock - $content->qty;
                 $stock->save();
-
-
-
                 // invoice wise product stock
                 $check_previous_invoice_stock = InvoiceStock::where('store_id',$request->store_id)
                     ->where('purchase_invoice_no',$purchase_invoice_no)
@@ -535,7 +412,6 @@ class ProductPosSaleController extends Controller
                     ->latest()
                     ->pluck('current_stock')
                     ->first();
-
                 if(!empty($check_previous_invoice_stock)){
                     $previous_invoice_stock = $check_previous_invoice_stock;
                 }else{
@@ -556,10 +432,7 @@ class ProductPosSaleController extends Controller
                 $invoice_stock->stock_out = $content->qty;
                 $invoice_stock->current_stock = $previous_invoice_stock - $content->qty;
                 $invoice_stock->save();
-
-
                 $profit_amount = get_profit_amount($purchase_invoice_no,$content->id);
-
                 // profit table
                 $profit = new Profit();
                 $profit->ref_id = $insert_id;
@@ -572,14 +445,11 @@ class ProductPosSaleController extends Controller
                 $profit->qty = $content->qty;
                 $profit->price = $content->price;
                 $profit->sub_total = $content->qty*$content->price;
-//                $profit->discount_amount = $request->discount_amount;
-//                $profit->profit_amount = ($profit_amount*$request->qty[$i]) - $request->discount_amount;
                 $profit->discount_amount = NULL;
                 $profit->profit_amount = $profit_amount*$content->qty;
                 $profit->date = date('Y-m-d');
                 $profit->save();
             }
-
             // due
             $due = new Due();
             $due->invoice_no = 'Sal-'.$invoice_no;
@@ -591,7 +461,6 @@ class ProductPosSaleController extends Controller
             $due->paid_amount = $request->paid_amount;
             $due->due_amount = $request->due_amount;
             $due->save();
-
             // transaction
             $transaction = new Transaction();
             $transaction->invoice_no = 'Sal-'.$invoice_no;
@@ -605,10 +474,8 @@ class ProductPosSaleController extends Controller
             $transaction->cheque_number = $cheque_number ? $cheque_number : '';
             $transaction->amount = $paid_amount;
             $transaction->save();
-
             // session add product sale id
             Session::put('product_sale_id',$insert_id);
-
             Toastr::success('Order Successfully done! ');
             Cart::destroy();
             return back();

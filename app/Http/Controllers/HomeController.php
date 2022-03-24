@@ -9,27 +9,9 @@ use DB;
 
 class HomeController extends Controller
 {
-
-    /*public function __construct()
-    {
-        $this->middleware('auth');
-    }*/
-
-    /*function __construct()
-    {
-        $this->middleware('permission:home-list', ['only' => ['index']]);
-    }*/
-
-
     public function index()
     {
-        //return view('home');
-        //return view('backend._partial.home',['customers'=>$customer,'totalDue'=>$totalDue,'todaySell'=>$todaySell,'todayDue'=>$todayDue,'todaPaid'=>$todayPaid,'todayInvoice'=>$todayInvoice]);
-
-//        Toastr::success('welcome Dashboard Successfully', 'warning');
-
         $stores = Store::all();
-
         return view('backend._partial.home', compact('stores'));
     }
 }

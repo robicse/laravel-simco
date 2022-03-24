@@ -26,8 +26,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                        {!! Form::open(array('route'
-=> 'users.store','method'=>'POST')) !!}
+                        {!! Form::open(array('route'=> 'users.store','method'=>'POST')) !!}
                             @csrf
                         <div class="form-group row">
                             <label class="control-label col-md-4 text-right">Store User <span style="color: red">*</span></label>
@@ -95,7 +94,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row" style="display: none">
+                            <div class="form-group row">
                                 <label for="" class="col-md-4 col-form-label text-md-right">Role</label>
 
                                 <div class="col-md-6">

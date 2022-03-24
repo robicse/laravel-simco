@@ -23,7 +23,6 @@ use NumberFormatter;
 class PointOfSaleController extends Controller
 {
     public function print(Request $request,$id,$status){
-
         // session remove product sale id
         Session::forget('product_sale_id');
 
@@ -46,8 +45,6 @@ class PointOfSaleController extends Controller
                 ->join('products','product_sale_details.product_id','=','products.id')
                 ->where('product_sale_details.product_sale_id',$id)
                 ->get();
-
-            //dd($productSale);
 
             try {
                 /* Open the printer; this will change depending on how it is connected */
@@ -76,15 +73,12 @@ class PointOfSaleController extends Controller
                 $paid = new item('Paid','', $paid_amount_value);
                 $due = new item('Due','', $due_amount_value);
                 $payment_type = new item('Payment Type','', 'Cash');
-                //$total = new item('Total','', '14.25', true);
-
 
                 /* Date is kept the same for testing */
                 $date = date('l jS \of F Y h:i:s A');
 
 
                 /* Print top logo */
-                //$logo = EscposImage::load("escpos-php.png", false);
                 $logo = EscposImage::load("logo.png", false);
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
                 $printer -> bitImage($logo);
@@ -125,8 +119,6 @@ class PointOfSaleController extends Controller
                 $printer -> setEmphasis(false);
                 $printer -> text($due);
                 $printer -> text($payment_type);
-                //$printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-                //$printer -> text($total);
                 $printer -> selectPrintMode();
 
                 /* Footer */
@@ -136,11 +128,9 @@ class PointOfSaleController extends Controller
                 $printer -> text("For trading hours, please visit simco.com.bd\n");
                 $printer -> feed(2);
                 $printer -> text($date . "\n");
-                //dd($printer);
 
                 /* Cut the receipt and open the cash drawer */
                 $printer -> cut();
-                //$printer -> pulse();
 
                 $printer -> close();
 
@@ -160,12 +150,10 @@ class PointOfSaleController extends Controller
     }
 
     public function printPos(Request $request,$id,$status){
-
         // session remove product sale id
         Session::forget('product_sale_id');
 
         if($status == 'list'){
-
             //print status update
             $productSale = ProductSale::find($id);
             $status = 3;
@@ -183,7 +171,6 @@ class PointOfSaleController extends Controller
             Toastr::success('Successfully Printed!', 'Success');
             return view('backend.productPosSale.pos_invoice', compact('productSale','productSaleDetails'));
         }else if($status == 'now'){
-
             //print status update
             $productSale = ProductSale::find($id);
             $status = 1;
@@ -241,6 +228,5 @@ class PointOfSaleController extends Controller
         $party = Party::find($party_id);
         $digit = new NumberFormatter("en", NumberFormatter::SPELLOUT);
         return view('backend.productPosSale.invoice-print', compact('productSale','productSaleDetails','transactions','store','party','digit'));
-//        return view('backend.productSale.invoice-print');
     }
 }
