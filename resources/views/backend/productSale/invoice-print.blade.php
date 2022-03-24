@@ -270,11 +270,12 @@
                             Square Tower, 3-B Level-4
                             36/6, Mirpur Road
                             Bashundhara Lane
+                            New Market
                             Dhaka-1205, Bangladesh.
                         </div>
                         <div style="width: 21%;float: left;display: inline-block">
                             <div style="width: 25%;float: left;">Phone:</div>
-                            <div style="width: 75%;float: left;">+88-02-9662755</div>
+                            <div style="width: 75%;float: left;">+88-02-223362755</div>
                             <div style="width: 25%;float: left;">Cell:</div>
                             <div style="width: 75%;float: left;">+88-01711-530918</div>
                             <div style="width: 25%;float: left;">&nbsp;</div>
@@ -299,6 +300,8 @@
                             <div style="width: 61%;float: left;">CD A/C #: 00530210005141</div>
                             <div style="width: 39%;float: left;">Agrani Bank Ltd.</div>
                             <div style="width: 61%;float: left;">CD A/C #: 0200010401754</div>
+                            <div style="width: 39%;float: left;">Union Bank Ltd.</div>
+                            <div style="width: 61%;float: left;">CD A/C #: 0941010000128</div>
                         </div>
                     </div>
                 </div>
