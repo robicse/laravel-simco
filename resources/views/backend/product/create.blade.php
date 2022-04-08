@@ -63,6 +63,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
+                            <div class="col-md-8">
+                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="Barcode" name="barcode" id="barcode">
+                                @if ($errors->has('barcode'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('barcode') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Product Category <span style="color: red">*</span></label>
                             <div class="col-md-8">
                                 <select name="product_category_id" id="product_category_id" class="form-control">
@@ -150,17 +161,6 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3 text-right">Barcode <span style="color: red">*</span></label>
-                            <div class="col-md-8">
-                                <input class="form-control{{ $errors->has('barcode') ? ' is-invalid' : '' }}" type="text" placeholder="Barcode" name="barcode" id="barcode">
-                                @if ($errors->has('barcode'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('barcode') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="control-label col-md-3 text-right">Status <span style="color: red">*</span></label>
                             <div class="col-md-8">
                                 <select name="status" id="status" class="form-control">
@@ -205,7 +205,7 @@
             })
         })
 
-        $('#barcode').keyup(function(){
+        $('#barcode').blur(function(){
             var barcode = $(this).val();
 
             $.ajax({
@@ -218,7 +218,7 @@
                     console.log(res)
                     if(res.data == 'Found'){
                         $('#barcode').val('')
-                        alert('Barcode already exists, please add another!')
+                        alert('Barcode already exists, please add another Barcode!')
                         return false
                     }
                 },

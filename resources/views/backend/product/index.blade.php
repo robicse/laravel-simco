@@ -17,17 +17,16 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th width="5%">SL NO</th>
+                            <th width="3%">SL NO</th>
                             <th width="10%">Product Type</th>
-                            <th width="10%">Barcode</th>
-                            <th width="10%">Product Name</th>
-                            <th width="10%">Product Model</th>
+                            <th width="3%">Barcode</th>
+                            <th width="50%">Product Name</th>
+                            <th width="8%">Product Model</th>
                             <th width="10%">Category Name</th>
-{{--                            <th width="10%">Sub Category Name</th>--}}
-                            <th width="10%">Brand Name</th>
-                            <th width="10%">Unit Name</th>
-                            <th width="10%">Image</th>
-                            <th width="15%">Action</th>
+                            <th width="8%">Brand Name</th>
+                            <th width="7%">Unit Name</th>
+                            <th width="2%">Image</th>
+                            <th width="5%">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,10 +38,9 @@
                                 <td>{{ $product->name}}</td>
                                 <td>{{ $product->model}}</td>
                                 <td>{{ $product->product_category ? $product->product_category->name : ''}}</td>
-{{--                                <td>{{ $product->product_sub_category ? $product->product_sub_category->name : ''}}</td>--}}
                                 <td>{{ $product->product_brand ? $product->product_brand->name : ''}}</td>
                                 <td>{{ $product->product_unit ? $product->product_unit->name : ''}}</td>
-                                <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="100px;"></td>
+                                <td> <img src="{{asset('uploads/product/'.$product->image)}}" alt="" width="50px;"></td>
                                 <td class="d-inline-flex">
                                     <a href="{{ route('products.edit',$product->id) }}" class="btn btn-sm btn-primary float-left" style="margin-left: 5px"><i class="fa fa-edit"></i></a>
                                     <form method="post" action="{{ route('products.destroy',$product->id) }}" >
