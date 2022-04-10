@@ -118,9 +118,9 @@
                                             @foreach($productSaleDetails as $key => $productSaleDetail)
                                                 <tr>
                                                     <td>{{$key+1}}</td>
-                                                    <td style="text-align: left">{{$productSaleDetail->product->name}}</td>
+                                                    <td style="text-align: left">{{$productSaleDetail->product ? $productSaleDetail->product->name : ''}}</td>
                                                     <td>{{$productSaleDetail->qty}}</td>
-                                                    <td>{{$productSaleDetail->product_unit->name}}</td>
+                                                    <td>{{$productSaleDetail->product_unit ? $productSaleDetail->product_unit->name : ''}}</td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
