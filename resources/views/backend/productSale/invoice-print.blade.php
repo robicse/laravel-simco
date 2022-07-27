@@ -16,12 +16,11 @@
                     /* Styles go here */
 
                     .page-header, .page-header-space {
-                        height: 80px;
+                        height: 50px;
                     }
 
                     .page-footer, .page-footer-space {
-                        height: 60px !important;
-
+                        height: 70px !important;
                     }
 
                     .page-header {
@@ -35,7 +34,6 @@
                     .page-footer {
                         border-top: 1px solid #000000;
                         font-size: 10px !important;
-                        padding-bottom: 4px;
                         position: fixed;
                         bottom: 0;
                         left: 0;
