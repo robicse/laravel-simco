@@ -67,7 +67,9 @@
                                             <strong>To,</strong><br>
                                             <strong>{{$party->name}}</strong><br>
                                             Address:{{$party->address}}<br>
+                                            @if($party->phone)
                                             Mobile: {{$party->phone}}<br>
+                                            @endif
                                             ID NO: {{$party->id}}<br>
                                         </address>
                                     </div>

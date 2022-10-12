@@ -1099,7 +1099,7 @@ class ProductSaleController extends Controller
         $this->validate($request, [
             'type'=> 'required',
             'name' => 'required',
-            'phone'=> 'required',
+            //'phone'=> 'required',
             'email'=> '',
             'address'=> '',
         ]);

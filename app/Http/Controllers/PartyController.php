@@ -35,7 +35,7 @@ class PartyController extends Controller
         $this->validate($request, [
             'type'=> 'required',
             'name' => 'required',
-            'phone'=> 'required',
+            //'phone'=> 'required',
             'email'=> '',
             'address'=> '',
         ]);
@@ -71,7 +71,7 @@ class PartyController extends Controller
         $this->validate($request, [
             'type'=> 'required',
             'name'=> 'required',
-            'phone'=> 'required',
+            //'phone'=> 'required',
             'email'=> '',
             'address'=> '',
         ]);
